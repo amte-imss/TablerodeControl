@@ -15,7 +15,7 @@ if (!function_exists('new_captcha'))
 
         $type = array(
             Securimage::SI_CAPTCHA_STRING
-            ,Securimage::SI_CAPTCHA_MATHEMATIC
+            //,Securimage::SI_CAPTCHA_MATHEMATIC
             //,Securimage::SI_CAPTCHA_WORDS
         );
 

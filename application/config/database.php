@@ -73,11 +73,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default'] = array(
+$db['default_'] = array(
 	'dsn'	=> 'pgsql:host=11.32.41.19;dbname=tablero',
 	'hostname' => '11.32.41.19',
 	'username' => 'innovaedu',
 	'password' => 'nPgEoXCqd/?gV.,',
+	'database' => 'tablero',
+	'dbdriver' => 'pdo',
+	'port' => '5432',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'autoinit' => TRUE,
+	'schema' => 'sistema,catalogos',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['default'] = array(
+	'dsn'	=> 'pgsql:host=localhost;dbname=tablero',
+	'hostname' => 'localhost',
+	'username' => 'chrigarc',
+	'password' => 'kiqzer',
 	'database' => 'tablero',
 	'dbdriver' => 'pdo',
 	'port' => '5432',

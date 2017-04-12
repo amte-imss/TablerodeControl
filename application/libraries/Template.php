@@ -19,6 +19,7 @@ class Template {
     public function __construct() {
         $this->CI = & get_instance();
         $this->CI->load->helper('html');
+        $this->CI->load->helper('menu_helper');
         $this->lang = "spanish";
         $this->new_tpl = FALSE;
         $this->lang_text = array();
@@ -161,7 +162,7 @@ class Template {
      * @param   : mixed[] $nav Arreglo compuesto de n elementos con la sig estructura array("link"=>"","titulo"=>"","attribs"=>array())",
      */
 
-    function setNav($menu = null) {
+    function setNav($nav = null) {
         $this->elements["menu"] = $nav;
     }
 
@@ -329,5 +330,4 @@ class Template {
 //            
     }
       
-
 }

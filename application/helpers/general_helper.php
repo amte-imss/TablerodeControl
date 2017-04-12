@@ -162,6 +162,28 @@ if (!function_exists('filtra_array_por_key')) {
 
 }
 
+/**
+ * Método que crea un elemento number
+ * @autor 		: Jesús Díaz P.
+ * @modified 	:
+ * @param 		: string $label_text Contenido de la etiqueta number
+ * @param 		: mixed[] $attributes Atributos de la etiqueta number
+ * @return 		: string Elemento p
+ */
+if (!function_exists('form_number')) {
+
+    function form_number($data = '', $value = '', $extra = '') {
+        $defaults = array(
+            'type' => 'number',
+            'name' => is_array($data) ? '' : $data,
+            'value' => $value
+        );
+
+        return '<input ' . _parse_form_attributes($data, $defaults) . $extra . " />\n";
+    }
+
+}
+
 if (!function_exists('crear_formato_array')) {
 
     /**
