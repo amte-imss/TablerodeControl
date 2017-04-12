@@ -89,6 +89,7 @@ $db['default'] = array(
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
+	'autoinit' => TRUE,
 	'schema' => 'sistema,catalogos',
 	'encrypt' => FALSE,
 	'compress' => FALSE,

@@ -51,7 +51,7 @@ class Template {
      * @return: mixed[] Data arreglo de datos de plantilla con la siguisnte estructura array("title"=>null,"nav"=>null,"main_title"=>null,"main_content"=>null);
      */
 
-    function getTemplate($tipo = FALSE,$tpl = 'ci_template/index.tpl.php') {
+    function getTemplate($tipo = FALSE,$tpl = 'tc_template/index.tpl.php') {
         if($this->multiligual){
             $this->CI->lang->load('interface', $this->lang);
             $this->elements["string_tpl"] = $this->CI->lang->line('interface_tpl');

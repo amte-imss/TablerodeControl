@@ -82,7 +82,7 @@ class Catalogo extends MY_Controller
             $view['ficha_usuario'] = $this->ficha_usuario;
             $view['menu'] = $this->menu;
             $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            pr($view['contenido']); exit();
+            //pr($view['contenido']); exit();
             $main_content = $this->load->view('admin/admin', $view, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
