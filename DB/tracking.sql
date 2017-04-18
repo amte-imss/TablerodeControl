@@ -80,3 +80,14 @@ insert into catalogos.grupos_categorias(nombre, id_subcategoria, descripcion) va
 insert into catalogos.grupos_categorias(nombre, id_subcategoria, descripcion) values
 ('Directivo',(select id_subcategoria from catalogos.subcategorias where nombre = 'Enfermeros'), 'Directivo enfermería'), 
 ('Otras Categorías',(select id_subcategoria from catalogos.subcategorias where nombre = 'Enfermeros'),  null); 
+
+create table sistema.modulos_grupos(
+id_modulo_grupo serial not null, 
+id_modulo int not null, 
+id_grupo int not null,
+configurador varchar(5), 
+activo boolean not null default true,
+primary key(id_modulo_grupo), 
+foreign key(id_modulo) references sistema.modulos(id_modulo), 
+foreign key(id_grupo) references sistema.grupos(id_grupo)
+);
