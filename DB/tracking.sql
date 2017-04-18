@@ -48,3 +48,25 @@ insert into sistema.modulos(nombre, url, id_modulo_padre, orden, id_configurador
 ('Departamento', '/catalogos/departamento', 1, 1, 1), 
 ('Grupos de categorías', '/catalogos/grupo_categoria', 1,1,1 ), 
 ('Implementación', '/catalogos/implementacion', 1, 1, 1);
+
+/* lunes 17 de abril */
+alter table catalogos.categorias drop column id_subcategoria;
+
+alter table catalogos.grupos_categorias add column id_subcategoria int, add foreign key(id_subcategoria) references catalogos.subcategorias(id_subcategoria)
+
+insert into catalogos.subcategorias(nombre, clave_subcategoria, fecha) select nombre, '', date('2016/01/01') from catalogos.grupos_categorias;
+
+update catalogos.categorias set id_grupo_categoria = null;
+
+delete from catalogos.grupos_categorias;
+
+insert into catalogos.grupos_categorias(nombre, id_subcategoria, descripcion) values
+('Directivo', (select id_subcategoria from catalogos.subcategorias where nombre = 'Médicos'), 'Directivo médico'),
+('MF (Médico Familiar)',(select id_subcategoria from catalogos.subcategorias where nombre = 'Médicos'),null), 
+('MG (Médico General)',(select id_subcategoria from catalogos.subcategorias where nombre = 'Médicos'),null), 
+('MNF (Médico No Familiar)',(select id_subcategoria from catalogos.subcategorias where nombre = 'Médicos'),null), 
+('Residente',(select id_subcategoria from catalogos.subcategorias where nombre = 'Médicos'),null);
+
+insert into catalogos.grupos_categorias(nombre, id_subcategoria, descripcion) values
+('Directivo',(select id_subcategoria from catalogos.subcategorias where nombre = 'Enfermeros'), 'Directivo enfermería'), 
+('Otras Categorías',(select id_subcategoria from catalogos.subcategorias where nombre = 'Enfermeros'),  null); 

@@ -13,11 +13,13 @@
                     ?>
 
                     <?php
-                    if (isset($current_page))
+                    if (isset($current_row))
                     {
                         ?>
-                        <input id="usuarios_current_page" type="hidden" name="current_page" value="<?php echo $current_page; ?>" />
+                        <input id="usuarios_current_page" type="hidden" name="current_row" value="<?php echo $current_row; ?>" />
+                        <input id="usuarios_limit" type="hidden" name="usuarios_limit" value="<?php echo $per_page; ?>" />
                     <?php }
+                    
                     ?>
 
                     <div class="form-group">
@@ -28,7 +30,7 @@
                                 echo $this->form_complete->create_element(
                                         array('id' => 'per_page',
                                             'type' => 'dropdown',
-                                            'value' => '20',
+                                            'value' => $per_page,
                                             'options' => array(5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100),
                                             'attributes' => array('name' => 'per_page',
                                                 'class' => 'form-control  form-control input-sm',
@@ -50,7 +52,7 @@
                                         array('id' => 'order',
                                             'type' => 'dropdown',
                                             'options' => array(1 => 'Ascendente', 2 => 'Descendente'),
-                                            'attributes' => array('name' => 'per_page',
+                                            'attributes' => array('name' => 'order',
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
                                                 'data-placement' => 'top',
@@ -79,7 +81,8 @@
                     <!--tablas de usuarios-->
 
                     <br>
-
+                    <p><?php echo 'Total: '.$usuarios['total'];  
+                       echo $paginacion['links'];?></p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -118,23 +121,12 @@
 
 
                     <?php
-                    if (isset($current_page))
+                    if (isset($paginacion))
                     {
-                        ?>
-                        <nav aria-label="...">
-                            <ul class="pager">
-                                <?php
-                                if ($current_page > 0)
-                                {
-                                    ?>
-                                    <li><a onclick="paginar_usuarios(<?php echo $current_page - 1; ?>)">Anterior</a></li>
-                                    <?php
-                                }
-                                ?>
-                                <li><a onclick="paginar_usuarios(<?php echo $current_page + 1; ?>)">Siguiente</a></li>
-                            </ul>
-                        </nav>
-                    <?php } ?>
+                        echo $paginacion['links'];
+                    }
+                    ?>
+
 
                 </div>
             </div>

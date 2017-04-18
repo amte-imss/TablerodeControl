@@ -30,6 +30,10 @@
             var url = "<?php echo base_url(); ?>";
             var site_url = "<?php echo site_url(); ?>";
         </script>
+        <!--   Core JS Files   -->
+        <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/jquery-3.1.0.min.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/material.min.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -571,10 +575,6 @@
         </div>
     </body>
 
-    <!--   Core JS Files   -->
-    <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/material.min.js" type="text/javascript"></script>
 
     <!--  Charts Plugin -->
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/chartist.min.js"></script>
@@ -592,10 +592,10 @@
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/demo.js"></script>
 
     <script type="text/javascript">
-                                $(document).ready(function () {
-                                    // Javascript method's body can be found in assets/js/demos.js
-                                    demo.initDashboardPageCharts();
-                                });
+            $(document).ready(function () {
+                // Javascript method's body can be found in assets/js/demos.js
+                demo.initDashboardPageCharts();
+            });
     </script>
 
 </html>

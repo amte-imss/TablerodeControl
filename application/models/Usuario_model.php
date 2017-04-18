@@ -177,12 +177,12 @@ class Usuario_model extends CI_Model
         $this->db->flush_cache();
         $this->db->reset_query();
 
-        if (isset($filtros['limit']) && $filtros['current_page'])
+        if (isset($filtros['per_page']) && $filtros['current_row'])
         {
-            $this->db->limit($filtros['limit'], $filtros['current_page'] * $filtros['limit']);
-        } else if (isset($filtros['limit']))
+            $this->db->limit($filtros['per_page'], $filtros['current_row'] * $filtros['per_page']);
+        } else if (isset($filtros['per_page']))
         {
-            $this->db->limit($filtros['limit']);
+            $this->db->limit($filtros['per_page']);
         }
 
         if (isset($filtros['order']) && $filtros['order'] == 2)

@@ -63,24 +63,29 @@ class Usuario extends MY_Controller
 
     public function lista_usuarios()
     {
-        $filtros['limit'] = 20;
-        $filtros['current_page'] = 0;
+        $filtros['per_page'] = 10;
+        $filtros['current_row'] = 0;
         if ($this->input->post())
         {
             $filtros['order'] = $this->input->post('order', true);
-            $filtros['limit'] = $this->input->post('per_page', true);
+            $filtros['per_page'] = $this->input->post('per_page', true);
 
-            if ($this->input->post('current_page') && is_numeric($this->input->post('current_page', true)))
+            if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
             {
-                $filtros['current_page'] = $this->input->post('current_page', true);
+                $filtros['current_row'] = $this->input->post('current_row', true);
             }
-            $output['current_page'] = $filtros['current_page'];
+            $output['current_row'] = $filtros['current_row'];
         }
         //pr($filtros);
         $output['usuarios'] = $this->registro->ver($filtros);
-        $view['contenido'] = $this->load->view('usuario/gestionBuscar', $output, true);
-        $main_content = $this->load->view('admin/admin', $view, true);
-        $this->template->setMainContent($main_content);
+        $filtros['total'] = $output['usuarios']['total'];
+        $paginacion = $this->template->pagination_data($filtros);
+        $output['per_page'] = $filtros['per_page'];
+        $output['current_row'] =  $filtros['current_row'];
+        $output['paginacion'] = $paginacion;
+        $view = $this->load->view('usuario/gestionBuscar', $output, true);
+        $this->template->setMainContent($view);
+        //   echo $table['links'];
         $this->template->getTemplate();
     }
 
@@ -89,10 +94,12 @@ class Usuario extends MY_Controller
         //pr('inicio');
         if (!is_null($id) && is_numeric($id))
         {
+            $this->load->model('Grupos_usuarios_model', 'grupos_usuario');
             $output['delegaciones'] = dropdown_options($this->registro->lista_delegaciones(), 'clave_delegacional', 'nombre');
-            $output['unidad_instituto'] = dropdown_options($this->registro->lista_unidad(), 'id_unidad_instituto', 'nombre');
-            $output['categoria'] = dropdown_options($this->registro->lista_categoria(), 'clave_categoria', 'nombre');
             $output['usuarios'] = $this->registro->datos_usuario($id);
+            $output['grupos'] = $this->grupos_usuario->get_grupos();
+            $output['grupos_usuario'] = $this->grupos_usuario->get_grupos_usuario($id);
+            pr($output['grupos_usuario']);
             if ($status != null)
             {
                 $output['status_password'] = $status;
@@ -117,8 +124,7 @@ class Usuario extends MY_Controller
                     $output['status'] = $this->registro->actualiza_registro($data);
                 }
             }
-            $view['contenido'] = $this->load->view('usuario/ver_registro_completo', $output, true);
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('usuario/ver_registro_completo', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         }
