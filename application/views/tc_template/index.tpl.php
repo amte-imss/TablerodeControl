@@ -37,6 +37,10 @@
     </head>
 
     <body>
+        <div id="overlay">
+            <img src="<?php echo base_url(); ?>assets/tablero_tpl/img/loader.gif" alt="Loading" /><br/>
+            Cargando...
+        </div>
         <div class="wrapper">
             <div class="sidebar" 
                  data-color="purple" 
@@ -172,7 +176,7 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="orange">
@@ -554,7 +558,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -590,6 +594,8 @@
 
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/demo.js"></script>
+    
+    <script src="<?php echo base_url(); ?>assets/js/general.js"></script>
 
     <script type="text/javascript">
             $(document).ready(function () {

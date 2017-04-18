@@ -49,6 +49,16 @@ insert into sistema.modulos(nombre, url, id_modulo_padre, orden, id_configurador
 ('Grupos de categorías', '/catalogos/grupo_categoria', 1,1,1 ), 
 ('Implementación', '/catalogos/implementacion', 1, 1, 1);
 
+--14/04/2017
+create table catalogos.periodo(
+	id_periodo serial not null, 
+	nombre varchar(30) not null, 
+	--descripcion text, 
+	primary key(id_periodo)
+);
+
+insert into catalogos.periodo(nombre) values('Anual'),('Semestral'),('Trimestral'),('Bimestral'),('Mensual');
+
 /* lunes 17 de abril */
 alter table catalogos.categorias drop column id_subcategoria;
 

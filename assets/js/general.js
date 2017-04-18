@@ -20,6 +20,18 @@ function remove_loader() {
     $("#ajax_loader").remove();
 }
 
+function mostrar_loader() {
+    $('#overlay').fadeIn('slow', function() {
+        
+    });
+}
+
+function ocultar_loader() {
+    $('#overlay').fadeOut('slow', function() {
+        
+    });
+}
+
 /**	Método que muestra un mensaje con formato de alertas de boostrap
  * @param	string	message 	Mensaje que será mostrado
  * @param 	string 	tipo 		Posibles valores('success','info','warning','danger')
@@ -272,4 +284,21 @@ function callbackIniDataTables(idTabla) {
         );
     }
 
+}
+
+function imprimir_contenido(html_id){
+    /*var restaurar_pagina = $('body').html();
+    var contenido = $(html_id).clone();
+    $('body').empty().html(contenido);
+    window.print();
+    $('body').html(restaurar_pagina);*/
+    w=window.open();
+    w.document.write('<link href="'+base_url+'assets/tablero_tpl/css/bootstrap.min.css" rel="stylesheet" />');
+    w.document.write('<link href="'+base_url+'assets/tablero_tpl/css/material-dashboard.css" rel="stylesheet"/>');
+    w.document.write('<link href="'+base_url+'assets/tablero_tpl/css/demo.css" rel="stylesheet" />');
+    w.document.write('<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">');
+    w.document.write('<link href="http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons" rel="stylesheet" type="text/css">');
+    w.document.write($(html_id).html());
+    w.print();
+    w.close();
 }
