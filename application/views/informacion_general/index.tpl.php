@@ -1,3 +1,5 @@
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php 
 echo js('informacion_general.js');
 echo form_open('', array('id'=>'form_busqueda')); ?>
@@ -139,5 +141,14 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
                 <h3 class="title" id="total_eficiencia_terminal">-</h3>
             </div>
         </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div id="container_perfil" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div id="container_tipo_curso" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div id="container_region" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
 </div>

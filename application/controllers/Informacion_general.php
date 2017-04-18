@@ -111,23 +111,23 @@ class Informacion_general extends MY_Controller
                         $resultado['total']['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
                         $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Perfil
-                        if(!isset($resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_inscritos'])){
-                            $resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'])){
+                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] = 0;
                         }
-                        if(!isset($resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_certificados'])){
-                            $resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_certificados'] = 0;
+                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'])){
+                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] = 0;
                         }
-                        $resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['perfil'][$dato['id_subcategoria']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Tipo de curso
-                        if(!isset($resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_inscritos'])){
-                            $resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] = 0;
                         }
-                        if(!isset($resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_certificados'])){
-                            $resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_certificados'] = 0;
+                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] = 0;
                         }
-                        $resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['tipo_curso'][$dato['id_tipo_curso']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Periodo
                         if(!isset($resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'])){
                             $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'] = 0;
@@ -138,14 +138,14 @@ class Informacion_general extends MY_Controller
                         $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
                         $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Región
-                        if(!isset($resultado['region'][$dato['id_region']]['cantidad_alumnos_inscritos'])){
-                            $resultado['region'][$dato['id_region']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'])){
+                            $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] = 0;
                         }
-                        if(!isset($resultado['region'][$dato['id_region']]['cantidad_alumnos_certificados'])){
-                            $resultado['region'][$dato['id_region']]['cantidad_alumnos_certificados'] = 0;
+                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_certificados'])){
+                            $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] = 0;
                         }
-                        $resultado['region'][$dato['id_region']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['region'][$dato['id_region']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                     }
                     //pr($datos);
                     echo json_encode($resultado);
