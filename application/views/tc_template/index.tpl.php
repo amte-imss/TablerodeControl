@@ -24,7 +24,7 @@
         <link href="<?php echo base_url(); ?>assets/tablero_tpl/css/demo.css" rel="stylesheet" />
 
         <!--     Fonts and icons     -->
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link href="<?php echo base_url(); ?>assets/third-party/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
         <script type="text/javascript">
             var url = "<?php echo base_url(); ?>";

@@ -27,6 +27,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //$lang['interface']['registro']['texto_bienvenida'] = 'Hola mundo';
 $lang['interface'] = array(
     'informacion_general' => array(
+        'titulo_principal' => 'Información general',
+        'titulo_por_perfil' => 'Por perfil',
         'titulo' => 'Resultados generales de cursos $tipo_curso $unidad $delegacion, durante el periodo $periodo',
         'alumnos_inscritos' => 'Alumnos inscritos',
         'alumnos_aprobados' => 'Alumnos aprobados',

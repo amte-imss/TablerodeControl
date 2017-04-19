@@ -2,7 +2,7 @@
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php 
 echo js('informacion_general.js');
-echo form_open('', array('id'=>'form_busqueda')); ?>
+echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
 <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="form-group label-floating is-empty">
@@ -15,7 +15,7 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
                         'options'=>$catalogos['subcategorias'],
                         'first'=>array(''=>''),
                         'attributes'=>array('class'=>'form-control',
-                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', 'form_busqueda');")
+                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
                     )
                 ); ?>
                 <span class="material-input"></span>
@@ -34,7 +34,7 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
                         'options'=>$catalogos['tipos_cursos'],
                         'first'=>array(''=>''),
                         'attributes'=>array('class'=>'form-control',
-                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', 'form_busqueda');")
+                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
                     )
                 ); ?>
                 <span class="material-input"></span>
@@ -53,7 +53,7 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
                         'options'=>$catalogos['periodo'],
                         'first'=>array(''=>''),
                         'attributes'=>array('class'=>'form-control',
-                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', 'form_busqueda');")
+                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
                         )
                     );
                 ?>
@@ -74,7 +74,7 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
                         'first'=>array(''=>''),
                         'attributes'=>array(
                             'class'=>'form-control',
-                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', 'form_busqueda');"
+                            'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');"
                             //'autocomplete'=>'off',
                             //'data-toggle'=>'tooltip',
                             //'data-placement'=>'bottom',
@@ -151,4 +151,12 @@ echo form_open('', array('id'=>'form_busqueda')); ?>
     <div class="col-lg-6 col-md-6 col-sm-6">
         <div id="container_region" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div id="container_periodo" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
 </div>
+<script type="text/javascript">
+$( document ).ready(function() {
+    calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');
+});
+</script>

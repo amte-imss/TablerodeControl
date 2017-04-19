@@ -75,18 +75,39 @@ class Informacion_general extends MY_Controller
     public function index(){
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::PERIODO, Catalogo_listado::TIPOS_CURSOS, 
-            Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria')));
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, 
+            Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'))); //Catalogo_listado::PERIODO
+        $datos['catalogos']['periodo'] = array(2016 => 2016);
         //pr($datos['catalogos']);
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
 
-        $this->template->setTitle("Información general");
+        $this->template->setTitle($datos['lenguaje']['titulo_principal']);
         $this->template->setSubTitle($this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
         //$this->template->setDescripcion("Bienvenida a delegacional");
         $this->template->setMainContent($this->load->view('informacion_general/index.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
-        
+    }
+
+    public function por_perfil(){
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
+        $this->load->library('Catalogo_listado');
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::PERIODO));
+        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
+        foreach ($listado_subcategorias as $key_ls => $listado) {
+            $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
+            if(!empty($listado['grupo_categoria'])){
+                $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
+            }
+        }
+        //pr($datos);
+        $this->template->setTitle($datos['lenguaje']['titulo_principal']);
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil']);
+        //$this->template->setDescripcion("Bienvenida a delegacional");
+        $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
+        //$this->template->setBlank("tc_template/iiindex.tpl.php");    
+        $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
 
     public function calcular_totales(){
@@ -94,7 +115,7 @@ class Informacion_general extends MY_Controller
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
-
+                //pr($datos_busqueda);
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']);
@@ -129,14 +150,15 @@ class Informacion_general extends MY_Controller
                         $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
                         $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Periodo
-                        if(!isset($resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'])){
-                            $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'])){
+                            //$resultado['periodo'][$dato['anio_fin']][$dato['mes']]['cantidad_alumnos_inscritos'] = 0;
+                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] = 0;
                         }
-                        if(!isset($resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_certificados'])){
-                            $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_certificados'] = 0;
+                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'])){
+                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] = 0;
                         }
-                        $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['periodo'][$dato['anio_fin']][$dato['mes_fin']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
                         //Región
                         if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'])){
                             $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] = 0;
@@ -146,6 +168,77 @@ class Informacion_general extends MY_Controller
                         }
                         $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
                         $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                    }
+                    //pr($datos);
+                    echo json_encode($resultado);
+                    exit();
+                } else {
+                    echo data_not_exist(); //Mostrar mensaje de datos no existentes
+                }
+            }
+        } else {
+            redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
+        }
+    }
+
+    public function buscar_perfil(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                //pr($datos_busqueda);
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
+                //pr($datos['datos']);
+                $resultado = array();
+                if(!empty($datos['datos'])){
+                    foreach ($datos['datos'] as $key_d => $dato) {
+                        //Total
+                        /*if(!isset($resultado['total']['cantidad_alumnos_inscritos'])){
+                            $resultado['total']['cantidad_alumnos_inscritos'] = 0;
+                        }
+                        if(!isset($resultado['total']['cantidad_alumnos_certificados'])){
+                            $resultado['total']['cantidad_alumnos_certificados'] = 0;
+                        }
+                        $resultado['total']['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
+                        //Perfil
+                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'])){
+                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] = 0;
+                        }
+                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'])){
+                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] = 0;
+                        }
+                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        //Tipo de curso
+                        /*if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] = 0;
+                        }
+                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] = 0;
+                        }
+                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        //Periodo
+                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'])){
+                            //$resultado['periodo'][$dato['anio_fin']][$dato['mes']]['cantidad_alumnos_inscritos'] = 0;
+                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] = 0;
+                        }
+                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'])){
+                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] = 0;
+                        }
+                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        //Región
+                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'])){
+                            $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] = 0;
+                        }
+                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_certificados'])){
+                            $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] = 0;
+                        }
+                        $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
                     }
                     //pr($datos);
                     echo json_encode($resultado);
