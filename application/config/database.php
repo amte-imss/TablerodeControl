@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 
 $db['default'] = array(
-	'dsn'	=> 'pgsql:host=localhost;dbname=tablero2',
+	'dsn'	=> 'pgsql:host=localhost;dbname=tablero',
 	'hostname' => 'localhost',
-	'username' => 'postgres',
-	'password' => 'postgres',
-	'database' => 'tablero2',
+	'username' => 'chrigarc',
+	'password' => 'kiqzer',
+	'database' => 'tablero',
 	'dbdriver' => 'pdo',
 	'port' => '5432',
 	'dbprefix' => '',

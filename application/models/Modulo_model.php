@@ -165,6 +165,16 @@ class Modulo_model extends CI_Model
     }
 
     public function insert(&$datos = array()){
-        
+        $status = false;
+        $insert = array(
+            'nombre' => $datos['nombre'], 
+            'url' => $datos['url'], 
+            'id_modulo_padre' => $datos['padre'], 
+            'orden' => $datos['orden'], 
+            'id_configurador' => $datos['tipo'], 
+            'visible' => $datos['visible']
+        );
+        $this->db->insert('sistema.modulos', $insert);
+        return $status;
     }
 }

@@ -7,19 +7,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 if (!function_exists('render_menu'))
 {
 
-    function render_menu($menu = [], $dropdown = false)
+    function render_menu($menu = [], $dropdown = null)
     {
         $html = '';
         ob_start();
         ?>
-        <ul class="<?php echo ($dropdown ? 'dropdown-menu' : ''); ?>" >
+        <ul class="<?php echo ($dropdown != null ? 'collapse' : ''); ?>" <?php echo ($dropdown != null ? 'id="'.$dropdown.'"' : ''); ?>>
             <?php
             foreach ($menu as $item)
             {
                 ?>
-                <li class="<?php echo (isset($item['childs']) ? 'dropdown' : '') ?>" style="list-style-type: none;">
+                <li class="<?php echo (isset($item['childs']) ? '' : '') ?>" style="list-style-type: none;">
 
-                    <a href="<?php echo (isset($item['link']) ? site_url().$item['link'] : '#'); ?>" class="<?php echo (isset($item['childs']) ?: 'dropdown-toggle'); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="dropdown"' : ''); ?>>
+                    <a href="<?php echo (isset($item['link']) ? site_url() . $item['link'] : '#'); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
                         <i class="material-icons">dashboard</i>
                         <?php
                         if (isset($item['titulo']))
@@ -34,16 +34,17 @@ if (!function_exists('render_menu'))
                     if (isset($item['childs']))
                     {
                         //pr($item['childs']);
-                        echo render_menu($item['childs'], true);
+                        echo render_menu($item['childs'], 'menu'.$item['id_menu']);
                     }
                     ?>
                 </li>
-                <?php } ?>
-            </ul>
-            <?php
-            $html = ob_get_contents();
-            ob_get_clean();
-            return $html;
-        }
+            <?php } ?>
+        </ul>
+        <?php
+        $html = ob_get_contents();
+        ob_get_clean();
+        return $html;
     }
+
+}
     

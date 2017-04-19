@@ -148,9 +148,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -198,11 +196,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -261,11 +255,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -315,11 +305,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -361,11 +347,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -407,11 +389,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -450,11 +428,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -496,11 +470,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -543,11 +513,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -589,11 +555,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -634,11 +596,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -678,11 +636,7 @@ class Catalogo extends MY_Controller
             $crud->unset_delete();
             $output = $crud->render();
 
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)

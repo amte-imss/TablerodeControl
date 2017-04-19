@@ -18,16 +18,23 @@ class Modulo extends MY_Controller
         $this->load->model('Grupos_usuarios_model', 'grupos');
     }
 
-    public function index()
+    public function index($full_view = 1)
     {
+        $output['full_view'] = $full_view;
         $output['modulos'] = $this->modulo->get_modulos();
         $output['configuradores'] = dropdown_options($this->modulo->get_configuradores(), 'id_configurador', 'nombre');
         $output['modulos_dropdown'] = dropdown_options($output['modulos'], 'id_modulo', 'nombre');
-        $view = $this->load->view('modulo/index', $output, true);
-        $modal = $this->load->view('modulo/modal_custom_modulo', $output, true);
-        $this->template->setCuerpoModal($modal);
-        $this->template->setMainContent($view);
-        $this->template->getTemplate();
+        
+        if ($full_view == 1)
+        {
+            $view = $this->load->view('modulo/index', $output, true);
+            $modal = $this->load->view('modulo/modal_custom_modulo', $output, true);
+            $this->template->setCuerpoModal($modal);
+            $this->template->setMainContent($view);
+            $this->template->getTemplate();
+        }else{
+            $this->load->view('modulo/index', $output);
+        }
     }
 
     public function modulos_grupo()
@@ -75,7 +82,7 @@ class Modulo extends MY_Controller
             $datos['nombre'] = $this->input->post('modulo', true);
             $datos['url'] = $this->input->post('url', true);
             $datos['tipo'] = $this->input->post('tipo', true);
-            $datos['padre'] = $this->input->post('padre', true);
+            $datos['padre'] = (empty($this->input->post('padre', true))?null : $this->input->post('padre', true));
             $datos['orden'] = $this->input->post('orden', true);
             $datos['visible'] = ($this->input->post('visible', true) != null ? true : FALSE);
             $salida['status'] = $this->modulo->insert($datos);

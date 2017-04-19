@@ -11,6 +11,7 @@ $(function () {
             }
         }).done(function (response) {
             console.log(response);
+            refresh_page();
         });
     });
 });
@@ -36,4 +37,17 @@ function form_save() {
     $('#orden').val('');
     $('#visible').checked = false;
     $('#form_custom_modulo').attr('action', site_url + "/modulo/new_modulo/");
+}
+
+function refresh_page() {
+    $.ajax({
+        url: site_url + "/modulo/index/0"
+        , method: "post"
+        , data: $(this).serialize()
+        , error: function () {
+            console.warn("No se pudo realizar la conexión");
+        }
+    }).done(function (response) {
+        $('#area_modulos').html(response);
+    });
 }
