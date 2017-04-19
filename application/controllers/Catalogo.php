@@ -13,7 +13,8 @@ class Catalogo extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->database();
+        $this->load->library('form_complete');
+        $this->load->model('Catalogo_model', 'catalogo');
         $this->load->library('grocery_CRUD');
     }
 
@@ -75,9 +76,8 @@ class Catalogo extends MY_Controller
 
             $crud->unset_delete();
             $output = $crud->render();
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
+
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -88,50 +88,25 @@ class Catalogo extends MY_Controller
 
     public function categoria()
     {
-        try
+        $filtros['per_page'] = 10;
+        $filtros['current_row'] = 0;
+        if ($this->input->post())
         {
-            $this->db->schema = 'catalogos';
-            //pr($this->db->list_tables()); //Muestra el listado de tablas pertenecientes al esquema seleccionado
+            $filtros['order'] = $this->input->post('order', true);
+            $filtros['per_page'] = $this->input->post('per_page', true);
 
-            $crud = $this->new_crud();
-            $crud->set_table('categorias');
-
-            $crud->set_subject('Categoría');
-            $crud->display_as('id_categoria', 'ID');
-            $crud->display_as('nombre', 'Nombre de categoría');
-            $crud->display_as('id_grupo_categoria', 'Grupo de categoría');
-            $crud->display_as('id_subcategoria', 'Subcategoría');
-            $crud->display_as('descripcion', 'Descripción');
-            $crud->display_as('clave_categoria', 'Clave');
-            $crud->display_as('fecha', 'Fecha');
-            $crud->display_as('inversion_estimada', 'Inversión estimada');
-            $crud->display_as('activa', 'Activa');
-
-            $crud->set_relation('id_grupo_categoria', 'grupos_categorias', 'nombre', null, 'nombre'); //Establecer relaciones
-            $crud->set_relation('id_subcategoria', 'subcategorias', 'nombre', null, 'nombre');
-
-            $crud->columns('clave_categoria', 'nombre', 'id_grupo_categoria', 'id_subcategoria', 'activa'); //Definir columnas a mostrar en el listado y su orden
-            $crud->add_fields('clave_categoria', 'nombre', 'id_grupo_categoria', 'id_subcategoria', 'descripcion', 'inversion_estimada', 'fecha', 'activa'); //Definir campos que se van a agregar y su orden
-            $crud->edit_fields('clave_categoria', 'nombre', 'id_grupo_categoria', 'id_subcategoria', 'descripcion', 'inversion_estimada', 'fecha', 'activa'); //Definir campos que se van a editar y su orden
-            //$crud->field_type('activa', 'true_false');
-            $crud->change_field_type('activa', 'true_false', array(0 => 'Inactivo', 1 => 'Activo'));
-
-            $crud->set_rules('nombre', 'Nombre de categoría', 'trim|required');
-            $crud->set_rules('fecha', 'Fecha', 'trim|required');
-            $crud->set_rules('activa', 'Activa', 'required');
-
-            $crud->unset_delete();
-            $output = $crud->render();
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
-            $this->template->setMainContent($main_content);
-            $this->template->getTemplate();
-        } catch (Exception $e)
-        {
-            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+            if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
+            {
+                $filtros['current_row'] = $this->input->post('current_row', true);
+            }
+            $output['current_row'] = $filtros['current_row'];
         }
+        $output['categorias'] = $this->catalogo->get_categorias($filtros);
+        $paginacion = $this->template->pagination_data($output['categorias']);
+        $output['paginacion'] = $paginacion;
+        $view = $this->load->view('catalogo/categorias', $output, true);
+        $this->template->setMainContent($view);
+        $this->template->getTemplate();
     }
 
     public function curso()
@@ -238,50 +213,25 @@ class Catalogo extends MY_Controller
 
     public function departamento()
     {
-        try
+        $filtros['per_page'] = 10;
+        $filtros['current_row'] = 0;
+        if ($this->input->post())
         {
-            $this->db->schema = 'catalogos';
-            //pr($this->db->list_tables()); //Muestra el listado de tablas pertenecientes al esquema seleccionado
+            $filtros['order'] = $this->input->post('order', true);
+            $filtros['per_page'] = $this->input->post('per_page', true);
 
-            $crud = $this->new_crud();
-            $crud->set_table('departamentos_instituto');
-
-            $crud->set_subject('Departamento');
-            $crud->display_as('clave_departamental', 'Clave');
-            $crud->display_as('nombre', 'Nombre del departamento');
-            $crud->display_as('id_unidad_instituto', 'Unidad');
-            $crud->display_as('activa', 'Activo');
-
-            $crud->set_primary_key('id_departamento_instituto', 'departamentos_instituto'); //Definir llaves primarias, asegurar correcta relación
-            $crud->set_primary_key('id_unidad_instituto', 'unidades_instituto');
-
-            $crud->set_relation('id_unidad_instituto', 'unidades_instituto', '{nombre} ({clave_unidad})', null, 'clave_unidad'); //Establecer relaciones
-
-            $crud->columns('clave_departamental', 'nombre', 'id_unidad_instituto', 'activa'); //Definir columnas a mostrar en el listado y su orden
-            $crud->add_fields('clave_departamental', 'nombre', 'id_unidad_instituto', 'activa'); //Definir campos que se van a agregar y su orden
-            $crud->edit_fields('clave_departamental', 'nombre', 'id_unidad_instituto', 'activa'); //Definir campos que se van a editar y su orden
-
-            $crud->change_field_type('activa', 'true_false', array(0 => 'Inactivo', 1 => 'Activo'));
-
-            $crud->set_rules('nombre', 'Nombre de departamento', 'trim|required');
-            $crud->set_rules('clave_departamental', 'Clave', 'trim|required');
-            $crud->set_rules('id_unidad_instituto', 'Unidad', 'required');
-            $crud->set_rules('activo', 'Activo', 'required');
-
-            $crud->unset_delete();
-            $output = $crud->render();
-
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
-            $this->template->setMainContent($main_content);
-            $this->template->getTemplate();
-        } catch (Exception $e)
-        {
-            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+            if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
+            {
+                $filtros['current_row'] = $this->input->post('current_row', true);
+            }
+            $output['current_row'] = $filtros['current_row'];
         }
+        $output['departamentos'] = $this->catalogo->get_departamentos($filtros);
+        $paginacion = $this->template->pagination_data($output['departamentos']);
+        $output['paginacion'] = $paginacion;
+        $view = $this->load->view('catalogo/departamentos', $output, true);
+        $this->template->setMainContent($view);
+        $this->template->getTemplate();
     }
 
     public function grupo_categoria()
@@ -743,62 +693,25 @@ class Catalogo extends MY_Controller
 
     public function unidad_instituto()
     {
-        try
+        $filtros['per_page'] = 10;
+        $filtros['current_row'] = 0;
+        if ($this->input->post())
         {
-            $this->db->schema = 'catalogos';
-            //pr($this->db->list_tables()); //Muestra el listado de tablas pertenecientes al esquema seleccionado
+            $filtros['order'] = $this->input->post('order', true);
+            $filtros['per_page'] = $this->input->post('per_page', true);
 
-            $crud = $this->new_crud();
-            $crud->set_table('unidades_instituto');
-
-            $crud->set_subject('Unidad');
-            $crud->display_as('id_unidad_instituto', 'ID');
-            $crud->display_as('clave_unidad', 'Clave');
-            $crud->display_as('nombre', 'Nombre de la unidad');
-            $crud->display_as('id_delegacion', 'Delegación');
-            $crud->display_as('clave_presupuestal', 'Clave presupuestal');
-            $crud->display_as('fecha', 'Fecha');
-            $crud->display_as('nivel_atencion', 'Nivel de atención');
-            $crud->display_as('id_tipo_unidad', 'Tipo de unidad');
-            $crud->display_as('umae', 'Es UMAE');
-            $crud->display_as('latitud', 'Latitud');
-            $crud->display_as('longitud', 'Longitud');
-            $crud->display_as('activa', 'Activo');
-
-            $crud->set_primary_key('id_unidad_instituto', 'unidades_instituto'); //Definir llaves primarias, asegurar correcta relación
-            $crud->set_primary_key('id_delegacion', 'delegaciones');
-
-            $crud->set_relation('id_delegacion', 'delegaciones', '{nombre} ({clave_delegacional})', null, 'clave_delegacional'); //Establecer relaciones
-            $crud->set_relation('id_tipo_unidad', 'tipos_unidades', '{nombre} ({clave})', null, 'clave');
-
-            $crud->columns('id_unidad_instituto', 'clave_unidad', 'nombre', 'id_delegacion', 'clave_presupuestal', 'id_tipo_unidad', 'umae'); //Definir columnas a mostrar en el listado y su orden
-            $crud->add_fields('clave_unidad', 'nombre', 'id_delegacion', 'clave_presupuestal', 'fecha', 'nivel_atencion', 'id_tipo_unidad', 'umae', 'latitud', 'longitud', 'activa'); //Definir campos que se van a agregar y su orden
-            $crud->edit_fields('clave_unidad', 'nombre', 'id_delegacion', 'clave_presupuestal', 'fecha', 'nivel_atencion', 'id_tipo_unidad', 'umae', 'latitud', 'longitud', 'activa'); //Definir campos que se van a editar y su orden
-
-            $crud->change_field_type('umae', 'true_false', array(0 => 'No es UMAE', 1 => 'Es UMAE'));
-            $crud->change_field_type('activa', 'true_false', array(0 => 'Inactivo', 1 => 'Activo'));
-
-            $crud->set_rules('clave_unidad', 'Clave', 'trim|required');
-            $crud->set_rules('nombre', 'Nombre de la unidad', 'trim|required');
-            $crud->set_rules('delegacion', 'Delegación', 'required');
-            $crud->set_rules('fecha', 'Fecha', 'trim|required');
-            $crud->set_rules('umae', 'Es UMAE', 'required');
-            $crud->set_rules('activo', 'Activo', 'required');
-
-            $crud->unset_delete();
-            $output = $crud->render();
-
-
-
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            //pr($view['contenido']); exit();
-            $main_content = $this->load->view('admin/admin', $view, true);
-            $this->template->setMainContent($main_content);
-            $this->template->getTemplate();
-        } catch (Exception $e)
-        {
-            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+            if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
+            {
+                $filtros['current_row'] = $this->input->post('current_row', true);
+            }
+            $output['current_row'] = $filtros['current_row'];
         }
+        $output['unidades'] = $this->catalogo->get_unidades($filtros);
+        $paginacion = $this->template->pagination_data($output['unidades']);
+        $output['paginacion'] = $paginacion;
+        $view = $this->load->view('catalogo/unidades', $output, true);
+        $this->template->setMainContent($view);
+        $this->template->getTemplate();
     }
 
 }

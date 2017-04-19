@@ -7,3 +7,4 @@
 /application/controller/Umae.php
 /application/controller/Region.php
 index.php
+!/application/views/modulo/index.php

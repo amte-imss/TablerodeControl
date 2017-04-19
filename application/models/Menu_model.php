@@ -17,16 +17,10 @@ class Menu_model extends CI_Model
         $this->load->database();
     }
 
-    public function get_menu_usuario($array_servicios = [])
+    public function get_menu_usuario($id_usuario = 0)
     {
         $niveles_menu = 10;
-        
-        $in = [];
-        foreach ($array_servicios as $id_servicio)
-        {
-            $in[] = $id_servicio;
-        }
-
+       
         $select = array(
             'A.id_modulo id_menu', 'A.nombre label', 'A.url enlace', 'A.id_modulo_padre id_menu_padre'
         );
@@ -34,13 +28,15 @@ class Menu_model extends CI_Model
         $this->db->order_by('A.orden');
         $this->db->select($select);
         $this->db->from('sistema.modulos A');
-
+        $this->db->join('sistema.modulos_grupos B','B.id_modulo = "A".id_modulo', 'inner');
+        $this->db->join('sistema.grupos_usuarios C','C.id_grupo = B.id_grupo', 'inner');
         $this->db->where('A.activo', true);
+        $this->db->where('B.activo', true);
+        $this->db->where('C.activo', true);
         $this->db->where('A.id_configurador', 1); //elemento menu
-        // $this->db->where_in('A.id_servicio_rest', $in);
+        $this->db->where('C.id_usuario', $id_usuario);
 
         $query = $this->db->get();
-//        $result = $query->row();
         $result = $query->result_array();
 //        pr($this->db->last_query());
         $query->free_result();
@@ -50,8 +46,6 @@ class Menu_model extends CI_Model
         {
             foreach ($result as $row)
             {
-                //pr($row['id_menu_padre']);
-
                 if (!isset($pre_menu[$row['id_menu']]))
                 {
                     $pre_menu[$row['id_menu']]['id_menu_padre'] = $row['id_menu_padre'];

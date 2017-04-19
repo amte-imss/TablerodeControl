@@ -86,8 +86,7 @@ class Hechos extends CI_Controller
     {
         $data['status'] = $status;
         $data['lista'] = $this->hechos->get_lista();
-        $datos['contenido'] = $this->load->view('hechos/lista', $data, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('hechos/lista', $data, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
@@ -95,8 +94,7 @@ class Hechos extends CI_Controller
     public function draw_form($status = null)
     {
         $output['status'] = $status;
-        $datos['contenido'] = $this->load->view('hechos/formulario', $output, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('hechos/formulario', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }

@@ -28,9 +28,7 @@ class Reportes_estaticos extends MY_Controller
         $reportes['data'] = $this->reporte_model->get_table();
         $reportes['status'] = $status;
         
-        $datos['contenido'] = $this->load->view('reportes_estaticos/tabla', $reportes, true);
-        
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('reportes_estaticos/tabla', $reportes, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
@@ -95,8 +93,7 @@ class Reportes_estaticos extends MY_Controller
     {
         
         $output['status'] = $status;
-        $datos['contenido'] = $this->load->view('reportes_estaticos/formulario', $output, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('reportes_estaticos/formulario', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }

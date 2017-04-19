@@ -13,7 +13,7 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         $this->lang->load('interface', 'spanish');
         $this->load->model('Menu_model', 'menu');
-        $menu = $this->menu->get_menu_usuario();
+        $menu = $this->menu->get_menu_usuario(2);
         $this->template->setNav($menu);       
     }
     

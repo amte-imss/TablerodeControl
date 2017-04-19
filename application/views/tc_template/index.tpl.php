@@ -41,6 +41,21 @@
             <img src="<?php echo base_url(); ?>assets/tablero_tpl/img/loader.gif" alt="Loading" /><br/>
             Cargando...
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                     <?php
+                        if (isset($cuerpo_modal))
+                        {
+                            echo $cuerpo_modal;
+                        }
+                        ?>                    
+                </div>
+            </div>
+        </div>
+
         <div class="wrapper">
             <div class="sidebar" 
                  data-color="purple" 
@@ -64,12 +79,14 @@
                 </div>
 
                 <div class="sidebar-wrapper">
-                    <?php
-                    if (isset($menu))
-                    {
-                        echo render_menu($menu);
-                    }
-                    ?>
+                    <div class="menu_section">
+                        <?php
+                        if (isset($menu))
+                        {
+                            echo render_menu($menu);
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
 
@@ -594,7 +611,7 @@
 
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/demo.js"></script>
-    
+
     <script src="<?php echo base_url(); ?>assets/js/general.js"></script>
 
     <script type="text/javascript">

@@ -26,8 +26,7 @@ class Reportes_dinamicos extends MY_Controller
     public function index()
     {
         $reportes['data'] = $this->reporte_model->get_table();
-        $datos['contenido'] = $this->load->view('reportes_dinamicos/tabla', $reportes, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('reportes_dinamicos/tabla', $reportes, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
@@ -36,8 +35,7 @@ class Reportes_dinamicos extends MY_Controller
     {
         $filtros['limit'] = $this->input->post('limit') ? $this->input->post('limit') : 10;
         $info['reporte'] = $this->reporte_model->get_reporte($id, $filtros);
-        $datos['contenido'] = $this->load->view('reportes_dinamicos/reporte', $info, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $main_content = $this->load->view('reportes_dinamicos/reporte', $info, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
@@ -64,9 +62,8 @@ class Reportes_dinamicos extends MY_Controller
                 $status = false;
             }
         }
-        $output['status'] = $status;
-        $datos['contenido'] = $this->load->view('reportes_dinamicos/formulario', $output, true);
-        $main_content = $this->load->view('admin/admin', $datos, true);
+        $output['status'] = $status;       
+        $main_content = $this->load->view('reportes_dinamicos/formulario', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
