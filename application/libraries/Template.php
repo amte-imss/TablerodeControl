@@ -21,7 +21,6 @@ class Template {
         $this->CI->load->helper('html');
         $this->lang = "spanish";
         $this->new_tpl = FALSE;
-        $this->lang_text = array();
         $this->elements = array(
             "title" => null,
             "menu" => null,
@@ -256,8 +255,12 @@ class Template {
      * @param: string $main_content Contenido principal de la plantill
      */
 
-    function setCSSFiles($main_content = null) {
-        $this->elements["main_content"] = $main_content;
+    function setCSSFiles($css = array()) {
+        $this->elements["css_files"] = $css;
+    }
+
+    function setJSFiles($js = array()) {
+        $this->elements["js_files"] = $js;
     }
 
     public function template_buscador($elements = array()) {
