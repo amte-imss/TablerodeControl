@@ -1,18 +1,5 @@
 <div class="container body">
 
-    <!--incia menu-->
-    <?php
-    echo $menu;
-    ?>
-    <!--termina  menu-->
-
-    <!-- ficha usuario -->
-    <?php
-    echo $ficha_usuario
-    ?>
-    <!-- /ficha usuario -->
-
-
     <!-- page content -->
     <div class="right_col" role="main">
         <?php

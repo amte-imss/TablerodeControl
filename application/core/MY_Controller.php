@@ -12,6 +12,9 @@ class MY_Controller extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->lang->load('interface', 'spanish');
+        $this->load->model('Menu_model', 'menu');
+        $menu = $this->menu->get_menu_usuario(2);
+        $this->template->setNav($menu);       
     }
     
     public function new_crud() {

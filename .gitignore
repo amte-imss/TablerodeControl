@@ -1,0 +1,10 @@
+/nbproject/private/
+/nbproject/*
+/nbproject
+/application/config/database.php
+/application/config/config.php
+/application/controller/Delegacion.php
+/application/controller/Umae.php
+/application/controller/Region.php
+index.php
+!/application/views/modulo/index.php

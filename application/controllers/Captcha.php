@@ -79,14 +79,4 @@ class Captcha extends CI_Controller {
         );
         return $params;
     }
-
-    /*
-      public function index() {
-      //pr(DIRECTORY_SEPARATOR);
-      $error = "";
-      $this->template->setMainContent($this->new_captcha($error));
-      $this->template->getTemplate();
-
-      }
-     */
 }

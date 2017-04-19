@@ -9,7 +9,7 @@ $lang["formulario"] = array(
 );
 $lang["mensajes"] = array(
 	1=>"Bienvenido al Tablero de control",
-	2=>"La contraseña no coinside, favor de verificarlo",
+	2=>"La contraseña no coinside, favor de verificarla",
 	3=>"El usuario no se encuentra registrado, favor de verificarlo"
 	);
 

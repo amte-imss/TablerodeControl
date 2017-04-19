@@ -73,6 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+
 $db['default'] = array(
 	'dsn'	=> 'pgsql:host=localhost;dbname=tablero2',
 	'hostname' => 'localhost',
@@ -89,6 +90,7 @@ $db['default'] = array(
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
+	'autoinit' => TRUE,
 	'schema' => 'sistema,catalogos',
 	'encrypt' => FALSE,
 	'compress' => FALSE,

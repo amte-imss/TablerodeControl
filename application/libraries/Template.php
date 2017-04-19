@@ -19,6 +19,7 @@ class Template {
     public function __construct() {
         $this->CI = & get_instance();
         $this->CI->load->helper('html');
+        $this->CI->load->helper('menu_helper');
         $this->lang = "spanish";
         $this->new_tpl = FALSE;
         $this->elements = array(
@@ -50,7 +51,7 @@ class Template {
      * @return: mixed[] Data arreglo de datos de plantilla con la siguisnte estructura array("title"=>null,"nav"=>null,"main_title"=>null,"main_content"=>null);
      */
 
-    function getTemplate($tipo = FALSE,$tpl = 'ci_template/index.tpl.php') {
+    function getTemplate($tipo = FALSE,$tpl = 'tc_template/index.tpl.php') {
         if($this->multiligual){
             $this->CI->lang->load('interface', $this->lang);
             $this->elements["string_tpl"] = $this->CI->lang->line('interface_tpl');
@@ -160,7 +161,7 @@ class Template {
      * @param   : mixed[] $nav Arreglo compuesto de n elementos con la sig estructura array("link"=>"","titulo"=>"","attribs"=>array())",
      */
 
-    function setNav($menu = null) {
+    function setNav($nav = null) {
         $this->elements["menu"] = $nav;
     }
 
@@ -332,5 +333,4 @@ class Template {
 //            
     }
       
-
 }
