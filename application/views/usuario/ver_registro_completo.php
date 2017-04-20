@@ -1,3 +1,4 @@
+<?php echo js('usuario/editar.js'); ?>
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
@@ -49,7 +50,10 @@
                         <div class="col-md-6 input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <?php
-                            // echo $this->form_complete->create_element(array('id' => 'categoria', 'type' => 'dropdown', 'value' => $usuarios['clav'], 'options' => $unidad_instituto, 'first' => array('' => ''), 'attributes' => array('name' => 'unidad', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'categoria', 
+                                'type' => 'text', 
+                                'value' => $usuarios['clave_categoria'],
+                                'attributes' => array('name' => 'unidad', 'class' => 'form-control')));
                             ?>
                         </div>
                     </div>
@@ -59,8 +63,16 @@
                         <div class="col-md-6 input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <?php
-                            //echo $this->form_complete->create_element(array('id' => 'unidad', 'type' => 'dropdown', 'value' => $usuarios['id_unidad_instituto'], 'options' => $unidad_instituto, 'first' => array('' => ''), 'attributes' => array('name' => 'unidad', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'unidad', 
+                                'type' => 'text', 
+                                'value' => $usuarios['id_unidad_instituto'], 
+                                'attributes' => array('name' => 'unidad', 'class' => 'form-control')));
                             ?>
+                            <ul>
+                                <li>op1</li>
+                                <li>op2</li>
+                                <li>op3</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -144,23 +156,16 @@
             </div> <br><br>
             <div class="panel-body">
                 <?php
-                echo form_open('usuario/test/' . $usuarios['id_usuario'], array('id' => 'form_actualizar'));
+                echo form_open('usuario/upsert_grupos/'.$usuarios['id_usuario'], array('id' => 'form_usuario_grupo'));
                 ?>
+                <div id="area_grupos">
 
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Confirmar contraseña: </label>
-                        <?php
-                        echo $this->form_complete->create_element(array('id' => 'pass_confirm', 'type' => 'checkbox', 'value' => 'as','attributes' => array('name' => 'pass_confirm', 'class' => 'form-control')));
-                        ?>
+                    <?php echo $view_grupos_usuario; ?>
+
                 </div>
-
-                <br>
-                <div class="form-group">
-                    <label class="col-md-4 control-label"></label>
-                    <button id="submit" name="submit" type="submit" class="btn btn-success"  style=" background-color:#008EAD">Guardar <span class=""></span></button>
-                </div>
-
-                <?php echo form_close(); ?>
+                <?php
+                echo form_close();
+                ?>
             </div>
         </div>
     </div>

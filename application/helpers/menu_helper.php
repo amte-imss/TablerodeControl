@@ -12,14 +12,14 @@ if (!function_exists('render_menu'))
         $html = '';
         ob_start();
         ?>
-        <ul class="<?php echo ($dropdown != null ? 'collapse' : ''); ?>" <?php echo ($dropdown != null ? 'id="'.$dropdown.'"' : ''); ?>>
+        <ul class="nav <?php echo ($dropdown != null ? 'collapse' : ''); ?>" <?php echo ($dropdown != null ? 'id="'.$dropdown.'" style="margin-left: 20px;"' : ''); ?>>
             <?php
             foreach ($menu as $item)
             {
                 ?>
                 <li class="<?php echo (isset($item['childs']) ? '' : '') ?>" style="list-style-type: none;">
 
-                    <a href="<?php echo (isset($item['link']) ? site_url() . $item['link'] : '#'); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
+                    <a href="<?php echo (isset($item['childs']) ? '#': (isset($item['link']) ? site_url() . $item['link'] : '#')); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
                         <i class="material-icons">dashboard</i>
                         <?php
                         if (isset($item['titulo']))

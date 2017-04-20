@@ -35,18 +35,21 @@
         <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/material.min.js" type="text/javascript"></script>
         <?php
-        if(isset($css_files) && !empty(($css_files))){
-            foreach ($css_files as $key => $css) {
+        if (isset($css_files) && !empty(($css_files)))
+        {
+            foreach ($css_files as $key => $css)
+            {
                 echo css($css);
             }
-            
         }
-        if(isset($js_files) && !empty(($js_files))){
-            foreach ($js_files as $key => $js) {
+        if (isset($js_files) && !empty(($js_files)))
+        {
+            foreach ($js_files as $key => $js)
+            {
                 echo js($js);
             }
-            
-        }?>
+        }
+        ?>
     </head>
 
     <body>
@@ -59,12 +62,12 @@
         <div class="modal fade" id="myModal" tabindex="1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                     <?php
-                        if (isset($cuerpo_modal))
-                        {
-                            echo $cuerpo_modal;
-                        }
-                        ?>                    
+                    <?php
+                    if (isset($cuerpo_modal))
+                    {
+                        echo $cuerpo_modal;
+                    }
+                    ?>                    
                 </div>
             </div>
         </div>
@@ -92,14 +95,12 @@
                 </div>
 
                 <div class="sidebar-wrapper">
-                    <div class="menu_section">
-                        <?php
-                        if (isset($menu))
-                        {
-                            echo render_menu($menu);
-                        }
-                        ?>
-                    </div>
+                    <?php
+                    if (isset($menu))
+                    {
+                        echo render_menu($menu);
+                    }
+                    ?>
                 </div>
             </div>
 
@@ -161,52 +162,52 @@
                         <?php
                         if (isset($blank))
                         {
-                        ?>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                            <?php
-                                echo $blank;
-                                ?>   
+                            ?>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+    <?php
+    echo $blank;
+    ?>   
+                                </div>
                             </div>
-                        </div>
                         <?php } //fin blank zone?>
 
                         <?php
                         if (isset($main_content))
                         {
-                        ?>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="card">
-                                <?php
-                                if (isset($sub_title) && !empty($sub_title))
-                                {
-                                ?>
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">
-                                            <?php echo $sub_title; ?>
-                                        </h4>
+                            ?>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="card">
                                         <?php
-                                        if (isset($descripcion) && !empty($descripcion))
+                                        if (isset($sub_title) && !empty($sub_title))
                                         {
                                             ?>
-                                            <p class="category">
+                                            <div class="card-header" data-background-color="purple">
+                                                <h4 class="title">
+                                                <?php echo $sub_title; ?>
+                                                </h4>
+                                                <?php
+                                                if (isset($descripcion) && !empty($descripcion))
+                                                {
+                                                    ?>
+                                                    <p class="category">
                                                 <?php echo $descripcion ?>
-                                            </p>
-                                        <?php } ?>
-                                    </div>
-                                <?php
-                                }
-                                ?>
-                                    <div class="card-content">
-                                        <?php
-                                        echo $main_content;
-                                        ?>
+                                                    </p>
+                                            <?php } ?>
+                                            </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        <div class="card-content">
+    <?php
+    echo $main_content;
+    ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php } //fin content card?>
+<?php } //fin content card ?>
                     </div>
                 </div>
 

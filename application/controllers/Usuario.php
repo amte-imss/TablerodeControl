@@ -55,8 +55,7 @@ class Usuario extends MY_Controller
         }
         $output['delegaciones'] = dropdown_options($this->registro->lista_delegaciones(), 'clave_delegacional', 'nombre');
         $output['nivel_atencion'] = dropdown_options($this->registro->lista_nivel_atencion(), 'id_grupo', 'nombre');
-        $view['contenido'] = $this->load->view('usuario/gestionRegistro', $output, true);
-        $main_content = $this->load->view('admin/admin', $view, true);
+        $main_content = $this->load->view('usuario/gestionRegistro', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
@@ -98,8 +97,9 @@ class Usuario extends MY_Controller
             $output['delegaciones'] = dropdown_options($this->registro->lista_delegaciones(), 'clave_delegacional', 'nombre');
             $output['usuarios'] = $this->registro->datos_usuario($id);
             $output['grupos'] = $this->grupos_usuario->get_grupos();
-            $output['grupos_usuario'] = $this->grupos_usuario->get_grupos_usuario($id);
-            pr($output['grupos_usuario']);
+            $output['grupos_usuario'] = $this->grupos_usuario->get_grupos_usuario($id, true);
+            $output['view_grupos_usuario'] = $this->load->view('usuario/grupos', $output, true);
+            //pr($output['grupos_usuario']);
             if ($status != null)
             {
                 $output['status_password'] = $status;
@@ -128,6 +128,16 @@ class Usuario extends MY_Controller
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         }
+    }
+    
+    public function upsert_grupos($id_usuario = 0){
+        if ($this->input->post() && $id_usuario > 0)
+        {
+            $this->load->model('Grupos_usuarios_model', 'grupos_usuario');
+            $output['status'] = $this->grupos_usuario->upsert($id_usuario, $this->input->post());
+        }
+        $output['grupos_usuario'] = $this->grupos_usuario->get_grupos_usuario($id_usuario, true);
+        $this->load->view('usuario/grupos', $output);
     }
 
     public function set_status($id_usuario = 0)
@@ -200,8 +210,7 @@ class Usuario extends MY_Controller
                 $view['status']['msg'] = "Formato inválido";
             }
         }
-        $view['contenido'] = $this->load->view('usuario/formulario_carga', array(), true);
-        $main_content = $this->load->view('admin/admin', $view, true);
+        $main_content = $this->load->view('usuario/formulario_carga', array(), true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }

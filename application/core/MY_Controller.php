@@ -14,6 +14,7 @@ class MY_Controller extends CI_Controller {
         $this->lang->load('interface', 'spanish');
         $this->load->model('Menu_model', 'menu');
         $menu = $this->menu->get_menu_usuario(2);
+        //pr($menu);
         $this->template->setNav($menu);       
     }
     
