@@ -41,11 +41,25 @@
                     <?php echo $lenguaje['periodo']; ?>
                 </div>
                 <div class="card-content">
-                    <div class="form-group label-floating is-empty">
-                        <!-- <label class="control-label"><?php echo $lenguaje['periodo']; ?></label> -->
+                    <div>
+                        <label class="control-label"><?php echo $lenguaje['anio']; ?></label>
                         <?php echo $this->form_complete->create_element(
                             array(
-                                'id'=>'periodo_general',
+                                'id'=>'anio',
+                                'type'=>'dropdown',
+                                'options'=>$catalogos['implementaciones'],
+                                'attributes'=>array('class'=>'form-control',
+                                    //'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');"
+                                )
+                            )
+                        ); ?>
+                        <span class="material-input"></span>
+                    </div>
+                    <div>
+                        <label class="control-label"><?php echo $lenguaje['periodo']; ?></label>
+                        <?php echo $this->form_complete->create_element(
+                            array(
+                                'id'=>'periodo_seleccion',
                                 'type'=>'dropdown',
                                 'options'=>$catalogos['periodo'],
                                 'attributes'=>array('class'=>'form-control',
@@ -64,10 +78,40 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="col-lg-12 col-md-12 col-sm-12">
+            <div id="div_resultado" class="table-responsive" style="display:none;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="text-center" data-background-color="purple"><?php echo $lenguaje['titulo_principal']; ?></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center"><?php echo $lenguaje['alumnos_inscritos']; ?></th>
+                            <th class="text-center"><?php echo $lenguaje['alumnos_aprobados']; ?></th>
+                            <th class="text-center"><?php echo $lenguaje['eficiencia_terminal']; ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div id="total_alumnos_inscritos" class="text-center">-</div></td>
+                            <td><div id="total_alumnos_aprobados" class="text-center">-</div></td>
+                            <td><div id="total_eficiencia_terminal" class="text-center">-</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br><br>
+            </div>
             <div id="container_perfil" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
     <?php echo form_close(); ?>
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div id="tabla_tipo_curso"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div id="tabla_perfil"></div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     var SOURCE = [

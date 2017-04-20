@@ -10,5 +10,10 @@ $config['alert_msg'] = array(
     'INFO' => array('id_msg' => 4, 'class' => 'info')
 );
 
-
-
+$config['periodo'] = array(
+	'ANUAL' => array('id'=>1),
+	'SEMESTRAL' => array('id'=>2),
+	'TRIMESTRAL' => array('id'=>3),
+	'BIMESTRAL' => array('id'=>4),
+	'MENSUAL' => array('id'=>5),
+);

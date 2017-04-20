@@ -13,6 +13,7 @@ class Informacion_general_model extends CI_Model
         // Call the CI_Model constructor
         parent::__construct();
         $this->load->database();
+        $this->load->config('general');
     }
 
     /**
@@ -23,23 +24,28 @@ class Informacion_general_model extends CI_Model
      */
     public function calcular_totales($params = array()){
         $resultado = array();
+        //Condiciones utilizadas en informacion_general/index
         if(isset($params['perfil']) AND !empty($params['perfil'])){
             $this->db->where('sub.id_subcategoria='.$params['perfil']);
-        }
-        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion'])){
-            $this->db->where('gc.id_grupo_categoria IN ('.$params['perfil_seleccion'].')');
-        }
+        }        
         if(isset($params['tipo_curso']) AND !empty($params['tipo_curso'])){
             $this->db->where('tc.id_tipo_curso='.$params['tipo_curso']);
-        }
-        if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
-            $this->db->where('tc.id_tipo_curso IN ('.$params['tipo_curso_seleccion'].')');
-        }
+        }        
         if(isset($params['periodo']) AND !empty($params['periodo'])){
             $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo']);
         }
         if(isset($params['region']) AND !empty($params['region'])){
             $this->db->where('reg.id_region='.$params['region']);
+        }
+        //Condiciones utilizadas en informacion_general/perfil
+        if(isset($params['anio']) AND !empty($params['anio'])){
+            $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['anio']);
+        }
+        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion'])){
+            $this->db->where('gc.id_grupo_categoria IN ('.$params['perfil_seleccion'].')');
+        }
+        if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
+            $this->db->where('tc.id_tipo_curso IN ('.$params['tipo_curso_seleccion'].')');
         }
         if (array_key_exists('fields', $params)) {
             $this->db->select($params['fields']);
@@ -51,10 +57,29 @@ class Informacion_general_model extends CI_Model
             $this->db->order_by($params['order']['field'], $params['order']['type']);
         }
 
+        //Periodo
+        $periodo = '';
+        if(isset($params['periodo_seleccion']) AND !empty($params['periodo_seleccion'])){
+            $per = $this->config->item('periodo');
+            //pr($per);
+            if($params['periodo_seleccion']==$per['SEMESTRAL']['id']){
+               $periodo = ", (CASE WHEN date_part('month', fecha_fin) <= 6 THEN 1 ELSE 2 END) as periodo";
+            } elseif($params['periodo_seleccion']==$per['TRIMESTRAL']['id']){
+                $periodo = ', EXTRACT(quarter FROM fecha_fin) as periodo';
+            } elseif($params['periodo_seleccion']==$per['BIMESTRAL']['id']){
+                $periodo = ', (EXTRACT(month FROM fecha_fin)/2+.1):: Integer as periodo';
+            } elseif($params['periodo_seleccion']==$per['MENSUAL']['id']){
+                $periodo = ', EXTRACT(month FROM fecha_fin) as periodo';
+            } /* else {
+                $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo_seleccion'].' as periodo');
+            }*/
+        }
+        //$this->db->limit('500');
+
         $this->db->select('imp.id_curso, imp.fecha_fin,EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, mes.nombre as mes,
             EXTRACT(YEAR FROM imp.fecha_fin) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
             hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
-            hia.id_unidad_instituto, hia.id_implementacion,  hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados');
+            hia.id_unidad_instituto, hia.id_implementacion,  hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados'.$periodo);
 
         $this->db->join('catalogos.implementaciones imp', 'imp.id_implementacion=hia.id_implementacion');
         $this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_fin)');
@@ -69,7 +94,7 @@ class Informacion_general_model extends CI_Model
 
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
         $resultado = $query->result_array();
-        //pr($this->db->last_query());
+        //pr($this->db->last_query()); exit();
         $query->free_result(); //Libera la memoria
 
         return $resultado;
