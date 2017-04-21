@@ -143,6 +143,11 @@
                                         <i class="material-icons">person</i>
                                         <p class="hidden-lg hidden-md">Profile</p>
                                     </a>
+                                    
+                                    <?php if(isset($perfil_usuario)){
+                                       echo $perfil_usuario;
+                                    }
+                                    ?>
                                 </li>
                             </ul>
                             <form class="navbar-form navbar-right" role="search">
@@ -165,9 +170,9 @@
                             ?>
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-    <?php
-    echo $blank;
-    ?>   
+                                    <?php
+                                    echo $blank;
+                                    ?>   
                                 </div>
                             </div>
                         <?php } //fin blank zone?>
@@ -185,29 +190,29 @@
                                             ?>
                                             <div class="card-header" data-background-color="purple">
                                                 <h4 class="title">
-                                                <?php echo $sub_title; ?>
+                                                    <?php echo $sub_title; ?>
                                                 </h4>
                                                 <?php
                                                 if (isset($descripcion) && !empty($descripcion))
                                                 {
                                                     ?>
                                                     <p class="category">
-                                                <?php echo $descripcion ?>
+                                                        <?php echo $descripcion ?>
                                                     </p>
-                                            <?php } ?>
+                                                <?php } ?>
                                             </div>
-                                                <?php
-                                            }
-                                            ?>
+                                            <?php
+                                        }
+                                        ?>
                                         <div class="card-content">
-    <?php
-    echo $main_content;
-    ?>
+                                            <?php
+                                            echo $main_content;
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-<?php } //fin content card ?>
+                        <?php } //fin content card ?>
                     </div>
                 </div>
 

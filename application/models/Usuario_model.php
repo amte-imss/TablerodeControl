@@ -39,25 +39,40 @@ class Usuario_model extends CI_Model
      * @author Ale Quiroz
      * @return type array con los niveles de atencion
      */
-    public function lista_categoria()
+    public function lista_categoria($keyword = null)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
-        $this->db->select(array('clave_categoria', 'nombre'));
+        $this->db->select(array(
+            'clave_categoria', 'concat(nombre, $$ [$$, clave_categoria, $$]$$) nombre'
+        ));
+        if ($keyword != null)
+        {
+            $this->db->like('lower(concat(clave_categoria,$$ $$, nombre))', $keyword);
+            $this->db->limit(10);
+        }
         $categoria = $this->db->get('catalogos.categorias')->result_array();
         return $categoria;
     }
 
-    public function lista_unidad()
+    public function lista_unidad($keyword = null)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
-        $this->db->select(array('id_unidad_instituto', 'nombre'));
+        $this->db->select(array(
+            'id_unidad_instituto', 'concat(nombre,$$ [$$,clave_unidad,$$]$$) nombre'
+        ));
+        if ($keyword != null)
+        {
+            $this->db->like('lower(concat(clave_unidad,$$ $$, nombre))', $keyword);
+            $this->db->limit(10);
+        }
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
         return $resultado_unidades;
     }
-    
-    public function registra_departamento($clave){
+
+    public function registra_departamento($clave)
+    {
         return null;
     }
 
@@ -229,7 +244,7 @@ class Usuario_model extends CI_Model
             'u.id_usuario', 'u.nombre name_user', 'u.matricula', 'u.curp'
             , 'u.clave_delegacional', 'd.nombre name_delegacion'
             , 'u.clave_categoria', 'c.nombre name_categoria'
-            , 'u.id_unidad_instituto', 'ui.nombre name_unidad_ist'
+            , 'u.id_unidad_instituto', 'ui.nombre name_unidad_ist', 'ui.clave_unidad'
             , 'r.id_region', 'd.nombre name_region', 'r.clave_regional', 'u.password'
             , 'u.email', 'ui.umae'
             , 'g.id_grupo', 'g.nombre nombre_grupo', 'g.nivel'
@@ -253,11 +268,9 @@ class Usuario_model extends CI_Model
         //        pr($this->db->last_query());
         if (count($result) > 0)
         {
-            //            pr($clave);
-            //            pr($result[0]['password']);
-            //
-      //            $return['valido'] = $result[0]['valido_password'];
             $return = $result[0];
+            $return['unidad_texto'] = $return['name_unidad_ist'].' ['.$return['clave_unidad'].']';
+            $return['categoria_texto'] = $return['name_categoria'].' ['.$return['clave_categoria'].']';
         }
 
         $query->free_result();
@@ -267,10 +280,16 @@ class Usuario_model extends CI_Model
     public function actualiza_registro($data)
     {
         $salida = false;
-        $token = $data['token'];
+
+        $this->db->select('B.clave_delegacional');
+        $this->db->join('catalogos.delegaciones B','B.id_delegacion = A.id_delegacion', 'inner');
+        $this->db->where('A.id_unidad_instituto', $data ['unidad']);
+        $id_delegacion = $this->db->get('catalogos.unidades_instituto A')->result_array()[0]['clave_delegacional'];
+        $this->db->reset_query();
+        
         $this->db->where('id_usuario', $data ['id_usuario']);
         $this->db->set('email', $data ['email']);
-        $this->db->set('clave_delegacional', $data ['delegacion']);
+        $this->db->set('clave_delegacional', $id_delegacion);
         $this->db->set('id_unidad_instituto', $data ['unidad']);
         $this->db->set('clave_categoria', $data ['categoria']);
         $obten_registro = $this->db->update('sistema.usuarios');

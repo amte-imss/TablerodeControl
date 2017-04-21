@@ -7,25 +7,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version: 1.0
  * @desc: Clase padre de los controladores del sistema
  * */
-class MY_Controller extends CI_Controller {
+class MY_Controller extends CI_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->lang->load('interface', 'spanish');
-        $this->load->model('Menu_model', 'menu');
-        $menu = $this->menu->get_menu_usuario(2);
-        //pr($menu);
-        $this->template->setNav($menu);       
+        $usuario = $this->session->userdata('usuario');
+//        pr($usuario);
+        if (isset($usuario['id_usuario']))
+        {
+            $this->load->model('Menu_model', 'menu');
+            $menu = $this->menu->get_menu_usuario($usuario['id_usuario']);
+            //pr($menu);
+            $this->template->setNav($menu);
+            $perfil = $this->load->view('tc_template/perfil.tpl.php', $usuario, true);
+            $this->template->setPerfilUsuario($perfil);
+        }
     }
-    
-    public function new_crud() {
+
+    public function new_crud()
+    {
         $db_driver = $this->db->platform();
         $model_name = 'Grocery_crud_model_' . $db_driver;
         $model_alias = 'm' . substr(md5(rand()), 0, rand(4, 15));
         unset($this->{$model_name});
         $this->load->library('grocery_CRUD');
         $crud = new Grocery_CRUD();
-        if (file_exists(APPPATH . '/models/' . $model_name . '.php')) {
+        if (file_exists(APPPATH . '/models/' . $model_name . '.php'))
+        {
             $this->load->model('Grocery_crud_model');
             $this->load->model('Grocery_crud_generic_model');
             $this->load->model($model_name, $model_alias);
@@ -35,20 +46,23 @@ class MY_Controller extends CI_Controller {
         $crud->unset_print();
         return $crud;
     }
-    
-    public function print_excel($metodo = null){
-        if(method_exists ($this, $metodo)){
+
+    public function print_excel($metodo = null)
+    {
+        if (method_exists($this, $metodo))
+        {
             $series_nombres_string = $this->input->post("series_nombres");
             $datos = array();
             $datos["nombres_series"] = explode(',', $series_nombres_string);
             $datos_json = $this->{$metodo}(false);
             $datos["resultset"] = json_decode($datos_json);
-            if(json_last_error() == JSON_ERROR_NONE){
+            if (json_last_error() == JSON_ERROR_NONE)
+            {
                 header("Content-type: application/vnd.ms-excel");
                 header("Content-Disposition: attachment; filename=archivo.xls");
                 header("Pragma: no-cache");
                 header("Expires: 0");
-                $html = $this->load->view("exportar/comparativas_excel", $datos , true);
+                $html = $this->load->view("exportar/comparativas_excel", $datos, true);
                 echo $html;
             }
         }

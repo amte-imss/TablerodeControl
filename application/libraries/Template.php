@@ -34,6 +34,7 @@ class Template {
             "css_script" => null,
             "cuerpo_modal"=>null,
             "blank"=>null,
+            "perfil_usuario"=>null,
         );
     }
 
@@ -83,6 +84,7 @@ class Template {
         $this->elements['js_files'] = (array_key_exists('js_files', $elements)) ? $elements['js_files'] : null;
         $this->elements['css_script'] = (array_key_exists('css_script', $elements)) ? $elements['css_script'] : null;
         $this->elements['cuerpo_modal'] = (array_key_exists('cuerpo_modal', $elements)) ? $elements['cuerpo_modal'] : null;
+        $this->elements['perfil_usuario'] = (array_key_exists('perfil_usuario', $elements)) ? $elements['perfil_usuario'] : null;
     }
 
     /**
@@ -163,6 +165,17 @@ class Template {
 
     function setNav($nav = null) {
         $this->elements["menu"] = $nav;
+    }
+    
+    /**
+     * Asigna la propiedad de perfil del usuario de la plantilla
+     * @author  : Christian Garcia
+     * @method  : void setPerfilUsuario($perfil)
+     * @access  : public
+     * @param type string $perfil
+     */
+    function setPerfilUsuario($perfil = null){
+        $this->elements["perfil_usuario"] = $perfil;
     }
 
     /*

@@ -94,7 +94,6 @@ class Usuario extends MY_Controller
         if (!is_null($id) && is_numeric($id))
         {
             $this->load->model('Grupos_usuarios_model', 'grupos_usuario');
-            $output['delegaciones'] = dropdown_options($this->registro->lista_delegaciones(), 'clave_delegacional', 'nombre');
             $output['usuarios'] = $this->registro->datos_usuario($id);
             $output['grupos'] = $this->grupos_usuario->get_grupos();
             $output['grupos_usuario'] = $this->grupos_usuario->get_grupos_usuario($id, true);
@@ -115,11 +114,9 @@ class Usuario extends MY_Controller
                 {
                     $data = array(
                         'id_usuario' => $id,
-                        'delegacion' => $this->input->post('delegacion', TRUE),
                         'email' => $this->input->post('email', true),
                         'unidad' => $this->input->post('unidad', true),
-                        'categoria' => $this->input->post('categoria', true),
-                        'token' => $output['token']
+                        'categoria' => $this->input->post('categoria', true)
                     );
                     $output['status'] = $this->registro->actualiza_registro($data);
                 }
@@ -154,7 +151,6 @@ class Usuario extends MY_Controller
         $usuario = $this->registro->datos_usuario($id_usuario);
         if (count($usuario) > 0)
         {
-            $output['usuario'] = $usuario;
             if ($this->input->post())
             {
                 $this->config->load('form_validation'); //Cargar archivo con validaciones
