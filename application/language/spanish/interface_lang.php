@@ -54,7 +54,7 @@ $lang['interface'] = array(
         'cancelar' => 'Cancelar',
         'no_existe_datos' => 'No existen datos.',
         'seleccione' => 'Seleccione...',
-        'filtrar' => 'Filtrar',
+        'buscar' => 'Buscar',
         'limpiar_filtros' => 'Limpiar filtros'
     ),
     'general_model' => array(

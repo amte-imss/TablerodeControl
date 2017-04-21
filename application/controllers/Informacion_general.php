@@ -133,6 +133,28 @@ class Informacion_general extends MY_Controller
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
 
+    public function por_tipo_curso(){
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+        $this->load->library('Catalogo_listado');
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
+        //pr($datos['catalogos']);
+        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
+        foreach ($listado_subcategorias as $key_ls => $listado) {
+            $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
+            if(!empty($listado['grupo_categoria'])){
+                $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
+            }
+        }
+        //pr($datos);
+        $this->template->setTitle($datos['lenguaje']['titulo_principal']);
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil']);
+        //$this->template->setDescripcion("Bienvenida a delegacional");
+        $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
+        //$this->template->setBlank("tc_template/iiindex.tpl.php");    
+        $this->template->getTemplate(null,"tc_template/index.tpl.php");
+    }
+
     /*public function por_unidad(){
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
         $this->load->library('Catalogo_listado');
@@ -161,6 +183,7 @@ class Informacion_general extends MY_Controller
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //pr($datos['datos']);
+                $res = array();
                 if(!empty($datos['datos'])){
                     $resultado = array();
                     if(isset($datos_busqueda['destino']) AND $datos_busqueda['destino']=='tipo_curso'){
@@ -168,21 +191,24 @@ class Informacion_general extends MY_Controller
                             $resultado[$tipos['id_tipo_curso']]=$tipos['tipo_curso'];
                         }
                     }
-                    $res = array();
-                    foreach ($resultado as $key_val => $valor) {
-                        //echo '{"title":"'.$valor.'", "key":'.$key_val.', selected: true, "children":[]},';
-                        $res['title']=$valor;
-                        $res["key"]=$key_val;
-                        $res['selected']=true;
-                        $res["children"]=array();
-                        echo json_encode($res);
+                    if(!empty($resultado)){
+                        foreach ($resultado as $key_val => $valor) {
+                            //echo '{"title":"'.$valor.'", "key":'.$key_val.', selected: true, "children":[]},';
+                            $res[$key_val]['title']=$valor;
+                            $res[$key_val]["key"]=$key_val;
+                            $res[$key_val]['selected']=true;
+                            $res[$key_val]["children"]=array();
+                        }
+                    } else {
+                        $res = array('no_datos'=>'true');
                     }
-                    //pr($datos);                    
-                    exit();
                 } else {
-                    echo true;
+                    $res = array('no_datos'=>'true');
                     //echo data_not_exist(); //Mostrar mensaje de datos no existentes
                 }
+                echo json_encode($res);
+                //pr($datos);                    
+                exit();
             }
         } else {
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
@@ -371,11 +397,12 @@ class Informacion_general extends MY_Controller
                     $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$resultado['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
                     //pr($datos);
                     echo json_encode($resultado);
-                    exit();
                 } else {
-                    echo true;
+                    $resultado['total'] = 0;
+                    echo json_encode($resultado);
                     //echo data_not_exist(); //Mostrar mensaje de datos no existentes
                 }
+                exit();
             }
         } else {
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax

@@ -8,8 +8,13 @@
 <?php echo js('informacion_general.js'); ?>
 <div class="row">
     <?php echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-5 col-md-5 col-sm-12">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>">
+            <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
+            <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header" data-background-color="orange">
                     <?php echo $lenguaje['perfil']; ?>
@@ -72,13 +77,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['filtrar'];?>">
-            <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
-            <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
-        </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-7 col-md-7 col-sm-12">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div id="div_resultado" class="table-responsive" style="display:none;">
                 <table class="table table-striped">
@@ -156,7 +156,11 @@
             $("#temporal_tipo_busqueda").val(recurso);
         }
         if($("#temporal_tipo_busqueda").val()==recurso){
+            if($('#perfil_seleccion').val()==''){
+                $('#perfil_seleccion').val('-1');
+            }
             var dataSend = $(form_recurso).serialize();
+            //console.log(dataSend);
             $.ajax({
                 url: path,
                 data: dataSend+'&destino='+destino,
@@ -164,23 +168,42 @@
                 dataType: 'json',
                 beforeSend: function (xhr) {
                     mostrar_loader();
+                    $('#no_existe_datos').remove();
+                    $('#'+destino+'_tree').hide();
+                    $('#div_resultado').hide('slow');
+                    $('#container_perfil').html('');
+                    $('#tabla_tipo_curso').html('');
+                    $('#tabla_perfil').html('');
                 }
             })
             .done(function (response) {
-                //alert(response);
                 $('#'+destino+'_seleccion').val('');
                 $('#'+destino+'_seleccion_rootkey').val('');
                 $('#'+destino+'_seleccion_node').val('');
-                var tree = $('#'+destino+'_tree').fancytree('getTree');
-                var t = [response]
-                tree.reload(t);
+                if(typeof(response.no_datos) != "undefined"){
+                    //$('#'+destino+'_tree').html('<?php echo $lenguaje['no_existe_datos']; ?>');
+                    $('#'+destino+'_tree').after('<div id="no_existe_datos"><?php echo $lenguaje['no_existe_datos']; ?></div>');
+                    $('#'+destino+'_tree').hide();
+                    ocultar_loader();
+                } else {
+                    var tree = $('#'+destino+'_tree').fancytree('getTree');
+                    var t = [];
+                    $.each(response, function(i, item) {
+                        t.push(item)
+                    });
+                    tree.reload(t);
+                    $('#'+destino+'_tree').show('slow');
+                    buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+                }
             })
             .fail(function (jqXHR, textStatus) {
                 //$(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
                 ocultar_loader();
+                console.log(jqXHR);
+                console.log(textStatus);
             })
             .always(function () {
-                ocultar_loader();
+                //ocultar_loader();
             });
         }
     }
