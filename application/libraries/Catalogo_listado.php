@@ -66,17 +66,24 @@ class Catalogo_listado {
      * Obtiene datos de la BD y forma listados desplegables
      * @param $catalogos array table(Nombre de la tabla), llave(campo utilizado como identificador en el listado), 
      * 	valor(campo(s) que visualiza el usuario, asociado a la llave), orden(campo utilizado para el ordenamiento de los datos)
-     * 	condicion(condicion(es) que limitan la búsqueda)
+     * 	condicion(condicion(es) que limitan la búsqueda), alias(identificador del arreglo)
      **/
     public function obtener_catalogos($catalogos=null){
     	$datos = array();
     	if(is_array($catalogos) AND !is_null($catalogos)){
     		foreach ($catalogos as $key_cat => $catalogo) {
-    			//$dt[] = self::$catalogos[$catalogo]; //Obtener datos que tenemos por default
-    			$arreglo_datos = (is_array($catalogo) AND !empty($catalogo)) ? $this->crear_catalogo_arreglo($key_cat, $catalogo) : ((isset($this->catalogos[$catalogo])) ? $this->catalogos[$catalogo] : array());
-    			if(isset($arreglo_datos) AND !empty($arreglo_datos)){
-    				$indice = (is_array($catalogo)) ? $key_cat : $catalogo;
-    				$datos[$indice] = $this->obtener_catalogo_datos($arreglo_datos);
+    			$arreglo_datos = (is_array($catalogo) AND !empty($catalogo)) ? $this->crear_catalogo_arreglo($key_cat, $catalogo) : ((isset($this->catalogos[$catalogo])) ? $this->catalogos[$catalogo] : array()); //Obtener datos que tenemos por default
+    			if(isset($arreglo_datos) AND !empty($arreglo_datos)) {
+    				if(is_array($catalogo)) { //Definir el nombre del arreglo, como podrá ser identificado
+    					if(isset($catalogo['alias']) && !empty($catalogo['alias'])){
+    						$indice = $catalogo['alias'];
+    					} else {
+    						$indice = $key_cat;
+    					}
+    				} else {
+    					$indice = $catalogo;
+    				}
+    				$datos[$indice] = $this->obtener_catalogo_datos($arreglo_datos); //Se obtienen datos de la base de datos
     			} else {
     				$datos[$catalogo] = $arreglo_datos;
     			}

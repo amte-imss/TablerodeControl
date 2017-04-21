@@ -34,8 +34,27 @@ class Informacion_general_model extends CI_Model
         if(isset($params['periodo']) AND !empty($params['periodo'])){
             $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo']);
         }
+        if(isset($params['nivel_atencion']) AND is_numeric($params['nivel_atencion'])){
+            if($params['nivel_atencion']==0){//Agregar condicional para nivel de atención no asignado
+                $this->db->where('uni.nivel_atencion IS NULL');
+            } else {
+                $this->db->where('uni.nivel_atencion='.$params['nivel_atencion']);
+            }
+        }
         if(isset($params['region']) AND !empty($params['region'])){
             $this->db->where('reg.id_region='.$params['region']);
+        }
+        if(isset($params['tipos_busqueda']) AND $params['tipos_busqueda']==$this->config->item('tipo_busqueda')['DELEGACION']['id']){
+            $this->db->where('uni.umae=false');
+            if(isset($params['delegacion']) AND !empty($params['delegacion'])){
+                $this->db->where('del.id_delegacion='.$params['delegacion']);
+            }
+        }
+        if(isset($params['tipos_busqueda']) AND $params['tipos_busqueda']==$this->config->item('tipo_busqueda')['UMAE']['id']){
+            $this->db->where('uni.umae=true');
+            if(isset($params['umae']) AND !empty($params['umae'])){
+                $this->db->where('uni.id_unidad_instituto='.$params['umae']);
+            }
         }
         //Condiciones utilizadas en informacion_general/perfil
         if(isset($params['anio']) AND !empty($params['anio'])){
@@ -75,12 +94,20 @@ class Informacion_general_model extends CI_Model
             }*/
         }
         //$this->db->limit('500');
+        if(isset($params['destino']) AND !empty($params['destino'])){
+            $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso');
+            $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
+        } else {
+            $this->db->select('imp.id_curso, imp.fecha_fin,EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, mes.nombre as mes,
+                EXTRACT(YEAR FROM imp.fecha_fin) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
+                del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
+                hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
+                hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
+                case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
+                COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos'.$periodo);
+        }
 
-        $this->db->select('imp.id_curso, imp.fecha_fin,EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, mes.nombre as mes,
-            EXTRACT(YEAR FROM imp.fecha_fin) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
-            hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
-            hia.id_unidad_instituto, hia.id_implementacion,  hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados'.$periodo);
-
+        $this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');
         $this->db->join('catalogos.implementaciones imp', 'imp.id_implementacion=hia.id_implementacion');
         $this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_fin)');
         $this->db->join('catalogos.cursos cur', 'cur.id_curso=imp.id_curso');

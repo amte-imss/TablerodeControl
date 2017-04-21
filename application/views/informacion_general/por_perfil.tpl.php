@@ -15,7 +15,7 @@
                     <?php echo $lenguaje['perfil']; ?>
                 </div>
                 <div class="card-content">
-                    <div id="tree3"></div>
+                    <div id="perfil_tree"></div>
                     <div><input type="hidden" id="perfil_seleccion" name="perfil_seleccion"></div>
                     <div><input type="hidden" id="perfil_seleccion_rootkey" name="perfil_seleccion_rootkey"></div>
                     <div><input type="hidden" id="perfil_seleccion_node" name="perfil_seleccion_node"></div>
@@ -28,7 +28,7 @@
                     <?php echo $lenguaje['tipo_curso']; ?>
                 </div>
                 <div class="card-content">
-                    <div id="tree2"></div>
+                    <div id="tipo_curso_tree"></div>
                     <div><input type="hidden" id="tipo_curso_seleccion" name="tipo_curso_seleccion"></div>
                     <div><input type="hidden" id="tipo_curso_seleccion_rootkey" name="tipo_curso_seleccion_rootkey"></div>
                     <div><input type="hidden" id="tipo_curso_seleccion_node" name="tipo_curso_seleccion_node"></div>
@@ -73,7 +73,9 @@
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="Buscar">
+            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['filtrar'];?>">
+            <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
+            <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
         </div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -87,6 +89,7 @@
                         <tr>
                             <th class="text-center"><?php echo $lenguaje['alumnos_inscritos']; ?></th>
                             <th class="text-center"><?php echo $lenguaje['alumnos_aprobados']; ?></th>
+                            <th class="text-center"><?php echo $lenguaje['alumnos_no_acceso']; ?></th>
                             <th class="text-center"><?php echo $lenguaje['eficiencia_terminal']; ?></th>
                         </tr>
                     </thead>
@@ -94,6 +97,7 @@
                         <tr>
                             <td><div id="total_alumnos_inscritos" class="text-center">-</div></td>
                             <td><div id="total_alumnos_aprobados" class="text-center">-</div></td>
+                            <td><div id="total_alumnos_no_acceso" class="text-center">-</div></td>
                             <td><div id="total_eficiencia_terminal" class="text-center">-</div></td>
                         </tr>
                     </tbody>
@@ -119,10 +123,10 @@
         $sub = array();
         foreach ($catalogos['subcategorias'] as $key_sub => $subcategoria) {
             echo '{"title":"'.$subcategoria['subcategoria'].'", "key":'.$key_sub.',
-                "expanded":"true","children":[';
+                "expanded":"true", "selected": "true", "children":[';
             if(isset($subcategoria['elementos'])){
                 foreach ($subcategoria['elementos'] as $key_ele => $elemento) {
-                    echo '{"title":"'.$elemento.'", "key":'.$key_ele.'},';
+                    echo '{"title":"'.$elemento.'", "selected": "true", "key":'.$key_ele.'},';
                 }
             }
             echo ']},';
@@ -133,25 +137,71 @@
         <?php
         $sub = array();
         foreach ($catalogos['tipos_cursos'] as $key_tip => $tipos) {
-            echo '{"title":"'.$tipos.'", "key":'.$key_tip.', "expanded":"true","children":[]},';
+            echo '{"title":"'.$tipos.'", "key":'.$key_tip.', selected: true, "children":[]},';
         }
         ?>
     ];
+    function limpiar_filtros_listados(){
+        var perfil_tree = $('#perfil_tree').fancytree('getTree');
+        perfil_tree.reload(SOURCE);
+        var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
+        tipo_curso_tree.reload(SOURCE2);
+        $("#temporal_tipo_busqueda").val('');
+        setTimeout(function() {   //calls click event after a certain time
+           buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+        }, 500);
+    }
+    function buscar_filtros_listados(path, form_recurso, recurso, destino) {
+        if($("#temporal_tipo_busqueda").val()==""){ //Validamos que este vacío el campo para poder realizar el guardado temporal. Nos indica el sentido de la búsqueda
+            $("#temporal_tipo_busqueda").val(recurso);
+        }
+        if($("#temporal_tipo_busqueda").val()==recurso){
+            var dataSend = $(form_recurso).serialize();
+            $.ajax({
+                url: path,
+                data: dataSend+'&destino='+destino,
+                method: 'POST',
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    mostrar_loader();
+                }
+            })
+            .done(function (response) {
+                //alert(response);
+                $('#'+destino+'_seleccion').val('');
+                $('#'+destino+'_seleccion_rootkey').val('');
+                $('#'+destino+'_seleccion_node').val('');
+                var tree = $('#'+destino+'_tree').fancytree('getTree');
+                var t = [response]
+                tree.reload(t);
+            })
+            .fail(function (jqXHR, textStatus) {
+                //$(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+                ocultar_loader();
+            })
+            .always(function () {
+                ocultar_loader();
+            });
+        }
+    }
     $(function(){
         buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
         $('#btn_buscar').click(function() {
             buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
         });
-        $("#tree3").fancytree({
+        $( "#btn_limpiar" ).click(function() {
+            limpiar_filtros_listados();
+        });
+        $("#perfil_tree").fancytree({
             checkbox: true,
             selectMode: 3,
             source: SOURCE,
-            lazyLoad: function(event, ctx) {
+            /*lazyLoad: function(event, ctx) {
                 ctx.result = {url: "ajax-sub2.json", debugDelay: 1000};
             },
             loadChildren: function(event, ctx) {
                 ctx.node.fixSelection3AfterClick();
-            },
+            },*/
             select: function(event, data) {
                 // Get a list of all selected nodes, and convert to a key array:
                 var selKeys = $.map(data.tree.getSelectedNodes(), function(node){
@@ -167,6 +217,9 @@
                 });
                 $("#perfil_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#perfil_seleccion_node").val(selRootNodes.join(","));
+
+                ////Código que permite cambiar las opciones del tree
+                buscar_filtros_listados(site_url+'/informacion_general/buscar_filtros_listados', '#form_busqueda', 'perfil', 'tipo_curso');
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();
@@ -177,21 +230,27 @@
                     return false;
                 }
             },
+            init: function (event, data) {
+                data.tree.getRootNode().visit(function (node) {
+                    if (node.data.preselected) node.setSelected(true);
+                });
+            },
             // The following options are only required, if we have more than one tree on one page:
             // initId: "SOURCE",
             cookieId: "fancytree-Cb3",
             idPrefix: "fancytree-Cb3-"
         });
-        $("#tree2").fancytree({
+        $("#tipo_curso_tree").fancytree({
             checkbox: true,
             selectMode: 3,
             source: SOURCE2,
-            lazyLoad: function(event, ctx) {
+            /*lazyLoad: function(event, ctx) {
                 ctx.result = {url: "ajax-sub2.json", debugDelay: 1000};
             },
             loadChildren: function(event, ctx) {
                 ctx.node.fixSelection3AfterClick();
-            },
+            },*/
+            icon: false,
             select: function(event, data) {
                 // Get a list of all selected nodes, and convert to a key array:
                 var selKeys = $.map(data.tree.getSelectedNodes(), function(node){
@@ -216,6 +275,11 @@
                     data.node.toggleSelected();
                     return false;
                 }
+            },
+            init: function (event, data) {
+                data.tree.getRootNode().visit(function (node) {
+                    if (node.data.preselected) node.setSelected(true);
+                });
             },
             // The following options are only required, if we have more than one tree on one page:
             // initId: "SOURCE",

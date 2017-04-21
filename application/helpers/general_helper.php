@@ -394,4 +394,12 @@ if (!function_exists('get_ip_cliente')) {
     }
 
 }
+
+///////Función general para calcular la eficiencia terminal modificada
+if (!function_exists('calcular_eficiencia_terminal')) {
+    function calcular_eficiencia_terminal($inscritos, $aprobados, $no_acceso){
+        $eficiencia_terminal = ($aprobados/($inscritos-$no_acceso))*100;
+        return number_format($eficiencia_terminal,2);
+    }
+}
 /* End of file general_helper.php */

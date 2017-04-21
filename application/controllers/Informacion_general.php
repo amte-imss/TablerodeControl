@@ -70,17 +70,38 @@ class Informacion_general extends MY_Controller
         $usuario2['id_region'] = 3;
         $usuario2['name_region'] = 'Centro';
         $usuario2['is_umae'] = '';
-        $_SESSION['usuario'] = $usuario2;
+
+        $usuario3['nombre'] = 'Ingrid Soto Venegas';
+        $usuario3['matricula'] = '311091329';
+        $usuario3['del_cve'] = '09';
+        $usuario3['del_nom'] = 'Oficinas centrales';
+        $usuario3['curp'] = 'SOVI7605038U4';
+        $usuario3['unidad_cve'] = 1388;
+        $usuario3['unidad_nom'] = 'U INVEST MED ENF NEUROL  S XXI';
+        $usuario3['tipo_unidad_cve'] = '';
+        $usuario3['categoria_cve'] = '37110580';
+        $usuario3['categoria_nom'] = 'COORD PROGS NIVEL CENTRAL E1';
+        $usuario3['nombre_grupo'] = 'Primer nivel:Coordinador Clínico de Educación e Investigación en Salud'; //5
+        $usuario3['nivel'] = 'Nivel Central';
+        $usuario3['id_region'] = '';
+        $usuario3['name_region'] = '';
+        $usuario3['is_umae'] = '';
+        $_SESSION['usuario'] = $usuario3;
     }
     
     public function index(){
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'))); //Obtener nivel de atenciónen otra llamada debido a que tiene el mismo indice que UMAE
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, 
-            Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'))); //Catalogo_listado::PERIODO
-        $datos['catalogos']['periodo'] = array(2016 => 2016);
+            Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC'),
+            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true', 'valor'=>"CONCAT(nombre,' (',clave_unidad,')')")
+        )); //Catalogo_listado::PERIODO
+        $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+        $datos['catalogos']['tipos_busqueda'] = array('perfil'=>$datos['lenguaje']['perfil'], 'tipo_curso'=>$datos['lenguaje']['tipo_curso'], 'periodo'=>$datos['lenguaje']['periodo'], 'nivel_atencion'=>$datos['lenguaje']['nivel_atencion'], 'region'=>$datos['lenguaje']['region'], 'delegacion'=>$datos['lenguaje']['delegacion'], 'umae'=>$datos['lenguaje']['umae']);
         //pr($datos['catalogos']);
-        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
 
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
         $this->template->setSubTitle($this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
@@ -91,7 +112,7 @@ class Informacion_general extends MY_Controller
     }
 
     public function por_perfil(){
-        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
@@ -112,11 +133,11 @@ class Informacion_general extends MY_Controller
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
 
-    public function por_unidad(){
+    /*public function por_unidad(){
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general'];
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::REGIONES, Catalogo_listado::DELEGACIONES=>array('orden'=>'id_periodo DESC'), ));
         //pr($datos['catalogos']);
         $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
@@ -132,6 +153,84 @@ class Informacion_general extends MY_Controller
         $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
+    }*/
+
+    public function buscar_filtros_listados(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                //pr($datos['datos']);
+                if(!empty($datos['datos'])){
+                    $resultado = array();
+                    if(isset($datos_busqueda['destino']) AND $datos_busqueda['destino']=='tipo_curso'){
+                        foreach ($datos['datos'] as $key_tip => $tipos) {
+                            $resultado[$tipos['id_tipo_curso']]=$tipos['tipo_curso'];
+                        }
+                    }
+                    $res = array();
+                    foreach ($resultado as $key_val => $valor) {
+                        //echo '{"title":"'.$valor.'", "key":'.$key_val.', selected: true, "children":[]},';
+                        $res['title']=$valor;
+                        $res["key"]=$key_val;
+                        $res['selected']=true;
+                        $res["children"]=array();
+                        echo json_encode($res);
+                    }
+                    //pr($datos);                    
+                    exit();
+                } else {
+                    echo true;
+                    //echo data_not_exist(); //Mostrar mensaje de datos no existentes
+                }
+            }
+        } else {
+            redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
+        }
+    }
+
+    private function crear_arreglo_por_tipo($resultado, &$dato){
+        if(!isset($resultado['cantidad_alumnos_inscritos'])){
+            $resultado['cantidad_alumnos_inscritos'] = 0;
+        }
+        if(!isset($resultado['cantidad_alumnos_certificados'])){
+            $resultado['cantidad_alumnos_certificados'] = 0;
+        }
+        if(!isset($resultado['cantidad_no_accesos'])){
+            $resultado['cantidad_no_accesos'] = 0;
+        }
+        $resultado['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
+        $resultado['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+        $resultado['cantidad_no_accesos'] += $dato['cantidad_no_accesos'];
+
+        return $resultado;
+    }
+
+    public function calcular_totales_generales(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            //if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                
+                //$datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                //pr($datos_busqueda);
+                $datos['datos'] = $this->inf_gen_model->calcular_totales(array()); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
+                //pr($datos['datos']);
+                $resultado = array('total'=>array());
+                if(!empty($datos['datos'])){
+                    foreach ($datos['datos'] as $key_d => $dato) {
+                        //Total
+                        $resultado['total'] = $this->crear_arreglo_por_tipo($resultado['total'], $dato);
+                    }
+                    //pr($datos);
+                    echo json_encode($resultado);
+                    exit();
+                } else {
+                    echo data_not_exist(); //Mostrar mensaje de datos no existentes
+                }
+            //}
+        } else {
+            redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
+        }
     }
 
     public function calcular_totales(){
@@ -143,55 +242,48 @@ class Informacion_general extends MY_Controller
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']);
-                $resultado = array();
+                $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array(),'region'=>array(),'delegacion'=>array(),'umae'=>array(),'nivel_atencion'=>array());
                 if(!empty($datos['datos'])){
                     foreach ($datos['datos'] as $key_d => $dato) {
                         //Total
-                        if(!isset($resultado['total']['cantidad_alumnos_inscritos'])){
-                            $resultado['total']['cantidad_alumnos_inscritos'] = 0;
-                        }
-                        if(!isset($resultado['total']['cantidad_alumnos_certificados'])){
-                            $resultado['total']['cantidad_alumnos_certificados'] = 0;
-                        }
-                        $resultado['total']['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['total'] = $this->crear_arreglo_por_tipo($resultado['total'], $dato);
                         //Perfil
-                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'])){
-                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['perfil'][$dato['perfil']])){
+                            $resultado['perfil'][$dato['perfil']] = array();
                         }
-                        if(!isset($resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'])){
-                            $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] = 0;
-                        }
-                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['perfil'][$dato['perfil']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);
                         //Tipo de curso
-                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'])){
-                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
-                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'])){
-                            $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] = 0;
+                        $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        //Nivel atención
+                        if(!isset($resultado['nivel_atencion'][$dato['nivel_atencion']])){
+                            $resultado['nivel_atencion'][$dato['nivel_atencion']] = array();
                         }
-                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['tipo_curso'][$dato['tipo_curso']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['nivel_atencion'][$dato['nivel_atencion']] = $this->crear_arreglo_por_tipo($resultado['nivel_atencion'][$dato['nivel_atencion']], $dato);
                         //Periodo
-                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'])){
-                            //$resultado['periodo'][$dato['anio_fin']][$dato['mes']]['cantidad_alumnos_inscritos'] = 0;
-                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['periodo'][$dato['anio_fin']])){
+                            $resultado['periodo'][$dato['anio_fin']] = array();
                         }
-                        if(!isset($resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'])){
-                            $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] = 0;
-                        }
-                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['periodo'][$dato['anio_fin']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['periodo'][$dato['anio_fin']] = $this->crear_arreglo_por_tipo($resultado['periodo'][$dato['anio_fin']], $dato);
                         //Región
-                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'])){
-                            $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] = 0;
+                        if(!isset($resultado['region'][$dato['region']])){
+                            $resultado['region'][$dato['region']] = array();
                         }
-                        if(!isset($resultado['region'][$dato['region']]['cantidad_alumnos_certificados'])){
-                            $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] = 0;
+                        $resultado['region'][$dato['region']] = $this->crear_arreglo_por_tipo($resultado['region'][$dato['region']], $dato);
+                        //Delegación
+                        if(!isset($resultado['delegacion'][$dato['delegacion']])){
+                            $resultado['delegacion'][$dato['delegacion']] = array();
                         }
-                        $resultado['region'][$dato['region']]['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['region'][$dato['region']]['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['delegacion'][$dato['delegacion']] = $this->crear_arreglo_por_tipo($resultado['delegacion'][$dato['delegacion']], $dato);
+                        //UMAE
+                        if($dato['umae']==true){
+                            if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
+                                $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = array();
+                            }
+                            $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']], $dato);
+                        }
                     }
                     //pr($datos);
                     echo json_encode($resultado);
@@ -213,14 +305,32 @@ class Informacion_general extends MY_Controller
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']); 
-                $resultado = array();
+                $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array());
                 if(!empty($datos['datos'])){
                     foreach ($datos['datos'] as $key_d => $dato) {
                         if(!isset($dato['periodo']) OR empty($dato['periodo'])) {
                             $dato['periodo'] = $dato['anio_fin'];
                         }
+
+                        //Total
+                        $resultado['total'] = $this->crear_arreglo_por_tipo($resultado['total'], $dato);
                         //Periodo
-                        if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'])){
+                        if(!isset($resultado['periodo'][$dato['periodo']])){
+                            $resultado['periodo'][$dato['periodo']] = array();
+                        }
+                        $resultado['periodo'][$dato['periodo']] = $this->crear_arreglo_por_tipo($resultado['periodo'][$dato['periodo']], $dato);
+                        //Perfil
+                        if(!isset($resultado['perfil'][$dato['perfil']])){
+                            $resultado['perfil'][$dato['perfil']] = array();
+                        }
+                        $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);
+                        //Tipo de curso
+                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']] = array();
+                        }
+                        $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        //Periodo
+                        /*if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'])){
                             $resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'] = 0;
                         }
                         if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_certificados'])){
@@ -254,7 +364,7 @@ class Informacion_general extends MY_Controller
                             $resultado['total']['cantidad_alumnos_certificados'] = 0;
                         }
                         $resultado['total']['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
                     }
                     $resultado['lenguaje'] = $this->lang->line('interface')['informacion_general'];
                     $resultado['tabla_tipo_curso'] = $this->load->view('informacion_general/tabla.tpl.php', array('titulo'=>$resultado['lenguaje']['tipo_curso'], 'valores'=>$resultado['tipo_curso'], 'lenguaje'=>$resultado['lenguaje']), true);

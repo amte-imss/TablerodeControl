@@ -17,3 +17,8 @@ $config['periodo'] = array(
 	'BIMESTRAL' => array('id'=>4),
 	'MENSUAL' => array('id'=>5),
 );
+
+$config['tipo_busqueda'] = array(
+	'UMAE' => array('id'=>'umae'),
+	'DELEGACION' => array('id'=>'delegacion')
+);

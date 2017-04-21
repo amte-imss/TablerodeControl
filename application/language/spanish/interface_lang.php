@@ -28,18 +28,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['interface'] = array(
     'informacion_general' => array(
         'titulo_principal' => 'Información general',
+        'texto_informativo' => 'Para ver más resultados selecciona el tipo de gráfica a mostrar.',
         'titulo_por_perfil' => 'Por perfil',
         'titulo_por_unidad' => 'Por unidad',
         'titulo' => 'Resultados generales de cursos $tipo_curso $unidad $delegacion, durante el periodo $periodo',
         'alumnos_inscritos' => 'Alumnos inscritos',
         'alumnos_aprobados' => 'Alumnos aprobados',
+        'alumnos_no_acceso' => 'Alumnos no accesaron',
         'no_accesos' => 'No accesos',
         'eficiencia_terminal' => 'Eficiencia terminal modificada',
         'periodo' => 'Periodo',
         'anio' => 'Año',
         'tipo_curso' => 'Tipo de curso',
         'perfil' => 'Perfil',
-        'region' => 'Región'
+        'region' => 'Región',
+        'delegacion' => 'Delegación',
+        'umae' => 'UMAE',
+        'nivel_atencion' => 'Nivel de atención'
     ),
     'general' => array(
         'acciones' => 'Acciones',
@@ -47,7 +52,10 @@ $lang['interface'] = array(
         'eliminar' => 'Eliminar',
         'enviar' => 'Enviar',
         'cancelar' => 'Cancelar',
-        'no_existe_datos' => 'No existen datos.'
+        'no_existe_datos' => 'No existen datos.',
+        'seleccione' => 'Seleccione...',
+        'filtrar' => 'Filtrar',
+        'limpiar_filtros' => 'Limpiar filtros'
     ),
     'general_model' => array(
         'insercion' => 'Se ha insertado correctamente la información.',
