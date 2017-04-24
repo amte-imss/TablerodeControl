@@ -1,8 +1,8 @@
-<div class="table-responsive">
+<div id="<?php echo $id; ?>" class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th colspan="5" class="text-center" data-background-color="purple"><?php echo $titulo; ?></th>
+                <th colspan="5" class="text-center" data-background-color="purple"><?php echo $titulo; echo imprimir_elemento_html('#'.$id); ?></th>
             </tr>
             <tr>
                 <th></th>

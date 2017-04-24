@@ -1,5 +1,26 @@
 $( document ).ready(function() {
     //$('[data-toggle="tooltip"]').tooltip(); //Llamada a tooltip
+    Highcharts.setOptions({
+        lang: {
+            contextButtonTitle: "Menú contextual",
+            downloadJPEG: "Descargar imagen JPEG",
+            downloadPDF: "Descargar documento PDF",
+            downloadPNG: "Descargar imagen PNG",
+            downloadSVG: "Descargar imagen en vectores SVG",
+            drillUpText: "Regresar a {series.name}",
+            loading: "Cargando...",
+            months: [ "Enero" , "Febrero" , "Marzo" , "Abril" , "Mayo" , "Junio" , "Julio" , "Agosto" , "Septiembre" , "Octubre" , "Noviembre" , "Diciembre"],
+            noData: "No hay datos que mostrar",
+            printChart: "Imprimir gráfica",
+            resetZoom: "Restablecer zoom",
+            resetZoomTitle: "Restablecer zoom nivel 1:1",
+            shortMonths: [ "Ene" , "Feb" , "Mar" , "Abr" , "May" , "Jun" , "Jul" , "Ago" , "Sep" , "Oct" , "Nov" , "Dic"],
+            weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+        },
+        credits: {
+            enabled: false
+        }
+    });
 });
 /**
  *	Método que muestra una imagen (gif animado) que indica que algo esta cargando
@@ -243,34 +264,28 @@ function buscar_perfil(path, form_recurso) {
     })
     .done(function (response) {
         if(typeof(response.total) != "undefined"){
-            $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
-            $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
-            $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
-            $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
-            $("#div_resultado").show();
-            $("#tabla_tipo_curso").html(response.tabla_tipo_curso);
-            $("#tabla_perfil").html(response.tabla_perfil);
+            if(response.total == 0){
+                $('#total_alumnos_inscritos').html('-');
+                $('#total_alumnos_aprobados').html('-');
+                $('#total_alumnos_no_acceso').html('-');
+                $('#total_eficiencia_terminal').html('-');
+                $("#div_resultado").hide();
+                $("#tabla_tipo_curso").html('');
+                $("#tabla_perfil").html('');
+                $('#container_perfil').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+            } else {
+                $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
+                $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+                $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
+                $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
+                $("#div_resultado").show();
+                $("#tabla_tipo_curso").html(response.tabla_tipo_curso);
+                $("#tabla_perfil").html(response.tabla_perfil);
+                //crear_grafica_area('container_perfil', '', periodos, 'Número de alumnos', series_datos);
+                var periodo = obtener_categoria_serie(response.periodo);
+                crear_grafica_stacked('container_perfil', '', periodo.categorias, 'Número de alumnos', periodo.series);
+            }
         }
-        /////////Perfiles
-        /*var periodos = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.periodo, function( i, val ) {
-            periodos.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-        }];
-        crear_grafica_area('container_perfil', '', periodos, 'Número de alumnos', series_datos);*/
-        var periodo = obtener_categoria_serie(response.periodo);
-        crear_grafica_stacked('container_perfil', '', periodo.categorias, 'Número de alumnos', periodo.series);
     })
     .fail(function (jqXHR, textStatus) {
         $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
@@ -315,11 +330,12 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
                 text: texto_y
             },
             stackLabels: {
-                enabled: true,
+                enabled: false
+                /*enabled: true,
                 style: {
                     fontWeight: 'bold',
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
+                }*/
             }
         },
         legend: {
@@ -341,7 +357,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             column: {
                 stacking: 'normal',
                 dataLabels: {
-                    enabled: true,
+                    enabled: false,
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
                 }
             }

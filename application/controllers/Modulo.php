@@ -48,6 +48,7 @@ class Modulo extends MY_Controller
 
     public function get_modulos_grupo($id_grupo = 0)
     {
+        
         $output['grupo'] = $id_grupo;
         $output['modulos'] = $this->modulo->get_modulos_grupo($id_grupo, true);
         if ($this->input->post() && !empty($this->input->post('grupo', true)))

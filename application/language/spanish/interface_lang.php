@@ -30,7 +30,7 @@ $lang['interface'] = array(
         'titulo_principal' => 'Información general',
         'texto_informativo' => 'Para ver más resultados selecciona el tipo de gráfica a mostrar.',
         'titulo_por_perfil' => 'Por perfil',
-        'titulo_por_unidad' => 'Por unidad',
+        'titulo_por_tipo_usuario' => 'Por tipo de curso',
         'titulo' => 'Resultados generales de cursos $tipo_curso $unidad $delegacion, durante el periodo $periodo',
         'alumnos_inscritos' => 'Alumnos inscritos',
         'alumnos_aprobados' => 'Alumnos aprobados',
@@ -54,7 +54,7 @@ $lang['interface'] = array(
         'cancelar' => 'Cancelar',
         'no_existe_datos' => 'No existen datos.',
         'seleccione' => 'Seleccione...',
-        'filtrar' => 'Filtrar',
+        'buscar' => 'Buscar',
         'limpiar_filtros' => 'Limpiar filtros'
     ),
     'general_model' => array(

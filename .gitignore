@@ -8,3 +8,4 @@
 /application/controller/Region.php
 index.php
 !/application/views/modulo/index.php
+!/application/views/perfil_usuario/index.php
