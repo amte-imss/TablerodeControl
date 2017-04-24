@@ -138,7 +138,6 @@ class Informacion_general extends MY_Controller
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
-        //pr($datos['catalogos']);
         $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
             $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
@@ -146,12 +145,9 @@ class Informacion_general extends MY_Controller
                 $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
             }
         }
-        //pr($datos);
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil']);
-        //$this->template->setDescripcion("Bienvenida a delegacional");
-        $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
-        //$this->template->setBlank("tc_template/iiindex.tpl.php");    
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_tipo_usuario']);
+        $this->template->setMainContent($this->load->view('informacion_general/por_tipo_curso.tpl.php', $datos, true));
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
 
@@ -393,8 +389,8 @@ class Informacion_general extends MY_Controller
                         $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
                     }
                     $resultado['lenguaje'] = $this->lang->line('interface')['informacion_general'];
-                    $resultado['tabla_tipo_curso'] = $this->load->view('informacion_general/tabla.tpl.php', array('titulo'=>$resultado['lenguaje']['tipo_curso'], 'valores'=>$resultado['tipo_curso'], 'lenguaje'=>$resultado['lenguaje']), true);
-                    $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$resultado['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
+                    $resultado['tabla_tipo_curso'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_tipo_curso', 'titulo'=>$resultado['lenguaje']['tipo_curso'], 'valores'=>$resultado['tipo_curso'], 'lenguaje'=>$resultado['lenguaje']), true);
+                    $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_perfil', 'titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$resultado['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
                     //pr($datos);
                     echo json_encode($resultado);
                 } else {

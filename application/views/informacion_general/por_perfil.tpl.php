@@ -84,7 +84,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th colspan="4" class="text-center" data-background-color="purple"><?php echo $lenguaje['titulo_principal']; ?></th>
+                            <th colspan="4" class="text-center" data-background-color="purple"><?php echo $lenguaje['titulo_principal']; echo imprimir_elemento_html('#div_resultado'); ?></th>
                         </tr>
                         <tr>
                             <th class="text-center"><?php echo $lenguaje['alumnos_inscritos']; ?></th>
