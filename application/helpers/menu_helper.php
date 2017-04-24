@@ -16,10 +16,18 @@ if (!function_exists('render_menu'))
             <?php
             foreach ($menu as $item)
             {
+                $enlace = '#';
+                if(isset($item['link'])){
+                    if(startsWith($item['link'], 'http://')||startsWith($item['link'], 'https://')){
+                        $enlace = $item['link'];
+                    }else{
+                        $enlace = site_url() . $item['link'];
+                    }
+                }
                 ?>
                 <li class="<?php echo (isset($item['childs']) ? '' : '') ?>" style="list-style-type: none;">
 
-                    <a href="<?php echo (isset($item['childs']) ? '#': (isset($item['link']) ? site_url() . $item['link'] : '#')); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
+                    <a href="<?php echo (isset($item['childs']) ? '#': $enlace); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
                         <i class="material-icons">dashboard</i>
                         <?php
                         if (isset($item['titulo']))

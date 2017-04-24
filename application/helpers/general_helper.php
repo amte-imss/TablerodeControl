@@ -409,3 +409,12 @@ if (!function_exists('imprimir_elemento_html')) {
     }
 }
 /* End of file general_helper.php */
+
+if (!function_exists('startsWith')) 
+    {
+    function startsWith($haystack, $needle)
+    {
+         $length = strlen($needle);
+         return (substr($haystack, 0, $length) === $needle);
+    }
+}
