@@ -5,6 +5,7 @@ body{
   font-family: "Roboto-Regular";
 	background-color: transparent;
     background-image: url("login.jpg");
+    background-size: 2048px 1182px;
     /*background-image: url("logueo_PANEL_prop1.jpg");*/
     background-repeat: no-repeat;
     background-position: center top;
