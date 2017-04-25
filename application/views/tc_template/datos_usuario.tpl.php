@@ -11,19 +11,32 @@
     <div class="col-lg-3 col-md-6 col-sm-6">
         <label class="col-form-label"><?php echo $name_categoria.'('.$clave_categoria.')'; ?></label>
     </div>
-    <?php if($umae==true){ ?>
-        <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['umae']; ?>:</label>
+    <?php 
+    if($grupos[0]['id_grupo']==En_grupos::NIVEL_CENTRAL) { ?>
+        <!-- <label class="col-lg-4 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['umae']; ?>:</label> -->
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <label class="col-form-label"><?php echo $lenguaje['nivel_central']; ?></label>
+        </div>
+        <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['direccion_normativa']; ?>:</label>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <label class="col-form-label"><?php echo $name_unidad_ist.'('.$clave_unidad.')'; ?></label>
         </div>
-    <?php } else { ?>
-        <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['delegacion']; ?>:</label>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-            <label class="col-form-label"><?php echo $name_delegacion; ?></label>
-        </div>
-        <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['unidad']; ?>:</label>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-            <label class="col-form-label"><?php echo $name_unidad_ist.'('.$clave_unidad.')'; ?></label>
-        </div>
-    <?php } ?>
+        <?php 
+    } else {
+        if($umae==true){ ?>
+            <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['umae']; ?>:</label>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <label class="col-form-label"><?php echo $name_unidad_ist.'('.$clave_unidad.')'; ?></label>
+            </div>
+        <?php } else { ?>
+            <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['delegacion']; ?>:</label>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <label class="col-form-label"><?php echo $name_delegacion; ?></label>
+            </div>
+            <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['unidad']; ?>:</label>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <label class="col-form-label"><?php echo $name_unidad_ist.'('.$clave_unidad.')'; ?></label>
+            </div>
+        <?php }
+    } ?>
 </div>

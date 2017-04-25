@@ -51,11 +51,7 @@ class Configuracion_grupos {
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')
 		        );
-                if(in_array($grupo_actual, array(En_grupos::N1_CEIS, En_grupos::N1_DH, En_grupos::N1_DUMF))) { //Si es unidad tiene diferentes condionales a las de una UMAE
-                    $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
-                } else {
-                    $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
-                }
+                $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
     			break;
     		case En_grupos::N2_CPEI: case En_grupos::N2_DGU:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo']);
@@ -93,6 +89,33 @@ class Configuracion_grupos {
     			break;
     	}
     	return $resultado;
+    }
+
+    public function index_obtener_subtitulo($titulo){
+        $tipo_curso = 'a distancia';
+        if($this->CI->sesion['umae']==true){
+            $unidad = 'de la UMAE \''.$this->CI->sesion['name_unidad_ist'].'\'';
+            $delegacion = '';
+        } else {
+            $unidad = 'de la unidad \''.$this->CI->sesion['name_unidad_ist'].'\'';
+            $delegacion = 'de la delegación '.$this->CI->sesion['name_delegacion'];
+        }
+        if(!in_array($this->CI->sesion['grupos'][0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES,En_grupos::N2_DGU))) {
+            $unidad = '';
+        }
+        if(in_array($this->CI->sesion['grupos'][0]['id_grupo'], array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))){
+            $delegacion = '';
+        }
+        $periodo = $this->get_periodo_actual();
+        return str_replace(array('$tipo_curso', '$unidad', '$delegacion', '$periodo'), array($tipo_curso, $unidad, $delegacion, $periodo), $titulo);
+    }
+
+    public function set_periodo_actual(){
+        $this->anio_actual = date('Y')-1;
+    }
+
+    public function get_periodo_actual(){
+        return $this->anio_actual;
     }
 
 }

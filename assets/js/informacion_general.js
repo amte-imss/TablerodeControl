@@ -39,6 +39,7 @@ function calcular_totales_generales(path) {
         if(typeof(response.total) != "undefined"){
             $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
             $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+            $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
             $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
             $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
         }

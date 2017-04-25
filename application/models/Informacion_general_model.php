@@ -23,7 +23,6 @@ class Informacion_general_model extends CI_Model
      * @return array $resultado Contiene arreglo con los datos obtenidos de la base
      */
     public function calcular_totales($params = array()){
-        //pr($params);
         $resultado = array();
         //Condiciones utilizadas en informacion_general/index
         if(isset($params['perfil']) AND !empty($params['perfil'])){
@@ -61,7 +60,8 @@ class Informacion_general_model extends CI_Model
         if(isset($params['anio']) AND !empty($params['anio'])){
             $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['anio']);
         }
-        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion'])){
+        if(isset($params['perfil_seleccion']) 
+            AND !empty($params['perfil_seleccion'])){
             $this->db->where('gc.id_grupo_categoria IN ('.$params['perfil_seleccion'].')');
         }
         if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
@@ -76,15 +76,6 @@ class Informacion_general_model extends CI_Model
         if (array_key_exists('order', $params)) {
             $this->db->order_by($params['order']['field'], $params['order']['type']);
         }
-        ////Se agregan condiones establecidas para el tipo de grupo
-        $this->load->library('Configuracion_grupos');
-        $this->load->library('Catalogo_listado');
-        $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda();
-        //pr($configuracion);
-        if(!empty($configuracion['condicion_calcular_totales'])){
-            $this->db->where($configuracion['condicion_calcular_totales']);
-        }
-        ////Fin se agregan condiones establecidas para el tipo de grupo
 
         //Periodo
         $periodo = '';
@@ -114,7 +105,8 @@ class Informacion_general_model extends CI_Model
                 hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
                 hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
                 case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
-                COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos'.$periodo);
+                COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos,
+                (hia.cantidad_alumnos_inscritos-hia.cantidad_alumnos_certificados-COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_aprobados'.$periodo);
         }
 
         $this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');

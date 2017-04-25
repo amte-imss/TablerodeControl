@@ -2,9 +2,10 @@
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php echo js('informacion_general.js'); ?>
 <div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="col-lg-1 col-md-0 col-sm-0"></div>
+    <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="orange">
+            <div class="card-header" data-background-color="">
                 <i class="fa fa-user"></i>
             </div>
             <div class="card-content">
@@ -13,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="green">
                 <i class="fa fa-check"></i>
@@ -24,9 +25,20 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="red">
+                <i class="fa fa-close"></i>
+            </div>
+            <div class="card-content">
+                <p class="category"><?php echo $lenguaje['alumnos_no_aprobados']; ?></p>
+                <h3 class="title" id="total_alumnos_no_aprobados">-</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
                 <i class="fa fa-exclamation-triangle"></i>
             </div>
             <div class="card-content">
@@ -35,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="blue">
                 <i class="fa fa-percent"></i>
@@ -46,6 +58,7 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-1 col-md-0 col-sm-0"></div>
     <?php echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
     <div class="col-lg-12 col-md-12 col-sm-">
         <div class="col-lg-6 col-md-12 col-sm-12">

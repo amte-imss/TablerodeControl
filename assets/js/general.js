@@ -306,5 +306,5 @@ function imprimir_contenido(html_id){
 ///////Función general para calcular la eficiencia terminal modificada
 function calcular_eficiencia_terminal(inscritos, aprobados, no_acceso){
     var eficiencia_terminal = (aprobados/(inscritos-no_acceso))*100;
-    return eficiencia_terminal.toFixed(2)+' %';
+    return parseInt(eficiencia_terminal)+' %';
 }

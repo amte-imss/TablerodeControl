@@ -22,7 +22,7 @@ class Informacion_general extends MY_Controller
         $this->load->library('Configuracion_grupos');
         $this->load->model('Informacion_general_model', 'inf_gen_model');
         $this->lang->load('interface'); //Cargar archivo de lenguaje
-        $this->set_periodo_actual();
+        $this->configuracion_grupos->set_periodo_actual();
     }
     
     public function index(){
@@ -39,7 +39,7 @@ class Informacion_general extends MY_Controller
         //pr($datos['catalogos']);
 
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setSubTitle($this->configuracion_grupos->index_obtener_subtitulo($datos['lenguaje']['titulo']));
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/index.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
@@ -61,7 +61,7 @@ class Informacion_general extends MY_Controller
         }
         //pr($datos);
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil'].'. '.$this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil'].'. '.$this->configuracion_grupos->index_obtener_subtitulo($datos['lenguaje']['titulo']));
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
@@ -81,7 +81,7 @@ class Informacion_general extends MY_Controller
             }
         }
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($datos['lenguaje']['titulo_por_tipo_usuario'].'. '.$this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_tipo_usuario'].'. '.$this->configuracion_grupos->index_obtener_subtitulo($datos['lenguaje']['titulo']));
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/por_tipo_curso.tpl.php', $datos, true));
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
@@ -185,9 +185,13 @@ class Informacion_general extends MY_Controller
         if(!isset($resultado['cantidad_no_accesos'])){
             $resultado['cantidad_no_accesos'] = 0;
         }
+        if(!isset($resultado['cantidad_no_aprobados'])){
+            $resultado['cantidad_no_aprobados'] = 0;
+        }
         $resultado['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
         $resultado['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
         $resultado['cantidad_no_accesos'] += $dato['cantidad_no_accesos'];
+        $resultado['cantidad_no_aprobados'] += $dato['cantidad_no_aprobados'];
 
         return $resultado;
     }
@@ -367,31 +371,5 @@ class Informacion_general extends MY_Controller
         } else {
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
         }
-    }
-
-    private function index_obtener_subtitulo($titulo){
-        //pr($_SESSION);
-        $datos_usuario = $this->session->userdata('usuario');
-        $tipo_curso = 'a distancia';
-        if($datos_usuario['umae']==true){
-            $unidad = 'de la UMAE \''.$datos_usuario['name_unidad_ist'].'\'';
-            $delegacion = '';
-        } else {
-            $unidad = 'de la unidad \''.$datos_usuario['name_unidad_ist'].'\'';
-            $delegacion = 'de la delegación '.$datos_usuario['name_delegacion'];
-        }
-        if(!in_array($datos_usuario['grupos'][0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES,En_grupos::N2_DGU))) {
-            $unidad = '';
-        }
-        $periodo = $this->get_periodo_actual();
-        return str_replace(array('$tipo_curso', '$unidad', '$delegacion', '$periodo'), array($tipo_curso, $unidad, $delegacion, $periodo), $titulo);
-    }
-
-    private function set_periodo_actual(){
-        $this->anio_actual = date('Y')-1;
-    }
-
-    private function get_periodo_actual(){
-        return $this->anio_actual;
     }
 }
