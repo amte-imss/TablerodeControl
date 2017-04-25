@@ -46,6 +46,14 @@ $lang['interface'] = array(
         'umae' => 'UMAE',
         'nivel_atencion' => 'Nivel de atención'
     ),
+    'datos_usuario' => array(
+        'nombre' => 'Nombre',
+        'matricula' => 'Matricula',
+        'categoria' => 'Categoría',
+        'delegacion' => 'Delegación',
+        'unidad' => 'Unidad',
+        'umae' => 'UMAE'
+    ),
     'general' => array(
         'acciones' => 'Acciones',
         'editar' => 'Editar',
