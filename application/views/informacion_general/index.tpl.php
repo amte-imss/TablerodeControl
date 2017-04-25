@@ -75,7 +75,7 @@
                                 'options'=>$catalogos['subcategorias'],
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');")
                             )
                         ); ?>
                         <span class="material-input"></span>
@@ -94,7 +94,7 @@
                                 'options'=>$catalogos['tipos_cursos'],
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');")
                             )
                         ); ?>
                         <span class="material-input"></span>
@@ -113,7 +113,7 @@
                                 'options'=>$catalogos['implementaciones'],
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');")
                                 )
                             );
                         ?>
@@ -133,7 +133,7 @@
                                 'options'=>$catalogos['nivel_atencion'],
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');")
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');")
                                 )
                             );
                         ?>
@@ -154,7 +154,7 @@
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array(
                                     'class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');"
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');"
                                     //'autocomplete'=>'off',
                                     //'data-toggle'=>'tooltip',
                                     //'data-placement'=>'bottom',
@@ -180,7 +180,7 @@
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array(
                                     'class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');"
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');"
                                     //'autocomplete'=>'off',
                                     //'data-toggle'=>'tooltip',
                                     //'data-placement'=>'bottom',
@@ -206,7 +206,7 @@
                                 'first'=>array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array(
                                     'class'=>'form-control',
-                                    'onchange'=>"javascript:calcular_totales('informacion_general/calcular_totales', '#form_busqueda');"
+                                    'onchange'=>"javascript:calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');"
                                     //'autocomplete'=>'off',
                                     //'data-toggle'=>'tooltip',
                                     //'data-placement'=>'bottom',

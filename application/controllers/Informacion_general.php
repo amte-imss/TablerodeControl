@@ -23,73 +23,6 @@ class Informacion_general extends MY_Controller
         $this->load->model('Informacion_general_model', 'inf_gen_model');
         $this->lang->load('interface'); //Cargar archivo de lenguaje
         $this->set_periodo_actual();
-
-
-        $_SESSION['usuario']['rol'] = 7;
-        /*$usuario['nombre'] = 'Fermin Reyes Chavez';
-        $usuario['matricula'] = '99156322';
-        $usuario['del_cve'] = '02';
-        $usuario['del_nom'] = 'BAJA CALIFORNIA';
-        $usuario['curp'] = 'RECF850214HDFYHR02';
-        $usuario['unidad_cve'] = 1;
-        $usuario['unidad_nom'] = 'COORDINACION REGIONAL AAQR 4';
-        $usuario['tipo_unidad_cve'] = '';
-        $usuario['categoria_cve'] = '20000180';
-        $usuario['categoria_nom'] = 'ABOGADO 80';
-        $usuario['nombre_grupo'] = 'Super administrador'; //6
-        $usuario['nivel'] = 'Nivel 3';
-        $usuario['id_region'] = 1;
-        $usuario['name_region'] = 'BAJA CALIFORNIA';
-        $usuario['is_umae'] = '';
-
-        $usuario1['nombre'] = 'Jesús ZDP';
-        $usuario1['matricula'] = '311091402';
-        $usuario1['del_cve'] = '16';
-        $usuario1['del_nom'] = 'EDO MEX PTE';
-        $usuario1['curp'] = 'YYYYOAISIO89879789';
-        $usuario1['unidad_cve'] = 2648;
-        $usuario1['unidad_nom'] = 'UNIDAD MED FAM C/HOSP 6';
-        $usuario1['tipo_unidad_cve'] = '';
-        $usuario1['categoria_cve'] = '36112580';
-        $usuario1['categoria_nom'] = 'SUPERV PROYECTOS E3';
-        $usuario1['nombre_grupo'] = 'Primer nivel: Director de Hospital'; //3
-        $usuario1['nivel'] = 'Nivel 1';
-        $usuario1['id_region'] = 4;
-        $usuario1['name_region'] = 'Centro Sureste';
-        $usuario1['is_umae'] = '';
-
-        $usuario2['nombre'] = 'Miguel A. González G';
-        $usuario2['matricula'] = '311091403';
-        $usuario2['del_cve'] = '12';
-        $usuario2['del_nom'] = 'GUERRERO';
-        $usuario2['curp'] = 'XXXX8098hj87jh98';
-        $usuario2['unidad_cve'] = 1710;
-        $usuario2['unidad_nom'] = 'HOSP GRAL SUBZONA/MF 20 (SN L DE LA PAZ)';
-        $usuario2['tipo_unidad_cve'] = '';
-        $usuario2['categoria_cve'] = '36112580';
-        $usuario2['categoria_nom'] = 'SUPERV PROYECTOS E3';
-        $usuario2['nombre_grupo'] = 'Primer nivel:Coordinador Clínico de Educación e Investigación en Salud'; //5
-        $usuario2['nivel'] = 'Nivel 3';
-        $usuario2['id_region'] = 3;
-        $usuario2['name_region'] = 'Centro';
-        $usuario2['is_umae'] = '';
-
-        $usuario3['nombre'] = 'Ingrid Soto Venegas';
-        $usuario3['matricula'] = '311091329';
-        $usuario3['del_cve'] = '09';
-        $usuario3['del_nom'] = 'Oficinas centrales';
-        $usuario3['curp'] = 'SOVI7605038U4';
-        $usuario3['unidad_cve'] = 1388;
-        $usuario3['unidad_nom'] = 'U INVEST MED ENF NEUROL  S XXI';
-        $usuario3['tipo_unidad_cve'] = '';
-        $usuario3['categoria_cve'] = '37110580';
-        $usuario3['categoria_nom'] = 'COORD PROGS NIVEL CENTRAL E1';
-        $usuario3['nombre_grupo'] = 'Primer nivel:Coordinador Clínico de Educación e Investigación en Salud'; //5
-        $usuario3['nivel'] = 'Nivel Central';
-        $usuario3['id_region'] = '';
-        $usuario3['name_region'] = '';
-        $usuario3['is_umae'] = '';
-        $_SESSION['usuario'] = $usuario3;*/
     }
     
     public function index(){
@@ -340,10 +273,10 @@ class Informacion_general extends MY_Controller
                     }
                     //pr($datos);
                     echo json_encode($resultado);
-                    exit();
                 } else {
-                    echo data_not_exist(); //Mostrar mensaje de datos no existentes
+                    echo json_encode(array('error'=>true,'msg'=>'No existen datos')); //Mostrar mensaje de datos no existentes
                 }
+                exit();
             }
         } else {
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
@@ -446,6 +379,9 @@ class Informacion_general extends MY_Controller
         } else {
             $unidad = 'de la unidad \''.$datos_usuario['name_unidad_ist'].'\'';
             $delegacion = 'de la delegación '.$datos_usuario['name_delegacion'];
+        }
+        if(!in_array($datos_usuario['grupos'][0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES,En_grupos::N2_DGU))) {
+            $unidad = '';
         }
         $periodo = $this->get_periodo_actual();
         return str_replace(array('$tipo_curso', '$unidad', '$delegacion', '$periodo'), array($tipo_curso, $unidad, $delegacion, $periodo), $titulo);

@@ -23,6 +23,7 @@ class Informacion_general_model extends CI_Model
      * @return array $resultado Contiene arreglo con los datos obtenidos de la base
      */
     public function calcular_totales($params = array()){
+        //pr($params);
         $resultado = array();
         //Condiciones utilizadas en informacion_general/index
         if(isset($params['perfil']) AND !empty($params['perfil'])){
@@ -75,6 +76,15 @@ class Informacion_general_model extends CI_Model
         if (array_key_exists('order', $params)) {
             $this->db->order_by($params['order']['field'], $params['order']['type']);
         }
+        ////Se agregan condiones establecidas para el tipo de grupo
+        $this->load->library('Configuracion_grupos');
+        $this->load->library('Catalogo_listado');
+        $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda();
+        //pr($configuracion);
+        if(!empty($configuracion['condicion_calcular_totales'])){
+            $this->db->where($configuracion['condicion_calcular_totales']);
+        }
+        ////Fin se agregan condiones establecidas para el tipo de grupo
 
         //Periodo
         $periodo = '';
