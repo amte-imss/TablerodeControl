@@ -12,6 +12,7 @@
         <label class="col-form-label"><?php echo $name_categoria.'('.$clave_categoria.')'; ?></label>
     </div>
     <?php 
+    /*
     if($grupos[0]['id_grupo']==En_grupos::NIVEL_CENTRAL) { ?>
         <!-- <label class="col-lg-4 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['umae']; ?>:</label> -->
         <div class="col-lg-4 col-md-6 col-sm-6">
@@ -38,5 +39,5 @@
                 <label class="col-form-label"><?php echo $name_unidad_ist.'('.$clave_unidad.')'; ?></label>
             </div>
         <?php }
-    } ?>
+    } */?>
 </div>

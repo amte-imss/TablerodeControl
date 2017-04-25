@@ -48,8 +48,9 @@ function eficiencia_terminal(datos) {
     if (id_programa != "" && datos.length > 0) {
         programa = datos[0].programa;
     }
-    console.log(datos);
+    
     datos = procesa_datos_etm(datos);   
+    console.log(datos);
     var periodo = 2016;
     var titulo_grafica = "Ranking delegacional por eficiencia terminal del programa " + programa + " en el " + periodo;
     if (id_programa == "") {
@@ -71,8 +72,11 @@ function procesa_datos(datos) {
 function procesa_datos_etm(datos) {
     var salida = [];
     for (i = 0; i < datos.length; i++) {
-        if (datos[i].aprobados != datos[i].no_acceso) {
-            salida[i] = [datos[i].nombre, calcular_eficiencia_terminal(parseFloat(datos[i].inscritos), parseFloat(datos[i].aprobados), parseFloat(datos[i].no_acceso))];
+        if (datos[i].inscritos != datos[i].no_acceso) {
+            var eficiencia_terminal = (datos[i].aprobados/(datos[i].inscritos-datos[i].no_acceso))*100;
+            eficiencia_terminal = parseInt(eficiencia_terminal);
+           // console.log(datos[i].nombre + ' ' + datos[i].inscritos + ' ' + datos[i].aprobados + ' '+ datos[i].no_acceso + ' ' + calcular_eficiencia_terminal(datos[i].inscritos, datos[i].aprobados,datos[i].no_acceso));
+            salida[i] = [datos[i].nombre, eficiencia_terminal];
         } else {
             salida[i] = [datos[i].nombre, 0];
         }
