@@ -138,7 +138,7 @@ class User_model extends CI_Model
             , 'u.clave_delegacional', 'd.nombre name_delegacion'
             , 'u.clave_categoria', 'c.nombre name_categoria'
             , 'u.id_unidad_instituto', 'ui.nombre name_unidad_ist', 'ui.clave_unidad'
-            , 'r.id_region', 'd.nombre name_region', 'r.clave_regional', 'u.token', 'u.password'
+            , 'r.id_region', 'd.nombre name_region', 'r.clave_regional'
             , 'u.email', 'ui.umae', 'ui.id_tipo_unidad'
             , 'ui.nivel_atencion'
         );
@@ -152,14 +152,28 @@ class User_model extends CI_Model
 
         $this->db->where('u.matricula', $matricula);
         $query = $this->db->get();
-//        $result = $query->row();
         $result = [];
         if ($query)
         {
             $result = $query->result_array()[0];
             $query->free_result();
         }
+        $result['grupos'] = $this->get_grupos($result['id_usuario']);
         return $result;
+    }
+
+    public function get_grupos($id_usuario = 0)
+    {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array('A.id_grupo', 'B.nombre');
+        $this->db->select($select);
+        $this->db->join('sistema.grupos B ',' B.id_grupo = A.id_grupo', 'inner');
+        $this->db->where('A.activo', true);
+        $this->db->where('B.activo', true);
+        $this->db->where('A.id_usuario', $id_usuario);
+        $grupos = $this->db->get('sistema.grupos_usuarios A')->result_array();
+        return $grupos;
     }
 
 }

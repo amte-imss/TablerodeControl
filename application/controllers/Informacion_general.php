@@ -19,11 +19,14 @@ class Informacion_general extends MY_Controller
         parent::__construct();
         $this->load->helper(array('form', 'general'));
         $this->load->library('form_complete');
+        $this->load->library('Configuracion_grupos');
         $this->load->model('Informacion_general_model', 'inf_gen_model');
         $this->lang->load('interface'); //Cargar archivo de lenguaje
         $this->set_periodo_actual();
-        
-        $usuario['nombre'] = 'Fermin Reyes Chavez';
+
+
+        $_SESSION['usuario']['rol'] = 7;
+        /*$usuario['nombre'] = 'Fermin Reyes Chavez';
         $usuario['matricula'] = '99156322';
         $usuario['del_cve'] = '02';
         $usuario['del_nom'] = 'BAJA CALIFORNIA';
@@ -86,26 +89,25 @@ class Informacion_general extends MY_Controller
         $usuario3['id_region'] = '';
         $usuario3['name_region'] = '';
         $usuario3['is_umae'] = '';
-        $_SESSION['usuario'] = $usuario3;
+        $_SESSION['usuario'] = $usuario3;*/
     }
     
     public function index(){
+        pr($_SESSION['usuario']);
         $this->load->library('Catalogo_listado');
-        $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'))); //Obtener nivel de atenciónen otra llamada debido a que tiene el mismo indice que UMAE
-        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS, 
-            Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
-            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC'),
-            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true', 'valor'=>"CONCAT(nombre,' (',clave_unidad,')')")
-        )); //Catalogo_listado::PERIODO
-        $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
-        $datos['catalogos']['tipos_busqueda'] = array('perfil'=>$datos['lenguaje']['perfil'], 'tipo_curso'=>$datos['lenguaje']['tipo_curso'], 'periodo'=>$datos['lenguaje']['periodo'], 'nivel_atencion'=>$datos['lenguaje']['nivel_atencion'], 'region'=>$datos['lenguaje']['region'], 'delegacion'=>$datos['lenguaje']['delegacion'], 'umae'=>$datos['lenguaje']['umae']);
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+        $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
+        $datos['catalogos'] = $cat_list->obtener_catalogos($configuracion['catalogos']); //Catalogo_listado::PERIODO
+        
+        $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos        
+        $datos['catalogos']['tipos_busqueda'] = $configuracion['tipos_busqueda'];
         //pr($datos['catalogos']);
 
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
         $this->template->setSubTitle($this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
-        //$this->template->setDescripcion("Bienvenida a delegacional");
+        $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/index.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
@@ -126,8 +128,8 @@ class Informacion_general extends MY_Controller
         }
         //pr($datos);
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil']);
-        //$this->template->setDescripcion("Bienvenida a delegacional");
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_perfil'].'. '.$this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/por_perfil.tpl.php', $datos, true));
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
@@ -146,7 +148,8 @@ class Informacion_general extends MY_Controller
             }
         }
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
-        $this->template->setSubTitle($datos['lenguaje']['titulo_por_tipo_usuario']);
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_tipo_usuario'].'. '.$this->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/por_tipo_curso.tpl.php', $datos, true));
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
@@ -182,18 +185,46 @@ class Informacion_general extends MY_Controller
                 $res = array();
                 if(!empty($datos['datos'])){
                     $resultado = array();
-                    if(isset($datos_busqueda['destino']) AND $datos_busqueda['destino']=='tipo_curso'){
-                        foreach ($datos['datos'] as $key_tip => $tipos) {
-                            $resultado[$tipos['id_tipo_curso']]=$tipos['tipo_curso'];
+                    if(isset($datos_busqueda['destino'])) {
+                        switch ($datos_busqueda['destino']) {
+                            case 'tipo_curso':
+                                foreach ($datos['datos'] as $key_tip => $tipos) {
+                                    $resultado[$tipos['id_tipo_curso']]['principal']=$tipos['tipo_curso'];
+                                }
+                                break;
+                            case 'perfil':
+                                foreach ($datos['datos'] as $key_tip => $tipos) {
+                                    if(!is_null($tipos['id_subcategoria'])){
+                                        //pr($tipos);
+                                        $resultado[$tipos['id_subcategoria']]['principal']=$tipos['perfil'];
+                                        if(isset($tipos['grupo_categoria']) AND !empty($tipos['grupo_categoria'])) {
+                                            //pr($tipos['id_grupo_categoria'].'-'.$tipos['grupo_categoria']);
+                                            $resultado[$tipos['id_subcategoria']]['elementos'][$tipos['id_grupo_categoria']] = $tipos['grupo_categoria'];
+                                        }
+                                    }
+                                }
+                                break;
                         }
+                        //pr($resultado);
                     }
                     if(!empty($resultado)){
                         foreach ($resultado as $key_val => $valor) {
                             //echo '{"title":"'.$valor.'", "key":'.$key_val.', selected: true, "children":[]},';
-                            $res[$key_val]['title']=$valor;
+                            $res[$key_val]['title']=$valor['principal'];
                             $res[$key_val]["key"]=$key_val;
                             $res[$key_val]['selected']=true;
-                            $res[$key_val]["children"]=array();
+                            $res[$key_val]['expanded']=true;
+                            $res[$key_val]['icon']=false;
+                            $children = array();
+                            if(isset($valor['elementos']) AND !empty($valor['elementos'])){
+                                foreach ($valor['elementos'] as $key => $value) {
+                                    $children[$key]['title']=$value;
+                                    $children[$key]["key"]=$key;
+                                    $children[$key]['selected']=true;
+                                    $children[$key]['icon']=false;
+                                }
+                            }
+                            $res[$key_val]["children"]=$children;
                         }
                     } else {
                         $res = array('no_datos'=>'true');
@@ -409,8 +440,13 @@ class Informacion_general extends MY_Controller
         //pr($_SESSION);
         $datos_usuario = $this->session->userdata('usuario');
         $tipo_curso = 'a distancia';
-        $unidad = 'de la unidad \''.$datos_usuario['unidad_nom'].'\'';
-        $delegacion = 'de la delegación '.$datos_usuario['del_nom'];
+        if($datos_usuario['umae']==true){
+            $unidad = 'de la UMAE \''.$datos_usuario['name_unidad_ist'].'\'';
+            $delegacion = '';
+        } else {
+            $unidad = 'de la unidad \''.$datos_usuario['name_unidad_ist'].'\'';
+            $delegacion = 'de la delegación '.$datos_usuario['name_delegacion'];
+        }
         $periodo = $this->get_periodo_actual();
         return str_replace(array('$tipo_curso', '$unidad', '$delegacion', '$periodo'), array($tipo_curso, $unidad, $delegacion, $periodo), $titulo);
     }

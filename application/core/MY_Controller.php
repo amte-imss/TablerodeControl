@@ -68,4 +68,8 @@ class MY_Controller extends CI_Controller
         }
     }
 
+    public function mostrar_datos_generales(){
+        return $this->load->view('tc_template/datos_usuario.tpl.php', $this->session->userdata('usuario')+array('lenguaje'=>$this->lang->line('interface')['datos_usuario']), true);
+    }
+
 }

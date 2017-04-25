@@ -94,7 +94,7 @@ class Informacion_general_model extends CI_Model
             }*/
         }
         //$this->db->limit('500');
-        if(isset($params['destino']) AND !empty($params['destino'])){
+        if(isset($params['destino']) AND !empty($params['destino'])){ ///Se utiliza para construir los listados (tree) de vista por_perfil y por_tipo_curso
             $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso');
             $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
         } else {

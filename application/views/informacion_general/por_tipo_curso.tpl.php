@@ -14,19 +14,6 @@
             <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
             <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-header" data-background-color="orange">
-                    <?php echo $lenguaje['perfil']; ?>
-                </div>
-                <div class="card-content">
-                    <div id="perfil_tree"></div>
-                    <div><input type="hidden" id="perfil_seleccion" name="perfil_seleccion"></div>
-                    <div><input type="hidden" id="perfil_seleccion_rootkey" name="perfil_seleccion_rootkey"></div>
-                    <div><input type="hidden" id="perfil_seleccion_node" name="perfil_seleccion_node"></div>
-                </div>
-            </div>
-        </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-header" data-background-color="green">
@@ -74,6 +61,19 @@
                         ); ?>
                         <span class="material-input"></span>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header" data-background-color="orange">
+                    <?php echo $lenguaje['perfil']; ?>
+                </div>
+                <div class="card-content">
+                    <div id="perfil_tree"></div>
+                    <div><input type="hidden" id="perfil_seleccion" name="perfil_seleccion"></div>
+                    <div><input type="hidden" id="perfil_seleccion_rootkey" name="perfil_seleccion_rootkey"></div>
+                    <div><input type="hidden" id="perfil_seleccion_node" name="perfil_seleccion_node"></div>
                 </div>
             </div>
         </div>
@@ -156,8 +156,8 @@
             $("#temporal_tipo_busqueda").val(recurso);
         }
         if($("#temporal_tipo_busqueda").val()==recurso){
-            if($('#perfil_seleccion').val()==''){
-                $('#perfil_seleccion').val('-1');
+            if($('#tipo_curso_seleccion').val()==''){
+                $('#tipo_curso_seleccion').val('-1');
             }
             var dataSend = $(form_recurso).serialize();
             //console.log(dataSend);
@@ -189,7 +189,12 @@
                     var tree = $('#'+destino+'_tree').fancytree('getTree');
                     var t = [];
                     $.each(response, function(i, item) {
-                        t.push(item)
+                        var children = [];
+                        $.each(item.children, function(sub, subitem) {
+                            children.push(subitem);
+                        });
+                        item.children=children;
+                        t.push(item);
                     });
                     tree.reload(t);
                     $('#'+destino+'_tree').show('slow');
@@ -220,12 +225,6 @@
             selectMode: 3,
             source: SOURCE,
             icon: false,
-            /*lazyLoad: function(event, ctx) {
-                ctx.result = {url: "ajax-sub2.json", debugDelay: 1000};
-            },
-            loadChildren: function(event, ctx) {
-                ctx.node.fixSelection3AfterClick();
-            },*/
             select: function(event, data) {
                 // Get a list of all selected nodes, and convert to a key array:
                 var selKeys = $.map(data.tree.getSelectedNodes(), function(node){
@@ -241,9 +240,6 @@
                 });
                 $("#perfil_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#perfil_seleccion_node").val(selRootNodes.join(","));
-
-                ////Código que permite cambiar las opciones del tree
-                buscar_filtros_listados(site_url+'/informacion_general/buscar_filtros_listados', '#form_busqueda', 'perfil', 'tipo_curso');
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();
@@ -268,12 +264,6 @@
             checkbox: true,
             selectMode: 3,
             source: SOURCE2,
-            /*lazyLoad: function(event, ctx) {
-                ctx.result = {url: "ajax-sub2.json", debugDelay: 1000};
-            },
-            loadChildren: function(event, ctx) {
-                ctx.node.fixSelection3AfterClick();
-            },*/
             icon: false,
             select: function(event, data) {
                 // Get a list of all selected nodes, and convert to a key array:
@@ -290,6 +280,9 @@
                 });
                 $("#tipo_curso_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#tipo_curso_seleccion_node").val(selRootNodes.join(","));
+
+                ////Código que permite cambiar las opciones del tree
+                buscar_filtros_listados(site_url+'/informacion_general/buscar_filtros_listados', '#form_busqueda', 'tipo_curso', 'perfil');
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();
