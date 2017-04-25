@@ -16,30 +16,7 @@ if ($full_view == 1)
                 </div>
                 <div class="panel-body">
                     <div>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>URL</th>
-                                    <th>Tipo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($modulos as $row)
-                                {
-                                    ?>
-                                    <tr>
-                                        <td><a onclick="get_info_modulo(<?php echo $row['id_modulo']; ?>)" data-toggle="modal" data-target="#myModal"><?php echo $row['nombre']; ?></a></td>
-                                        <td><?php echo $row['url']; ?></td>
-                                        <td><?php echo $row['configurador']; ?></td>
-                                        <!--<td>Editar</td>-->
-                                    </tr>
-                                    <?php
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                    <?php echo render_modulo($modulos); ?>
                     </div>
                 </div>
             </div>

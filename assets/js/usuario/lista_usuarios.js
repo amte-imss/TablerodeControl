@@ -11,15 +11,17 @@ $(function () {
 function set_status_usuario(id_usuario) {
     var status = document.getElementById('usuario_chbox_' + id_usuario).checked;
     $.ajax({
-        url: site_url + "/registro/set_status/" + id_usuario
+        url: site_url + "/usuario/set_status/" + id_usuario
         , method: "post"
         , data: {status: status}
-        , success: function (response) {
-
-        }
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }
+        , beforeSend: function (xhr) {
+            mostrar_loader();
+        }
+    }).done(function (response) {
+        ocultar_loader();
     });
 }
 

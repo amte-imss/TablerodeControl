@@ -19,49 +19,32 @@ class Ranking extends MY_Controller
         parent::__construct();
         $this->load->library('form_complete');
         $this->load->model('Ranking_model', 'ranking');
+        $this->lang->load('ranking', 'spanish');
     }
 
-    public function index(){
+    public function index()
+    {
         $output = array();
-        $output['regiones'] = dropdown_options($this->ranking->get_regiones(), 'id_region', 'nombre');
+        $output['lenguaje'] = $this->lang->line('index');
         $output['usuario'] = $this->session->userdata('usuario');
-        if(!empty($output['usuario']['id_region'])){
-            $output['delegaciones'] = dropdown_options($this->ranking->get_delegaciones($output['usuario']['id_region']), 'id_delegacion', 'nombre');
-        }else{
-            $output['delegaciones'] = [];
-        }
-        if(!empty($output['usuario']['id_delegacion'])){
-            $output['tipos_unidades'] = dropdown_options($this->ranking->get_tipo_unidad_by_delegacion($output['usuario']['id_delegacion']), 'id_tipo_unidad', 'nombre');
-        }else{
-            $output['tipos_unidades'] = [];
-        }
-        if(!empty($output['usuario']['id_unidad_instituto'])){
-            $output['cursos'] = dropdown_options($this->ranking->get_cursos_by_delegacion($output['usuario']['id_unidad_instituto']), 'id_curso', 'nombre');
-        }else{
-            $output['cursos'] = [];
-        }
-//        $output['usuario']['umae'] = true;
-//        pr($output['usuario']);
-        if($output['usuario']['umae']){
-            $output['view_filtros'] = $this->load->view('ranking/view_filtros_umae', $output, true);
-        }else{
-            $output['view_filtros'] = $this->load->view('ranking/view_filtros', $output, true);
-        }
+        $output['programas'] = dropdown_options($this->ranking->get_programas(), 'id_programa_proyecto', 'proyecto');
+        $output['periodos'] = $this->ranking->get_periodos();
+        $output['graficas'] = $this->ranking->get_tipos_reportes();
+        $this->template->setTitle($output['lenguaje']['title']);
+        $this->template->setSubTitle($output['lenguaje']['subtitle']);
+        $this->template->setDescripcion($this->mostrar_datos_generales());
         $main_content = $this->load->view('ranking/index', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
-    
-    public function get_data(){
-        if($this->input->post()){
-            $id_curso = $this->input->post('curso', true);
-            $output['titulo'] = 'Aprobados';
-            $output['datos'] = $this->ranking->get_lista_aprobados($id_curso);
-            $tabla1 = $this->load->view('ranking/tabla', $output, true);
-            $output['titulo'] = 'Eficiencia terminal';
-            $output['datos'] = $this->ranking->get_lista_etm( $id_curso);
-            $tabla2 = $this->load->view('ranking/tabla', $output, true);
-            echo $tabla1.'<br>'.$tabla2;
+
+    public function get_data()
+    {
+        if ($this->input->post())
+        {
+            $datos = $this->ranking->get_data($this->input->post());
+            echo json_encode($datos);
         }
     }
+
 }

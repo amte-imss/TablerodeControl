@@ -16,6 +16,7 @@ class Modulo extends MY_Controller
         $this->load->library('form_complete');
         $this->load->model('Modulo_model', 'modulo');
         $this->load->model('Grupos_usuarios_model', 'grupos');
+        $this->load->helper('modulo_helper');
     }
 
     public function index($full_view = 1)

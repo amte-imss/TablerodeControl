@@ -7,7 +7,11 @@ function get_form_modulos_grupo() {
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }
+        , beforeSend: function (xhr) {
+            mostrar_loader();
+        }
     }).done(function (response) {
         $('#area_grupo').html(response);
+        ocultar_loader();
     });
 }

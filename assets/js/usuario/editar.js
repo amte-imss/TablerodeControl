@@ -8,19 +8,23 @@ $(function () {
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
+            , beforeSend: function (xhr) {
+                mostrar_loader();
+            }
         }).done(function (response) {
             $('#area_grupos').html(response);
+             ocultar_loader();
         });
     });
 
-    $('#unidad_texto').keyup(function() {
+    $('#unidad_texto').keyup(function () {
         keyword = document.getElementById('unidad_texto').value;
         console.log('buscando:' + keyword);
         $.ajax({
             url: site_url + '/buscador/search_unidad_instituto'
             , method: "post"
             , timeout: 200
-            , data: {keyword:keyword}
+            , data: {keyword: keyword}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -29,15 +33,15 @@ $(function () {
             $('#unidad_autocomplete').html(response);
         });
     });
-    
-    $('#categoria_texto').keyup(function() {
+
+    $('#categoria_texto').keyup(function () {
         keyword = document.getElementById('categoria_texto').value;
         console.log('buscando:' + keyword);
         $.ajax({
             url: site_url + '/buscador/search_categoria'
             , method: "post"
             , timeout: 200
-            , data: {keyword:keyword}
+            , data: {keyword: keyword}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -48,7 +52,7 @@ $(function () {
     });
 });
 
-function set_value_unidad(id_unidad, unidad){
+function set_value_unidad(id_unidad, unidad) {
     console.log(unidad);
     document.getElementById('unidad').value = id_unidad;
     document.getElementById('unidad_texto').value = unidad;
@@ -57,7 +61,7 @@ function set_value_unidad(id_unidad, unidad){
 }
 
 
-function set_value_categoria(id_categoria, categoria){
+function set_value_categoria(id_categoria, categoria) {
     console.log(categoria);
     document.getElementById('categoria').value = id_categoria;
     document.getElementById('categoria_texto').value = categoria;

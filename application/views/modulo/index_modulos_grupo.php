@@ -18,6 +18,7 @@
                                 echo $this->form_complete->create_element(
                                         array('id' => 'grupo',
                                             'type' => 'dropdown',
+                                            'first'=>array(''=>'Seleccione...'),
                                             'options' => $grupos,
                                             'attributes' => array('name' => 'grupo',
                                                 'class' => 'form-control  form-control input-sm',

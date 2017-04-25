@@ -9,9 +9,13 @@ $(function () {
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
+            , beforeSend: function (xhr) {
+                mostrar_loader();
+            }
         }).done(function (response) {
             console.log(response);
             refresh_page();
+            ocultar_loader();
         });
     });
 });

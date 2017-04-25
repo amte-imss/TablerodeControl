@@ -33,7 +33,12 @@ class Modulo_model extends CI_Model
         {
             $this->db->where('A.id_modulo', $id_modulo);
         }
+        $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
+        if ($id_modulo <= 0)
+        {
+            $modulos = $this->get_tree($modulos);
+        }
         return $modulos;
     }
 
@@ -43,7 +48,7 @@ class Modulo_model extends CI_Model
         $this->db->reset_query();
         $select = array(
             'A.id_modulo', 'A.nombre', 'A.descripcion', 'A.url', 'A.visible', 'A.orden'
-            , 'A.id_configurador', 'B.nombre configurador'
+            , 'A.id_configurador', 'B.nombre configurador', 'A.id_modulo_padre'
         );
         $this->db->select($select);
         $this->db->join('sistema.configuradores B', 'B.id_configurador = A.id_configurador', 'inner');
@@ -53,6 +58,7 @@ class Modulo_model extends CI_Model
         $this->db->where('C.activo', true);
         $this->db->where('D.activo', true);
         $this->db->where('C.id_grupo', $id_grupo);
+        $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
     }
 
@@ -62,7 +68,7 @@ class Modulo_model extends CI_Model
         $this->db->reset_query();
         $select = array(
             'A.id_modulo', 'A.nombre', 'A.descripcion', 'A.url', 'A.visible', 'A.orden'
-            , 'A.id_configurador', 'B.nombre configurador', 'C.id_grupo'
+            , 'A.id_configurador', 'B.nombre configurador', 'C.id_grupo', 'A.id_modulo_padre'
         );
         $this->db->select($select);
         if ($todos)
@@ -78,7 +84,9 @@ class Modulo_model extends CI_Model
             $this->db->where('C.activo', true);
             $this->db->where('C.id_grupo', $id_grupo);
         }
+        $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
+        $modulos = $this->get_tree($modulos);
         //pr($this->db->last_query());
         return $modulos;
     }
@@ -164,17 +172,56 @@ class Modulo_model extends CI_Model
         return $status;
     }
 
-    public function insert(&$datos = array()){
+    public function insert(&$datos = array())
+    {
         $status = false;
         $insert = array(
-            'nombre' => $datos['nombre'], 
-            'url' => $datos['url'], 
-            'id_modulo_padre' => $datos['padre'], 
-            'orden' => $datos['orden'], 
-            'id_configurador' => $datos['tipo'], 
+            'nombre' => $datos['nombre'],
+            'url' => $datos['url'],
+            'id_modulo_padre' => $datos['padre'],
+            'orden' => $datos['orden'],
+            'id_configurador' => $datos['tipo'],
             'visible' => $datos['visible']
         );
         $this->db->insert('sistema.modulos', $insert);
         return $status;
     }
+
+    private function get_tree($modulos = array())
+    {
+        $niveles_tree = 10;
+        $pre_tree = [];
+        for ($i = 0; $i < $niveles_tree + 1; $i++)
+        {
+            foreach ($modulos as $row)
+            {
+                if (!isset($pre_tree[$row['id_modulo']]))
+                {
+                    $pre_tree[$row['id_modulo']]= $row;
+                    
+                }
+                //pr($pre_tree[$row['id_modulo']]);
+                if (isset($pre_tree[$row['id_modulo_padre']]) /* && !isset($pre_menu[$row['id_menu_padre']]['childs'][$row['id_menu']]) */)
+                {
+//                    pr($row['id_modulo']['id_modulo_padre']);
+                    $pre_tree[$row['id_modulo_padre']]['childs'][$row['id_modulo']] = $pre_tree[$row['id_modulo']];
+                }else{
+                    //pr($row['id_modulo']['id_modulo_padre']);
+                }
+            }
+        }
+        $tree = [];
+//        pr($pre_tree);
+
+        foreach ($pre_tree as $row)
+        {
+            if (empty($row['id_modulo_padre']) && !isset($tree[$row['id_modulo']]))
+            {
+                $tree[$row['id_modulo']] = $row;
+            }
+        }
+        //pr($tree);
+        return $tree;
+    }
+
 }

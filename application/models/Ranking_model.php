@@ -14,177 +14,115 @@ class Ranking_model extends CI_Model
         $this->load->database();
     }
 
-    public function get_regiones()
+    public function get_programas()
     {
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'id_region', 'nombre'
+            'id_programa_proyecto', 'concat(nombre, $$ [$$, clave, $$]$$) proyecto'
         );
         $this->db->select($select);
         $this->db->where('activo', true);
-        $regiones = $this->db->get('catalogos.regiones')->result_array();
-        return $regiones;
+        $proyectos = $this->db->get('catalogos.programas_proyecto')->result_array();
+        return $proyectos;
     }
 
-    public function get_delegaciones($id_region = 0)
+    public function get_periodos()
     {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $select = array(
-            'A.id_delegacion', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.regiones B', ' B.id_region = A.id_region', 'inner');
-        $this->db->where('A.activo', true);
-        $this->db->where('B.activo', true);
-        $this->db->where('A.id_region', $id_region);
-        $delegaciones = $this->db->get('catalogos.delegaciones A')->result_array();
-        return $delegaciones;
+        return array('2016' => '2016');
     }
 
-    public function get_tipo_unidad_by_delegacion($id_delegacion)
+    public function get_tipos_reportes()
     {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $this->db->distinct();
-        $select = array(
-            'A.id_tipo_unidad', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.unidades_instituto B', 'B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
-        $this->db->join('catalogos.delegaciones C', 'B.id_delegacion = C.id_delegacion', 'inner');
-        $this->db->where('A.activa', true);
-        $this->db->where('B.activa', true);
-        $this->db->where('C.activo', true);
-        $this->db->where('B.id_delegacion', $id_delegacion);
-        $tipos_unidades = $this->db->get('catalogos.tipos_unidades A')->result_array();
-        return $tipos_unidades;
+        return array(1 => 'Aprobados', 2 => 'Por eficiencia terminal');
     }
 
-    public function get_tipo_unidad_by_region($id_region)
+    public function get_data($filtros = [])
     {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $this->db->distinct();
-        $select = array(
-            'A.id_tipo_unidad', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.unidades_instituto B', 'B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
-        $this->db->join('catalogos.delegaciones C', 'B.id_delegacion = C.id_delegacion', 'inner');
-        $this->db->join('catalogos.regiones D', 'B.id_region = C.id_region', 'inner');
-        $this->db->where('A.activa', true);
-        $this->db->where('B.activa', true);
-        $this->db->where('C.activo', true);
-        $this->db->where('D.activo', true);
-        $this->db->where('D.id_region', $id_region);
-        $tipos_unidades = $this->db->get('catalogos.tipos_unidades A')->result_array();
-        return $tipos_unidades;
-    }
-
-    public function get_unidades($id_delegacion = 0, $id_tipo_unidad = 0)
-    {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $select = array(
-            'A.id_unidad_instituto', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.delegaciones B', 'B.id_delegacion = A.id_delegacion', 'inner');
-        $this->db->join('catalogos.tipos_unidades C', ' C.id_tipo_unidad = A.id_tipo_unidad', 'inner');
-        $this->db->where('B.activo', true);
-        $this->db->where('C.activa', true);
-        $this->db->where('A.activa', true);
-        $this->db->where('A.id_delegacion', $id_delegacion);
-        $this->db->where('A.id_tipo_unidad', $id_tipo_unidad);
-        $unidades = $this->db->get('catalogos.unidades_instituto A')->result_array();
-        return $unidades;
-    }
-
-    public function get_cursos_by_delegacion($id_delegacion = 0, $id_tipo_unidad = 0)
-    {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $select = array(
-            'A.id_curso', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.implementaciones B ', ' B.id_curso = A.id_curso', 'inner');
-        $this->db->join('hechos.hechos_implementaciones_alumnos C', 'C.id_implementacion = B.id_implementacion', 'inner');
-        $this->db->join('catalogos.unidades_instituto D ', ' D.id_unidad_instituto = C.id_unidad_instituto', 'inner');
-        $this->db->where('D.id_delegacion', $id_delegacion);
-        $this->db->where('D.id_tipo_unidad', $id_tipo_unidad);
-        $cursos = $this->db->get('catalogos.cursos A')->result_array();
-        return $cursos;
-    }
-    
-        public function get_cursos_by_region($id_region = 0, $id_tipo_unidad = 0)
-    {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $this->db->distinct();
-        $select = array(
-            'A.id_curso', 'A.nombre'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.implementaciones B ', ' B.id_curso = A.id_curso', 'inner');
-        $this->db->join('hechos.hechos_implementaciones_alumnos C', 'C.id_implementacion = B.id_implementacion', 'inner');
-        $this->db->join('catalogos.unidades_instituto D ', ' D.id_unidad_instituto = C.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.delegaciones E', 'E.id_delegacion = D.id_delegacion', 'inner');
-        $this->db->where('E.id_region', $id_region);
-        $this->db->where('D.id_tipo_unidad', $id_tipo_unidad);
-        $cursos = $this->db->get('catalogos.cursos A')->result_array();
-        return $cursos;
-    }
-
-    public function get_lista_aprobados($id_curso)
-    {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $select = array(
-            'A.id_unidad_instituto', 'D.nombre unidad', 'C.id_curso', 'sum("A".cantidad_alumnos_certificados) cantidad'
-        );
-        $this->db->select($select);
-        $this->db->join('catalogos.implementaciones B', ' B.id_implementacion = A.id_implementacion', 'inner');
-        $this->db->join('catalogos.cursos C', 'C.id_curso = B.id_curso', 'inner');
-        $this->db->join('catalogos.unidades_instituto D', 'D.id_unidad_instituto = A.id_unidad_instituto', 'inner');
-        $this->db->where('C.id_curso', $id_curso);
-        $this->db->group_by('A.id_unidad_instituto, D.nombre, C.id_curso');
-        $this->db->order_by('cantidad', 'desc');
-        $this->db->limit(10);
-        $datos = $this->db->get('hechos.hechos_implementaciones_alumnos A ')->result_array();
+        if(isset($filtros['tipo']) && $filtros['tipo'] == 2){
+            $datos = $this->get_eficiencia_terminal($filtros);
+        }else{
+            $datos = $this->get_aprobados($filtros);
+        }
         return $datos;
     }
 
-    public function get_lista_etm($id_curso)
+    private function get_aprobados(&$filtros = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
-        $select = array(
-            'A.id_unidad_instituto', 'D.nombre unidad', 'C.id_curso', 'sum("A".cantidad_alumnos_certificados) aprobados',
-            'sum("A".cantidad_alumnos_inscritos) inscritos', 'sum("AA".cantidad_no_accesos) no_acceso'
-        );
+        if (isset($filtros['programa']) && !empty($filtros['programa']))
+        {
+            $select = array(
+                'A.id_delegacion', 'A.nombre', 'G.nombre programa', 'sum("C".cantidad_alumnos_certificados) cantidad'
+            );
+        } else
+        {
+            $select = array(
+                'A.id_delegacion', 'A.nombre', 'sum("C".cantidad_alumnos_certificados) cantidad'
+            );
+        }
         $this->db->select($select);
-        $this->db->join('hechos.accesos_implemetaciones AA', 'AA.id_categoria = A.id_categoria and AA.id_implementacion = A.id_implementacion and AA.id_sexo = A.id_sexo and AA.id_unidad_instituto = A.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.implementaciones B', ' B.id_implementacion = A.id_implementacion', 'inner');
-        $this->db->join('catalogos.cursos C', 'C.id_curso = B.id_curso', 'inner');
-        $this->db->join('catalogos.unidades_instituto D', 'D.id_unidad_instituto = A.id_unidad_instituto', 'inner');
-        $this->db->where('C.id_curso', $id_curso);
-        $this->db->group_by('A.id_unidad_instituto, D.nombre, C.id_curso');
-        $this->db->having('(sum("A".cantidad_alumnos_inscritos)  - sum("AA".cantidad_no_accesos)) > 0');
-        $this->db->limit(10);
-        $query1 = $this->db->get_compiled_select('hechos.hechos_implementaciones_alumnos A');
-        $this->db->reset_query();
-        $select = array(
-            'unidad',  'aprobados::float/(inscritos::float-no_acceso::float)*100 cantidad'
-        );
-        $this->db->select($select);
-        $this->db->from('('.$query1.') BB');
+        $this->db->join('catalogos.unidades_instituto B', 'A.id_delegacion = B.id_delegacion', 'inner');
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
+        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
+        if (isset($filtros['programa']) && !empty($filtros['programa']))
+        {
+            $this->db->where('G.id_programa_proyecto', $filtros['programa']);
+            $this->db->group_by('A.id_delegacion, A.nombre, G.nombre');
+         
+        }else{
+            $this->db->group_by('A.id_delegacion, A.nombre');
+        }
         $this->db->order_by('cantidad', 'desc');
-        $datos = $this->db->get()->result_array();
-        
+        $datos = $this->db->get('catalogos.delegaciones A')->result_array();
+        //pr($this->db->last_query());
+        //pr($filtros);
         return $datos;
     }
 
+    private function get_eficiencia_terminal(&$filtros = array()){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        if (isset($filtros['programa']) && !empty($filtros['programa']))
+        {
+            $select = array(
+                'A.id_delegacion', 'A.nombre', 'G.nombre programa', 
+                'sum("C".cantidad_alumnos_certificados) aprobados', 
+                'sum("C".cantidad_alumnos_inscritos) inscritos', 
+                'sum("AA".cantidad_no_accesos) no_acceso'
+            );
+        } else
+        {
+            $select = array(
+                'A.id_delegacion', 'A.nombre', 
+                'sum("C".cantidad_alumnos_certificados) aprobados', 
+                'sum("C".cantidad_alumnos_inscritos) inscritos', 
+                'sum("AA".cantidad_no_accesos) no_acceso'
+            );
+        }
+        $this->db->select($select);
+        $this->db->join('catalogos.unidades_instituto B', 'A.id_delegacion = B.id_delegacion', 'inner');
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
+        $this->db->join('hechos.accesos_implemetaciones AA',' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'inner');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
+        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
+        if (isset($filtros['programa']) && !empty($filtros['programa']))
+        {
+            $this->db->where('G.id_programa_proyecto', $filtros['programa']);
+            $this->db->group_by('A.id_delegacion, A.nombre, G.nombre');
+         
+        }else{
+            $this->db->group_by('A.id_delegacion, A.nombre');
+        }        
+        $datos = $this->db->get('catalogos.delegaciones A')->result_array();
+        //pr($this->db->last_query());
+        //pr($filtros);
+        return $datos;
+    }
 }
