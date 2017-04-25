@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 
 $db['default'] = array(
-	'dsn'	=> 'pgsql:host=11.32.41.19;dbname=tablero',
+	'dsn'	=> 'pgsql:host=localhost;dbname=tablero_2_1',
 	'hostname' => 'localhost',
-	'username' => 'innovaedu',
-	'password' => 'nPgEoXCqd/?gV.,',
-	'database' => 'tablero',
+	'username' => 'postgres',
+	'password' => 'postgres',
+	'database' => 'tablero_2_1',
 	'dbdriver' => 'pdo',
 	'port' => '5432',
 	'dbprefix' => '',

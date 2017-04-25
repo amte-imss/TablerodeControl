@@ -35,7 +35,15 @@ class Demo extends My_Controller{
         case 'dt':
           $file = 'delegacion_tactico';
           break;
-        default: "";
+          case 'uo':
+            $file = 'unidad_operativo';
+            break;
+          case 'igo':
+          case 'ige':
+          case 'igt':
+            $file = $tipo;
+            break;
+        default: $file = 'region_estrategico';
       }
 
       $this->template->setBlank("dommie/comparativa/$file.tpl.php",null,FALSE);

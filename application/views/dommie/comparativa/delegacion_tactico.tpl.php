@@ -45,7 +45,7 @@
     <div class="card">
       <div class="card-header" data-background-color="purple">
         <h4 class="title">
-          Comparativa de regiones (Nivel estratégico)
+          Comparativa de Delegaciones (Nivel Táctico)
         </h4>
       </div>
       <div class="card-content">
@@ -100,7 +100,7 @@
          formatter: function () {
            //console.log(this.point);
            var columna = this.series.stackKey.replace('column','');
-          return '<b>Región: </b>' + columna + '<br/><b>' +
+          return '<b>Delegación: </b>' + columna + '<br/><b>' +
               this.series.name + '</b>: ' + this.y + '<br/>' +
               '<b>Total: </b>' + this.point.stackTotal;
 
@@ -179,12 +179,13 @@
      ],
 
    });
+
    Highcharts.chart('comparativa_chrt2', {
        chart: {
            type: 'column'
        },
        title: {
-           text: 'Tipos de curso por ión '
+           text: 'Tipos de curso por delegación'
        },
        subtitle: {
            text: ''
@@ -210,7 +211,7 @@
          formatter: function () {
            //console.log(this.point);
            var columna = this.series.stackKey.replace('column','');
-          return '<b>Región: </b>' + columna + '<br/><b>' +
+          return '<b>Delegación: </b>' + columna + '<br/><b>' +
               this.series.name + '</b>: ' + this.y + '<br/>' +
               '<b>Total: </b>' + this.point.stackTotal;
 
