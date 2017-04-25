@@ -9,3 +9,4 @@
 index.php
 !/application/views/modulo/index.php
 !/application/views/perfil_usuario/index.php
+!/application/views/ranking/index.php

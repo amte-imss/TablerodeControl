@@ -1,4 +1,3 @@
-<?php echo js('usuario/editar.js'); ?>
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
@@ -9,14 +8,17 @@
                 <div class="container" style="text-aligne:center; width: 650px; text-align: left;">
                     <!--form usuario completo-->
                     <?php
-                    if (isset($status) && $status)
+                    if (isset($status) && isset($formulario) && $formulario == 'datos_personales' && $status)
                     {
                         echo html_message('Usuario actualizado con éxito', 'success');
+                    }else if(isset($status) && isset($formulario) && $formulario == 'datos_personales'){
+                        echo html_message('Usuario no actualizado', 'danger');
                     }
                     ?>
                     <?php
-                    echo form_open('usuario/mod/' . $usuarios['id_usuario'], array('id' => 'form_actualizar'));
+                    echo form_open('perfil_usuario/index/', array('id' => 'form_actualizar'));
                     ?>
+                    <input type="hidden" name="formulario" value="datos_personales">
                     <div class="form-group">
                         <label class="col-md-4 control-label">Matrícula: </label>
                         <div class="col-md-6 input-group">
@@ -34,40 +36,7 @@
                             echo $this->form_complete->create_element(array('id' => 'email', 'type' => 'email', 'value' => $usuarios['email'], 'attributes' => array('name' => 'email', 'class' => 'form-control')));
                             ?>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Categoría: </label>
-                        <div class="col-md-6 input-group">
-                            <input type="hidden" name="categoria" id="categoria" value="<?php echo $usuarios['clave_categoria']; ?>">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <?php
-                            echo $this->form_complete->create_element(array('id' => 'categoria_texto', 
-                                'type' => 'text', 
-                                'value' => $usuarios['categoria_texto'],
-                                'attributes' => array('name' => 'categoria_texto', 'class' => 'form-control')));
-                            ?>
-                            <ul id="categoria_autocomplete" style="display:none;">
-                                
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Unidad: </label>
-                        <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input type="hidden" name="unidad" id="unidad" value="<?php echo $usuarios['id_unidad_instituto']; ?>">
-                            <?php
-                            echo $this->form_complete->create_element(array('id' => 'unidad_texto', 
-                                'type' => 'text', 
-                                'value' => $usuarios['unidad_texto'], 
-                                'attributes' => array('name' => 'unidad_texto', 'class' => 'form-control')));
-                            ?>
-                            <ul id="unidad_autocomplete" style="display:none;">
-                                
-                            </ul>
-                        </div>
+                        <?php echo form_error_format('email'); ?>
                     </div>
                 </div>
                 <br>
@@ -75,10 +44,6 @@
                     <label class="col-md-4 control-label"></label>
                     <button id="submit" name="submit" type="submit" class="btn btn-success"  style=" background-color:#008EAD">Guardar <span class=""></span></button>
                 </div>
-
-
-
-
                 <?php echo form_close(); ?>
 
             </div>
@@ -96,17 +61,18 @@
                 <div class="container" style="text-aligne:center; width: 650px; text-align: left;">
                     <!--form usuario completo-->
                     <?php
-                    if (isset($status_password) && $status_password && $status_password == 1)
+                    if (isset($status) && isset($formulario) && $formulario == 'update_password' && $status)
                     {
                         echo html_message('Contraseña actualizada con éxito', 'success');
-                    } else if (isset($status_password) && $status_password && $status_password == 2)
+                    } else if (isset($status) && isset($formulario) && $formulario == 'update_password')
                     {
                         echo html_message('Datos inválidos', 'danger');
                     }
                     ?>
                     <?php
-                    echo form_open('usuario/update_password/' . $usuarios['id_usuario'], array('id' => 'form_actualizar_password'));
+                    echo form_open('perfil_usuario/index/', array('id' => 'form_actualizar_password'));
                     ?>
+                    <input type="hidden" name="formulario" value="update_password">
                     <div class="form-group">
                         <label class="col-md-4 control-label">Contraseña: </label>
                         <div class="col-md-6 input-group">
@@ -122,10 +88,10 @@
                         <div class="col-md-6 input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <?php
-                            echo $this->form_complete->create_element(array('id' => 'pass_confirm', 'type' => 'password', 'attributes' => array('name' => 'pass_confirm', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'repass', 'type' => 'password', 'attributes' => array('name' => 'repass', 'class' => 'form-control')));
                             ?>
                         </div>
-                        <?php echo form_error_format('pass_confirm'); ?>
+                        <?php echo form_error_format('repass'); ?>
                     </div>
 
                     <br>

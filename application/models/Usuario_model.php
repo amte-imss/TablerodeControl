@@ -338,7 +338,7 @@ class Usuario_model extends CI_Model
                 $this->db->set('password', $password);
                 $this->db->where('id_usuario', $datos['id_usuario']);
                 $this->db->update('sistema.usuarios');
-                pr($this->db->last_query());
+//                pr($this->db->last_query());
                 $salida = true;
             } else
             {

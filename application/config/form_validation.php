@@ -5,14 +5,14 @@ if (!defined('BASEPATH'))
 
 $config = array(
     'formulario_nombre' => array(
-       array(
+        array(
             'field' => 'campo',
             'label' => 'Etiqueta visible',
             'rules' => 'required|regla2'
         ),
     ),
-     'form_user_update_password' => array(
-       array(
+    'form_user_update_password' => array(
+        array(
             'field' => 'pass',
             'label' => 'Contraseña',
             'rules' => 'required|min_length[8]'
@@ -69,30 +69,50 @@ $config = array(
     ),
 );
 
-$config["login"]= array(
-	array(
+$config["login"] = array(
+    array(
         'field' => 'usuario',
         'label' => 'Usuario',
         'rules' => 'required',
         'errors' => array(
-                'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
+            'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
         ),
-	),
-	array(
+    ),
+    array(
         'field' => 'password',
         'label' => 'Contraseña',
         'rules' => 'required',
         'errors' => array(
-                'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
+            'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
         ),
-	),
-	array(
+    ),
+    array(
         'field' => 'captcha',
         'label' => 'Imagen de seguridad',
         'rules' => 'required|check_captcha',
         'errors' => array(
-                'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
-                'check_captcha'=>"El texto no coincide con la imagen, favor de verificarlo."
+            'required' => 'El campo %s es obligatorio, favor de ingresarlo.',
+            'check_captcha' => "El texto no coincide con la imagen, favor de verificarlo."
         ),
-	),
+    ),
+);
+
+$config['form_actualizar_perfil'] = array(
+    array(
+        'field' => 'email',
+        'label' => 'Correo electrónico',
+        'rules' => 'trim|required|valida_correo_electronico' //|callback_valid_pass
+    ),
+);
+$config['form_actualizar_perfil_password'] = array(
+    array(
+        'field' => 'pass',
+        'label' => 'Contraseña',
+        'rules' => 'required' //|callback_valid_pass
+    ),
+    array(
+        'field' => 'repass',
+        'label' => 'Confirmación contraseña',
+        'rules' => 'required|matches[pass]'
+    ),
 );
