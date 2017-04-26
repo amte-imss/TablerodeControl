@@ -82,7 +82,7 @@
                     <br>
                     <p><?php echo 'Total: '.$departamentos['total'];  
                        echo $paginacion['links'];?></p>
-                    <table class="table table-bordered">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Clave departamental</th>

@@ -33,9 +33,9 @@ function aprobados(datos) {
     }
     datos = procesa_datos(datos);
     var periodo = 2016;
-    var titulo_grafica = "Ranking delegacional de alumnos aprobados del programa " + programa + " en el " + periodo;
+    var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en el " + periodo;
     if (id_programa == "") {
-        titulo_grafica = "Ranking delegacional de alumnos aprobados " + " en el " + periodo;
+        titulo_grafica = "Ranking de alumnos aprobados " + " en el " + periodo;
     }
     var texto = "Alumnos aprobados";
     var extra = '';
@@ -50,11 +50,10 @@ function eficiencia_terminal(datos) {
     }
     
     datos = procesa_datos_etm(datos);   
-    console.log(datos);
     var periodo = 2016;
-    var titulo_grafica = "Ranking delegacional por eficiencia terminal del programa " + programa + " en el " + periodo;
+    var titulo_grafica = "Ranking por eficiencia terminal del programa " + programa + " en el " + periodo;
     if (id_programa == "") {
-        titulo_grafica = "Ranking delegacional por eficiencia terminal " + " en el " + periodo;
+        titulo_grafica = "Ranking por eficiencia terminal " + " en el " + periodo;
     }
     var texto = "Porcentaje de eficiencia terminal";
     var extra = '';
@@ -81,7 +80,7 @@ function procesa_datos_etm(datos) {
             salida[i] = [datos[i].nombre, 0];
         }
     }
-    return salida;
+    return salida.sort(function(a, b){return b[1]-a[1]});;
 }
 
 function render_graph() {
@@ -126,7 +125,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra) {
                     rotation: -90,
                     color: '#FFFFFF',
                     align: 'right',
-                    format: '{point.y:.1f}', // one decimal
+                    format: '{point.y}', // one decimal
                     y: 10, // 10 pixels down from the top
                     style: {
                         fontSize: '13px',

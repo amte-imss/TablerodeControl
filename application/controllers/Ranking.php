@@ -27,6 +27,10 @@ class Ranking extends MY_Controller
         $output = array();
         $output['lenguaje'] = $this->lang->line('index');
         $output['usuario'] = $this->session->userdata('usuario');
+        if (is_nivel_central($output['usuario']['grupos']))
+        {
+            $output['usuario']['central'] = true;
+        }
         $output['programas'] = dropdown_options($this->ranking->get_programas(), 'id_programa_proyecto', 'proyecto');
         $output['periodos'] = $this->ranking->get_periodos();
         $output['graficas'] = $this->ranking->get_tipos_reportes();
@@ -42,7 +46,12 @@ class Ranking extends MY_Controller
     {
         if ($this->input->post())
         {
-            $datos = $this->ranking->get_data($this->input->post());
+            $usuario = $this->session->userdata('usuario');
+            if ($this->input->post('umae', true))
+            {
+                $usuario['umae'] = true;
+            }
+            $datos = $this->ranking->get_data($usuario, $this->input->post());
             echo json_encode($datos);
         }
     }

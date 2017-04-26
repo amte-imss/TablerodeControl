@@ -418,3 +418,18 @@ if (!function_exists('startsWith'))
          return (substr($haystack, 0, $length) === $needle);
     }
 }
+
+if (!function_exists('is_nivel_central')) 
+{
+    function is_nivel_central($grupos = array()){
+        $salida = false;
+        foreach ($grupos as $grupo){
+            $id = $grupo['id_grupo'];
+            if($id == 6 || $id == 13){
+                $salida = true;
+            }
+        }
+        return $salida;
+    }
+}
+    

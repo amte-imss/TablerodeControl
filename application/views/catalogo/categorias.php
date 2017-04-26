@@ -82,7 +82,7 @@
                     <br>
                     <p><?php echo 'Total: '.$categorias['total'];  
                        echo $paginacion['links'];?></p>
-                    <table class="table table-bordered">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Clave de categoría</th>

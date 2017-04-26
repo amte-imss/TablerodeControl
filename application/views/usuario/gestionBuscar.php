@@ -83,7 +83,7 @@
                     <br>
                     <p><?php echo 'Total: '.$usuarios['total'];  
                        echo $paginacion['links'];?></p>
-                    <table class="table table-bordered">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Matrícula</th>
