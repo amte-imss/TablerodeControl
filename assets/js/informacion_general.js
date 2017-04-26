@@ -76,11 +76,11 @@ function obtener_categoria_serie(datos){
             data: certificados,
             stack: 'aprobados'
         }, {
-            name: 'No acceso',
+            name: 'Nunca entraron',
             data: no_acceso,
             stack: 'no_aprobado'
         }, {
-            name: 'No aprobado',
+            name: 'No aprobados',
             data: no_aprobado,
             stack: 'no_aprobado'
         }];
@@ -102,6 +102,7 @@ function calcular_totales(path, form_recurso) {
         if(typeof(response.total) != "undefined"){
             $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
             $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+            $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
             $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
             $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
         }
@@ -268,6 +269,7 @@ function buscar_perfil(path, form_recurso) {
             if(response.total == 0){
                 $('#total_alumnos_inscritos').html('-');
                 $('#total_alumnos_aprobados').html('-');
+                $('#total_alumnos_no_aprobados').html('-');
                 $('#total_alumnos_no_acceso').html('-');
                 $('#total_eficiencia_terminal').html('-');
                 $("#div_resultado").hide();
@@ -277,6 +279,7 @@ function buscar_perfil(path, form_recurso) {
             } else {
                 $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
                 $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+                $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
                 $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
                 $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
                 $("#div_resultado").show();
@@ -286,6 +289,7 @@ function buscar_perfil(path, form_recurso) {
                 var periodo = obtener_categoria_serie(response.periodo);
                 crear_grafica_stacked('container_perfil', '', periodo.categorias, 'Número de alumnos', periodo.series);
             }
+            $(".collapse_element").collapse("hide");
         }
     })
     .fail(function (jqXHR, textStatus) {
@@ -295,6 +299,17 @@ function buscar_perfil(path, form_recurso) {
     .always(function () {
         ocultar_loader();
     });
+}
+
+function limpiar_filtros_listados(){
+    var perfil_tree = $('#perfil_tree').fancytree('getTree');
+    perfil_tree.reload(SOURCE);
+    var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
+    tipo_curso_tree.reload(SOURCE2);
+    $("#temporal_tipo_busqueda").val('');
+    setTimeout(function() {   //calls click event after a certain time
+       buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+    }, 500);
 }
 
 function mostrar_tipo_grafica(elemento){

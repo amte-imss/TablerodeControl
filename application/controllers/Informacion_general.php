@@ -319,6 +319,7 @@ class Informacion_general extends MY_Controller
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        //pr($resultado);
                         //Periodo
                         /*if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'])){
                             $resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'] = 0;

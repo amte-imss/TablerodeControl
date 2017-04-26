@@ -69,7 +69,8 @@ class MY_Controller extends CI_Controller
     }
 
     public function mostrar_datos_generales(){
-        return $this->load->view('tc_template/datos_usuario.tpl.php', $this->session->userdata('usuario')+array('lenguaje'=>$this->lang->line('interface')['datos_usuario']+$this->lang->line('interface')['informacion_general']), true);
+        $usuario = (is_null($this->session->userdata('usuario'))) ? array('name_user'=>null, 'matricula'=>null, 'name_categoria'=>null, 'clave_categoria'=>null, 'name_unidad_ist'=>null, 'clave_unidad'=>null, 'name_delegacion'=>null, 'umae'=>null, 'grupos'=>array(0=>array('id_grupo'=>null))) : $this->session->userdata('usuario');
+        return $this->load->view('tc_template/datos_usuario.tpl.php', $usuario+array('lenguaje'=>$this->lang->line('interface')['datos_usuario']+$this->lang->line('interface')['informacion_general']), true);
     }
 
 }
