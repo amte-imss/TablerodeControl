@@ -40,6 +40,7 @@ function aprobados(datos) {
     var texto = "Alumnos aprobados";
     var extra = '';
     graficar_ranking(datos, titulo_grafica, texto, periodo, extra);
+    graficar_ranking_vertical(datos, titulo_grafica, texto, periodo, extra);
 }
 
 function eficiencia_terminal(datos) {
@@ -58,6 +59,7 @@ function eficiencia_terminal(datos) {
     var texto = "Porcentaje de eficiencia terminal";
     var extra = '';
     graficar_ranking(datos, titulo_grafica, texto, periodo, extra);
+    graficar_ranking_vertical(datos, titulo_grafica, texto, periodo, extra);
 }
 
 function procesa_datos(datos) {
@@ -123,6 +125,53 @@ function    graficar_ranking(datos, titulo, texto, year, extra) {
                 , dataLabels: {
                     enabled: true,
                     rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+    });
+}
+
+function graficar_ranking_vertical(datos, titulo, texto, year, extra) {
+    Highcharts.chart('area_graph_vertical', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: titulo
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: texto
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: texto + ' en' + year + ' : <b>{point.y:.1f}' + extra + '</b>'
+        },
+        series: [{
+                name: texto,
+                data: datos
+                , dataLabels: {
+                    enabled: true,
                     color: '#FFFFFF',
                     align: 'right',
                     format: '{point.y}', // one decimal

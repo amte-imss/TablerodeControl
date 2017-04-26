@@ -84,7 +84,7 @@ class Usuario extends MY_Controller
         $output['paginacion'] = $paginacion;
         $view = $this->load->view('usuario/gestionBuscar', $output, true);
         $this->template->setMainContent($view);
-        //   echo $table['links'];
+        $this->template->setSubTitle('Usuarios');
         $this->template->getTemplate();
     }
 
@@ -123,6 +123,7 @@ class Usuario extends MY_Controller
             }
             $main_content = $this->load->view('usuario/ver_registro_completo', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Editar usuario');
             $this->template->getTemplate();
         }
     }
@@ -208,6 +209,7 @@ class Usuario extends MY_Controller
         }
         $main_content = $this->load->view('usuario/formulario_carga', array(), true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Carga masiva de usuarios');
         $this->template->getTemplate();
     }
 

@@ -3,7 +3,7 @@
     <div class="col col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Registro de usuario</h3>
+                <h3 class="panel-title">Datos básicos</h3>
             </div> <br><br>
             <div class="panel-body">
                 <div class="container" style="text-aligne:center; width: 650px; text-align: left;">

@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version 	: 1.0.0
  * @autor 		: Christian García
  */
-class Hechos extends CI_Controller
+class Hechos extends MY_Controller
 {
 
     /**
@@ -21,9 +21,7 @@ class Hechos extends CI_Controller
         $this->load->library('form_complete');
         $this->load->library('form_validation');
         $this->load->model('Hechos_model', 'hechos');
-        $this->load->model('Menu_model', 'menu');
-        $menu = $this->menu->get_menu_usuario();
-        $this->template->setNav($menu);
+        $this->template->setSubTitle('Hechos');
     }
 
     /**
@@ -88,6 +86,7 @@ class Hechos extends CI_Controller
         $data['lista'] = $this->hechos->get_lista();
         $main_content = $this->load->view('hechos/lista', $data, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Hechos');
         $this->template->getTemplate();
     }
 
@@ -96,6 +95,7 @@ class Hechos extends CI_Controller
         $output['status'] = $status;
         $main_content = $this->load->view('hechos/formulario', $output, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Nuevo hecho');
         $this->template->getTemplate();
     }
 

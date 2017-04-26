@@ -21,6 +21,7 @@ class Reportes_estaticos extends MY_Controller
         $this->load->library('form_complete');
         $this->load->library('form_validation');
         $this->load->model('Reportes_estaticos_model', 'reporte_model');
+        $this->template->setTitle('Reportes estáticos');
     }
 
     public function index($status = null)
@@ -30,6 +31,7 @@ class Reportes_estaticos extends MY_Controller
         
         $main_content = $this->load->view('reportes_estaticos/tabla', $reportes, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Reportes estáticos');
         $this->template->getTemplate();
     }
 
@@ -95,6 +97,7 @@ class Reportes_estaticos extends MY_Controller
         $output['status'] = $status;
         $main_content = $this->load->view('reportes_estaticos/formulario', $output, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Nuevo reporte estático');
         $this->template->getTemplate();
     }
 

@@ -16,6 +16,7 @@ class Catalogo extends MY_Controller
         $this->load->library('form_complete');
         $this->load->model('Catalogo_model', 'catalogo');
         $this->load->library('grocery_CRUD');
+        $this->template->setTitle('Catálogos');
     }
 
     public function index()
@@ -78,6 +79,7 @@ class Catalogo extends MY_Controller
             $output = $crud->render();
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setSubTitle('Alineaciones estrategicas');
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -106,6 +108,7 @@ class Catalogo extends MY_Controller
         $output['paginacion'] = $paginacion;
         $view = $this->load->view('catalogo/categorias', $output, true);
         $this->template->setMainContent($view);
+        $this->template->setSubTitle('Categorías');
         $this->template->getTemplate();
     }
 
@@ -149,6 +152,7 @@ class Catalogo extends MY_Controller
             $output = $crud->render();
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setSubTitle('Cursos');
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -197,6 +201,7 @@ class Catalogo extends MY_Controller
             $output = $crud->render();
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setSubTitle('Delegaciones');
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)
@@ -225,6 +230,7 @@ class Catalogo extends MY_Controller
         $output['paginacion'] = $paginacion;
         $view = $this->load->view('catalogo/departamentos', $output, true);
         $this->template->setMainContent($view);
+        $this->template->setSubTitle('Departamentos');
         $this->template->getTemplate();
     }
 
@@ -257,6 +263,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Grupos de categorías');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -307,6 +314,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Implementaciones');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -349,6 +357,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Líneas de acción');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -391,6 +400,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Líneas estratégicas');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -472,6 +482,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Programas');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -515,6 +526,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Regiones');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -557,6 +569,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Temas prioritarios');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -598,6 +611,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Tipos de curso');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -638,6 +652,7 @@ class Catalogo extends MY_Controller
 
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Tipos de unidades');
             $this->template->getTemplate();
         } catch (Exception $e)
         {
@@ -665,6 +680,7 @@ class Catalogo extends MY_Controller
         $output['paginacion'] = $paginacion;
         $view = $this->load->view('catalogo/unidades', $output, true);
         $this->template->setMainContent($view);
+        $this->template->setSubTitle('Unidades instituto');
         $this->template->getTemplate();
     }
 

@@ -1,9 +1,6 @@
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Carga de reportes estáticos</h3>
-            </div> <br><br>
             <div class="panel-body">
                 <div class="container" style="text-aligne:center; width: 650px; text-align: left;">
                     <?php

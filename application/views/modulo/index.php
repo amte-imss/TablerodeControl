@@ -11,9 +11,6 @@ if ($full_view == 1)
     <div ng-class="panelClass" class="row">
         <div class="col col-sm-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Modulos</h3>
-                </div>
                 <div class="panel-body">
                     <div>
                     <?php echo render_modulo($modulos); ?>

@@ -10,6 +10,7 @@ class Administracion extends MY_Controller
         parent::__construct();
         $this->load->library("session");
         $this->load->helper('url');
+        $this->template->setTitle('Administración');
     }
 
     public function index()
@@ -33,6 +34,7 @@ class Administracion extends MY_Controller
 
             $output = $crud->render();
             $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setSubTitle('Configuración de grupos');
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         } catch (Exception $e)

@@ -1,9 +1,6 @@
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Reporte</h3>
-            </div> <br><br>
             <div class="panel-body">
 
 <div class="row">
