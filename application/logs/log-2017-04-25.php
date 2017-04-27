@@ -14813,3 +14813,1179 @@ INFO - 2017-04-25 02:37:38 --> File loaded: /Applications/mappstack/apache2/htdo
 INFO - 2017-04-25 02:37:38 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
 INFO - 2017-04-25 02:37:38 --> Final output sent to browser
 DEBUG - 2017-04-25 02:37:38 --> Total execution time: 0.0531
+INFO - 2017-04-25 09:01:09 --> Config Class Initialized
+INFO - 2017-04-25 09:01:09 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:01:09 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:01:09 --> URI Class Initialized
+INFO - 2017-04-25 09:01:09 --> Router Class Initialized
+INFO - 2017-04-25 09:01:09 --> Output Class Initialized
+INFO - 2017-04-25 09:01:09 --> Security Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:01:09 --> Input Class Initialized
+INFO - 2017-04-25 09:01:09 --> Language Class Initialized
+INFO - 2017-04-25 09:01:09 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:01:09 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:01:09 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:01:09 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:01:09 --> Controller Class Initialized
+INFO - 2017-04-25 09:01:09 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:01:09 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:01:09 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:01:09 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:01:09 --> Config Class Initialized
+INFO - 2017-04-25 09:01:09 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:01:09 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:01:09 --> URI Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> No URI present. Default controller set.
+INFO - 2017-04-25 09:01:09 --> Router Class Initialized
+INFO - 2017-04-25 09:01:09 --> Output Class Initialized
+INFO - 2017-04-25 09:01:09 --> Security Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:01:09 --> Input Class Initialized
+INFO - 2017-04-25 09:01:09 --> Language Class Initialized
+INFO - 2017-04-25 09:01:09 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:01:09 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:01:09 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:01:09 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:01:09 --> Controller Class Initialized
+INFO - 2017-04-25 09:01:09 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:01:09 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:01:09 --> Model Class Initialized
+INFO - 2017-04-25 09:01:09 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:01:09 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:01:09 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:01:09 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:01:09 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/login.tpl.php
+INFO - 2017-04-25 09:01:09 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/blank.tpl.php
+INFO - 2017-04-25 09:01:09 --> Final output sent to browser
+DEBUG - 2017-04-25 09:01:09 --> Total execution time: 0.0622
+INFO - 2017-04-25 09:01:09 --> Config Class Initialized
+INFO - 2017-04-25 09:01:09 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:01:09 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:01:09 --> URI Class Initialized
+INFO - 2017-04-25 09:01:09 --> Router Class Initialized
+INFO - 2017-04-25 09:01:09 --> Output Class Initialized
+INFO - 2017-04-25 09:01:09 --> Security Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:01:09 --> Input Class Initialized
+INFO - 2017-04-25 09:01:09 --> Language Class Initialized
+INFO - 2017-04-25 09:01:09 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:01:09 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:01:09 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:01:09 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:01:09 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:01:09 --> Controller Class Initialized
+DEBUG - 2017-04-25 09:01:09 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:01:09 --> Helper loaded: secureimage_helper
+DEBUG - 2017-04-25 09:01:09 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:22 --> Config Class Initialized
+INFO - 2017-04-25 09:04:22 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:22 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:22 --> URI Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> No URI present. Default controller set.
+INFO - 2017-04-25 09:04:22 --> Router Class Initialized
+INFO - 2017-04-25 09:04:22 --> Output Class Initialized
+INFO - 2017-04-25 09:04:22 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:22 --> Input Class Initialized
+INFO - 2017-04-25 09:04:22 --> Language Class Initialized
+INFO - 2017-04-25 09:04:22 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:22 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:22 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:22 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:22 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:22 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:22 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:04:22 --> Model Class Initialized
+INFO - 2017-04-25 09:04:22 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:22 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:04:22 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:04:22 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:22 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/login.tpl.php
+INFO - 2017-04-25 09:04:22 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/blank.tpl.php
+INFO - 2017-04-25 09:04:22 --> Final output sent to browser
+DEBUG - 2017-04-25 09:04:22 --> Total execution time: 0.0377
+INFO - 2017-04-25 09:04:22 --> Config Class Initialized
+INFO - 2017-04-25 09:04:22 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:22 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:22 --> URI Class Initialized
+INFO - 2017-04-25 09:04:22 --> Router Class Initialized
+INFO - 2017-04-25 09:04:22 --> Output Class Initialized
+INFO - 2017-04-25 09:04:22 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:22 --> Input Class Initialized
+INFO - 2017-04-25 09:04:22 --> Language Class Initialized
+INFO - 2017-04-25 09:04:22 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:22 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:22 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:22 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:22 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:22 --> Controller Class Initialized
+DEBUG - 2017-04-25 09:04:22 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:22 --> Helper loaded: secureimage_helper
+DEBUG - 2017-04-25 09:04:22 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:28 --> Config Class Initialized
+INFO - 2017-04-25 09:04:28 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:28 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:28 --> URI Class Initialized
+INFO - 2017-04-25 09:04:28 --> Router Class Initialized
+INFO - 2017-04-25 09:04:28 --> Output Class Initialized
+INFO - 2017-04-25 09:04:28 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:28 --> Input Class Initialized
+INFO - 2017-04-25 09:04:28 --> Language Class Initialized
+INFO - 2017-04-25 09:04:28 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:28 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:28 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:28 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:28 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:28 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:28 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:04:28 --> Model Class Initialized
+INFO - 2017-04-25 09:04:28 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:28 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:04:28 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:04:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:04:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/form_validation.php
+INFO - 2017-04-25 09:04:28 --> Language file loaded: language/spanish/form_validation_lang.php
+DEBUG - 2017-04-25 09:04:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:04:28 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:28 --> Config Class Initialized
+INFO - 2017-04-25 09:04:28 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:28 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:28 --> URI Class Initialized
+INFO - 2017-04-25 09:04:28 --> Router Class Initialized
+INFO - 2017-04-25 09:04:28 --> Output Class Initialized
+INFO - 2017-04-25 09:04:28 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:28 --> Input Class Initialized
+INFO - 2017-04-25 09:04:28 --> Language Class Initialized
+INFO - 2017-04-25 09:04:28 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:28 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:28 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:28 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:28 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:28 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:28 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:28 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:04:28 --> Model Class Initialized
+INFO - 2017-04-25 09:04:28 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:28 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:04:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:04:28 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:04:28 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:28 --> Model Class Initialized
+INFO - 2017-04-25 09:04:28 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:04:28 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/welcome/dashboard.php
+INFO - 2017-04-25 09:04:28 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:04:28 --> Final output sent to browser
+DEBUG - 2017-04-25 09:04:28 --> Total execution time: 0.0221
+INFO - 2017-04-25 09:04:44 --> Config Class Initialized
+INFO - 2017-04-25 09:04:44 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:44 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:44 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:44 --> URI Class Initialized
+INFO - 2017-04-25 09:04:44 --> Router Class Initialized
+INFO - 2017-04-25 09:04:44 --> Output Class Initialized
+INFO - 2017-04-25 09:04:44 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:44 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:44 --> Input Class Initialized
+INFO - 2017-04-25 09:04:44 --> Language Class Initialized
+ERROR - 2017-04-25 09:04:44 --> 404 Page Not Found: Informacion_general/por_periodo
+INFO - 2017-04-25 09:04:49 --> Config Class Initialized
+INFO - 2017-04-25 09:04:49 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:49 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:49 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:49 --> URI Class Initialized
+INFO - 2017-04-25 09:04:49 --> Router Class Initialized
+INFO - 2017-04-25 09:04:49 --> Output Class Initialized
+INFO - 2017-04-25 09:04:49 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:49 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:49 --> Input Class Initialized
+INFO - 2017-04-25 09:04:49 --> Language Class Initialized
+INFO - 2017-04-25 09:04:49 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:49 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:49 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:49 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:49 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:49 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:49 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:49 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:49 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:49 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:49 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:49 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:49 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:04:49 --> Model Class Initialized
+INFO - 2017-04-25 09:04:49 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:49 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:04:49 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:04:49 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:04:49 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:49 --> Model Class Initialized
+INFO - 2017-04-25 09:04:49 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:04:49 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/welcome/dashboard.php
+INFO - 2017-04-25 09:04:49 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:04:49 --> Final output sent to browser
+DEBUG - 2017-04-25 09:04:49 --> Total execution time: 0.0468
+INFO - 2017-04-25 09:04:53 --> Config Class Initialized
+INFO - 2017-04-25 09:04:53 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:53 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:53 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:53 --> URI Class Initialized
+INFO - 2017-04-25 09:04:53 --> Router Class Initialized
+INFO - 2017-04-25 09:04:53 --> Output Class Initialized
+INFO - 2017-04-25 09:04:53 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:53 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:53 --> Input Class Initialized
+INFO - 2017-04-25 09:04:53 --> Language Class Initialized
+INFO - 2017-04-25 09:04:53 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:53 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:53 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:53 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:53 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:53 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:53 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:53 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:53 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:53 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:53 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:53 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:04:53 --> Model Class Initialized
+INFO - 2017-04-25 09:04:53 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:53 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:53 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:04:53 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:53 --> Model Class Initialized
+DEBUG - 2017-04-25 09:04:53 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:04:53 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:53 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/datos_usuario.tpl.php
+INFO - 2017-04-25 09:04:53 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/informacion_general/por_perfil.tpl.php
+INFO - 2017-04-25 09:04:53 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:04:53 --> Final output sent to browser
+DEBUG - 2017-04-25 09:04:53 --> Total execution time: 0.1138
+INFO - 2017-04-25 09:04:54 --> Config Class Initialized
+INFO - 2017-04-25 09:04:54 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:04:54 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:04:54 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:04:54 --> URI Class Initialized
+INFO - 2017-04-25 09:04:54 --> Router Class Initialized
+INFO - 2017-04-25 09:04:54 --> Output Class Initialized
+INFO - 2017-04-25 09:04:54 --> Security Class Initialized
+DEBUG - 2017-04-25 09:04:54 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:04:54 --> Input Class Initialized
+INFO - 2017-04-25 09:04:54 --> Language Class Initialized
+INFO - 2017-04-25 09:04:54 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:04:54 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:04:54 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:04:54 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:04:54 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:04:54 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:04:54 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:04:54 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:04:54 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:04:54 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:04:54 --> Controller Class Initialized
+INFO - 2017-04-25 09:04:54 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:04:54 --> Model Class Initialized
+INFO - 2017-04-25 09:04:54 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:54 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:04:54 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:04:54 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:04:54 --> Model Class Initialized
+DEBUG - 2017-04-25 09:04:54 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:04:54 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:04:54 --> Configuracion_grupos class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:04:55 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/informacion_general/tabla.tpl.php
+INFO - 2017-04-25 09:04:55 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/informacion_general/tabla.tpl.php
+INFO - 2017-04-25 09:05:57 --> Config Class Initialized
+INFO - 2017-04-25 09:05:57 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:05:57 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:05:57 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:05:57 --> URI Class Initialized
+INFO - 2017-04-25 09:05:57 --> Router Class Initialized
+INFO - 2017-04-25 09:05:57 --> Output Class Initialized
+INFO - 2017-04-25 09:05:57 --> Security Class Initialized
+DEBUG - 2017-04-25 09:05:57 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:05:57 --> Input Class Initialized
+INFO - 2017-04-25 09:05:57 --> Language Class Initialized
+INFO - 2017-04-25 09:05:57 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:05:57 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:05:57 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:05:57 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:05:57 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:05:57 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:05:57 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:05:57 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:05:57 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:05:57 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:05:57 --> Controller Class Initialized
+INFO - 2017-04-25 09:05:57 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:05:57 --> Model Class Initialized
+INFO - 2017-04-25 09:05:57 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:05:57 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:05:57 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:05:57 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:05:57 --> Model Class Initialized
+DEBUG - 2017-04-25 09:05:57 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:05:57 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:05:57 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/datos_usuario.tpl.php
+INFO - 2017-04-25 09:05:57 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/informacion_general/index.tpl.php
+INFO - 2017-04-25 09:05:57 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:05:57 --> Final output sent to browser
+DEBUG - 2017-04-25 09:05:57 --> Total execution time: 0.0931
+INFO - 2017-04-25 09:06:43 --> Config Class Initialized
+INFO - 2017-04-25 09:06:43 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:06:43 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:06:43 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:06:43 --> URI Class Initialized
+INFO - 2017-04-25 09:06:43 --> Router Class Initialized
+INFO - 2017-04-25 09:06:43 --> Output Class Initialized
+INFO - 2017-04-25 09:06:43 --> Security Class Initialized
+DEBUG - 2017-04-25 09:06:43 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:06:43 --> Input Class Initialized
+INFO - 2017-04-25 09:06:43 --> Language Class Initialized
+INFO - 2017-04-25 09:06:43 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:06:43 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:06:43 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:06:43 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:06:43 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:06:43 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:06:43 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:06:43 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:06:43 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:06:43 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:06:43 --> Controller Class Initialized
+INFO - 2017-04-25 09:06:43 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:06:43 --> Model Class Initialized
+INFO - 2017-04-25 09:06:43 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:06:43 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:06:43 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:06:43 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:06:43 --> Model Class Initialized
+DEBUG - 2017-04-25 09:06:43 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:06:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:06:43 --> Configuracion_grupos class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:12:41 --> Config Class Initialized
+INFO - 2017-04-25 09:12:41 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:12:41 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:12:41 --> URI Class Initialized
+INFO - 2017-04-25 09:12:41 --> Router Class Initialized
+INFO - 2017-04-25 09:12:41 --> Output Class Initialized
+INFO - 2017-04-25 09:12:41 --> Security Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:12:41 --> Input Class Initialized
+INFO - 2017-04-25 09:12:41 --> Language Class Initialized
+INFO - 2017-04-25 09:12:41 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:12:41 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:12:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:12:41 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:12:41 --> Controller Class Initialized
+INFO - 2017-04-25 09:12:41 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:12:41 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:12:41 --> Model Class Initialized
+INFO - 2017-04-25 09:12:41 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:12:41 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:12:41 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:12:41 --> Config Class Initialized
+INFO - 2017-04-25 09:12:41 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:12:41 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:12:41 --> URI Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> No URI present. Default controller set.
+INFO - 2017-04-25 09:12:41 --> Router Class Initialized
+INFO - 2017-04-25 09:12:41 --> Output Class Initialized
+INFO - 2017-04-25 09:12:41 --> Security Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:12:41 --> Input Class Initialized
+INFO - 2017-04-25 09:12:41 --> Language Class Initialized
+INFO - 2017-04-25 09:12:41 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:12:41 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:12:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:12:41 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:12:41 --> Controller Class Initialized
+INFO - 2017-04-25 09:12:41 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:12:41 --> Form Validation Class Initialized
+INFO - 2017-04-25 09:12:41 --> Model Class Initialized
+INFO - 2017-04-25 09:12:41 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:12:41 --> Database Driver Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+INFO - 2017-04-25 09:12:41 --> Language file loaded: language/spanish/session_lang.php
+DEBUG - 2017-04-25 09:12:41 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:12:41 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/login.tpl.php
+INFO - 2017-04-25 09:12:41 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/blank.tpl.php
+INFO - 2017-04-25 09:12:41 --> Final output sent to browser
+DEBUG - 2017-04-25 09:12:41 --> Total execution time: 0.0183
+INFO - 2017-04-25 09:12:41 --> Config Class Initialized
+INFO - 2017-04-25 09:12:41 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:12:41 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:12:41 --> URI Class Initialized
+INFO - 2017-04-25 09:12:41 --> Router Class Initialized
+INFO - 2017-04-25 09:12:41 --> Output Class Initialized
+INFO - 2017-04-25 09:12:41 --> Security Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:12:41 --> Input Class Initialized
+INFO - 2017-04-25 09:12:41 --> Language Class Initialized
+INFO - 2017-04-25 09:12:41 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:12:41 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:12:41 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:12:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:12:41 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:12:41 --> Controller Class Initialized
+DEBUG - 2017-04-25 09:12:41 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:12:41 --> Helper loaded: secureimage_helper
+DEBUG - 2017-04-25 09:12:41 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:13:45 --> Config Class Initialized
+INFO - 2017-04-25 09:13:45 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:13:45 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:13:45 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:13:45 --> URI Class Initialized
+INFO - 2017-04-25 09:13:45 --> Router Class Initialized
+INFO - 2017-04-25 09:13:45 --> Output Class Initialized
+INFO - 2017-04-25 09:13:45 --> Security Class Initialized
+DEBUG - 2017-04-25 09:13:45 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:13:45 --> Input Class Initialized
+INFO - 2017-04-25 09:13:45 --> Language Class Initialized
+INFO - 2017-04-25 09:13:45 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:13:45 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:13:45 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:13:45 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:13:45 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:13:45 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:13:45 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:13:45 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:13:45 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:13:45 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:13:45 --> Controller Class Initialized
+INFO - 2017-04-25 09:13:45 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:13:45 --> Model Class Initialized
+INFO - 2017-04-25 09:13:45 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:13:45 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:13:45 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:13:45 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:13:45 --> Model Class Initialized
+DEBUG - 2017-04-25 09:13:45 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:13:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:13:45 --> Configuracion_grupos class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:14:04 --> Config Class Initialized
+INFO - 2017-04-25 09:14:04 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:14:04 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:14:04 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:14:04 --> URI Class Initialized
+INFO - 2017-04-25 09:14:04 --> Router Class Initialized
+INFO - 2017-04-25 09:14:04 --> Output Class Initialized
+INFO - 2017-04-25 09:14:04 --> Security Class Initialized
+DEBUG - 2017-04-25 09:14:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:14:04 --> Input Class Initialized
+INFO - 2017-04-25 09:14:04 --> Language Class Initialized
+INFO - 2017-04-25 09:14:04 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:14:04 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:14:04 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:14:04 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:14:04 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:14:04 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:14:04 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:14:04 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:14:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:14:04 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:14:04 --> Controller Class Initialized
+INFO - 2017-04-25 09:14:04 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:14:04 --> Model Class Initialized
+INFO - 2017-04-25 09:14:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:14:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:14:04 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:14:04 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:14:04 --> Model Class Initialized
+DEBUG - 2017-04-25 09:14:04 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:14:04 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:14:04 --> Configuracion_grupos class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:14:25 --> Config Class Initialized
+INFO - 2017-04-25 09:14:25 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:14:25 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:14:25 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:14:25 --> URI Class Initialized
+INFO - 2017-04-25 09:14:25 --> Router Class Initialized
+INFO - 2017-04-25 09:14:25 --> Output Class Initialized
+INFO - 2017-04-25 09:14:25 --> Security Class Initialized
+DEBUG - 2017-04-25 09:14:25 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:14:25 --> Input Class Initialized
+INFO - 2017-04-25 09:14:25 --> Language Class Initialized
+INFO - 2017-04-25 09:14:25 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:14:25 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:14:25 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:14:25 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:14:25 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:14:25 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:14:25 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:14:25 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:14:25 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:14:25 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:14:25 --> Controller Class Initialized
+INFO - 2017-04-25 09:14:25 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:14:25 --> Model Class Initialized
+INFO - 2017-04-25 09:14:25 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:14:25 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:14:25 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:14:25 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:14:25 --> Model Class Initialized
+DEBUG - 2017-04-25 09:14:25 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/general.php
+DEBUG - 2017-04-25 09:14:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2017-04-25 09:14:25 --> Configuracion_grupos class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:36:47 --> Config Class Initialized
+INFO - 2017-04-25 09:36:47 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:36:47 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:36:47 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:36:47 --> URI Class Initialized
+INFO - 2017-04-25 09:36:47 --> Router Class Initialized
+INFO - 2017-04-25 09:36:47 --> Output Class Initialized
+INFO - 2017-04-25 09:36:47 --> Security Class Initialized
+DEBUG - 2017-04-25 09:36:47 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:36:47 --> Input Class Initialized
+INFO - 2017-04-25 09:36:47 --> Language Class Initialized
+INFO - 2017-04-25 09:36:47 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:36:47 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:36:47 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:36:47 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:36:47 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:36:47 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:36:47 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:36:47 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:36:47 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:36:47 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:36:47 --> Controller Class Initialized
+INFO - 2017-04-25 09:36:47 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:36:47 --> Model Class Initialized
+INFO - 2017-04-25 09:36:47 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:36:47 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:36:47 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:36:47 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:36:47 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:36:47 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:36:47 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/igo.tpl.php
+INFO - 2017-04-25 09:36:47 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:36:47 --> Final output sent to browser
+DEBUG - 2017-04-25 09:36:47 --> Total execution time: 0.0526
+INFO - 2017-04-25 09:43:04 --> Config Class Initialized
+INFO - 2017-04-25 09:43:04 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:43:04 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:43:04 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:43:04 --> URI Class Initialized
+INFO - 2017-04-25 09:43:04 --> Router Class Initialized
+INFO - 2017-04-25 09:43:04 --> Output Class Initialized
+INFO - 2017-04-25 09:43:04 --> Security Class Initialized
+DEBUG - 2017-04-25 09:43:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:43:04 --> Input Class Initialized
+INFO - 2017-04-25 09:43:04 --> Language Class Initialized
+INFO - 2017-04-25 09:43:04 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:43:04 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:43:04 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:43:04 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:43:04 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:43:04 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:43:04 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:43:04 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:43:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:43:04 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:43:04 --> Controller Class Initialized
+INFO - 2017-04-25 09:43:04 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:43:04 --> Model Class Initialized
+INFO - 2017-04-25 09:43:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:43:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:43:04 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:43:04 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:43:04 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:43:04 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:43:04 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/igt.tpl.php
+INFO - 2017-04-25 09:43:04 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:43:04 --> Final output sent to browser
+DEBUG - 2017-04-25 09:43:04 --> Total execution time: 0.0518
+INFO - 2017-04-25 09:43:37 --> Config Class Initialized
+INFO - 2017-04-25 09:43:37 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:43:37 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:43:37 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:43:37 --> URI Class Initialized
+INFO - 2017-04-25 09:43:37 --> Router Class Initialized
+INFO - 2017-04-25 09:43:37 --> Output Class Initialized
+INFO - 2017-04-25 09:43:37 --> Security Class Initialized
+DEBUG - 2017-04-25 09:43:37 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:43:37 --> Input Class Initialized
+INFO - 2017-04-25 09:43:37 --> Language Class Initialized
+INFO - 2017-04-25 09:43:37 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:43:37 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:43:37 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:43:37 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:43:37 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:43:37 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:43:37 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:43:37 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:43:37 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:43:38 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:43:38 --> Controller Class Initialized
+INFO - 2017-04-25 09:43:38 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:43:38 --> Model Class Initialized
+INFO - 2017-04-25 09:43:38 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:43:38 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:43:38 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:43:38 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:43:38 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:43:38 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:43:38 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/ige.tpl.php
+INFO - 2017-04-25 09:43:38 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:43:38 --> Final output sent to browser
+DEBUG - 2017-04-25 09:43:38 --> Total execution time: 0.0540
+INFO - 2017-04-25 09:44:26 --> Config Class Initialized
+INFO - 2017-04-25 09:44:26 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:44:26 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:44:26 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:44:26 --> URI Class Initialized
+INFO - 2017-04-25 09:44:26 --> Router Class Initialized
+INFO - 2017-04-25 09:44:26 --> Output Class Initialized
+INFO - 2017-04-25 09:44:26 --> Security Class Initialized
+DEBUG - 2017-04-25 09:44:26 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:44:26 --> Input Class Initialized
+INFO - 2017-04-25 09:44:26 --> Language Class Initialized
+INFO - 2017-04-25 09:44:26 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:44:26 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:44:26 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:44:26 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:44:26 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:44:26 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:44:26 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:44:26 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:44:26 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:44:26 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:44:26 --> Controller Class Initialized
+INFO - 2017-04-25 09:44:26 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:44:26 --> Model Class Initialized
+INFO - 2017-04-25 09:44:26 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:44:26 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:44:26 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:44:26 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:44:26 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:44:26 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:44:26 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/igt.tpl.php
+INFO - 2017-04-25 09:44:26 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:44:26 --> Final output sent to browser
+DEBUG - 2017-04-25 09:44:26 --> Total execution time: 0.0493
+INFO - 2017-04-25 09:44:55 --> Config Class Initialized
+INFO - 2017-04-25 09:44:55 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:44:55 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:44:55 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:44:55 --> URI Class Initialized
+INFO - 2017-04-25 09:44:55 --> Router Class Initialized
+INFO - 2017-04-25 09:44:55 --> Output Class Initialized
+INFO - 2017-04-25 09:44:55 --> Security Class Initialized
+DEBUG - 2017-04-25 09:44:55 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:44:55 --> Input Class Initialized
+INFO - 2017-04-25 09:44:55 --> Language Class Initialized
+INFO - 2017-04-25 09:44:55 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:44:55 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:44:55 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:44:55 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:44:55 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:44:55 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:44:55 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:44:55 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:44:55 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:44:55 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:44:55 --> Controller Class Initialized
+INFO - 2017-04-25 09:44:55 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:44:55 --> Model Class Initialized
+INFO - 2017-04-25 09:44:55 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:44:55 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:44:55 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:44:55 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:44:55 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:44:55 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:44:55 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/ige.tpl.php
+INFO - 2017-04-25 09:44:55 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:44:55 --> Final output sent to browser
+DEBUG - 2017-04-25 09:44:55 --> Total execution time: 0.0307
+INFO - 2017-04-25 09:45:02 --> Config Class Initialized
+INFO - 2017-04-25 09:45:02 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:45:02 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:45:02 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:45:02 --> URI Class Initialized
+INFO - 2017-04-25 09:45:02 --> Router Class Initialized
+INFO - 2017-04-25 09:45:02 --> Output Class Initialized
+INFO - 2017-04-25 09:45:02 --> Security Class Initialized
+DEBUG - 2017-04-25 09:45:02 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:45:02 --> Input Class Initialized
+INFO - 2017-04-25 09:45:02 --> Language Class Initialized
+INFO - 2017-04-25 09:45:02 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:45:02 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:45:02 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:45:02 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:45:02 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:45:02 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:45:02 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:45:02 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:45:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:45:02 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:45:02 --> Controller Class Initialized
+INFO - 2017-04-25 09:45:02 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:45:02 --> Model Class Initialized
+INFO - 2017-04-25 09:45:02 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:45:02 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:45:02 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:45:02 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:45:02 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:45:02 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:45:02 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/ige.tpl.php
+INFO - 2017-04-25 09:45:02 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:45:02 --> Final output sent to browser
+DEBUG - 2017-04-25 09:45:02 --> Total execution time: 0.0267
+INFO - 2017-04-25 09:45:30 --> Config Class Initialized
+INFO - 2017-04-25 09:45:30 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:45:30 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:45:30 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:45:30 --> URI Class Initialized
+INFO - 2017-04-25 09:45:30 --> Router Class Initialized
+INFO - 2017-04-25 09:45:30 --> Output Class Initialized
+INFO - 2017-04-25 09:45:30 --> Security Class Initialized
+DEBUG - 2017-04-25 09:45:30 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:45:30 --> Input Class Initialized
+INFO - 2017-04-25 09:45:30 --> Language Class Initialized
+INFO - 2017-04-25 09:45:30 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:45:30 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:45:30 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:45:30 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:45:30 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:45:30 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:45:30 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:45:30 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:45:30 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:45:30 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:45:30 --> Controller Class Initialized
+INFO - 2017-04-25 09:45:30 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:45:30 --> Model Class Initialized
+INFO - 2017-04-25 09:45:30 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:45:30 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:45:30 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:45:30 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:45:30 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:45:30 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:45:30 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/ige.tpl.php
+INFO - 2017-04-25 09:45:30 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:45:30 --> Final output sent to browser
+DEBUG - 2017-04-25 09:45:30 --> Total execution time: 0.0261
+INFO - 2017-04-25 09:49:21 --> Config Class Initialized
+INFO - 2017-04-25 09:49:21 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:49:21 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:49:21 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:49:21 --> URI Class Initialized
+INFO - 2017-04-25 09:49:21 --> Router Class Initialized
+INFO - 2017-04-25 09:49:21 --> Output Class Initialized
+INFO - 2017-04-25 09:49:21 --> Security Class Initialized
+DEBUG - 2017-04-25 09:49:21 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:49:21 --> Input Class Initialized
+INFO - 2017-04-25 09:49:21 --> Language Class Initialized
+INFO - 2017-04-25 09:49:21 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:49:21 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:49:21 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:49:21 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:49:21 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:49:21 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:49:21 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:49:21 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:49:21 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:49:21 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:49:21 --> Controller Class Initialized
+INFO - 2017-04-25 09:49:21 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:49:21 --> Model Class Initialized
+INFO - 2017-04-25 09:49:21 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:49:21 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:49:21 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:49:21 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:49:21 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:49:21 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:49:21 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/unidad_operativo.tpl.php
+INFO - 2017-04-25 09:49:21 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:49:21 --> Final output sent to browser
+DEBUG - 2017-04-25 09:49:21 --> Total execution time: 0.0392
+INFO - 2017-04-25 09:56:28 --> Config Class Initialized
+INFO - 2017-04-25 09:56:28 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:56:28 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:56:28 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:56:28 --> URI Class Initialized
+INFO - 2017-04-25 09:56:28 --> Router Class Initialized
+INFO - 2017-04-25 09:56:28 --> Output Class Initialized
+INFO - 2017-04-25 09:56:28 --> Security Class Initialized
+DEBUG - 2017-04-25 09:56:28 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:56:28 --> Input Class Initialized
+INFO - 2017-04-25 09:56:28 --> Language Class Initialized
+INFO - 2017-04-25 09:56:28 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:56:28 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:56:28 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:56:28 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:56:28 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:56:28 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:56:28 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:56:28 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:56:28 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:56:28 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:56:28 --> Controller Class Initialized
+INFO - 2017-04-25 09:56:28 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:56:28 --> Model Class Initialized
+INFO - 2017-04-25 09:56:29 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:56:29 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:56:29 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:56:29 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:56:29 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:56:29 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:56:29 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/delegacion_tactico.tpl.php
+INFO - 2017-04-25 09:56:29 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:56:29 --> Final output sent to browser
+DEBUG - 2017-04-25 09:56:29 --> Total execution time: 0.0292
+INFO - 2017-04-25 09:58:39 --> Config Class Initialized
+INFO - 2017-04-25 09:58:39 --> Hooks Class Initialized
+DEBUG - 2017-04-25 09:58:39 --> UTF-8 Support Enabled
+INFO - 2017-04-25 09:58:39 --> Utf8 Class Initialized
+INFO - 2017-04-25 09:58:39 --> URI Class Initialized
+INFO - 2017-04-25 09:58:39 --> Router Class Initialized
+INFO - 2017-04-25 09:58:39 --> Output Class Initialized
+INFO - 2017-04-25 09:58:39 --> Security Class Initialized
+DEBUG - 2017-04-25 09:58:39 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 09:58:39 --> Input Class Initialized
+INFO - 2017-04-25 09:58:39 --> Language Class Initialized
+INFO - 2017-04-25 09:58:39 --> Loader Class Initialized
+DEBUG - 2017-04-25 09:58:39 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 09:58:39 --> Helper loaded: url_helper
+INFO - 2017-04-25 09:58:39 --> Helper loaded: asset_helper
+INFO - 2017-04-25 09:58:39 --> Helper loaded: general_helper
+INFO - 2017-04-25 09:58:39 --> Helper loaded: security_helper
+INFO - 2017-04-25 09:58:39 --> Helper loaded: html_helper
+INFO - 2017-04-25 09:58:39 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 09:58:39 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 09:58:39 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 09:58:39 --> Controller Class Initialized
+INFO - 2017-04-25 09:58:39 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 09:58:39 --> Model Class Initialized
+INFO - 2017-04-25 09:58:39 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:58:39 --> Database Driver Class Initialized
+INFO - 2017-04-25 09:58:39 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 09:58:39 --> Helper loaded: form_helper
+INFO - 2017-04-25 09:58:39 --> Language file loaded: language/spanish/comparativa_lang.php
+DEBUG - 2017-04-25 09:58:39 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 09:58:39 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/dommie/comparativa/region_estrategico.tpl.php
+INFO - 2017-04-25 09:58:39 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 09:58:39 --> Final output sent to browser
+DEBUG - 2017-04-25 09:58:39 --> Total execution time: 0.0364
+INFO - 2017-04-25 10:00:58 --> Config Class Initialized
+INFO - 2017-04-25 10:00:58 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:00:58 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:00:58 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:00:58 --> URI Class Initialized
+INFO - 2017-04-25 10:00:58 --> Router Class Initialized
+INFO - 2017-04-25 10:00:58 --> Output Class Initialized
+INFO - 2017-04-25 10:00:58 --> Security Class Initialized
+DEBUG - 2017-04-25 10:00:58 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:00:58 --> Input Class Initialized
+INFO - 2017-04-25 10:00:58 --> Language Class Initialized
+INFO - 2017-04-25 10:00:58 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:00:58 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:00:58 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:00:58 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:00:58 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:00:58 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:00:58 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:00:58 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:00:58 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:00:58 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:00:58 --> Controller Class Initialized
+INFO - 2017-04-25 10:00:58 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 10:00:58 --> Model Class Initialized
+INFO - 2017-04-25 10:00:58 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:00:58 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:00:58 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 10:00:58 --> Helper loaded: form_helper
+INFO - 2017-04-25 10:00:59 --> Model Class Initialized
+DEBUG - 2017-04-25 10:00:59 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:00:59 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/view_filtros.php
+INFO - 2017-04-25 10:00:59 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/index.php
+INFO - 2017-04-25 10:00:59 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/index.tpl.php
+INFO - 2017-04-25 10:00:59 --> Final output sent to browser
+DEBUG - 2017-04-25 10:00:59 --> Total execution time: 0.0567
+INFO - 2017-04-25 10:01:04 --> Config Class Initialized
+INFO - 2017-04-25 10:01:04 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:01:04 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:01:04 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:01:04 --> URI Class Initialized
+INFO - 2017-04-25 10:01:04 --> Router Class Initialized
+INFO - 2017-04-25 10:01:04 --> Output Class Initialized
+INFO - 2017-04-25 10:01:04 --> Security Class Initialized
+DEBUG - 2017-04-25 10:01:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:01:04 --> Input Class Initialized
+INFO - 2017-04-25 10:01:04 --> Language Class Initialized
+INFO - 2017-04-25 10:01:04 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:01:04 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:01:04 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:01:04 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:01:04 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:01:04 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:01:04 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:01:04 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:01:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:01:04 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:01:04 --> Controller Class Initialized
+DEBUG - 2017-04-25 10:01:04 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:01:04 --> Model Class Initialized
+INFO - 2017-04-25 10:01:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:04 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:04 --> Final output sent to browser
+DEBUG - 2017-04-25 10:01:04 --> Total execution time: 0.0283
+INFO - 2017-04-25 10:01:06 --> Config Class Initialized
+INFO - 2017-04-25 10:01:06 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:01:06 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:01:06 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:01:06 --> URI Class Initialized
+INFO - 2017-04-25 10:01:06 --> Router Class Initialized
+INFO - 2017-04-25 10:01:06 --> Output Class Initialized
+INFO - 2017-04-25 10:01:06 --> Security Class Initialized
+DEBUG - 2017-04-25 10:01:06 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:01:06 --> Input Class Initialized
+INFO - 2017-04-25 10:01:06 --> Language Class Initialized
+INFO - 2017-04-25 10:01:06 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:01:06 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:01:06 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:01:06 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:01:06 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:01:06 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:01:06 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:01:06 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:01:06 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:01:06 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:01:06 --> Controller Class Initialized
+DEBUG - 2017-04-25 10:01:06 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:01:06 --> Model Class Initialized
+INFO - 2017-04-25 10:01:06 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:06 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:06 --> Final output sent to browser
+DEBUG - 2017-04-25 10:01:06 --> Total execution time: 0.0278
+INFO - 2017-04-25 10:01:11 --> Config Class Initialized
+INFO - 2017-04-25 10:01:11 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:01:11 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:01:11 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:01:11 --> URI Class Initialized
+INFO - 2017-04-25 10:01:11 --> Router Class Initialized
+INFO - 2017-04-25 10:01:11 --> Output Class Initialized
+INFO - 2017-04-25 10:01:11 --> Security Class Initialized
+DEBUG - 2017-04-25 10:01:11 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:01:11 --> Input Class Initialized
+INFO - 2017-04-25 10:01:11 --> Language Class Initialized
+INFO - 2017-04-25 10:01:11 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:01:11 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:01:11 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:01:11 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:01:11 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:01:11 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:01:11 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:01:11 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:01:11 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:01:11 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:01:11 --> Controller Class Initialized
+DEBUG - 2017-04-25 10:01:11 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:01:11 --> Model Class Initialized
+INFO - 2017-04-25 10:01:11 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:11 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:11 --> Final output sent to browser
+DEBUG - 2017-04-25 10:01:11 --> Total execution time: 0.0351
+INFO - 2017-04-25 10:01:16 --> Config Class Initialized
+INFO - 2017-04-25 10:01:16 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:01:16 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:01:16 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:01:16 --> URI Class Initialized
+INFO - 2017-04-25 10:01:16 --> Router Class Initialized
+INFO - 2017-04-25 10:01:16 --> Output Class Initialized
+INFO - 2017-04-25 10:01:16 --> Security Class Initialized
+DEBUG - 2017-04-25 10:01:16 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:01:16 --> Input Class Initialized
+INFO - 2017-04-25 10:01:16 --> Language Class Initialized
+INFO - 2017-04-25 10:01:16 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:01:16 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:01:16 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:01:16 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:01:16 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:01:16 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:01:16 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:01:16 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:01:16 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:01:16 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:01:16 --> Controller Class Initialized
+INFO - 2017-04-25 10:01:16 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 10:01:16 --> Model Class Initialized
+INFO - 2017-04-25 10:01:16 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:16 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:01:16 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 10:01:16 --> Helper loaded: form_helper
+INFO - 2017-04-25 10:01:16 --> Model Class Initialized
+DEBUG - 2017-04-25 10:01:16 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:01:16 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:01:16 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:01:16 --> Final output sent to browser
+DEBUG - 2017-04-25 10:01:16 --> Total execution time: 0.0757
+INFO - 2017-04-25 10:02:54 --> Config Class Initialized
+INFO - 2017-04-25 10:02:54 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:02:54 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:02:54 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:02:54 --> URI Class Initialized
+INFO - 2017-04-25 10:02:54 --> Router Class Initialized
+INFO - 2017-04-25 10:02:54 --> Output Class Initialized
+INFO - 2017-04-25 10:02:54 --> Security Class Initialized
+DEBUG - 2017-04-25 10:02:54 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:02:54 --> Input Class Initialized
+INFO - 2017-04-25 10:02:54 --> Language Class Initialized
+INFO - 2017-04-25 10:02:54 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:02:54 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:02:54 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:02:54 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:02:54 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:02:54 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:02:54 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:02:54 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:02:54 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:02:54 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:02:54 --> Controller Class Initialized
+INFO - 2017-04-25 10:02:54 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 10:02:54 --> Model Class Initialized
+INFO - 2017-04-25 10:02:54 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:02:54 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:02:54 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 10:02:54 --> Helper loaded: form_helper
+INFO - 2017-04-25 10:02:54 --> Model Class Initialized
+DEBUG - 2017-04-25 10:02:54 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:02:54 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:02:54 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:02:54 --> Final output sent to browser
+DEBUG - 2017-04-25 10:02:54 --> Total execution time: 0.0539
+INFO - 2017-04-25 10:04:18 --> Config Class Initialized
+INFO - 2017-04-25 10:04:18 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:04:18 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:04:18 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:04:18 --> URI Class Initialized
+INFO - 2017-04-25 10:04:18 --> Router Class Initialized
+INFO - 2017-04-25 10:04:18 --> Output Class Initialized
+INFO - 2017-04-25 10:04:18 --> Security Class Initialized
+DEBUG - 2017-04-25 10:04:18 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:04:18 --> Input Class Initialized
+INFO - 2017-04-25 10:04:18 --> Language Class Initialized
+INFO - 2017-04-25 10:04:18 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:04:18 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:04:18 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:04:18 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:04:18 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:04:18 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:04:18 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:04:18 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:04:18 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:04:18 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:04:18 --> Controller Class Initialized
+DEBUG - 2017-04-25 10:04:18 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:04:18 --> Model Class Initialized
+INFO - 2017-04-25 10:04:18 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:04:18 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:04:18 --> Final output sent to browser
+DEBUG - 2017-04-25 10:04:18 --> Total execution time: 0.0362
+INFO - 2017-04-25 10:04:24 --> Config Class Initialized
+INFO - 2017-04-25 10:04:24 --> Hooks Class Initialized
+DEBUG - 2017-04-25 10:04:24 --> UTF-8 Support Enabled
+INFO - 2017-04-25 10:04:24 --> Utf8 Class Initialized
+INFO - 2017-04-25 10:04:24 --> URI Class Initialized
+INFO - 2017-04-25 10:04:24 --> Router Class Initialized
+INFO - 2017-04-25 10:04:24 --> Output Class Initialized
+INFO - 2017-04-25 10:04:24 --> Security Class Initialized
+DEBUG - 2017-04-25 10:04:24 --> Global POST, GET and COOKIE data sanitized
+INFO - 2017-04-25 10:04:24 --> Input Class Initialized
+INFO - 2017-04-25 10:04:24 --> Language Class Initialized
+INFO - 2017-04-25 10:04:24 --> Loader Class Initialized
+DEBUG - 2017-04-25 10:04:24 --> Config file loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/config/asset.php
+INFO - 2017-04-25 10:04:24 --> Helper loaded: url_helper
+INFO - 2017-04-25 10:04:24 --> Helper loaded: asset_helper
+INFO - 2017-04-25 10:04:24 --> Helper loaded: general_helper
+INFO - 2017-04-25 10:04:24 --> Helper loaded: security_helper
+INFO - 2017-04-25 10:04:24 --> Helper loaded: html_helper
+INFO - 2017-04-25 10:04:24 --> Helper loaded: menu_helper
+DEBUG - 2017-04-25 10:04:24 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2017-04-25 10:04:24 --> Session: Class initialized using 'files' driver.
+INFO - 2017-04-25 10:04:24 --> Controller Class Initialized
+INFO - 2017-04-25 10:04:24 --> Language file loaded: language/spanish/interface_lang.php
+INFO - 2017-04-25 10:04:24 --> Model Class Initialized
+INFO - 2017-04-25 10:04:24 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:04:24 --> Database Driver Class Initialized
+INFO - 2017-04-25 10:04:24 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/tc_template/perfil.tpl.php
+INFO - 2017-04-25 10:04:24 --> Helper loaded: form_helper
+INFO - 2017-04-25 10:04:24 --> Model Class Initialized
+DEBUG - 2017-04-25 10:04:24 --> Session class already loaded. Second attempt ignored.
+INFO - 2017-04-25 10:04:24 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:04:24 --> File loaded: /Applications/mappstack/apache2/htdocs/tablero2.0/application/views/ranking/tabla.php
+INFO - 2017-04-25 10:04:24 --> Final output sent to browser
+DEBUG - 2017-04-25 10:04:24 --> Total execution time: 0.0675

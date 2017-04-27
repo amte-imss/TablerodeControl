@@ -67,14 +67,14 @@
                     {
                         echo $cuerpo_modal;
                     }
-                    ?>                    
+                    ?>
                 </div>
             </div>
         </div>
 
         <div class="wrapper">
-            <div class="sidebar" 
-                 data-color="purple" 
+            <div class="sidebar"
+                 data-color="purple"
                  data-image="<?php echo base_url(); ?>assets/tablero_tpl/img/Escultura-Ortiz.jpg">
                 <!--
                     Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -143,7 +143,7 @@
                                         <i class="material-icons">person</i>
                                         <p class="hidden-lg hidden-md">Profile</p>
                                     </a>
-                                    
+
                                     <?php if(isset($perfil_usuario)){
                                        echo $perfil_usuario;
                                     }
@@ -172,7 +172,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <?php
                                     echo $blank;
-                                    ?>   
+                                    ?>
                                 </div>
                             </div>
                         <?php } //fin blank zone?>
@@ -224,7 +224,7 @@
                             </ul>
                         </nav>
                         <p class="copyright pull-right">
-                            <script>document.write(new Date().getFullYear())</script> 
+                            <script>document.write(new Date().getFullYear())</script>
                             <a href="http://educacionensalud.imss.gob.mx" target="_blank">Coordinación de Educación en Salud</a>
                         </p>
                     </div>
