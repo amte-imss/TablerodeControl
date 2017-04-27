@@ -104,3 +104,6 @@ if (isset($usuario['central']))
 <div class="row">
     <div id="area_graph"></div>
 </div>     
+<div class="row">
+    <div id="area_graph_vertical"></div>
+</div>     

@@ -17,6 +17,7 @@ class Modulo extends MY_Controller
         $this->load->model('Modulo_model', 'modulo');
         $this->load->model('Grupos_usuarios_model', 'grupos');
         $this->load->helper('modulo_helper');
+        $this->template->setTitle('Módulos');
     }
 
     public function index($full_view = 1)
@@ -32,6 +33,7 @@ class Modulo extends MY_Controller
             $modal = $this->load->view('modulo/modal_custom_modulo', $output, true);
             $this->template->setCuerpoModal($modal);
             $this->template->setMainContent($view);
+            $this->template->setSubTitle('Módulos');
             $this->template->getTemplate();
         }else{
             $this->load->view('modulo/index', $output);
@@ -44,6 +46,7 @@ class Modulo extends MY_Controller
         $output['grupos'] = dropdown_options($this->grupos->get_grupos(), 'id_grupo', 'nombre');
         $view = $this->load->view('modulo/index_modulos_grupo', $output, true);
         $this->template->setMainContent($view);
+        $this->template->setSubTitle('Configuración de módulos por grupo');
         $this->template->getTemplate();
     }
 

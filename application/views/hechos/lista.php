@@ -2,9 +2,6 @@
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Hechos</h3>
-            </div>
             <div class="panel-body"><br><br>
 
                 <div class="row">
@@ -17,7 +14,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row" style="margin:5px;">
                             <div class="container">
-                                <table class="table table-bordered">
+                                <table class="table table-striped responsive">
                                     <thead>
                                         <tr>
                                             <th>ID</th>

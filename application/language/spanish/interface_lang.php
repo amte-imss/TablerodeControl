@@ -47,7 +47,8 @@ $lang['interface'] = array(
         'umae' => 'UMAE',
         'nivel_atencion' => 'Nivel de atención',
         'nivel_central' => 'Nivel central',
-        'direccion_normativa' => 'Dirección normativa'
+        'direccion_normativa' => 'Dirección normativa',
+        'filtros' => 'Filtros'
     ),
     'datos_usuario' => array(
         'nombre' => 'Nombre',

@@ -21,6 +21,7 @@ class Reportes_dinamicos extends MY_Controller
         $this->load->library('form_complete');
         $this->load->library('form_validation');
         $this->load->model('Reportes_dinamicos_model', 'reporte_model');
+        $this->template->setTitle('Reportes dinámicos');
     }
 
     public function index()
@@ -28,6 +29,7 @@ class Reportes_dinamicos extends MY_Controller
         $reportes['data'] = $this->reporte_model->get_table();
         $main_content = $this->load->view('reportes_dinamicos/tabla', $reportes, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Reportes dinámicos');
         $this->template->getTemplate();
     }
 
@@ -37,11 +39,13 @@ class Reportes_dinamicos extends MY_Controller
         $info['reporte'] = $this->reporte_model->get_reporte($id, $filtros);
         $main_content = $this->load->view('reportes_dinamicos/reporte', $info, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Detalle del reporte');
         $this->template->getTemplate();
     }
 
     public function upload()
     {
+        $output = [];
         if ($this->input->post())
         {     // SI EXISTE UN ARCHIVO EN POST
             $config['allowed_types'] = 'gz';           // CONFIGURAMOS EL TIPO DE ARCHIVO A CARGAR
@@ -61,10 +65,11 @@ class Reportes_dinamicos extends MY_Controller
             {
                 $status = false;
             }
+            $output['status'] = $status;       
         }
-        $output['status'] = $status;       
         $main_content = $this->load->view('reportes_dinamicos/formulario', $output, true);
         $this->template->setMainContent($main_content);
+        $this->template->setSubTitle('Nuevo reporte dinámico');
         $this->template->getTemplate();
     }
 
@@ -79,11 +84,9 @@ class Reportes_dinamicos extends MY_Controller
             $crud->set_table('columnas_dinamicas');
             $crud->unset_delete();
             $output = $crud->render();
-            $view['ficha_usuario'] = $this->ficha_usuario;
-            $view['menu'] = $this->menu;
-            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
-            $main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
             $this->template->setMainContent($main_content);
+            $this->template->setSubTitle('Configuración de columnas');
             $this->template->getTemplate();
         } catch (Exception $e)
         {

@@ -8,18 +8,14 @@
 <?php echo js('informacion_general.js'); ?>
 <div class="row">
     <?php echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
-    <div class="col-lg-5 col-md-5 col-sm-12">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>">
-            <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
-            <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
+    <h4 class="col-lg-12 col-md-12 col-sm-12"><?php echo $lenguaje['filtros']; ?></h4>
+    <div id="filtros" class="col-lg-12 col-md-12 col-sm-12">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card">
-                <div class="card-header" data-background-color="green">
-                    <?php echo $lenguaje['tipo_curso']; ?>
+                <div class="card-header" data-background-color="green" data-toggle="collapse" data-target="#tipo_curso_tree_capa">
+                    <?php echo $lenguaje['tipo_curso']; ?><div class="material-icons pull-right">keyword_arrow_right</div>
                 </div>
-                <div class="card-content">
+                <div id="tipo_curso_tree_capa" class="card-content collapse collapse_element">
                     <div id="tipo_curso_tree"></div>
                     <div><input type="hidden" id="tipo_curso_seleccion" name="tipo_curso_seleccion"></div>
                     <div><input type="hidden" id="tipo_curso_seleccion_rootkey" name="tipo_curso_seleccion_rootkey"></div>
@@ -27,12 +23,25 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card">
-                <div class="card-header" data-background-color="blue">
-                    <?php echo $lenguaje['periodo']; ?>
+                <div class="card-header" data-background-color="orange" data-toggle="collapse" data-target="#perfil_tree_capa">
+                    <?php echo $lenguaje['perfil']; ?><div class="material-icons pull-right">keyword_arrow_right</div>
                 </div>
-                <div class="card-content">
+                <div id="perfil_tree_capa" class="card-content collapse collapse_element">
+                    <div id="perfil_tree"></div>
+                    <div><input type="hidden" id="perfil_seleccion" name="perfil_seleccion"></div>
+                    <div><input type="hidden" id="perfil_seleccion_rootkey" name="perfil_seleccion_rootkey"></div>
+                    <div><input type="hidden" id="perfil_seleccion_node" name="perfil_seleccion_node"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card">
+                <div class="card-header" data-background-color="blue" data-toggle="collapse" data-target="#periodo_tree_capa">
+                    <?php echo $lenguaje['periodo']; ?><div class="material-icons pull-right">keyword_arrow_right</div>
+                </div>
+                <div id="periodo_tree_capa" class="card-content collapse collapse_element">
                     <div>
                         <label class="control-label"><?php echo $lenguaje['anio']; ?></label>
                         <?php echo $this->form_complete->create_element(
@@ -64,31 +73,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-header" data-background-color="orange">
-                    <?php echo $lenguaje['perfil']; ?>
-                </div>
-                <div class="card-content">
-                    <div id="perfil_tree"></div>
-                    <div><input type="hidden" id="perfil_seleccion" name="perfil_seleccion"></div>
-                    <div><input type="hidden" id="perfil_seleccion_rootkey" name="perfil_seleccion_rootkey"></div>
-                    <div><input type="hidden" id="perfil_seleccion_node" name="perfil_seleccion_node"></div>
-                </div>
-            </div>
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>">
+            <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
+            <input type="hidden" id="temporal_tipo_busqueda" name="temporal_tipo_busqueda" value="">
         </div>
     </div>
-    <div class="col-lg-7 col-md-7 col-sm-12">
+    <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div id="div_resultado" class="table-responsive" style="display:none;">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th colspan="4" class="text-center" data-background-color="purple"><?php echo $lenguaje['titulo_principal']; echo imprimir_elemento_html('#div_resultado'); ?></th>
+                            <th colspan="5" class="text-center" data-background-color="purple"><?php echo $lenguaje['titulo_principal']; echo imprimir_elemento_html('#div_resultado'); ?></th>
                         </tr>
                         <tr>
                             <th class="text-center"><?php echo $lenguaje['alumnos_inscritos']; ?></th>
                             <th class="text-center"><?php echo $lenguaje['alumnos_aprobados']; ?></th>
+                            <th class="text-center"><?php echo $lenguaje['alumnos_no_aprobados']; ?></th>
                             <th class="text-center"><?php echo $lenguaje['alumnos_no_acceso']; ?></th>
                             <th class="text-center"><?php echo $lenguaje['eficiencia_terminal']; ?></th>
                         </tr>
@@ -97,6 +99,7 @@
                         <tr>
                             <td><div id="total_alumnos_inscritos" class="text-center">-</div></td>
                             <td><div id="total_alumnos_aprobados" class="text-center">-</div></td>
+                            <td><div id="total_alumnos_no_aprobados" class="text-center">-</div></td>
                             <td><div id="total_alumnos_no_acceso" class="text-center">-</div></td>
                             <td><div id="total_eficiencia_terminal" class="text-center">-</div></td>
                         </tr>
@@ -141,7 +144,7 @@
         }
         ?>
     ];
-    function limpiar_filtros_listados(){
+    /*function limpiar_filtros_listados(){
         var perfil_tree = $('#perfil_tree').fancytree('getTree');
         perfil_tree.reload(SOURCE);
         var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
@@ -150,7 +153,7 @@
         setTimeout(function() {   //calls click event after a certain time
            buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
         }, 500);
-    }
+    }*/
     function buscar_filtros_listados(path, form_recurso, recurso, destino) {
         if($("#temporal_tipo_busqueda").val()==""){ //Validamos que este vacío el campo para poder realizar el guardado temporal. Nos indica el sentido de la búsqueda
             $("#temporal_tipo_busqueda").val(recurso);
@@ -198,6 +201,7 @@
                     });
                     tree.reload(t);
                     $('#'+destino+'_tree').show('slow');
+                    $(".collapse_element").collapse("show");
                     buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
                 }
             })
