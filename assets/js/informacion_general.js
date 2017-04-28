@@ -259,6 +259,61 @@ function calcular_totales(path, form_recurso) {
     });
 }
 
+function obtener_categoria_serie_unidad(datos){
+    var categorias = [];
+    var series_datos = [];
+    var inscritos = [];
+    var certificados = [];
+    var no_acceso = [];
+    var no_aprobado = [];
+    //console.log(datos);
+    //alert(datos);
+    jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        jQuery.each( val, function( i2, val2 ) {
+            var t = [];
+            var tt = '';
+            jQuery.each( val2, function( i3, val3 ) {
+                /*inscritos.push(val3);
+                certificados.push(val3);
+                no_acceso.push(val3);*/
+                //no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+                tt = i3;
+                t.push(val3);
+            });
+            var tmp = {name: i2, data: t, stack: i};
+            series_datos.push(tmp);
+        });
+    });
+    //console.log(series_datos);
+    //alert(series_datos);
+    /*jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        inscritos.push(val.cantidad_alumnos_inscritos);
+        certificados.push(val.cantidad_alumnos_certificados);
+        no_acceso.push(val.cantidad_no_accesos);
+        no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+    });
+    series_datos = [{
+            name: 'Inscritoss',
+            data: inscritos,
+            stack: 'incritos'
+        }, {
+            name: 'Aprobados',
+            data: certificados,
+            stack: 'cantidad_alumnos_certificados'
+        }, {
+            name: 'Nunca entraron',
+            data: no_acceso,
+            stack: 'cantidad_no_accesos'
+        }, {
+            name: 'No aprobados',
+            data: no_aprobado,
+            stack: 'cantidad_no_aprobados'
+        }];*/
+    return resultado = {'categorias':categorias, 'series':series_datos};
+}
+
 function calcular_totales_unidad(path, form_recurso) {
     var dataSend = $(form_recurso).serialize();
     $.ajax({
@@ -271,10 +326,10 @@ function calcular_totales_unidad(path, form_recurso) {
         }
     })
     .done(function (response) {
-        var perfil = obtener_categoria_serie(response.perfil);
+        var perfil = obtener_categoria_serie_unidad(response.perfil);
         crear_grafica_stacked_grouped('comparativa_chrt', 'Perfiles por tipo de curso', perfil.categorias, 'Número de alumnos', perfil.series);
         
-        var tipos_curso = obtener_categoria_serie(response.tipo_curso);
+        var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
         crear_grafica_stacked('comparativa_chrt2', 'Tipos de curso por perfil', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
     })
     .fail(function (jqXHR, textStatus) {

@@ -26,16 +26,16 @@
                         ); ?>
                         <span class="material-input"></span>
                     </div>
-                    <div id="tipo_busqueda_capa" class="col-lg-4 col-md-6 col-sm-12">
+                    <div id="tipos_busqueda_capa" class="col-lg-4 col-md-6 col-sm-12">
                         <label class="control-label"><?php echo $lenguaje['tipo']; ?></label>
                         <?php echo $this->form_complete->create_element(
                             array(
-                                'id'=>'tipo_busqueda',
+                                'id'=>'tipos_busqueda',
                                 'type'=>'dropdown',
-                                'options'=>$catalogos['tipo_busqueda'],
+                                'options'=>$catalogos['tipos_busqueda'],
                                 'first' => array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript: validar_tipo_busqueda('#tipo_busqueda');"
+                                    'onchange'=>"javascript: validar_tipos_busqueda('#tipos_busqueda');"
                                 )
                             )
                         ); ?>
@@ -52,7 +52,7 @@
                                 'first' => array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
                                     //'onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$tipo_busq."', '#form_busqueda', '#".$tipo_busq."_capa')"
-                                    'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipo_busqueda').val()+'_capa'); $('#unidad_capa').html(''); $('#tipo_unidad_capa').html(''); $('#umae_capa').html('');"
+                                    'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#unidad_capa').html(''); $('#tipo_unidad_capa').html(''); $('#umae_capa').html('');"
                                 )
                             )
                         ); ?>
@@ -84,7 +84,7 @@
     <?php echo form_close(); ?>
 </div>
 <script type="text/javascript">
-    function validar_tipo_busqueda(elemento){
+    function validar_tipos_busqueda(elemento){
         mostrar_loader();
         console.log(elemento);
         console.log($(elemento).val());
@@ -101,8 +101,8 @@
     }
     $(function(){
         $('#btn_limpiar').click(function() {
-            $('#tipo_busqueda').val('');
-            validar_tipo_busqueda('#tipo_busqueda');
+            $('#tipos_busqueda').val('');
+            validar_tipos_busqueda('#tipos_busqueda');
         });
     });
     //var SOURCE = [
@@ -133,16 +133,16 @@
         perfil_tree.reload(SOURCE);
         var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
         tipo_curso_tree.reload(SOURCE2);
-        $("#temporal_tipo_busqueda").val('');
+        $("#temporal_tipos_busqueda").val('');
         setTimeout(function() {   //calls click event after a certain time
            buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
         }, 500);
     }*/
     /*function buscar_filtros_listados(path, form_recurso, recurso, destino) {
-        if($("#temporal_tipo_busqueda").val()==""){ //Validamos que este vacío el campo para poder realizar el guardado temporal. Nos indica el sentido de la búsqueda
-            $("#temporal_tipo_busqueda").val(recurso);
+        if($("#temporal_tipos_busqueda").val()==""){ //Validamos que este vacío el campo para poder realizar el guardado temporal. Nos indica el sentido de la búsqueda
+            $("#temporal_tipos_busqueda").val(recurso);
         }
-        if($("#temporal_tipo_busqueda").val()==recurso){
+        if($("#temporal_tipos_busqueda").val()==recurso){
             if($('#perfil_seleccion').val()==''){
                 $('#perfil_seleccion').val('-1');
             }

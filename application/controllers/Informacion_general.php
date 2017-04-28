@@ -92,8 +92,8 @@ class Informacion_general extends MY_Controller
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::REGIONES, Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
-        $tipo_busqueda = $this->config->item('tipo_busqueda');
-        $datos['catalogos']['tipo_busqueda'] = array($tipo_busqueda['UMAE']['id']=>$tipo_busqueda['UMAE']['valor'], $tipo_busqueda['DELEGACION']['id']=>$tipo_busqueda['DELEGACION']['valor']);
+        $tipos_busqueda = $this->config->item('tipo_busqueda');
+        $datos['catalogos']['tipos_busqueda'] = array($tipos_busqueda['UMAE']['id']=>$tipos_busqueda['UMAE']['valor'], $tipos_busqueda['DELEGACION']['id']=>$tipos_busqueda['DELEGACION']['valor']);
         //pr($datos['catalogos']);
         /*$listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
@@ -125,12 +125,12 @@ class Informacion_general extends MY_Controller
                 $vista = 'listado.tpl.php';
                 switch ($tipo) {
                     case 'ud':
-                        if($datos_busqueda['tipo_busqueda']=='umae'){
+                        if($datos_busqueda['tipos_busqueda']=='umae'){
                             //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
                             $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region));
                             $resultado['form']['label'] = $lenguaje['umae'];
                             $resultado['form']['path'] = 'unidad';
-                            $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales', '#form_busqueda');");
+                            $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
                             //$resultado['form']['destino'] = '#unidad_capa';
                             $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
                             $resultado['resultado'] = true;
@@ -159,7 +159,7 @@ class Informacion_general extends MY_Controller
                     case 'unidad':
                         $resultado['form']['label'] = $lenguaje['unidades'];
                         $resultado['form']['path'] = 'unidad';
-                        $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales', '#form_busqueda');");
+                        $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
                         $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_tipo_unidad));
                         $resultado['resultado'] = true;
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
@@ -325,15 +325,31 @@ class Informacion_general extends MY_Controller
                 if(!empty($datos['datos'])){
                     foreach ($datos['datos'] as $key_d => $dato) {
                         //Perfil
-                        if(!isset($resultado['perfil'][$dato['perfil']])){
+                        /*if(!isset($resultado['perfil'][$dato['perfil']])){
                             $resultado['perfil'][$dato['perfil']] = array();
                         }
-                        $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);
+                        $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);*/
+                        if(!isset($resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_accesos'];
+                        $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_aprobados'];
                         //Tipo de curso
-                        if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
+                        /*if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
-                        $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);*/
                     }
                     echo json_encode($resultado);
                 } else {
