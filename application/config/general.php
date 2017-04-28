@@ -19,6 +19,6 @@ $config['periodo'] = array(
 );
 
 $config['tipo_busqueda'] = array(
-	'UMAE' => array('id'=>'umae'),
-	'DELEGACION' => array('id'=>'delegacion')
+	'UMAE' => array('id'=>'umae', 'valor'=>'UMAE'),
+	'DELEGACION' => array('id'=>'delegacion', 'valor'=>'Delegación')
 );

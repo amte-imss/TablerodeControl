@@ -26,7 +26,7 @@ class Informacion_general extends MY_Controller
     }
     
     public function index(){
-        pr($_SESSION['usuario']);
+        //pr($_SESSION['usuario']);
         $this->load->library('Catalogo_listado');
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $cat_list = new Catalogo_listado(); //Obtener catálogos
@@ -85,6 +85,95 @@ class Informacion_general extends MY_Controller
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($this->load->view('informacion_general/por_tipo_curso.tpl.php', $datos, true));
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
+    }
+
+    public function por_unidad(){
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+        $this->load->library('Catalogo_listado');
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::REGIONES, Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')));
+        $tipos_busqueda = $this->config->item('tipo_busqueda');
+        $datos['catalogos']['tipos_busqueda'] = array($tipos_busqueda['UMAE']['id']=>$tipos_busqueda['UMAE']['valor'], $tipos_busqueda['DELEGACION']['id']=>$tipos_busqueda['DELEGACION']['valor']);
+        //pr($datos['catalogos']);
+        /*$listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
+        foreach ($listado_subcategorias as $key_ls => $listado) {
+            $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
+            if(!empty($listado['grupo_categoria'])){
+                $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
+            }
+        }*/
+        //pr($datos);
+        $this->template->setTitle($datos['lenguaje']['titulo_principal']);
+        $this->template->setSubTitle($datos['lenguaje']['titulo_por_unidad'].'. '.$this->configuracion_grupos->index_obtener_subtitulo($datos['lenguaje']['titulo']));
+        $this->template->setDescripcion($this->mostrar_datos_generales());
+        $this->template->setMainContent($this->load->view('informacion_general/por_unidad.tpl.php', $datos, true));
+        //$this->template->setBlank("tc_template/iiindex.tpl.php");    
+        $this->template->getTemplate(null,"tc_template/index.tpl.php");
+    }
+
+    public function cargar_listado($tipo){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                $this->load->library('Catalogo_listado');
+                $cat_list = new Catalogo_listado(); //Obtener catálogos
+                $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : '';
+                $c_delegacion = (isset($datos_busqueda['delegacion']) AND !empty($datos_busqueda['delegacion'])) ? ' AND del.id_delegacion='.$datos_busqueda['delegacion'] : '';
+                $c_tipo_unidad = (isset($datos_busqueda['tipo_unidad']) AND !empty($datos_busqueda['tipo_unidad'])) ? ' AND ins.id_tipo_unidad='.$datos_busqueda['tipo_unidad'] : '';
+                $resultado=array('resultado'=>false, 'datos'=>array(), 'mensaje'=>'');
+                $lenguaje = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+                $vista = 'listado.tpl.php';
+                switch ($tipo) {
+                    case 'ud':
+                        if($datos_busqueda['tipos_busqueda']=='umae'){
+                            //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region));
+                            $resultado['form']['label'] = $lenguaje['umae'];
+                            $resultado['form']['path'] = 'unidad';
+                            $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
+                            //$resultado['form']['destino'] = '#unidad_capa';
+                            $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
+                            $resultado['resultado'] = true;
+                            //$vista = 'listado_radio.tpl.php';
+                            $tipo = 'umae';
+                        } else {
+                            $resultado['form']['label'] = $lenguaje['delegacion'];
+                            $resultado['form']['path'] = 'tipo_unidad';
+                            $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa'); $('#unidad_capa').html('');");
+                            //$resultado['form']['destino'] = '#tipo_unidad_capa';
+                            $datos = $cat_list->obtener_catalogos(array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region)));
+                            $resultado['datos'] = $datos['delegaciones'];
+                            $resultado['resultado'] = true;
+                            $tipo = 'delegacion';
+                        }
+                        break;
+                    case 'tipo_unidad':
+                        $resultado['form']['label'] = $lenguaje['tipo_unidad'];
+                        $resultado['form']['path'] = 'unidad';
+                        $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa')");
+                        //$resultado['form']['destino'] = '#unidad_capa';
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion));
+                        $resultado['datos'] = dropdown_options($dato_mod, 'id_tipo_unidad', 'tipo_unidad');
+                        $resultado['resultado'] = true;
+                        break;
+                    case 'unidad':
+                        $resultado['form']['label'] = $lenguaje['unidades'];
+                        $resultado['form']['path'] = 'unidad';
+                        $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_tipo_unidad));
+                        $resultado['resultado'] = true;
+                        $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
+                        //$vista = 'listado_radio.tpl.php';
+                        break;
+                }
+                $resultado['form']['seleccione'] = $lenguaje['seleccione'];
+                $resultado['tipo'] = $tipo;
+                $resultado['busqueda'] = $datos_busqueda;
+                echo $this->load->view('informacion_general/'.$vista, $resultado, true);
+                //pr($datos);
+                exit();
+            }
+        }
     }
 
     /*public function por_unidad(){
@@ -223,6 +312,56 @@ class Informacion_general extends MY_Controller
         }
     }
 
+    public function calcular_totales_unidad(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                //pr($datos_busqueda);
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
+                //pr($datos['datos']);
+                $resultado = array('perfil'=>array(),'tipo_curso'=>array());
+                if(!empty($datos['datos'])){
+                    foreach ($datos['datos'] as $key_d => $dato) {
+                        //Perfil
+                        /*if(!isset($resultado['perfil'][$dato['perfil']])){
+                            $resultado['perfil'][$dato['perfil']] = array();
+                        }
+                        $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);*/
+                        if(!isset($resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        if(!isset($resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']])){
+                            $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
+                        }
+                        $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_inscritos'];
+                        $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_certificados'];
+                        $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_accesos'];
+                        $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_aprobados'];
+                        //Tipo de curso
+                        /*if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
+                            $resultado['tipo_curso'][$dato['tipo_curso']] = array();
+                        }
+                        $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);*/
+                    }
+                    echo json_encode($resultado);
+                } else {
+                    echo json_encode(array('error'=>true,'msg'=>'No existen datos')); //Mostrar mensaje de datos no existentes
+                }
+                exit();
+            }
+        } else {
+            redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
+        }
+    }
+
     public function calcular_totales(){
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
@@ -319,6 +458,7 @@ class Informacion_general extends MY_Controller
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        //pr($resultado);
                         //Periodo
                         /*if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'])){
                             $resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'] = 0;

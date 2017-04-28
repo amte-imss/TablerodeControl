@@ -148,4 +148,25 @@ class Informacion_general_model extends CI_Model
 
         return $resultado;
     }
+
+    public function obtener_listado_unidad_umae($params = array()){
+        $resultado = array();
+        if (array_key_exists('fields', $params)) {
+            $this->db->select($params['fields']);
+        }
+        if (array_key_exists('conditions', $params)) {
+            $this->db->where($params['conditions']);
+        }
+        if (array_key_exists('order', $params)) {
+            $this->db->order_by($params['order']['field'], $params['order']['type']);
+        }
+        $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=ins.id_delegacion');
+        $this->db->join('catalogos.tipos_unidades tipo_uni', 'tipo_uni.id_tipo_unidad=ins.id_tipo_unidad');
+        $query = $this->db->get('catalogos.unidades_instituto ins'); //Obtener conjunto de registros
+        $resultado = $query->result_array();
+        //pr($this->db->last_query());
+        $query->free_result(); //Libera la memoria
+
+        return $resultado;
+    }
 }

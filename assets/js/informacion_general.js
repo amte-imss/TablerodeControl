@@ -21,6 +21,16 @@ $( document ).ready(function() {
             enabled: false
         }
     });
+
+    $("#filtros_capa").on("hide.bs.collapse", function(){
+        $("#filtros_capa_header>i").addClass('fa-arrow-right');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-down');
+    });
+    $("#filtros_capa").on("show.bs.collapse", function(){
+        //$("#filtros_capa_header>div").html('keyword_arrow_left');
+        $("#filtros_capa_header>i").addClass('fa-arrow-down');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-right');
+    });
 });
 /**
  *	Método que muestra una imagen (gif animado) que indica que algo esta cargando
@@ -76,11 +86,11 @@ function obtener_categoria_serie(datos){
             data: certificados,
             stack: 'aprobados'
         }, {
-            name: 'No acceso',
+            name: 'Nunca entraron',
             data: no_acceso,
             stack: 'no_aprobado'
         }, {
-            name: 'No aprobado',
+            name: 'No aprobados',
             data: no_aprobado,
             stack: 'no_aprobado'
         }];
@@ -102,6 +112,7 @@ function calcular_totales(path, form_recurso) {
         if(typeof(response.total) != "undefined"){
             $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
             $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+            $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
             $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
             $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
         }
@@ -248,6 +259,90 @@ function calcular_totales(path, form_recurso) {
     });
 }
 
+function obtener_categoria_serie_unidad(datos){
+    var categorias = [];
+    var series_datos = [];
+    var inscritos = [];
+    var certificados = [];
+    var no_acceso = [];
+    var no_aprobado = [];
+    //console.log(datos);
+    //alert(datos);
+    jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        jQuery.each( val, function( i2, val2 ) {
+            var t = [];
+            var tt = '';
+            jQuery.each( val2, function( i3, val3 ) {
+                /*inscritos.push(val3);
+                certificados.push(val3);
+                no_acceso.push(val3);*/
+                //no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+                tt = i3;
+                t.push(val3);
+            });
+            var tmp = {name: i2, data: t, stack: i};
+            series_datos.push(tmp);
+        });
+    });
+    //console.log(series_datos);
+    //alert(series_datos);
+    /*jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        inscritos.push(val.cantidad_alumnos_inscritos);
+        certificados.push(val.cantidad_alumnos_certificados);
+        no_acceso.push(val.cantidad_no_accesos);
+        no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+    });
+    series_datos = [{
+            name: 'Inscritoss',
+            data: inscritos,
+            stack: 'incritos'
+        }, {
+            name: 'Aprobados',
+            data: certificados,
+            stack: 'cantidad_alumnos_certificados'
+        }, {
+            name: 'Nunca entraron',
+            data: no_acceso,
+            stack: 'cantidad_no_accesos'
+        }, {
+            name: 'No aprobados',
+            data: no_aprobado,
+            stack: 'cantidad_no_aprobados'
+        }];*/
+    return resultado = {'categorias':categorias, 'series':series_datos};
+}
+
+function calcular_totales_unidad(path, form_recurso) {
+    var dataSend = $(form_recurso).serialize();
+    $.ajax({
+        url: path,
+        data: dataSend,
+        method: 'POST',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            mostrar_loader();
+        }
+    })
+    .done(function (response) {
+        var perfil = obtener_categoria_serie_unidad(response.perfil);
+        crear_grafica_stacked_grouped('comparativa_chrt', 'Perfiles por tipo de curso', perfil.categorias, 'Número de alumnos', perfil.series);
+        
+        var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
+        crear_grafica_stacked('comparativa_chrt2', 'Tipos de curso por perfil', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+    })
+    .fail(function (jqXHR, textStatus) {
+        //$(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+        console.log(jqXHR);
+        console.log(textStatus);
+        ocultar_loader();
+    })
+    .always(function () {
+        ocultar_loader();
+    });
+}
+
 /**
  *  Método que muestra una imagen (gif animado) que indica que algo esta cargando
  *  @return string  Contenedor e imagen del cargador.
@@ -268,6 +363,7 @@ function buscar_perfil(path, form_recurso) {
             if(response.total == 0){
                 $('#total_alumnos_inscritos').html('-');
                 $('#total_alumnos_aprobados').html('-');
+                $('#total_alumnos_no_aprobados').html('-');
                 $('#total_alumnos_no_acceso').html('-');
                 $('#total_eficiencia_terminal').html('-');
                 $("#div_resultado").hide();
@@ -277,6 +373,7 @@ function buscar_perfil(path, form_recurso) {
             } else {
                 $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
                 $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+                $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
                 $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
                 $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
                 $("#div_resultado").show();
@@ -286,6 +383,7 @@ function buscar_perfil(path, form_recurso) {
                 var periodo = obtener_categoria_serie(response.periodo);
                 crear_grafica_stacked('container_perfil', '', periodo.categorias, 'Número de alumnos', periodo.series);
             }
+            $(".collapse_element").collapse("hide");
         }
     })
     .fail(function (jqXHR, textStatus) {
@@ -295,6 +393,17 @@ function buscar_perfil(path, form_recurso) {
     .always(function () {
         ocultar_loader();
     });
+}
+
+function limpiar_filtros_listados(){
+    var perfil_tree = $('#perfil_tree').fancytree('getTree');
+    perfil_tree.reload(SOURCE);
+    var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
+    tipo_curso_tree.reload(SOURCE2);
+    $("#temporal_tipo_busqueda").val('');
+    setTimeout(function() {   //calls click event after a certain time
+       buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+    }, 500);
 }
 
 function mostrar_tipo_grafica(elemento){
@@ -322,6 +431,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#FC6220','#EF5350','#FCB220'],
         xAxis: {
             categories: categorias
         },
@@ -375,6 +485,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             tickmarkPlacement: 'on',
             title: {
@@ -419,6 +530,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             categories: categorias
         },
