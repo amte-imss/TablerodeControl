@@ -21,6 +21,16 @@ $( document ).ready(function() {
             enabled: false
         }
     });
+
+    $("#filtros_capa").on("hide.bs.collapse", function(){
+        $("#filtros_capa_header>i").addClass('fa-arrow-right');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-down');
+    });
+    $("#filtros_capa").on("show.bs.collapse", function(){
+        //$("#filtros_capa_header>div").html('keyword_arrow_left');
+        $("#filtros_capa_header>i").addClass('fa-arrow-down');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-right');
+    });
 });
 /**
  *	Método que muestra una imagen (gif animado) que indica que algo esta cargando
@@ -249,6 +259,35 @@ function calcular_totales(path, form_recurso) {
     });
 }
 
+function calcular_totales_unidad(path, form_recurso) {
+    var dataSend = $(form_recurso).serialize();
+    $.ajax({
+        url: path,
+        data: dataSend,
+        method: 'POST',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            mostrar_loader();
+        }
+    })
+    .done(function (response) {
+        var perfil = obtener_categoria_serie(response.perfil);
+        crear_grafica_stacked_grouped('comparativa_chrt', 'Perfiles por tipo de curso', perfil.categorias, 'Número de alumnos', perfil.series);
+        
+        var tipos_curso = obtener_categoria_serie(response.tipo_curso);
+        crear_grafica_stacked('comparativa_chrt2', 'Tipos de curso por perfil', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+    })
+    .fail(function (jqXHR, textStatus) {
+        //$(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+        console.log(jqXHR);
+        console.log(textStatus);
+        ocultar_loader();
+    })
+    .always(function () {
+        ocultar_loader();
+    });
+}
+
 /**
  *  Método que muestra una imagen (gif animado) que indica que algo esta cargando
  *  @return string  Contenedor e imagen del cargador.
@@ -337,6 +376,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#FC6220','#EF5350','#FCB220'],
         xAxis: {
             categories: categorias
         },
@@ -390,6 +430,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             tickmarkPlacement: 'on',
             title: {
@@ -434,6 +475,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             categories: categorias
         },

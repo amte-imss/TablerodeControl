@@ -58,23 +58,24 @@ function data_ajax(path, form_recurso, elemento_resultado, callback) {
         data: dataSend,
         method: 'POST',
         beforeSend: function (xhr) {
-            $(elemento_resultado).html(create_loader());
+            //$(elemento_resultado).html(create_loader());
+            mostrar_loader();
         }
     })
-            .done(function (response) {
-                if (typeof callback !== 'undefined' && typeof callback === 'function') {
-                    $(elemento_resultado).html(response).promise().done(callback());
-                } else {
-                    $(elemento_resultado).html(response);
-                }
-            })
-            .fail(function (jqXHR, textStatus) {
-                $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
-            })
-            .always(function () {
-                remove_loader();
-            });
-
+        .done(function (response) {
+            if (typeof callback !== 'undefined' && typeof callback === 'function') {
+                $(elemento_resultado).html(response).promise().done(callback());
+            } else {
+                $(elemento_resultado).html(response);
+            }
+        })
+        .fail(function (jqXHR, textStatus) {
+            $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+        })
+        .always(function () {
+            remove_loader();
+            ocultar_loader();
+        });
 }
 
 /**

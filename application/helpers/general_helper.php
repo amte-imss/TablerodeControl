@@ -405,7 +405,7 @@ if (!function_exists('calcular_eficiencia_terminal')) {
 
 if (!function_exists('imprimir_elemento_html')) {
     function imprimir_elemento_html($elemento){
-        echo '<span class="pull-right fa fa-bars" aria-hidden="true" onclick="javascript:imprimir_contenido(\''.$elemento.'\');" style="cursor:pointer;"></span>';
+        echo '<span class="pull-right fa fa-print" aria-hidden="true" onclick="javascript:imprimir_contenido(\''.$elemento.'\');" style="cursor:pointer;"></span>';
     }
 }
 /* End of file general_helper.php */
