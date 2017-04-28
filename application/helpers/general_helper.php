@@ -433,3 +433,32 @@ if (!function_exists('is_nivel_central'))
     }
 }
     
+
+if (!function_exists('is_nivel_operacional')) 
+{
+    function is_nivel_operacional($grupos = array()){
+        $salida = false;
+        foreach ($grupos as $grupo){
+            $id = $grupo['id_grupo'];
+            if($id == 6 || $id == 13){
+                //$salida = true;
+            }
+        }
+        return $salida;
+    }
+}
+    
+if (!function_exists('is_nivel_tactico')) 
+{
+    function is_nivel_tactico($grupos = array()){
+        $salida = false;
+        foreach ($grupos as $grupo){
+            $id = $grupo['id_grupo'];
+            if($id == 6 || $id == 13){
+                //$salida = true;
+            }
+        }
+        return $salida;
+    }
+}
+    

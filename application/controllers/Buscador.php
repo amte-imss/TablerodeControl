@@ -38,4 +38,12 @@ class Buscador extends CI_Controller
             echo $this->load->view('buscador/categorias', $output, true);
         }
     }
+    
+    public function search_grupos_categorias(){
+        if($this->input->post()){
+            $this->load->model('Buscador_model', 'buscador');
+            $grupos_categorias = $this->buscador->get_grupos_categorias($this->input->post());
+            echo json_encode($grupos_categorias);
+        }
+    }
 }
