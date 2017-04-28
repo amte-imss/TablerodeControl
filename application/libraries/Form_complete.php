@@ -118,7 +118,7 @@ class Form_complete {
 	}
 
 	private function element_format_default($type, $attributes){
-		
+
 		$clase = null;
 		if(!isset($attributes['default'])){
 			switch ($type) { //Validar tipo
@@ -135,7 +135,7 @@ class Form_complete {
 				break;
 			}
 		}
-		
+
 		if(!is_null($clase)){
 			$attributes['class'] = (array_key_exists('class', $attributes) ) ? $attributes['class']." ".$clase : $clase;
 		}
@@ -150,7 +150,7 @@ class Form_complete {
 			$value = $e['value'];
 			$attributes = $e['attributes'];
 			$attributes = $this->element_format_default($element['type'], $attributes);
-			
+
 			switch ($element['type']) { //Validar tipo
 				case 'button':
 					$elemento = form_button(array_merge(array('id'=>$element['id'], 'name'=>$name, 'value'=>$value, 'content'=>$value), $attributes));
@@ -260,5 +260,56 @@ class Form_complete {
 			}
 		}
 		return $selected;
+	}
+	//mr guag
+	public function createDropDown($text,$element){
+		$drop = "
+			<div class='dropdown'>
+				<button href='#pablo'
+							  class='dropdown-toggle btn btn-primary btn-round btn-block' data-toggle='dropdown
+								aria-expanded='false'>
+					$text
+					<b class='caret'></b>
+					<div class='ripple-container'></div>
+				</button>
+				<ul class='dropdown-menu dropdown-menu-left'>
+					$list
+				</ul>
+			</div>
+		";
+		// <div class="dropdown">
+		// 		<button href="#pablo" class="dropdown-toggle btn btn-primary btn-round btn-block" data-toggle="dropdown" aria-expanded="false">
+		// 			Perfil
+		// 				<b class="caret"></b>
+		// 				<div class="ripple-container"></div>
+		// 		</button>
+		// 		<ul class="dropdown-menu dropdown-menu-left">
+		// 				<li class="dropdown-header">Médico</li>
+		// 				<li>
+		// 						<a href="#pablo">Action</a>
+		// 				</li>
+		// 				<li>
+		// 						<a href="#pablo">Another action</a>
+		// 				</li>
+		// 				<li>
+		// 						<a href="#pablo">Something else here</a>
+		// 				</li>
+		// 				<li class="dropdown-header">Enfermería</li>
+		// 				<li>
+		// 						<a href="#pablo">Separated link</a>
+		// 				</li>
+		// 				<li class="divider"></li>
+		// 				<li>
+		// 						<a href="#pablo">One more separated link</a>
+		// 				</li>
+		// 				<li class="dropdown-header">Otro</li>
+		// 				<li>
+		// 						<a href="#pablo">Separated link</a>
+		// 				</li>
+		// 				<li>
+		// 						<a href="#pablo">One more separated link</a>
+		// 				</li>
+		// 		</ul>
+		// </div>
 	}
 }

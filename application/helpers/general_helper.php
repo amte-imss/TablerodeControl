@@ -410,7 +410,7 @@ if (!function_exists('imprimir_elemento_html')) {
 }
 /* End of file general_helper.php */
 
-if (!function_exists('startsWith')) 
+if (!function_exists('startsWith'))
     {
     function startsWith($haystack, $needle)
     {
@@ -419,7 +419,7 @@ if (!function_exists('startsWith'))
     }
 }
 
-if (!function_exists('is_nivel_central')) 
+if (!function_exists('is_nivel_central'))
 {
     function is_nivel_central($grupos = array()){
         $salida = false;
@@ -432,4 +432,3 @@ if (!function_exists('is_nivel_central'))
         return $salida;
     }
 }
-    
