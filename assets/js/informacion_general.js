@@ -21,6 +21,16 @@ $( document ).ready(function() {
             enabled: false
         }
     });
+
+    $("#filtros_capa").on("hide.bs.collapse", function(){
+        $("#filtros_capa_header>i").addClass('fa-arrow-right');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-down');
+    });
+    $("#filtros_capa").on("show.bs.collapse", function(){
+        //$("#filtros_capa_header>div").html('keyword_arrow_left');
+        $("#filtros_capa_header>i").addClass('fa-arrow-down');
+        $("#filtros_capa_header>i").removeClass('fa-arrow-right');
+    });
 });
 /**
  *	Método que muestra una imagen (gif animado) que indica que algo esta cargando
@@ -249,6 +259,90 @@ function calcular_totales(path, form_recurso) {
     });
 }
 
+function obtener_categoria_serie_unidad(datos){
+    var categorias = [];
+    var series_datos = [];
+    var inscritos = [];
+    var certificados = [];
+    var no_acceso = [];
+    var no_aprobado = [];
+    //console.log(datos);
+    //alert(datos);
+    jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        jQuery.each( val, function( i2, val2 ) {
+            var t = [];
+            var tt = '';
+            jQuery.each( val2, function( i3, val3 ) {
+                /*inscritos.push(val3);
+                certificados.push(val3);
+                no_acceso.push(val3);*/
+                //no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+                tt = i3;
+                t.push(val3);
+            });
+            var tmp = {name: i2, data: t, stack: i};
+            series_datos.push(tmp);
+        });
+    });
+    //console.log(series_datos);
+    //alert(series_datos);
+    /*jQuery.each( datos, function( i, val ) {
+        categorias.push(i);
+        inscritos.push(val.cantidad_alumnos_inscritos);
+        certificados.push(val.cantidad_alumnos_certificados);
+        no_acceso.push(val.cantidad_no_accesos);
+        no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+    });
+    series_datos = [{
+            name: 'Inscritoss',
+            data: inscritos,
+            stack: 'incritos'
+        }, {
+            name: 'Aprobados',
+            data: certificados,
+            stack: 'cantidad_alumnos_certificados'
+        }, {
+            name: 'Nunca entraron',
+            data: no_acceso,
+            stack: 'cantidad_no_accesos'
+        }, {
+            name: 'No aprobados',
+            data: no_aprobado,
+            stack: 'cantidad_no_aprobados'
+        }];*/
+    return resultado = {'categorias':categorias, 'series':series_datos};
+}
+
+function calcular_totales_unidad(path, form_recurso) {
+    var dataSend = $(form_recurso).serialize();
+    $.ajax({
+        url: path,
+        data: dataSend,
+        method: 'POST',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            mostrar_loader();
+        }
+    })
+    .done(function (response) {
+        var perfil = obtener_categoria_serie_unidad(response.perfil);
+        crear_grafica_stacked_grouped('comparativa_chrt', 'Perfiles por tipo de curso', perfil.categorias, 'Número de alumnos', perfil.series);
+        
+        var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
+        crear_grafica_stacked('comparativa_chrt2', 'Tipos de curso por perfil', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+    })
+    .fail(function (jqXHR, textStatus) {
+        //$(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+        console.log(jqXHR);
+        console.log(textStatus);
+        ocultar_loader();
+    })
+    .always(function () {
+        ocultar_loader();
+    });
+}
+
 /**
  *  Método que muestra una imagen (gif animado) que indica que algo esta cargando
  *  @return string  Contenedor e imagen del cargador.
@@ -337,6 +431,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#FC6220','#EF5350','#FCB220'],
         xAxis: {
             categories: categorias
         },
@@ -390,6 +485,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             tickmarkPlacement: 'on',
             title: {
@@ -434,6 +530,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
         title: {
             text: titulo
         },
+        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             categories: categorias
         },

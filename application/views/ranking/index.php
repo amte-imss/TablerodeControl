@@ -78,7 +78,7 @@ if (isset($usuario['central']))
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo:</span>
+            <span class="input-group-addon">Reporte:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'tipo',
