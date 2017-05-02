@@ -18,7 +18,7 @@ class Modulo_model extends CI_Model
         $this->load->database();
     }
 
-    public function get_modulos($id_modulo = 0)
+    public function get_modulos($id_modulo = 0, $agrupadas = true)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -35,7 +35,7 @@ class Modulo_model extends CI_Model
         }
         $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
-        if ($id_modulo <= 0)
+        if ($id_modulo <= 0 && $agrupadas)
         {
             $modulos = $this->get_tree($modulos);
         }
@@ -62,7 +62,7 @@ class Modulo_model extends CI_Model
         $modulos = $this->db->get('sistema.modulos A')->result_array();
     }
 
-    public function get_modulos_grupo($id_grupo = 0, $todos = false)
+    public function get_modulos_grupo($id_grupo = 0, $todos = false, $agrupados = true)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -86,7 +86,10 @@ class Modulo_model extends CI_Model
         }
         $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
-        $modulos = $this->get_tree($modulos);
+        if ($agrupados)
+        {
+            $modulos = $this->get_tree($modulos);
+        }
         //pr($this->db->last_query());
         return $modulos;
     }
@@ -145,7 +148,8 @@ class Modulo_model extends CI_Model
                 $insert = array(
                     'id_modulo' => $id_modulo,
                     'id_grupo' => $id_grupo,
-                    'configurador' => $configurador
+                    'configurador' => $configurador,
+                    'activo' => $activo
                 );
                 $this->db->insert('sistema.modulos_grupos', $insert);
             }
@@ -197,15 +201,15 @@ class Modulo_model extends CI_Model
             {
                 if (!isset($pre_tree[$row['id_modulo']]))
                 {
-                    $pre_tree[$row['id_modulo']]= $row;
-                    
+                    $pre_tree[$row['id_modulo']] = $row;
                 }
                 //pr($pre_tree[$row['id_modulo']]);
                 if (isset($pre_tree[$row['id_modulo_padre']]) /* && !isset($pre_menu[$row['id_menu_padre']]['childs'][$row['id_menu']]) */)
                 {
 //                    pr($row['id_modulo']['id_modulo_padre']);
                     $pre_tree[$row['id_modulo_padre']]['childs'][$row['id_modulo']] = $pre_tree[$row['id_modulo']];
-                }else{
+                } else
+                {
                     //pr($row['id_modulo']['id_modulo_padre']);
                 }
             }
@@ -222,6 +226,32 @@ class Modulo_model extends CI_Model
         }
         //pr($tree);
         return $tree;
+    }
+
+    function check_acceso($url = null, $id_usuario = 0)
+    {
+        $salida = null;
+        if ($id_usuario > 0 && $url != null && $url != "")
+        {
+            $this->db->flush_cache();
+            $this->db->reset_query();
+            $select = array(
+                'A.id_modulo', 'A.nombre  modulo', 'A.url', 'B.configurador'
+            );
+            $this->db->select($select);
+            $this->db->join('sistema.modulos_grupos B','B.id_modulo = A.id_modulo', 'inner');
+            $this->db->join('sistema.grupos_usuarios C','C.id_grupo = B.id_grupo', 'inner');
+            $this->db->where('C.id_usuario', $id_usuario);
+            $this->db->where('A.activo', true);
+            $this->db->where('B.activo', true);
+            $this->db->where('C.activo', true);
+            $this->db->where('A.url', $url);
+            $result_set = $this->db->get('sistema.modulos A');
+            if($result_set){
+                $salida = $result_set->result_array();
+            }
+        }
+        return $salida;
     }
 
 }

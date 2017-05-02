@@ -54,6 +54,7 @@
                 echo $this->form_complete->create_element(
                         array('id' => 'tipo',
                             'type' => 'dropdown',
+                            'first' => array('' => 'Seleccione...'),
                             'options' => $configuradores,
                             'attributes' => array('name' => 'tipo',
                                 'class' => 'form-control  form-control input-sm',
@@ -73,6 +74,7 @@
                 echo $this->form_complete->create_element(
                         array('id' => 'padre',
                             'type' => 'dropdown',
+                            'first' => array('' => 'Seleccione...'),
                             'options' => $modulos_dropdown,
                             'attributes' => array('name' => 'padre',
                                 'class' => 'form-control  form-control input-sm',

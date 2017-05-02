@@ -116,3 +116,59 @@ $config['form_actualizar_perfil_password'] = array(
         'rules' => 'required|matches[pass]'
     ),
 );
+
+$config['filtros_comparativa_tipo_curso'] = array(
+    array(
+        'field' => 'periodo', 
+        'label' => 'Año', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'unidad1', 
+        'label' => 'unidad1', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'unidad2', 
+        'label' => 'unidad2', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'reporte', 
+        'label' => 'Reporte', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'tipo_curso', 
+        'label' => 'Año', 
+        'rules' => 'required|is_numeric'
+    )
+);
+
+$config['filtros_comparativa_perfil'] = array(
+    array(
+        'field' => 'periodo', 
+        'label' => 'Año', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'unidad1', 
+        'label' => 'unidad1', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'unidad2', 
+        'label' => 'unidad2', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'reporte', 
+        'label' => 'Reporte', 
+        'rules' => 'required|is_numeric'
+    ), 
+    array(
+        'field' => 'subperfil', 
+        'label' => 'perfil', 
+        'rules' => 'required|is_numeric'
+    )
+);

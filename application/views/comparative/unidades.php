@@ -7,8 +7,8 @@
                 Filtros<i class="fa fa-arrow-right pull-right" aria-hidden="true"></i><!-- <div class="material-icons pull-right">keyword_arrow_right</div> -->
             </div>
             <?php
-            echo js('comparativa/umae.js');
-            echo form_open('comparativa/umae', array('id' => 'form_comparativa'));
+            echo js('comparativa/unidades.js');
+            echo form_open('comparativa/unidades', array('id' => 'form_comparativa'));
             ?>
             <div id="filtros_capa" class="card-content collapse">
                 <div class="row form-group">
@@ -22,7 +22,7 @@
                                         'first' => array('' => 'Seleccione...'),
                                         'options' => $comparativas,
                                         'attributes' => array(
-                                            'class' => 'form-control  form-control input-sm',
+                                            'class' => 'form-control  form-control input-sm ',
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'top',
                                             'title' => 'Tipo de comparativa',

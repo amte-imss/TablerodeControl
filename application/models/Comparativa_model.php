@@ -29,23 +29,23 @@ class Comparativa_model extends CI_Model
 
     public function get_comparar_perfil($filtros = [])
     {
-        $datos['unidad1'] = $this->get_data_umae_perfil($filtros['unidad1'], $filtros);
-        $datos['unidad2'] = $this->get_data_umae_perfil($filtros['unidad2'], $filtros);
+        $datos['unidad1'] = $this->get_data_perfil($filtros['unidad1'], $filtros);
+        $datos['unidad2'] = $this->get_data_perfil($filtros['unidad2'], $filtros);
         return $datos;
     }
 
     public function get_comparar_tipo_curso($filtros = [])
     {
-        $datos['unidad1'] = $this->get_data_umae_tipo_curso($filtros['unidad1'], $filtros);
-        $datos['unidad2'] = $this->get_data_umae_tipo_curso($filtros['unidad2'], $filtros);
+        $datos['unidad1'] = $this->get_data_tipo_curso($filtros['unidad1'], $filtros);
+        $datos['unidad2'] = $this->get_data_tipo_curso($filtros['unidad2'], $filtros);
         return $datos;
     }
 
-    private function get_data_umae_tipo_curso($unidad = 0, &$filtros = array())
+    private function get_data_tipo_curso($unidad = 0, &$filtros = array())
     {
         $datos = [];
 
-        $pre_datos = $this->get_data_umae_tipo_curso_aux($unidad, $filtros);
+        $pre_datos = $this->get_data_tipo_curso_aux($unidad, $filtros);
         $datos['unidad'] = $pre_datos[0]['nombre'];
         $datos['cantidad'] = 0;
         switch ($filtros['reporte'])
@@ -68,7 +68,7 @@ class Comparativa_model extends CI_Model
         return $datos;
     }
 
-    private function get_data_umae_tipo_curso_aux($unidad = 0, &$filtros = array())
+    private function get_data_tipo_curso_aux($unidad = 0, &$filtros = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -96,7 +96,12 @@ class Comparativa_model extends CI_Model
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->where('B.umae', true);
+        if (isset($filtros['umae']) && $filtros['umae'])
+        {
+            $this->db->where('B.umae', true);
+        }else{
+            $this->db->where('B.umae', false);
+        }
         if (isset($filtros['tipo_curso']))
         {
             $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
@@ -126,11 +131,11 @@ class Comparativa_model extends CI_Model
         return $datos;
     }
 
-    private function get_data_umae_perfil($unidad = 0, &$filtros = array())
+    private function get_data_perfil($unidad = 0, &$filtros = array())
     {
         $datos = [];
 
-        $pre_datos = $this->get_data_umae_perfil_aux($unidad, $filtros);
+        $pre_datos = $this->get_data_perfil_aux($unidad, $filtros);
         $datos['unidad'] = $pre_datos[0]['nombre'];
         $datos['cantidad'] = 0;
         switch ($filtros['reporte'])
@@ -153,7 +158,7 @@ class Comparativa_model extends CI_Model
         return $datos;
     }
 
-    private function get_data_umae_perfil_aux($unidad = 0, &$filtros = array())
+    private function get_data_perfil_aux($unidad = 0, &$filtros = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -181,7 +186,12 @@ class Comparativa_model extends CI_Model
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
-        $this->db->where('B.umae', true);
+        if (isset($filtros['umae']) && $filtros['umae'])
+        {
+            $this->db->where('B.umae', true);
+        }else{
+            $this->db->where('B.umae', false);
+        }
         if (isset($filtros['subperfil']))
         {
             $this->db->where('H.id_grupo_categoria', $filtros['subperfil']);
@@ -194,7 +204,7 @@ class Comparativa_model extends CI_Model
             );
             $this->db->group_by($group_by);
         }
-        
+
 
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
         if (count($datos) == 0)

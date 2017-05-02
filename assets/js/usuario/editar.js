@@ -52,8 +52,9 @@ $(function () {
     });
 });
 
-function set_value_unidad(id_unidad, unidad) {
-    console.log(unidad);
+function set_value_unidad(item) {    
+    var id_unidad = item.getAttribute("data-unidad-id"); 
+    var unidad = item.getAttribute("data-unidad-nombre"); 
     document.getElementById('unidad').value = id_unidad;
     document.getElementById('unidad_texto').value = unidad;
     $('#unidad_autocomplete').css('display', 'none');

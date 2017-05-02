@@ -55,23 +55,16 @@ class Welcome extends CI_Controller
             }
         }
 
-        $usuario = $this->session->userdata('usuario');
-        if (isset($usuario['id_usuario']))
-        {
-            redirect(site_url() . '/welcome/dashboard');
-        } else
-        {
-            //cargamos plantilla
-            $this->template->setTitle($data["texts"]["title"]);
+        //cargamos plantilla
+        $this->template->setTitle($data["texts"]["title"]);
 
-            $this->template->setSubTitle($data["texts"]["subtitle"]);
-            $this->template->setDescripcion($data["texts"]["descripcion"]);
+        $this->template->setSubTitle($data["texts"]["subtitle"]);
+        $this->template->setDescripcion($data["texts"]["descripcion"]);
 
-            $this->template->setMainContent("tc_template/login.tpl.php", $data, FALSE);
-            //$this->template->setBlank("tc_template/index.tpl.php");
+        $this->template->setMainContent("tc_template/login.tpl.php", $data, FALSE);
+        //$this->template->setBlank("tc_template/index.tpl.php");
 
-            $this->template->getTemplate(null, "tc_template/blank.tpl.php");
-        }
+        $this->template->getTemplate(null, "tc_template/blank.tpl.php");
     }
 
     function recargar_captcha()
@@ -98,10 +91,8 @@ class Welcome extends CI_Controller
         }
     }
 
-    function cerrar_sesion()
-    {
+    function cerrar_sesion(){
         $this->session->sess_destroy();
         redirect(site_url());
     }
-
 }

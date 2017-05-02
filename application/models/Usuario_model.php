@@ -55,7 +55,7 @@ class Usuario_model extends CI_Model
         return $categoria;
     }
 
-    public function lista_unidad($keyword = null)
+    public function lista_unidad($keyword = null, $tipo_unidad = 0)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -66,6 +66,9 @@ class Usuario_model extends CI_Model
         {
             $this->db->like('lower(concat(clave_unidad,$$ $$, nombre))', $keyword);
             $this->db->limit(10);
+        }
+        if($tipo_unidad > 0){
+            $this->db->where('id_tipo_unidad', $tipo_unidad);
         }
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
         return $resultado_unidades;

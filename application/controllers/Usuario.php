@@ -163,12 +163,12 @@ class Usuario extends MY_Controller
                     $post['password'] = $this->input->post('pass', true);
                     $datos['status'] = $this->registro->update_password($post);
 
-                    redirect(site_url() . '/registro/mod/' . $id_usuario . '/1');
+                    redirect(site_url() . '/usuario/mod/' . $id_usuario . '/1');
                 } else
                 {
                     pr('datos no validos');
                     pr(validation_errors());
-                    redirect(site_url() . '/registro/mod/' . $id_usuario . '/2');
+                    redirect(site_url() . '/usuario/mod/' . $id_usuario . '/2');
                 }
             }
         } else

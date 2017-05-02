@@ -25,7 +25,7 @@ class Modulo extends MY_Controller
         $output['full_view'] = $full_view;
         $output['modulos'] = $this->modulo->get_modulos();
         $output['configuradores'] = dropdown_options($this->modulo->get_configuradores(), 'id_configurador', 'nombre');
-        $output['modulos_dropdown'] = dropdown_options($output['modulos'], 'id_modulo', 'nombre');
+        $output['modulos_dropdown'] = dropdown_options($this->modulo->get_modulos(0,false), 'id_modulo', 'nombre');
         
         if ($full_view == 1)
         {
@@ -54,7 +54,7 @@ class Modulo extends MY_Controller
     {
         
         $output['grupo'] = $id_grupo;
-        $output['modulos'] = $this->modulo->get_modulos_grupo($id_grupo, true);
+        $output['modulos'] = $this->modulo->get_modulos_grupo($id_grupo, true, false);
         if ($this->input->post() && !empty($this->input->post('grupo', true)))
         {
             $this->modulo->upsert_modulos_grupo($id_grupo, $output['modulos'], $this->input->post());

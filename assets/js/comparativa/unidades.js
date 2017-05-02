@@ -1,8 +1,8 @@
 function cmbox_comparativa() {
     var id_destino = document.getElementById('comparativa').value;
-    var destino = site_url + '/comparativa/umae_tipo_curso';
+    var destino = site_url + '/comparativa/unidades_tipo_curso';
     if(id_destino == 2){
-        destino = site_url + '/comparativa/umae_perfil';
+        destino = site_url + '/comparativa/unidades_perfil';
     }
     $.ajax({
         url: destino

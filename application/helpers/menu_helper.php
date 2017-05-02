@@ -20,6 +20,8 @@ if (!function_exists('render_menu'))
                 if(isset($item['link'])){
                     if(startsWith($item['link'], 'http://')||startsWith($item['link'], 'https://')){
                         $enlace = $item['link'];
+                    }else if(empty ($item['link'])){
+                        $enlace = '#';
                     }else{
                         $enlace = site_url() . $item['link'];
                     }

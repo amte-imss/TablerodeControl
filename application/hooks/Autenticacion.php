@@ -15,9 +15,9 @@ class Autenticacion
 {
 
     private static $libre_acceso = array(
-        'welcome/index', 
-        'welcome/cerrar_sesion', 
-        'captcha/index', 
+        'welcome/index',
+        'welcome/cerrar_sesion',
+        'captcha/index',
     );
 
     function acceso()
@@ -36,17 +36,33 @@ class Autenticacion
         if (!in_array($url, Autenticacion::$libre_acceso))
         {
             $usuario = $CI->session->userdata('usuario');
-            if(isset($usuario['id_usuario'])){
-                if(!$this->verifica_permiso($CI, $usuario)){
+            //pr($usuario);
+            if (isset($usuario['id_usuario']))
+            {
+                if (!$this->verifica_permiso($CI, $usuario))
+                {
                     redirect(site_url());
                 }
-            }else{
+            } else
+            {
                 redirect(site_url());
             }
         }
     }
 
-    private function verifica_permiso($CI, $usuario){
+    private function verifica_permiso($CI, $usuario)
+    {
+        $controlador = $CI->uri->rsegment(1);  //Controlador actual o dirección actual
+        $accion = $CI->uri->rsegment(2);  //Función que se llama en el controlador
+        $url = '/' . $controlador . '/' . $accion;
+        $CI->load->model('Modulo_model', 'modulos');
+        $modulo = $CI->modulos->check_acceso($url, $usuario['id_usuario']);
+        $modulo_alt = $CI->modulos->check_acceso($url . '/', $usuario['id_usuario']);
+//        pr($url);s
+//        pr($modulo);
+//        pr($modulo_alt);
+//        return $modulo != null || $modulo_alt != null || $url == '/welcome/dashboard';
         return true;
     }
+
 }

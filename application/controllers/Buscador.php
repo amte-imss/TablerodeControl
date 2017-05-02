@@ -11,6 +11,7 @@ class Buscador extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->library('session');
     }
 
     public function search_unidad_instituto()
@@ -21,7 +22,12 @@ class Buscador extends CI_Controller
             $this->load->model('Usuario_model', 'usuario');
             $keyword = $this->input->post('keyword', true);
             $keyword = strtolower($keyword);
-            $output['unidades'] = $this->usuario->lista_unidad($keyword);
+            $usuario = $this->session->userdata('usuario');
+            if(is_nivel_central($usuario['grupos'])){
+                $output['unidades'] = $this->usuario->lista_unidad($keyword);
+            }else{
+                $output['unidades'] = $this->usuario->lista_unidad($keyword, $usuario['id_tipo_unidad']);
+            }
             echo $this->load->view('buscador/unidades_instituto', $output, true);
         }
     }

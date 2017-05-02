@@ -1,5 +1,25 @@
 $(function () {
-    $('#form_comparativa_umae').submit(function (event) {
+    $('.unidad_texto').keyup(function () {
+
+        var index = $(this)[0].getAttribute('data-id');
+        keyword = document.getElementById('unidad'+index+'_texto').value;
+        console.log('buscando:' + keyword);
+        $.ajax({
+            url: site_url + '/buscador/search_unidad_instituto'
+            , method: "post"
+            , timeout: 200
+            , data: {keyword: keyword}
+            , error: function () {
+                console.warn("No se pudo realizar la conexión");
+            }
+        }).done(function (response) {
+
+            $('#unidad'+index+'_autocomplete').css('display', 'block');
+            $('#unidad'+index+'_autocomplete').html(response);
+        });
+
+    });
+    $('#form_comparativa_unidad').submit(function (event) {
         event.preventDefault();
         $.ajax({
             url: $(this).attr('action')
@@ -13,13 +33,12 @@ $(function () {
                 mostrar_loader();
             }
         }).done(function (response) {
-            //console.log(response);
             var datos = JSON.parse(response);
             datos = procesa_datos(datos);
             console.log(datos);
             var grafica = document.getElementById('reporte').value;
             var periodo = 2016;
-            var titulo_grafica = "Comparativa de UMAE en el " + periodo;
+            var titulo_grafica = "Comparativa de unidades en el " + periodo;
             var texto = "";
             var id_reporte = document.getElementById('reporte').value;
             switch (id_reporte) {
@@ -51,6 +70,17 @@ $(function () {
     });
 });
 
+function set_value_unidad(item) {
+    var id_unidad = item.getAttribute("data-unidad-id");
+    var unidad = item.getAttribute("data-unidad-nombre");
+    var index = item.parentElement.getAttribute('data-autocomplete-id');
+    console.log(index);
+    document.getElementById('unidad' + index).value = id_unidad;
+    document.getElementById('unidad' + index + '_texto').value = unidad;
+    $('#unidad' + index + '_autocomplete').css('display', 'none');
+    $('#unidad' + index + '_autocomplete').html('');
+}
+
 function procesa_datos(datos) {
     var salida = [];
     salida[0] = [datos.unidad1.unidad, datos.unidad1.cantidad];
@@ -58,32 +88,8 @@ function procesa_datos(datos) {
     return salida;
 }
 
-function cmbox_perfil() {
-    var subcategoria = document.getElementById('perfil').value;
-    $.ajax({
-        url: site_url + '/buscador/search_grupos_categorias'
-        , method: "post"
-        , data: {subcategoria: subcategoria}
-        , error: function () {
-            console.warn("No se pudo realizar la conexión");
-        }
-        , beforeSend: function (xhr) {
-            mostrar_loader();
-        }
-    }).done(function (response) {
-        $('#subperfil').empty()
-        var opts = $.parseJSON(response);
-        $('#subperfil').append('<option value="">Seleccionar...</option>');
-        // Use jQuery's each to iterate over the opts value
-        $.each(opts, function (i, d) {
-            $('#subperfil').append('<option value="' + d.id_grupo_categoria + '">' + d.nombre + '</option>');
-        });
-        ocultar_loader();
-    });
-}
-
 function graficar(datos, titulo, texto, year, extra) {
-    Highcharts.chart('area_graph', {
+     Highcharts.chart('area_graph', {
         chart: {
             type: 'column'
         },

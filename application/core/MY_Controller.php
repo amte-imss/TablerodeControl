@@ -14,6 +14,7 @@ class MY_Controller extends CI_Controller
     {
         parent::__construct();
         $this->lang->load('interface', 'spanish');
+        $this->load->library('Configuracion_grupos');
         $usuario = $this->session->userdata('usuario');
 //        pr($usuario);
         if (isset($usuario['id_usuario']))

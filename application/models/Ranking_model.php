@@ -83,11 +83,13 @@ class Ranking_model extends CI_Model
         }
         $this->db->select($select);
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', true);
+        $this->db->where('CI.activa', true);
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -127,11 +129,13 @@ class Ranking_model extends CI_Model
         $this->db->select($select);
         $this->db->join('catalogos.unidades_instituto B', 'A.id_delegacion = B.id_delegacion', 'inner');
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', false);
+        $this->db->where('CI.activa', true);
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -170,12 +174,14 @@ class Ranking_model extends CI_Model
         }
         $this->db->select($select);
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'inner');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', true);
+        $this->db->where('CI.activa', true);
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -220,12 +226,14 @@ class Ranking_model extends CI_Model
         $this->db->select($select);
         $this->db->join('catalogos.unidades_instituto B', 'A.id_delegacion = B.id_delegacion', 'inner');
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'inner');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', false);
+        $this->db->where('CI.activa', true);
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
