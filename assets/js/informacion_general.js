@@ -441,7 +441,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         title: {
             text: titulo
         },
-        colors: ['#999999','#43A886','#FC6220','#EF5350','#FCB220'],
+        colors: ['#0090b9','#43A886','#FC6220','#EF5350','#FCB220'],
         xAxis: {
             categories: categorias
         },
@@ -495,7 +495,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
         title: {
             text: titulo
         },
-        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
+        colors: ['#0090b9','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             tickmarkPlacement: 'on',
             title: {
@@ -540,7 +540,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
         title: {
             text: titulo
         },
-        colors: ['#999999','#43A886','#EF5350','#FC6220','#FCB220'],
+        colors: ['#0090b9','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             categories: categorias
         },

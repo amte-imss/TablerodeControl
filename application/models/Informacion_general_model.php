@@ -94,6 +94,15 @@ class Informacion_general_model extends CI_Model
                 $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo_seleccion'].' as periodo');
             }*/
         }
+        if(isset($params['calcular_totales_unidad']) && $params['calcular_totales_unidad']!=true){
+            $this->load->library('Configuracion_grupos');
+            $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+            $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
+            if(!empty($configuracion['condicion_calcular_totales'])){
+                $this->db->where($configuracion['condicion_calcular_totales']);
+            }
+        }
+
         //$this->db->limit('500');
         if(isset($params['destino']) AND !empty($params['destino'])){ ///Se utiliza para construir los listados (tree) de vista por_perfil y por_tipo_curso
             $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso');
@@ -113,13 +122,14 @@ class Informacion_general_model extends CI_Model
         $this->db->join('catalogos.implementaciones imp', 'imp.id_implementacion=hia.id_implementacion');
         $this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_inicio)');
         $this->db->join('catalogos.cursos cur', 'cur.id_curso=imp.id_curso');
-        $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso');
+        $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso AND tc.activo=CAST(1 as boolean)');
         $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto', 'left');
         $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=uni.id_delegacion', 'left');
         $this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region', 'left');
         $this->db->join('catalogos.categorias cat', 'cat.id_categoria=hia.id_categoria', 'left');
         $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria', 'left');
-        $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria', 'left');
+        //$this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)', 'left');
+        $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)');
 
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
         $resultado = $query->result_array();

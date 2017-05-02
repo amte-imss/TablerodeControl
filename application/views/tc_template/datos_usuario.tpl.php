@@ -12,7 +12,7 @@
         <label class="col-form-label"><?php echo $name_categoria.'('.$clave_categoria.')'; ?></label>
     </div>
     <?php 
-    if($grupos[0]['id_grupo']==En_grupos::NIVEL_CENTRAL) { ?>
+    if(in_array($grupos[0]['id_grupo'], array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))) { ?>
         <!-- <label class="col-lg-4 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['umae']; ?>:</label> -->
         <div class="col-lg-4 col-md-6 col-sm-6">
             <label class="col-form-label"><?php echo $lenguaje['nivel_central']; ?></label>

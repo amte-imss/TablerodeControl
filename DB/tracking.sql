@@ -91,3 +91,7 @@ primary key(id_modulo_grupo),
 foreign key(id_modulo) references sistema.modulos(id_modulo), 
 foreign key(id_grupo) references sistema.grupos(id_grupo)
 );
+
+/* Martes 2 de mayo 2017 */
+alter table catalogos.grupos_categorias add column activa bool NOT NULL DEFAULT true;
+alter table catalogos.grupos_categorias add column "order" numeric(2) NULL DEFAULT 0;

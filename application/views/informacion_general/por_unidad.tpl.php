@@ -21,7 +21,7 @@
                                 'type'=>'dropdown',
                                 'options'=>$catalogos['tipo_grafica'],
                                 'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript:if(($('#unidad_capa').length > 0)){ calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');}"
+                                    'onchange'=>"javascript: if(($('#unidad_capa').html().length > 0) || ($('#umae_capa').html().length > 0)){ calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');} else { alert('Debe seleccionar los otros filtros antes de cambiar el tipo de gráfica.'); }"
                                 )
                             )
                         ); ?>
@@ -40,40 +40,75 @@
                         ); ?>
                         <span class="material-input"></span>
                     </div>
-                    <div id="tipos_busqueda_capa" class="col-lg-4 col-md-6 col-sm-12">
-                        <label class="control-label"><?php echo $lenguaje['tipo']; ?></label>
-                        <?php echo $this->form_complete->create_element(
+                    <?php if(in_array($grupos[0]['id_grupo'], array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))) { ?>
+                        <div id="tipos_busqueda_capa" class="col-lg-4 col-md-6 col-sm-12">
+                            <label class="control-label"><?php echo $lenguaje['tipo']; ?></label>
+                            <?php echo $this->form_complete->create_element(
+                                array(
+                                    'id'=>'tipos_busqueda',
+                                    'type'=>'dropdown',
+                                    'options'=>$catalogos['tipos_busqueda'],
+                                    'first' => array(''=>$lenguaje['seleccione']),
+                                    'attributes'=>array('class'=>'form-control',
+                                        'onchange'=>"javascript: validar_tipos_busqueda('#tipos_busqueda');"
+                                    )
+                                )
+                            ); ?>
+                            <span class="material-input"></span>
+                        </div>
+                        <div id="region_capa" class="col-lg-4 col-md-6 col-sm-12" style="display:none;">
+                            <label class="control-label"><?php echo $lenguaje['region']; ?></label>
+                            <?php
+                            echo $this->form_complete->create_element(
+                                array(
+                                    'id'=>'region',
+                                    'type'=>'dropdown',
+                                    'options'=>$catalogos['regiones'],
+                                    'first' => array(''=>$lenguaje['seleccione']),
+                                    'attributes'=>array('class'=>'form-control',
+                                        //'onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$tipo_busq."', '#form_busqueda', '#".$tipo_busq."_capa')"
+                                        'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#tipo_unidad_capa').html(''); $('#umae_capa').html(''); limpiar_capas();"
+                                    )
+                                )
+                            ); ?>
+                            <span class="material-input"></span>
+                        </div>
+                        <div id="delegacion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                        <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                    <?php } else {
+                        $path = 'ud';
+                        if($this->session->userdata('usuario')['umae']==true) {
+                            $tipos_busqueda = 'umae';
+                        } else {
+                            $tipos_busqueda = 'delegacion';
+                        }
+                        echo $this->form_complete->create_element(
                             array(
                                 'id'=>'tipos_busqueda',
-                                'type'=>'dropdown',
-                                'options'=>$catalogos['tipos_busqueda'],
-                                'first' => array(''=>$lenguaje['seleccione']),
-                                'attributes'=>array('class'=>'form-control',
-                                    'onchange'=>"javascript: validar_tipos_busqueda('#tipos_busqueda');"
-                                )
+                                'type'=>'hidden',
+                                'value'=>$tipos_busqueda
                             )
-                        ); ?>
-                        <span class="material-input"></span>
-                    </div>
-                    <div id="region_capa" class="col-lg-4 col-md-6 col-sm-12" style="display:none;">
-                        <label class="control-label"><?php echo $lenguaje['region']; ?></label>
-                        <?php
+                        );
                         echo $this->form_complete->create_element(
                             array(
                                 'id'=>'region',
-                                'type'=>'dropdown',
-                                'options'=>$catalogos['regiones'],
-                                'first' => array(''=>$lenguaje['seleccione']),
-                                'attributes'=>array('class'=>'form-control',
-                                    //'onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$tipo_busq."', '#form_busqueda', '#".$tipo_busq."_capa')"
-                                    'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#tipo_unidad_capa').html(''); $('#umae_capa').html(''); limpiar_capas();"
-                                )
+                                'type'=>'hidden',
+                                'value'=>$this->session->userdata('usuario')['id_region']
                             )
                         ); ?>
-                        <span class="material-input"></span>
-                    </div>
-                    <div id="delegacion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
-                    <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <label class="control-label"><?php echo $lenguaje['region']; ?></label>
+                            <div class="form-group form-group-sm">
+                                <?php echo $this->session->userdata('usuario')['name_region']; ?>
+                            </div>
+                            <span class="material-input"></span>
+                        </div>
+                    <?php } //pr($_SESSION['usuario']); ?>
+                    <script type="text/javascript">
+                    $(function(){
+                        data_ajax(site_url+'/informacion_general/cargar_listado/<?php echo $path; ?>', '#form_busqueda', '#<?php echo $tipos_busqueda; ?>_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
+                    });
+                    </script>
                     <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                     <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                     <div class="col-lg-12 col-md-12 col-sm-12">

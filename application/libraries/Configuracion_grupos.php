@@ -48,14 +48,14 @@ class Configuracion_grupos {
     	switch ($grupo_actual) {
     		case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo']);
-    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
 		        );
                 $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
     			break;
     		case En_grupos::N2_CPEI: case En_grupos::N2_DGU:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo']);
-    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
 		        );
                 if($grupo_actual == En_grupos::N2_CPEI){ //Si es unidad tiene diferentes condionales a las de una UMAE
@@ -66,14 +66,14 @@ class Configuracion_grupos {
     		break;
     		case En_grupos::N3_JSPM:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo'], 'nivel_atencion'=>$datos['nivel_atencion']);
-    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
 		        );
                 $resultado['condicion_calcular_totales'] = "del.clave_delegacional='".$this->obtener_delegacion_actual()."'";
     			break;
     		case En_grupos::NIVEL_CENTRAL:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo'], 'nivel_atencion'=>$datos['nivel_atencion'], 'region'=>$datos['region'], 'delegacion'=>$datos['delegacion'], 'umae'=>$datos['umae']);
-    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'),
 		            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true', 'valor'=>"CONCAT(nombre,' (',clave_unidad,')')")
 		        );
@@ -81,7 +81,7 @@ class Configuracion_grupos {
     			break;
     		case En_grupos::ADMIN: case En_grupos::SUPERADMIN:
     			$resultado['tipos_busqueda'] = array('perfil'=>$datos['perfil'], 'tipo_curso'=>$datos['tipo_curso'], 'periodo'=>$datos['periodo'], 'nivel_atencion'=>$datos['nivel_atencion'], 'region'=>$datos['region'], 'delegacion'=>$datos['delegacion'], 'umae'=>$datos['umae']);
-    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS, Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'id_subcategoria'),
+    			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'),
 		            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true', 'valor'=>"CONCAT(nombre,' (',clave_unidad,')')")
 		        );
@@ -106,6 +106,8 @@ class Configuracion_grupos {
         if(in_array($this->CI->sesion['grupos'][0]['id_grupo'], array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))){
             $delegacion = '';
         }
+        //pr(array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES,En_grupos::N2_DGU));
+        //pr(array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN));
         $periodo = $this->get_periodo_actual();
         return str_replace(array('$tipo_curso', '$unidad', '$delegacion', '$periodo'), array($tipo_curso, $unidad, $delegacion, $periodo), $titulo);
     }
