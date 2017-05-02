@@ -32,7 +32,7 @@ class Informacion_general_model extends CI_Model
             $this->db->where('tc.id_tipo_curso='.$params['tipo_curso']);
         }        
         if(isset($params['periodo']) AND !empty($params['periodo'])){
-            $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo']);
+            $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo']);
         }
         if(isset($params['nivel_atencion']) AND is_numeric($params['nivel_atencion'])){
             if($params['nivel_atencion']==0){//Agregar condicional para nivel de atención no asignado
@@ -58,7 +58,7 @@ class Informacion_general_model extends CI_Model
         }
         //Condiciones utilizadas en informacion_general/perfil
         if(isset($params['anio']) AND !empty($params['anio'])){
-            $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['anio']);
+            $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['anio']);
         }
         if(isset($params['perfil_seleccion']) 
             AND !empty($params['perfil_seleccion'])){
@@ -83,15 +83,15 @@ class Informacion_general_model extends CI_Model
             $per = $this->config->item('periodo');
             //pr($per);
             if($params['periodo_seleccion']==$per['SEMESTRAL']['id']){
-               $periodo = ", (CASE WHEN date_part('month', fecha_fin) <= 6 THEN 1 ELSE 2 END) as periodo";
+               $periodo = ", (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 1 ELSE 2 END) as periodo";
             } elseif($params['periodo_seleccion']==$per['TRIMESTRAL']['id']){
-                $periodo = ', EXTRACT(quarter FROM fecha_fin) as periodo';
+                $periodo = ', EXTRACT(quarter FROM fecha_inicio) as periodo';
             } elseif($params['periodo_seleccion']==$per['BIMESTRAL']['id']){
-                $periodo = ', (EXTRACT(month FROM fecha_fin)/2+.1):: Integer as periodo';
+                $periodo = ', (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer as periodo';
             } elseif($params['periodo_seleccion']==$per['MENSUAL']['id']){
-                $periodo = ', EXTRACT(month FROM fecha_fin) as periodo';
+                $periodo = ', EXTRACT(month FROM fecha_inicio) as periodo';
             } /* else {
-                $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo_seleccion'].' as periodo');
+                $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo_seleccion'].' as periodo');
             }*/
         }
         //$this->db->limit('500');
@@ -99,8 +99,8 @@ class Informacion_general_model extends CI_Model
             $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso');
             $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
         } else {
-            $this->db->select('imp.id_curso, imp.fecha_fin,EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, mes.nombre as mes,
-                EXTRACT(YEAR FROM imp.fecha_fin) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
+            $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, mes.nombre as mes,
+                EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
                 del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
                 hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
                 hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
@@ -111,7 +111,7 @@ class Informacion_general_model extends CI_Model
 
         $this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');
         $this->db->join('catalogos.implementaciones imp', 'imp.id_implementacion=hia.id_implementacion');
-        $this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_fin)');
+        $this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_inicio)');
         $this->db->join('catalogos.cursos cur', 'cur.id_curso=imp.id_curso');
         $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso');
         $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto', 'left');

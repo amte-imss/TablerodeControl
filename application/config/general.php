@@ -22,3 +22,8 @@ $config['tipo_busqueda'] = array(
 	'UMAE' => array('id'=>'umae', 'valor'=>'UMAE'),
 	'DELEGACION' => array('id'=>'delegacion', 'valor'=>'Delegación')
 );
+
+$config['tipo_grafica'] = array(
+	'PERFIL' => array('id'=>'perfil', 'valor'=>'Perfil'),
+	'TIPO_CURSO' => array('id'=>'tipo_curso', 'valor'=>'Tipo de curso')
+);

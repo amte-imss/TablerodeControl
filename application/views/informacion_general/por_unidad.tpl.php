@@ -9,10 +9,24 @@
     <div id="filtros" class="col-lg-12 col-md-12 col-sm-12">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-                <div class="card-header" data-background-color="blue">
+                <div class="card-header" data-background-color="blue" data-toggle="collapse" data-target="#perfil_tree_capa">
                     <?php echo $lenguaje['filtros']; ?>
                 </div>
                 <div id="perfil_tree_capa" class="card-content">
+                    <div id="tipo_grafica_capa" class="col-lg-4 col-md-6 col-sm-12">
+                        <label class="control-label"><?php echo $lenguaje['tipo_grafica']; ?></label>
+                        <?php echo $this->form_complete->create_element(
+                            array(
+                                'id'=>'tipo_grafica',
+                                'type'=>'dropdown',
+                                'options'=>$catalogos['tipo_grafica'],
+                                'attributes'=>array('class'=>'form-control',
+                                    'onchange'=>"javascript:if(($('#unidad_capa').length > 0)){ calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');}"
+                                )
+                            )
+                        ); ?>
+                        <span class="material-input"></span>
+                    </div>
                     <div id="anio_capa" class="col-lg-4 col-md-6 col-sm-12">
                         <label class="control-label"><?php echo $lenguaje['anio']; ?></label>
                         <?php echo $this->form_complete->create_element(
@@ -52,7 +66,7 @@
                                 'first' => array(''=>$lenguaje['seleccione']),
                                 'attributes'=>array('class'=>'form-control',
                                     //'onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$tipo_busq."', '#form_busqueda', '#".$tipo_busq."_capa')"
-                                    'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#unidad_capa').html(''); $('#tipo_unidad_capa').html(''); $('#umae_capa').html('');"
+                                    'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#tipo_unidad_capa').html(''); $('#umae_capa').html(''); limpiar_capas();"
                                 )
                             )
                         ); ?>
@@ -86,8 +100,8 @@
 <script type="text/javascript">
     function validar_tipos_busqueda(elemento){
         mostrar_loader();
-        console.log(elemento);
-        console.log($(elemento).val());
+        //console.log(elemento);
+        //console.log($(elemento).val());
         if($(elemento).val()==''){
             $('#region_capa').hide();
         } else {
@@ -95,8 +109,11 @@
             $('#region_capa').show();
         }
         $('#umae_capa').html('');
+        $('#unidad_capa').html('');
         $('#delegacion_capa').html('');
-        $('#tipo_unidad_capa').html('');        
+        $('#tipo_unidad_capa').html('');
+        $('#comparativa_chrt').html('');
+        $('#comparativa_chrt2').html('');
         ocultar_loader();
     }
     $(function(){

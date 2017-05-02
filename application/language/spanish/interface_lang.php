@@ -43,6 +43,7 @@ $lang['interface'] = array(
         'anio' => 'Año',
         'tipo_curso' => 'Tipo de curso',
         'tipo_unidad' => 'Tipo de unidad',
+        'tipo_grafica' => 'Tipo de gráfica',
         'tipo' => 'Tipo de búsqueda',
         'perfil' => 'Perfil',
         'region' => 'Región',
