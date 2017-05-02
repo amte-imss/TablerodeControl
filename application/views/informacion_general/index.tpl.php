@@ -5,7 +5,7 @@
     <div class="col-lg-1 col-md-0 col-sm-0"></div>
     <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="">
+            <div class="card-header" data-background-color="blue">
                 <i class="fa fa-user"></i>
             </div>
             <div class="card-content">
@@ -49,7 +49,7 @@
     </div>
     <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="blue">
+            <div class="card-header" data-background-color="yellow">
                 <i class="fa fa-percent"></i>
             </div>
             <div class="card-content">

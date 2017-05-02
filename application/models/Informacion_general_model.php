@@ -94,7 +94,7 @@ class Informacion_general_model extends CI_Model
                 $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo_seleccion'].' as periodo');
             }*/
         }
-        if(isset($params['calcular_totales_unidad']) && $params['calcular_totales_unidad']!=true){
+        if(!isset($params['calcular_totales_unidad']) || (isset($params['calcular_totales_unidad']) && $params['calcular_totales_unidad']!=true)){
             $this->load->library('Configuracion_grupos');
             $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
             $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
@@ -125,7 +125,8 @@ class Informacion_general_model extends CI_Model
         $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso AND tc.activo=CAST(1 as boolean)');
         $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto', 'left');
         $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=uni.id_delegacion', 'left');
-        $this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region', 'left');
+        //$this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region', 'left');
+        $this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region');
         $this->db->join('catalogos.categorias cat', 'cat.id_categoria=hia.id_categoria', 'left');
         $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria', 'left');
         //$this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)', 'left');
@@ -148,7 +149,7 @@ class Informacion_general_model extends CI_Model
             $this->db->where($params['conditions']);
         }
         if (array_key_exists('order', $params)) {
-            $this->db->order_by($params['order']['field'], $params['order']['type']);
+            $this->db->order_by($params['order']);
         }
         $this->db->join('grupos_categorias gc', 'gc.id_subcategoria=sub.id_subcategoria', 'left');
         $query = $this->db->get('subcategorias sub'); //Obtener conjunto de registros

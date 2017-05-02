@@ -88,6 +88,7 @@ class Configuracion_grupos {
                 $resultado['condicion_calcular_totales'] = '';
     			break;
     	}
+        ksort($resultado['tipos_busqueda']);
     	return $resultado;
     }
 

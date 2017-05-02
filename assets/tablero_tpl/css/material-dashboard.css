@@ -3698,6 +3698,10 @@ footer .btn {
   box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);
 }
 .card [data-background-color="orange"] {
+  background: linear-gradient(60deg, #FC6220, #FC6220);
+  box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);
+}
+.card [data-background-color="yellow"] {
   background: linear-gradient(60deg, #FCB220, #FCB220);
   box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);
 }

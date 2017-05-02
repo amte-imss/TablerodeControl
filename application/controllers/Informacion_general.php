@@ -51,7 +51,7 @@ class Informacion_general extends MY_Controller
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
         //pr($datos['catalogos']);
-        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>array('field'=>'sub.order', 'type'=>'ASC')));
+        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
             $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
             if(!empty($listado['grupo_categoria'])){
@@ -72,7 +72,7 @@ class Informacion_general extends MY_Controller
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
-        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>array('field'=>'sub.order', 'type'=>'ASC')));
+        $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
             $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
             if(!empty($listado['grupo_categoria'])){
@@ -386,11 +386,13 @@ class Informacion_general extends MY_Controller
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        ksort($resultado['tipo_curso']);
                         //Nivel atención
                         if(!isset($resultado['nivel_atencion'][$dato['nivel_atencion']])){
                             $resultado['nivel_atencion'][$dato['nivel_atencion']] = array();
                         }
                         $resultado['nivel_atencion'][$dato['nivel_atencion']] = $this->crear_arreglo_por_tipo($resultado['nivel_atencion'][$dato['nivel_atencion']], $dato);
+                        ksort($resultado['nivel_atencion']);
                         //Periodo
                         if(!isset($resultado['periodo'][$dato['anio_fin']])){
                             $resultado['periodo'][$dato['anio_fin']] = array();
@@ -401,17 +403,20 @@ class Informacion_general extends MY_Controller
                             $resultado['region'][$dato['region']] = array();
                         }
                         $resultado['region'][$dato['region']] = $this->crear_arreglo_por_tipo($resultado['region'][$dato['region']], $dato);
+                        ksort($resultado['region']);
                         //Delegación
                         if(!isset($resultado['delegacion'][$dato['delegacion']])){
                             $resultado['delegacion'][$dato['delegacion']] = array();
                         }
                         $resultado['delegacion'][$dato['delegacion']] = $this->crear_arreglo_por_tipo($resultado['delegacion'][$dato['delegacion']], $dato);
+                        ksort($resultado['delegacion']);
                         //UMAE
                         if($dato['umae']==true){
                             if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
                                 $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = array();
                             }
                             $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']], $dato);
+                            ksort($resultado['umae']);
                         }
                     }
                     //pr($datos);
