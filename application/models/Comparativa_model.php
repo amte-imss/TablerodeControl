@@ -76,7 +76,8 @@ class Comparativa_model extends CI_Model
         if ($unidad > 0)
         {
             $select = array(
-                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',
+                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',*/
+                '"B".nombre', 
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("AA".cantidad_no_accesos) no_acceso'
@@ -111,7 +112,8 @@ class Comparativa_model extends CI_Model
             $this->db->where('B.id_unidad_instituto', $unidad);
 
             $group_by = array(
-                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'
+                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'*/
+                '"B".nombre'
             );
             $this->db->group_by($group_by);
         }
@@ -166,7 +168,8 @@ class Comparativa_model extends CI_Model
         if ($unidad > 0)
         {
             $select = array(
-                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',
+                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',*/
+                '"B".nombre', 
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("AA".cantidad_no_accesos) no_acceso'
@@ -200,7 +203,8 @@ class Comparativa_model extends CI_Model
         {
             $this->db->where('B.id_unidad_instituto', $unidad);
             $group_by = array(
-                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'
+                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'*/
+                '"B".nombre'
             );
             $this->db->group_by($group_by);
         }

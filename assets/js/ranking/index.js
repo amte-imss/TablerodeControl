@@ -37,10 +37,9 @@ function aprobados(datos) {
     if (id_programa == "") {
         titulo_grafica = "Ranking de alumnos aprobados " + " en el " + periodo;
     }
-    var texto = "Alumnos aprobados";
+    var texto = "Número de alumnos aprobados ";
     var extra = '';
-    graficar_ranking(datos, titulo_grafica, texto, periodo, extra);
-    graficar_ranking_vertical(datos, titulo_grafica, texto, periodo, extra);
+    graficar_ranking(datos, titulo_grafica, texto, periodo, extra);  
 }
 
 function eficiencia_terminal(datos) {
@@ -56,10 +55,9 @@ function eficiencia_terminal(datos) {
     if (id_programa == "") {
         titulo_grafica = "Ranking por eficiencia terminal " + " en el " + periodo;
     }
-    var texto = "Porcentaje de eficiencia terminal";
+    var texto = "Porcentaje de eficiencia terminal ";
     var extra = '';
     graficar_ranking(datos, titulo_grafica, texto, periodo, extra);
-    graficar_ranking_vertical(datos, titulo_grafica, texto, periodo, extra);
 }
 
 function procesa_datos(datos) {
@@ -117,7 +115,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra) {
             enabled: false
         },
         tooltip: {
-            pointFormat: texto + ' en' + year + ' : <b>{point.y:.1f}' + extra + '</b>'
+            pointFormat: texto + ' en ' + year + ' : <b>{point.y:.1f} ' + extra + '</b>'
         },
         series: [{
                 name: texto,
@@ -165,7 +163,7 @@ function graficar_ranking_vertical(datos, titulo, texto, year, extra) {
             enabled: false
         },
         tooltip: {
-            pointFormat: texto + ' en' + year + ' : <b>{point.y:.1f}' + extra + '</b>'
+            pointFormat: texto + ' en ' + year + ' : <b>{point.y:.1f} ' + extra + '</b>'
         },
         series: [{
                 name: texto,

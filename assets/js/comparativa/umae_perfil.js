@@ -19,25 +19,29 @@ $(function () {
             console.log(datos);
             var grafica = document.getElementById('reporte').value;
             var periodo = 2016;
-            var titulo_grafica = "Comparativa de UMAE en el " + periodo;
+            var titulo_grafica = "Comparativa de UMAE en " + periodo;
             var texto = "";
-            var id_reporte = document.getElementById('reporte').value;
+            var id_reporte = document.getElementById('reporte').value
+            colores = ['#999999'];
             switch (id_reporte) {
                 case 1:
                 case "1":
-                    texto = "Cantidad de alumnos inscritos ";
+                    texto = "Número de alumnos inscritos ";
                     break;
                 case 2:
                 case "2":
-                    texto = "Cantidad de alumnos aprobados ";
+                    colores = ['#43A886'];
+                    texto = "Número de alumnos aprobados ";
                     break;
                 case 3:
                 case "3":
+                    colores = ['#0090b9'];
                     texto = "Porcentaje de alumnos inscritos ";
                     break;
                 case 5:
                 case "5":
-                    texto = "Cantidad de alumnos no aprobados ";
+                    colores = ['#EF5350'];
+                    texto = "Número de alumnos no aprobados ";
                     break;
             }
             var extra = '';
@@ -45,7 +49,7 @@ $(function () {
                 case 1:
                     break;
             }
-            graficar(datos, titulo_grafica, texto, periodo, extra);
+            graficar(datos, titulo_grafica, texto, periodo, extra, colores);
             ocultar_loader();
         });
     });
@@ -82,7 +86,7 @@ function cmbox_perfil() {
     });
 }
 
-function graficar(datos, titulo, texto, year, extra) {
+function graficar(datos, titulo, texto, year, extra, colores) {
     Highcharts.chart('area_graph', {
         chart: {
             type: 'column'
@@ -109,8 +113,9 @@ function graficar(datos, titulo, texto, year, extra) {
             enabled: false
         },
         tooltip: {
-            pointFormat: texto + ' en' + year + ' : <b>{point.y}' + extra + '</b>'
+            pointFormat: texto + ' en ' + year + ' : <b>{point.y} ' + extra + '</b>'
         },
+        colors: colores,
         series: [{
                 name: texto,
                 data: datos

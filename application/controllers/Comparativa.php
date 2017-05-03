@@ -20,7 +20,7 @@ class Comparativa extends MY_Controller
         $this->load->helper(array('form', 'general'));
         $this->load->library('form_complete');
         $this->lang->load('comparativa', 'spanish');
-        // $this->load->model("Nomina_model", "nom");
+        $this->load->model("Nomina_model", "nom");
         $this->lang->load('interface'); //Cargar archivo de lenguaje
         $this->load->model('Comparativa_model', 'comparativa');
         $this->load->library('form_validation');
@@ -83,10 +83,7 @@ class Comparativa extends MY_Controller
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
-                    )
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,)
             );
             $view = $this->load->view('comparative/unidad_perfil', $output);
         }
@@ -115,10 +112,7 @@ class Comparativa extends MY_Controller
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
-                    )
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
             );
             $view = $this->load->view('comparative/unidad_tipo_curso', $output, false);
         }
@@ -145,10 +139,11 @@ class Comparativa extends MY_Controller
 
             if ($this->form_validation->run() == TRUE)
             {
-                $filtros = $this->input->post() + array('umae'=>true);
+                $filtros = $this->input->post() + array('umae' => true);
                 $datos = $this->comparativa->get_comparar_perfil($filtros);
                 echo json_encode($datos);
-            }else{
+            } else
+            {
                 pr(validation_errors());
             }
         } else
@@ -162,7 +157,8 @@ class Comparativa extends MY_Controller
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
+                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')") */
+                    'valor' => 'nombre')
                     )
             );
             $view = $this->load->view('comparative/umae_perfil', $output);
@@ -180,7 +176,7 @@ class Comparativa extends MY_Controller
 
             if ($this->form_validation->run() == TRUE)
             {
-                $filtros = $this->input->post() + array('umae'=>true);
+                $filtros = $this->input->post() + array('umae' => true);
                 $datos = $this->comparativa->get_comparar_tipo_curso($filtros);
                 echo json_encode($datos);
             }
@@ -195,7 +191,8 @@ class Comparativa extends MY_Controller
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
+                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
+                    'valor' => 'nombre')
                     )
             );
             $view = $this->load->view('comparative/umae_tipo_curso', $output, false);

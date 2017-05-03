@@ -42,28 +42,7 @@
                     <?php
                 }
                 ?>
-                <div class="row form-group">
-                    <div class="col-md-4">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-addon">Año:</span>
-                            <?php
-                            echo $this->form_complete->create_element(
-                                    array('id' => 'periodo',
-                                        'type' => 'dropdown',
-                                        'first' => array('' => 'Seleccione...'),
-                                        'options' => $periodos,
-                                        'attributes' => array(
-                                            'class' => 'form-control  form-control input-sm',
-                                            'data-toggle' => 'tooltip',
-                                            'data-placement' => 'top',
-                                            'title' => 'Region',
-                                            'onchange' => 'render_graph()')
-                                    )
-                            );
-                            ?>
-                        </div>
-                        <?php echo form_error_format('periodo'); ?>
-                    </div>
+                <div class="row form-group">                    
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">Programa:</span>
@@ -106,6 +85,27 @@
                         </div>
                         <?php echo form_error_format('tipo'); ?>
                     </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Año:</span>
+                            <?php
+                            echo $this->form_complete->create_element(
+                                    array('id' => 'periodo',
+                                        'type' => 'dropdown',
+                                        'first' => array('' => 'Seleccione...'),
+                                        'options' => $periodos,
+                                        'attributes' => array(
+                                            'class' => 'form-control  form-control input-sm',
+                                            'data-toggle' => 'tooltip',
+                                            'data-placement' => 'top',
+                                            'title' => 'Region',
+                                            'onchange' => 'render_graph()')
+                                    )
+                            );
+                            ?>
+                        </div>
+                        <?php echo form_error_format('periodo'); ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,7 +116,4 @@
 
 <div class="row">
     <div id="area_graph"></div>
-</div>     
-<div class="row">
-    <div id="area_graph_vertical"></div>
-</div>     
+</div>
