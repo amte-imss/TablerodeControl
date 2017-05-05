@@ -530,20 +530,21 @@
                             });
                             </script> -->
                         <?php } else {
-                            $tipos_busqueda = $path = 'tipo_unidad'; ?>
-                            <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                            //$tipos_busqueda = $path = 'tipo_unidad'; ?>
+                            <!-- <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <script type="text/javascript">
                             $(function(){
                                 data_ajax(site_url+'/informacion_general/cargar_listado/<?php echo $path; ?>', '#form_busqueda', '#<?php echo $tipos_busqueda; ?>_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
                             });
-                            </script>
+                            </script> -->
                         <?php }
                     } ?>
                     <!-- <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                     <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div> -->
-                    <!-- <div class="col-lg-12 col-md-12 col-sm-12">
-                        <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php //echo $lenguaje['limpiar_filtros'];?>">
-                    </div> -->
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
+                        <!-- <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>"> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -581,6 +582,10 @@
     }
     $(function(){
         $('#btn_limpiar').click(function() {
+            $('#tipos_busqueda').val('');
+            validar_tipos_busqueda('#tipos_busqueda');
+        });
+        $('#btn_buscar').click(function() {
             $('#tipos_busqueda').val('');
             validar_tipos_busqueda('#tipos_busqueda');
         });
