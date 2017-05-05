@@ -7,6 +7,7 @@
                 Filtros<i class="fa fa-arrow-right pull-right" aria-hidden="true"></i><!-- <div class="material-icons pull-right">keyword_arrow_right</div> -->
             </div>
             <?php
+            echo js('chart_options.js');
             echo js('ranking/index.js');
             echo form_open('ranking/get_data/', array('id' => 'form_ranking'));
             ?>

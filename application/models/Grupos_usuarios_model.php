@@ -28,6 +28,7 @@ class Grupos_usuarios_model extends CI_Model
         );
         $this->db->select($select);
         $this->db->where('activo', true);
+        $this->db->order_by('orden', 'asc');
         $grupos = $this->db->get('sistema.grupos')->result_array();
         return $grupos;
     }
@@ -103,6 +104,7 @@ class Grupos_usuarios_model extends CI_Model
                 $insert = array(
                     'id_usuario' => $id_usuario,
                     'id_grupo' => $id_grupo,
+                    'activo' => $activo
                 );
                 $this->db->insert('sistema.grupos_usuarios', $insert);
             }

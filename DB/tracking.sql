@@ -95,3 +95,6 @@ foreign key(id_grupo) references sistema.grupos(id_grupo)
 /* Martes 2 de mayo 2017 */
 alter table catalogos.grupos_categorias add column activa bool NOT NULL DEFAULT true;
 alter table catalogos.grupos_categorias add column "order" numeric(2) NULL DEFAULT 0;
+
+/* viernes 5 de mayo chris */
+alter table sistema.grupos add column orden int not null default 1

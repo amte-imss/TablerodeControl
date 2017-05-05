@@ -40,7 +40,7 @@ if (!function_exists('render_modulo'))
                     if (isset($row['childs']))
                     {
                         ?>
-                        <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>">Más</p>
+                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a style="cursor:pointer" href="#">Más</a></p>
                         <?php
                         //pr($item['childs']);
                         echo render_modulo($row['childs'], 'modulo' . $row['id_modulo']);
@@ -78,7 +78,7 @@ if (!function_exists('render_modulos_grupo'))
                     <div class="row form-group">
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
-                                <?php echo $row['nombre']; ?><br><?php echo $row['url']; ?>
+                                <?php echo $row['nombre']; ?><br><span style="text-decoration: underline; font-style: italic;"><?php echo $row['url']; ?></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -122,7 +122,7 @@ if (!function_exists('render_modulos_grupo'))
                     if (isset($row['childs']))
                     {
                         ?>
-                        <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>">Más</p>
+                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a href="#" style="cursor:pointer">Más</a></p>
                         <?php
                         //pr($item['childs']);
                         echo render_modulos_grupo($CI, $row['childs'], 'modulo' . $row['id_modulo']);
