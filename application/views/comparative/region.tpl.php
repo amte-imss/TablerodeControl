@@ -113,10 +113,10 @@ if(is_array($comparativa)){
                     <th>".$region["region"]."</th>
                     <td>".$region["etm"]."</td>
                   </tr>";
-    if(isset($region["region"]["tipo_curso"])){
-      $filtros = "Tipo de curso: ".$region["region"]["tipo_curso"];
-    }elseif(isset($region["region"]["perfil"])){
-      $filtros = "Peril: ".$region["region"]["perfil"];
+    if(isset($region["tipo_curso"])){
+      $filtros = "Tipo de curso: ".$region["tipo_curso"];
+    }elseif(isset($region["perfil"])){
+      $filtros = "Peril: ".$region["perfil"];
     }
   }
   ?>
