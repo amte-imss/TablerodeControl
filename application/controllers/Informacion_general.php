@@ -286,16 +286,16 @@ class Informacion_general extends MY_Controller
         if(!isset($resultado['cantidad_alumnos_certificados'])){
             $resultado['cantidad_alumnos_certificados'] = 0;
         }
-        if(!isset($resultado['cantidad_no_accesos'])){
-            $resultado['cantidad_no_accesos'] = 0;
-        }
         if(!isset($resultado['cantidad_no_aprobados'])){
             $resultado['cantidad_no_aprobados'] = 0;
         }
+        if(!isset($resultado['cantidad_no_accesos'])){
+            $resultado['cantidad_no_accesos'] = 0;
+        }
         $resultado['cantidad_alumnos_inscritos'] += $dato['cantidad_alumnos_inscritos'];
         $resultado['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];
-        $resultado['cantidad_no_accesos'] += $dato['cantidad_no_accesos'];
         $resultado['cantidad_no_aprobados'] += $dato['cantidad_no_aprobados'];
+        $resultado['cantidad_no_accesos'] += $dato['cantidad_no_accesos'];
 
         return $resultado;
     }
@@ -422,10 +422,14 @@ class Informacion_general extends MY_Controller
                         //ksort($resultado['delegacion']);
                         //UMAE
                         if($dato['umae']==true){
-                            if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
+                            /*if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
                                 $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = array();
                             }
-                            $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']], $dato);
+                            $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']], $dato);*/
+                            if(!isset($resultado['umae'][$dato['unidades_instituto']])){
+                                $resultado['umae'][$dato['unidades_instituto']] = array();
+                            }
+                            $resultado['umae'][$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['unidades_instituto']], $dato);
                             //ksort($resultado['umae']);
                         }
                     }

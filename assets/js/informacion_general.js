@@ -92,12 +92,12 @@ function obtener_categoria_serie(datos){
             data: certificados,
             stack: 'aprobados'
         }, {
-            name: 'Nunca entraron',
-            data: no_acceso,
-            stack: 'no_aprobado'
-        }, {
             name: 'No aprobados',
             data: no_aprobado,
+            stack: 'no_aprobado'
+        }, {
+            name: 'Nunca entraron',
+            data: no_acceso,
             stack: 'no_aprobado'
         }];
     return resultado = {'categorias':categorias, 'series':series_datos};
@@ -154,7 +154,7 @@ function calcular_totales(path, form_recurso) {
                 stack: 'no_aprobado'
             }];*/
         var perfil = obtener_categoria_serie(response.perfil);
-        crear_grafica_stacked_grouped('container_perfil', 'Por perfil', perfil.categorias, 'Número de alumnos', perfil.series);
+        crear_grafica_stacked_grouped('container_perfil', 'Gráfica por perfil', perfil.categorias, 'Número de alumnos', perfil.series);
         ////////Tipos de curso
         /*var tipos_curso = [];
         var series_datos = [];
@@ -173,7 +173,7 @@ function calcular_totales(path, form_recurso) {
                 data: inscritos
             }];*/
         var tipos_curso = obtener_categoria_serie(response.tipo_curso);
-        crear_grafica_stacked('container_tipo_curso', 'Por tipo de curso', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+        crear_grafica_stacked('container_tipo_curso', 'Gráfica por tipo de curso', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
         ////////Región
         /*var region = [];
         var series_datos = [];
@@ -192,7 +192,7 @@ function calcular_totales(path, form_recurso) {
                 data: inscritos
             }];*/
         var region = obtener_categoria_serie(response.region);
-        crear_grafica_stacked('container_region', 'Por región', region.categorias, 'Número de alumnos', region.series);
+        crear_grafica_stacked('container_region', 'Gráfica por región', region.categorias, 'Número de alumnos', region.series);
         ////////Delegación
         /*var delegacion = [];
         var series_datos = [];
@@ -211,7 +211,7 @@ function calcular_totales(path, form_recurso) {
                 data: inscritos
             }];*/
         var delegacion = obtener_categoria_serie(response.delegacion);
-        crear_grafica_stacked('container_delegacion', 'Por delegación', delegacion.categorias, 'Número de alumnos', delegacion.series);
+        crear_grafica_stacked('container_delegacion', 'Gráfica por delegación', delegacion.categorias, 'Número de alumnos', delegacion.series);
         ////////UMAE
         /*var umae = [];
         var series_datos = [];
@@ -230,7 +230,7 @@ function calcular_totales(path, form_recurso) {
                 data: inscritos
             }];*/
         var umae = obtener_categoria_serie(response.umae);
-        crear_grafica_stacked('container_umae', 'Por UMAE', umae.categorias, 'Número de alumnos', umae.series);
+        crear_grafica_stacked('container_umae', 'Gráfica por UMAE', umae.categorias, 'Número de alumnos', umae.series);
         ////////Periodo
         /*var periodo = [];
         var series_datos = [];
@@ -251,10 +251,10 @@ function calcular_totales(path, form_recurso) {
                 data: inscritos
             }];*/
         var periodo = obtener_categoria_serie(response.periodo);
-        crear_grafica_stacked('container_periodo', 'Por periodo', periodo.categorias, 'Número de alumnos', periodo.series);
+        crear_grafica_stacked('container_periodo', 'Gráfica por periodo', periodo.categorias, 'Número de alumnos', periodo.series);
         ////////Nivel de atención
         var nivel_atencion = obtener_categoria_serie(response.nivel_atencion);
-        crear_grafica_stacked('container_nivel_atencion', 'Por nivel de atención', nivel_atencion.categorias, 'Número de alumnos', nivel_atencion.series);
+        crear_grafica_stacked('container_nivel_atencion', 'Gráfica por nivel de atención', nivel_atencion.categorias, 'Número de alumnos', nivel_atencion.series);
     })
     .fail(function (jqXHR, textStatus) {
         $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
@@ -288,12 +288,12 @@ function obtener_categoria_serie_unidad(datos){
             data: certificados,
             stack: 'aprobados'
         }, {
-            name: 'Nunca entraron',
-            data: no_acceso,
-            stack: 'no_aprobado'
-        }, {
             name: 'No aprobados',
             data: no_aprobado,
+            stack: 'no_aprobado'
+        }, {
+            name: 'Nunca entraron',
+            data: no_acceso,
             stack: 'no_aprobado'
         }];
     return resultado = {'categorias':categorias, 'series':series_datos};
@@ -331,14 +331,18 @@ function calcular_totales_unidad(path, form_recurso) {
         }
     })
     .done(function (response) {
+        var elemento = 'unidad';
+        if($('#tipos_busqueda').val()=='umae'){
+            elemento = 'umae';
+        }
         if($('#tipo_grafica').val()=='perfil'){
             var perfil = obtener_categoria_serie_unidad(response.perfil);
-            crear_grafica_stacked_grouped('comparativa_chrt', 'Por perfil', perfil.categorias, 'Número de alumnos', perfil.series);
+            crear_grafica_stacked_grouped('comparativa_chrt', 'Gráfica por perfil de \''+$('#'+elemento+' option:selected').text()+'\'', perfil.categorias, 'Número de alumnos', perfil.series);
             $('#comparativa_chrt2').html('');
         }
         if($('#tipo_grafica').val()=='tipo_curso'){
             var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
-            crear_grafica_stacked('comparativa_chrt2', 'Por tipo de curso', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+            crear_grafica_stacked('comparativa_chrt2', 'Gráfica por tipo de curso de \''+$('#'+elemento+' option:selected').text()+'\'', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
             $('#comparativa_chrt').html('');
         }
     })
@@ -461,7 +465,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         title: {
             text: titulo
         },
-        colors: ['#0090b9','#43A886','#FC6220','#EF5350','#FCB220'],
+        colors: ['#0090b9','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
             categories: categorias
         },
@@ -498,8 +502,8 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             column: {
                 stacking: 'normal',
                 dataLabels: {
-                    //enabled: false,
-                    enabled: true,
+                    enabled: false,
+                    //enabled: true,
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
                 }
             }
@@ -600,7 +604,8 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
             column: {
                 stacking: 'normal',
                 dataLabels: {
-                    enabled: true,
+                    //enabled: true,
+                    enabled: false,
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
                 }
             }
