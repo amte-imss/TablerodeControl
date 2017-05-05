@@ -128,6 +128,27 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon">Icono:</span>
+                <?php
+                echo $this->form_complete->create_element(
+                        array('id' => 'icono',
+                            'type' => 'texto',
+                            'attributes' => array(
+                                'class' => 'form-control  form-control input-sm',
+                                'data-toggle' => 'tooltip',
+                                'data-placement' => 'top',
+                                'title' => 'icono')
+                        )
+                );
+                ?>
+            </div>
+            <?php echo form_error_format('icono'); ?>
+        </div>
+    </div>
+    
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

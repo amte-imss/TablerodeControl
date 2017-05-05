@@ -87,6 +87,7 @@ if (!function_exists('render_modulos_grupo'))
                                 echo $CI->form_complete->create_element(
                                         array('id' => 'configurador' . $row['id_modulo'],
                                             'type' => 'text',
+                                            'value' => $row['configurador_modulo'], 
                                             'attributes' => array('name' => 'configurador' . $row['id_modulo'],
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',

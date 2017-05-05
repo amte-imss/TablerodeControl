@@ -24,7 +24,7 @@ class Modulo_model extends CI_Model
         $this->db->reset_query();
         $select = array(
             'A.id_modulo', 'A.nombre', 'A.descripcion', 'A.url', 'A.visible', 'A.orden'
-            , 'A.id_configurador', 'B.nombre configurador', 'A.id_modulo_padre', 'A.visible'
+            , 'A.id_configurador', 'B.nombre configurador', 'A.id_modulo_padre', 'A.visible', 'A.icon'
         );
         $this->db->select($select);
         $this->db->join('sistema.configuradores B', 'B.id_configurador = A.id_configurador', 'inner');
@@ -48,7 +48,8 @@ class Modulo_model extends CI_Model
         $this->db->reset_query();
         $select = array(
             'A.id_modulo', 'A.nombre', 'A.descripcion', 'A.url', 'A.visible', 'A.orden'
-            , 'A.id_configurador', 'B.nombre configurador', 'A.id_modulo_padre'
+            , 'A.id_configurador', 'B.nombre configurador', 'A.id_modulo_padre', 'A.icon'
+            ,'C.configurador configurador_modulo'
         );
         $this->db->select($select);
         $this->db->join('sistema.configuradores B', 'B.id_configurador = A.id_configurador', 'inner');
@@ -68,7 +69,8 @@ class Modulo_model extends CI_Model
         $this->db->reset_query();
         $select = array(
             'A.id_modulo', 'A.nombre', 'A.descripcion', 'A.url', 'A.visible', 'A.orden'
-            , 'A.id_configurador', 'B.nombre configurador', 'C.id_grupo', 'A.id_modulo_padre'
+            , 'A.id_configurador', 'B.nombre configurador', 'C.id_grupo', 'A.id_modulo_padre', 'A.icon'
+            ,'C.configurador configurador_modulo'
         );
         $this->db->select($select);
         if ($todos)
@@ -112,9 +114,9 @@ class Modulo_model extends CI_Model
         foreach ($modulos as $modulo)
         {
             $id_modulo = $modulo['id_modulo'];
-            $configurador = $opciones['configurador' . $id_modulo];
+            $configurador = (strlen($opciones['configurador' . $id_modulo])>5)?substr($opciones['configurador' . $id_modulo],0,5):$opciones['configurador' . $id_modulo];
             $activo = (isset($opciones['activo' . $id_modulo])) ? true : false;
-            $this->upsert_modulo_grupo($id_grupo, $id_modulo, $configurador, $activo);
+            $this->upsert_modulo_grupo($id_grupo, $id_modulo, $configurador, $activo, $opciones);
         }
         if ($this->db->trans_status() === FALSE)
         {
@@ -125,7 +127,7 @@ class Modulo_model extends CI_Model
         }
     }
 
-    private function upsert_modulo_grupo($id_grupo = 0, $id_modulo = 0, $configurador = '', $activo = false)
+    private function upsert_modulo_grupo($id_grupo = 0, $id_modulo = 0, $configurador = '', $activo = false, $opciones = array())
     {
         //pr('[CH][modulo_model][upsert_modulo_grupo] id_grupo: '.$id_grupo.' id_modulo: '.$id_modulo.', conf: '.$configurador.', activo: '.($activo?'true':'false') );
         if ($id_grupo > 0 && $id_modulo > 0)
@@ -140,6 +142,7 @@ class Modulo_model extends CI_Model
             $existe = $this->db->get('sistema.modulos_grupos')->result_array()[0]['cantidad'] != 0;
             if ($existe)
             {
+                $this->db->set('configurador', $configurador);
                 $this->db->set('activo', $activo);
                 $this->db->update('sistema.modulos_grupos');
             } else
@@ -165,10 +168,12 @@ class Modulo_model extends CI_Model
             $this->db->reset_query();
             $this->db->set('nombre', $datos['nombre']);
             $this->db->set('url', $datos['url']);
-            $this->db->set('id_modulo_padre', $datos['padre']);
+            $this->db->set('id_modulo_padre', (empty($datos['padre']))?null:$datos['padre']);
             $this->db->set('orden', $datos['orden']);
             $this->db->set('id_configurador', $datos['tipo']);
             $this->db->set('visible', $datos['visible']);
+            $this->db->set('icon',(isset($datos['icono']))?$datos['icono']:null);
+            
             $this->db->where('id_modulo', $id_modulo);
             $this->db->update('sistema.modulos');
             $status = true;
@@ -185,7 +190,8 @@ class Modulo_model extends CI_Model
             'id_modulo_padre' => $datos['padre'],
             'orden' => $datos['orden'],
             'id_configurador' => $datos['tipo'],
-            'visible' => $datos['visible']
+            'visible' => $datos['visible'], 
+            'icon' => (isset($datos['icono'])?$datos['icono']:NULL)
         );
         $this->db->insert('sistema.modulos', $insert);
         return $status;

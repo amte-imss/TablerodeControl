@@ -13,6 +13,7 @@ $(function () {
 });
 
 function set_menu_active(id_item) {    
+    $('.tablero-menu-item').parent().removeClass('active');
     if (typeof (Storage) !== "undefined") {
         console.log('almacenando:' + id_item);
         sessionStorage.menu_active = id_item;

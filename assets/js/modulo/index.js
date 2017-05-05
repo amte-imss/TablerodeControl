@@ -28,6 +28,7 @@ function get_info_modulo(modulo) {
         $('#tipo').val(data.modulo.id_configurador);
         $('#padre').val(data.modulo.id_modulo_padre);
         $('#orden').val(data.modulo.orden);
+        $('#icono').val(data.modulo.icon);
         $('#visible').checked = data.modulo.visible;
         $('#form_custom_modulo').attr('action', site_url + "/modulo/get_modulo/" + modulo);
     });
