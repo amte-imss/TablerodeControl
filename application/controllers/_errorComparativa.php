@@ -19,12 +19,11 @@ class Comparativa extends MY_Controller
         parent::__construct();
         $this->load->helper(array('form', 'general'));
         $this->load->library('form_complete');
-        $this->lang->load('comparativa', 'spanish');
-        $this->load->model("Nomina_model", "nom");
-        $this->lang->load('interface'); //Cargar archivo de lenguaje
-        $this->load->model('Comparativa_model', 'comparativa');
-        $this->load->library('form_validation');
+				$this->lang->load('comparativa', 'spanish');
+				$this->load->model("Nomina_model","nom");
     }
+
+
 
     public function index()
     {
@@ -49,6 +48,7 @@ class Comparativa extends MY_Controller
 
         $this->template->getTemplate(null, "tc_template/index.tpl.php");
     }
+
 
     public function unidades()
     {
@@ -126,32 +126,20 @@ class Comparativa extends MY_Controller
 
     public function umae()
     {
-        $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
-        $view = $this->load->view('comparative/umae', $output, true);
-        $this->template->setDescripcion($this->mostrar_datos_generales());
-        $this->template->setMainContent($view);
-        $this->template->setSubTitle('Comparativa por UMAE');
-        $this->template->getTemplate();
+      $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
+      $view = $this->load->view('comparative/umae', $output, true);
+      $this->template->setDescripcion($this->mostrar_datos_generales());
+      $this->template->setMainContent($view);
+      $this->template->setSubTitle('Comparativa por UMAE');
+      $this->template->getTemplate();
     }
 
     public function umae_perfil()
     {
         if ($this->input->post())
         {
-
-            $this->config->load('form_validation'); //Cargar archivo con validaciones
-            $validations = $this->config->item('filtros_comparativa_perfil'); //Obtener validaciones de archivo general
-            $this->form_validation->set_rules($validations);
-
-            if ($this->form_validation->run() == TRUE)
-            {
-                $filtros = $this->input->post() + array('umae' => true);
-                $datos = $this->comparativa->get_comparar_perfil($filtros);
-                echo json_encode($datos);
-            } else
-            {
-                pr(validation_errors());
-            }
+            $datos = $this->comparativa->get_comparar_perfil($this->input->post());
+            echo json_encode($datos);
         } else
         {
             $this->load->library('Catalogo_listado');
@@ -174,17 +162,8 @@ class Comparativa extends MY_Controller
     {
         if ($this->input->post())
         {
-
-            $this->config->load('form_validation'); //Cargar archivo con validaciones
-            $validations = $this->config->item('filtros_comparativa_tipo_curso'); //Obtener validaciones de archivo general
-            $this->form_validation->set_rules($validations);
-
-            if ($this->form_validation->run() == TRUE)
-            {
-                $filtros = $this->input->post() + array('umae' => true);
-                $datos = $this->comparativa->get_comparar_tipo_curso($filtros);
-                echo json_encode($datos);
-            }
+            $datos = $this->comparativa->get_comparar_tipo_curso($this->input->post());
+            echo json_encode($datos);
         } else
         {
             $this->load->library('Catalogo_listado');
@@ -203,42 +182,34 @@ class Comparativa extends MY_Controller
         }
     }
 
-    public function region()
-    {
-        //1. modificar plantilla con campos y gráfica estática
-        //2. generar querys para reporte
-        //3. generar json dinamico
-        //4. obtener datos para campos y campos relacionados
-        //5. aplicar filtros
-        $data["texts"] = $this->lang->line('region'); //Mensajes
-        $this->template->setTitle($data["texts"]["title"]);
+		public function region(){
+			//1. modificar plantilla con campos y gráfica estática
+			//2. generar querys para reporte
+			//3. generar json dinamico
+			//4. obtener datos para campos y campos relacionados
+			//5. aplicar filtros
+			$data["texts"] = $this->lang->line('region'); //Mensajes
+			$this->template->setTitle($data["texts"]["title"]);
 
-        $this->template->setSubTitle($data["texts"]["subtitle"]);
-        $this->template->setDescripcion($data["texts"]["descripcion"]);
+      $this->template->setSubTitle($data["texts"]["subtitle"]);
+      $this->template->setDescripcion($data["texts"]["descripcion"]);
 
-        $data["combos"]["perfil"] = $this->nom->get_perfil();
-        //$data["combos"]["tipo_perfil"] = $this->nom->get_tipo_perfil();
-        $this->load->library('Catalogo_listado');
-        $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $data['combos'] += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::TIPOS_CURSOS,
-            Catalogo_listado::IMPLEMENTACIONES => array(
-                'valor' => 'EXTRACT(year FROM fecha_fin)',
-                'llave' => 'DISTINCT(EXTRACT(year FROM fecha_fin))',
-                'orden' => '1 DESC'),
-            Catalogo_listado::SUBCATEGORIAS,
-            //Catalogo_listado::GRUPOS_CATEGORIAS
-          ));
+			$data["combos"]["perfil"] = $this->nom->get_perfil();
+			$data["combos"]["tipo_perfil"] = $this->nom->get_tipo_perfil();
+			$this->load->library('Catalogo_listado');
+      $cat_list = new Catalogo_listado(); //Obtener catálogos
+      $data['combos'] += $cat_list->obtener_catalogos(array(
+					Catalogo_listado::TIPOS_CURSOS,
+					Catalogo_listado::IMPLEMENTACIONES=>array(
+							'valor'=>'EXTRACT(year FROM fecha_fin)',
+							'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))',
+							'orden'=>'1 DESC')));
 
-        $this->load->model("Comparativa_model","comp");
-        $data["comparativa"] = $this->comp->get_comparativa_region(3);
-
-        $this->template->setBlank("comparative/region.tpl.php", $data, FALSE);
+      $this->template->setBlank("comparative/region.tpl.php",$data,FALSE);
         //$this->template->setBlank("tc_template/index.tpl.php");
 
-        $this->template->getTemplate(null, "tc_template/index.tpl.php");
-        //$this->output->enable_profiler(true);
-
-    }
+      $this->template->getTemplate(null,"tc_template/index.tpl.php");
+		}
 
 }
+?>

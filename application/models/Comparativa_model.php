@@ -3,10 +3,12 @@
 /**
  * Description of Comparativa_model
  *
- * @author chrigarc
+ * @author chrigarc, mr. guag
  */
-class Comparativa_model extends CI_Model
-{
+class Comparativa_model extends MY_Model{
+  const
+    PERFIL = 1,
+    TIPO_CURSO = 2;
 
     public function __construct()
     {
@@ -220,6 +222,65 @@ class Comparativa_model extends CI_Model
         //pr($this->db->last_query());
         //pr($filtros);
         return $datos;
+    }
+
+    /*
+    * @Author: Mr. Guag
+    * @Version: 1.0
+    * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
+    * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
+    * @param {int} anio - Año de la comparativa
+    * @param {int} id - clave del perfil o tipo de curso, según aplique
+    * @return:
+    */
+    function get_comparativa_region($id=null,$anio=2016,$tipo_reporte=Self::PERFIL){
+      if(is_null($id)){
+        return false;
+      }
+      if($tipo_reporte == Self::TIPO_CURSO){
+        $select = ",ct.id_tipo_curso,ct.nombre tipo_curso";
+        $where = "WHERE cur.id_tipo_curso = $id";
+        $group = ",ct.id_tipo_curso, ct.nombre";
+      }else{
+        $select = ",per.id_grupo_categoria id_perfil,per.nombre perfil";
+        $where = " WHERE per.id_grupo_categoria = $id";
+        $group = ",per.id_grupo_categoria, per.nombre";
+      }
+      $query = "select
+        sum(himp.cantidad_alumnos_inscritos) inscritos,
+        sum(himp.cantidad_alumnos_certificados) aprobados,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) -  sum(acc.cantidad_no_accesos) no_aprobados,
+        sum(acc.cantidad_no_accesos) nunca_entraron,
+        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
+        del.id_region,reg.nombre region
+        $select
+        from hechos.hechos_implementaciones_alumnos himp
+         left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion and EXTRACT(year FROM imp.fecha_inicio)  = $anio)
+         left join catalogos.cursos cur ON(cur.id_curso = imp.id_curso)
+         left join catalogos.curso_tipo ct ON(ct.id_tipo_curso = cur.id_tipo_curso)
+         left join catalogos.unidades_instituto unit ON(unit.id_unidad_instituto = himp.id_unidad_instituto)
+         left join catalogos.delegaciones del ON(del.id_delegacion = unit.id_delegacion)
+         left join catalogos.regiones reg ON(reg.id_region = del.id_region)
+         left join catalogos.categorias cat ON(cat.id_categoria = himp.id_categoria)
+         left join catalogos.grupos_categorias per ON(per.id_grupo_categoria = cat.id_grupo_categoria)
+         left join hechos.accesos_implemetaciones acc ON(
+         		acc.id_implementacion = himp.id_implementacion and
+         		acc.id_unidad_instituto = himp.id_unidad_instituto and
+         		acc.id_categoria = himp.id_categoria and
+         		acc.id_sexo = himp.id_sexo
+        	)
+          $where
+        group by del.id_region, region $group
+        order by 1,3 asc";
+
+        $result = $this->db->query($query);
+        $regiones = $result->result_array();
+        unset($result);
+        $this->db->start_cache();
+        $this->db->stop_cache();
+        $this->db->flush_cache();
+        return $regiones;
     }
 
 }

@@ -460,3 +460,49 @@ if (!function_exists('is_nivel_tactico'))
         return $salida;
     }
 }
+
+if(!function_exists('dropdown')){
+  function dropdown($config,$section=array(),$options = null){
+    //title
+    //id
+    //class.
+    //attribs
+    //seccion
+    //subseccion
+    if(!isset($config["title"]) || !isset($config["id"])){
+      return false;
+    }
+    $drop = "<div class='dropdown'>
+              <button class='btn btn-primary btn-round btn-block dropdown-toggle %s'
+                      type='button'
+                      id='%s'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='true'
+                      %s>
+                %s
+                <span class='caret'></span>
+              </button>
+              <ul class='dropdown-menu' aria-labelledby='%s'>
+                %s
+              </ul>
+            </div>";
+      $css = isset($config["class"])? $config["class"] : null;
+      $attribs = isset($config["attribs"])? $config["attribs"] : null;
+      $opt = "";
+      foreach($section as $id_sec=>$seccion){
+        if(is_null($options)){
+          $opt .= "<li><a href='#'>".$seccion."</a></li>";
+        }else{
+          $opt .= "<li class='dropdown-header'>".$seccion."</li>";
+          foreach($options as $option){
+            if($option["id_subcategoria"] == $id_sec){
+              $opt .= "<li><a href='#'>".$option[$config["subseccion"]]."</a></li>";
+            }
+          }
+        }
+      }
+      $drop = sprintf($drop,$css,$config["id"],$attribs,$config["title"],$config["id"],$opt );
+
+      return $drop;
+  }
+}
