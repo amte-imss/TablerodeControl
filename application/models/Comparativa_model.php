@@ -242,9 +242,9 @@ class Comparativa_model extends MY_Model{
         return false;
       }
       if($tipo_reporte == Self::TIPO_CURSO){
-        $select = ",ct.id_tipo_curso,ct.nombre tipo_curso";
+        $select = ",ct.id_tipo_curso,ct.tipo_curso";
         $where = "WHERE cur.id_tipo_curso = $id";
-        $group = ",ct.id_tipo_curso, ct.nombre";
+        $group = ",ct.id_tipo_curso, ct.tipo_curso";
       }else{
         $select = ",per.id_grupo_categoria id_perfil,per.nombre perfil";
         $where = " WHERE per.id_grupo_categoria = $id";

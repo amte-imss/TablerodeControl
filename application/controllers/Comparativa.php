@@ -199,7 +199,7 @@ class Comparativa extends MY_Controller
         }
     }
 
-    public function region()
+    public function region($num = '3',$year='2016', $type=Comparativa_model::PERFIL)
     {
         //1. modificar plantilla con campos y gráfica estática
         //2. generar querys para reporte
@@ -227,13 +227,13 @@ class Comparativa extends MY_Controller
           ));
 
         $this->load->model("Comparativa_model","comp");
-        $data["comparativa"] = $this->comp->get_comparativa_region(3);
+        $data["comparativa"] = $this->comp->get_comparativa_region($num,$year,$type);
 
         $this->template->setBlank("comparative/region.tpl.php", $data, FALSE);
         //$this->template->setBlank("tc_template/index.tpl.php");
 
         $this->template->getTemplate(null, "tc_template/index.tpl.php");
-        //$this->output->enable_profiler(true);
+        // $this->output->enable_profiler(true);
 
     }
 
