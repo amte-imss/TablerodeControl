@@ -33,13 +33,14 @@ function aprobados(datos) {
     }
     datos = procesa_datos(datos);
     var periodo = 2016;
+    var colores = ['#0090b9'];
     var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en " + periodo;
     if (id_programa == "") {
         titulo_grafica = "Ranking de alumnos aprobados " + " en " + periodo;
     }
     var texto = "Número de alumnos aprobados ";
     var extra = '';
-    graficar_ranking(datos, titulo_grafica, texto, periodo, extra);  
+    graficar_ranking(datos, titulo_grafica, texto, periodo, extra, colores);
 }
 
 function eficiencia_terminal(datos) {
@@ -48,16 +49,17 @@ function eficiencia_terminal(datos) {
     if (id_programa != "" && datos.length > 0) {
         programa = datos[0].programa;
     }
-    
-    datos = procesa_datos_etm(datos);   
+
+    datos = procesa_datos_etm(datos);
     var periodo = 2016;
+    var colores = ['#FCB220'];
     var titulo_grafica = "Ranking por eficiencia terminal del programa " + programa + " en " + periodo;
     if (id_programa == "") {
         titulo_grafica = "Ranking por eficiencia terminal " + " en " + periodo;
     }
     var texto = "Porcentaje de eficiencia terminal ";
     var extra = '';
-    graficar_ranking(datos, titulo_grafica, texto, periodo, extra);
+    graficar_ranking(datos, titulo_grafica, texto, periodo, extra, colores);
 }
 
 function procesa_datos(datos) {
@@ -72,26 +74,30 @@ function procesa_datos_etm(datos) {
     var salida = [];
     for (i = 0; i < datos.length; i++) {
         if (datos[i].inscritos != datos[i].no_acceso) {
-            var eficiencia_terminal = (datos[i].aprobados/(datos[i].inscritos-datos[i].no_acceso))*100;
+            var eficiencia_terminal = (datos[i].aprobados / (datos[i].inscritos - datos[i].no_acceso)) * 100;
             eficiencia_terminal = parseInt(eficiencia_terminal);
-           // console.log(datos[i].nombre + ' ' + datos[i].inscritos + ' ' + datos[i].aprobados + ' '+ datos[i].no_acceso + ' ' + calcular_eficiencia_terminal(datos[i].inscritos, datos[i].aprobados,datos[i].no_acceso));
+            // console.log(datos[i].nombre + ' ' + datos[i].inscritos + ' ' + datos[i].aprobados + ' '+ datos[i].no_acceso + ' ' + calcular_eficiencia_terminal(datos[i].inscritos, datos[i].aprobados,datos[i].no_acceso));
             salida[i] = [datos[i].nombre, eficiencia_terminal];
         } else {
             salida[i] = [datos[i].nombre, 0];
         }
     }
-    return salida.sort(function(a, b){return b[1]-a[1]});;
+    return salida.sort(function (a, b) {
+        return b[1] - a[1]
+    });
+    ;
 }
 
 function render_graph() {
     $('#form_ranking').submit();
 }
 
-function    graficar_ranking(datos, titulo, texto, year, extra) {
+function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
     Highcharts.chart('area_graph', {
         chart: {
             type: 'column'
         },
+        colors: colores,
         title: {
             text: titulo
         },
@@ -107,6 +113,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra) {
         },
         yAxis: {
             min: 0,
+            allowDecimals: false,
             title: {
                 text: texto
             }

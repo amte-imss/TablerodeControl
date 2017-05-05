@@ -144,8 +144,10 @@
                                         <p class="hidden-lg hidden-md">Profile</p>
                                     </a>
 
-                                    <?php if(isset($perfil_usuario)){
-                                       echo $perfil_usuario;
+                                    <?php
+                                    if (isset($perfil_usuario))
+                                    {
+                                        echo $perfil_usuario;
                                     }
                                     ?>
                                 </li>
@@ -212,7 +214,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <?php } //fin content card ?>
+                        <?php } //fin content card  ?>
                     </div>
                 </div>
 
@@ -250,7 +252,7 @@
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/demo.js"></script>
 
     <script src="<?php echo base_url(); ?>assets/js/general.js"></script>
-
+    <?php echo js('menu.js'); ?>
     <script type="text/javascript">
             $(document).ready(function () {
                 // Javascript method's body can be found in assets/js/demos.js

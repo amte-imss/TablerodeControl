@@ -36,7 +36,7 @@ $(function () {
                 case 3:
                 case "3":
                     colores = ['#FCB220'];
-                    texto = "Porcentaje de alumnos inscritos ";
+                    texto = "Porcentaje de eficiencia terminal ";
                     break;
                 case 5:
                 case "5":
@@ -104,6 +104,7 @@ function graficar(datos, titulo, texto, year, extra, colores) {
             }
         },
         yAxis: {
+            allowDecimals: false,
             min: 0,
             title: {
                 text: texto

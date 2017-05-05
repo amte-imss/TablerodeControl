@@ -29,7 +29,7 @@ if (!function_exists('render_menu'))
                 ?>
                 <li class="<?php echo (isset($item['childs']) ? '' : '') ?>" style="list-style-type: none;">
 
-                    <a href="<?php echo (isset($item['childs']) ? '#': $enlace); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ''); ?>>
+                    <a href="<?php echo (isset($item['childs']) ? '#': $enlace); ?>" <?php echo (isset($item['childs']) ? 'data-toggle="collapse" data-target="#menu'.$item['id_menu'].'"': ' id="tablero-menu-item-'.$item['id_menu'].'" class="tablero-menu-item" '); ?>>
                         <i class="material-icons">dashboard</i>
                         <?php
                         if (isset($item['titulo']))

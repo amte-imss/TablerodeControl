@@ -88,9 +88,9 @@ class Comparativa_model extends MY_Model{
         {
             $select = array(
                 '0', "'PROMEDIO' nombre",
-                'avg("C".cantidad_alumnos_certificados) aprobados',
-                'avg("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("AA".cantidad_no_accesos) no_acceso'
+                'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
+                'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
+                'sum("AA".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
             );
         }
 
@@ -132,6 +132,7 @@ class Comparativa_model extends MY_Model{
                 'no_acceso' => 0
             );
         }
+        //pr($this->db->last_query());
         return $datos;
     }
 
@@ -180,9 +181,9 @@ class Comparativa_model extends MY_Model{
         {
             $select = array(
                 '0', "'PROMEDIO' nombre",
-                'avg("C".cantidad_alumnos_certificados) aprobados',
-                'avg("C".cantidad_alumnos_inscritos) inscritos',
-                'avg("AA".cantidad_no_accesos) no_acceso'
+                'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
+                'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
+                'sum("AA".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
             );
         }
 

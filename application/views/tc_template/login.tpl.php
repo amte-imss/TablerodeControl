@@ -91,7 +91,6 @@
                                 <img id="captcha_img" src="<?php echo site_url(); ?>/captcha" alt="CAPTCHA Image" />
                             </div>
                             <br />
-                            <span class="text">Nota: La imagen de seguridad, puede contener operaciones aritméticas.</span>
                             <a class="btn btn-lg btn-primary pull-right" onclick="new_captcha()">
                                 <span class="glyphicon glyphicon-refresh"></span>
                             </a>
