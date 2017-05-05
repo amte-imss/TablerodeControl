@@ -83,10 +83,7 @@ class Comparativa extends MY_Controller
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
-                    )
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,)
             );
             $view = $this->load->view('comparative/unidad_perfil', $output);
         }
@@ -115,10 +112,7 @@ class Comparativa extends MY_Controller
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
-                    )
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
             );
             $view = $this->load->view('comparative/unidad_tipo_curso', $output, false);
         }
@@ -163,7 +157,8 @@ class Comparativa extends MY_Controller
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
+                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')") */
+                    'valor' => 'nombre')
                     )
             );
             $view = $this->load->view('comparative/umae_perfil', $output);
@@ -196,7 +191,8 @@ class Comparativa extends MY_Controller
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', 'valor' => "concat(nombre,' [',clave_unidad, ']')")
+                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
+                    'valor' => 'nombre')
                     )
             );
             $view = $this->load->view('comparative/umae_tipo_curso', $output, false);

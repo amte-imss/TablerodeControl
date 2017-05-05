@@ -5,13 +5,13 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Año:</span>
+            <span class="input-group-addon">Reporte:</span>
             <?php
             echo $this->form_complete->create_element(
-                    array('id' => 'periodo',
+                    array('id' => 'reporte',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'options' => $periodos,
+                        'options' => $reportes,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
@@ -22,7 +22,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             );
             ?>
         </div>
-        <?php echo form_error_format('periodo'); ?>
+        <?php echo form_error_format('reporte'); ?>
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -47,7 +47,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
     </div>    
 </div>            
 <div class="row form-group">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Unidad:</span>
             <input type="hidden" value="" name="unidad1" id="unidad1">
@@ -60,6 +60,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'data-id' => 1,
+                            'autocomplete' => 'off', 
                             'title' => 'Unidad 1')
                     )
             );
@@ -68,7 +69,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
         </div>
         <?php echo form_error_format('unidad1'); ?>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="input-group input-group-sm">
              <span class="input-group-addon">comparar con :</span>
             <input type="hidden" value="" name="unidad2" id="unidad2">
@@ -81,6 +82,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'data-id' => 2, 
+                            'autocomplete' => 'off', 
                             'title' => 'Unidad 2')
                     )
             );
@@ -89,17 +91,15 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
         </div>
         <?php echo form_error_format('unidad2'); ?>
     </div>
-</div>            
-<div class="row form-group">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Reporte:</span>
+            <span class="input-group-addon">Año:</span>
             <?php
             echo $this->form_complete->create_element(
-                    array('id' => 'reporte',
+                    array('id' => 'periodo',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'options' => $reportes,
+                        'options' => $periodos,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
@@ -110,12 +110,14 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             );
             ?>
         </div>
-        <?php echo form_error_format('reporte'); ?>
+        <?php echo form_error_format('periodo'); ?>
     </div>
+</div>            
+<div class="row form-group">    
     <div class="col-md-6">
         <div class="input-group input-group-sm">
             <input type="submit" name="submit" value="Comparar" class="btn btn-primary">
         </div>
     </div>
-</div
+</div>
 <?php echo form_close(); ?>

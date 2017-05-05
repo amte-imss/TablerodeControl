@@ -60,7 +60,7 @@ class Usuario_model extends CI_Model
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->select(array(
-            'id_unidad_instituto', 'concat(nombre,$$ [$$,clave_unidad,$$]$$) nombre'
+            'id_unidad_instituto', 'nombre'
         ));
         if ($keyword != null)
         {

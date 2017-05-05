@@ -50,7 +50,7 @@ class Usuario extends MY_Controller
                 $output['registro_valido'] = $this->registro->registro_usuario($data);
                 $modal['titulo_modal'] = 'Registro';
                 $modal['cuerpo_modal'] = $this->load->view("usuario/modal_registro", $modal, true);
-                $this->modal = $this->load->view("ci_template/modal_info_usuario", $modal);
+              //  $this->modal = $this->load->view("ci_template/modal_info_usuario", $modal);
             }
         }
         $output['delegaciones'] = dropdown_options($this->registro->lista_delegaciones(), 'clave_delegacional', 'nombre');
