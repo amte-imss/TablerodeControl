@@ -1,4 +1,5 @@
 <?php
+echo js('chart_options.js');
 echo js('comparativa/unidad_tipo_curso.js');
 echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativa_unidad'));
 ?>

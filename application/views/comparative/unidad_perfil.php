@@ -1,4 +1,5 @@
 <?php
+echo js('chart_options.js');
 echo js('comparativa/unidad_perfil.js');
 echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_umae'));
 ?>

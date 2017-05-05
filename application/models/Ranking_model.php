@@ -23,6 +23,7 @@ class Ranking_model extends CI_Model
         );
         $this->db->select($select);
         $this->db->where('activo', true);
+        $this->db->order_by(2, 'asc');
         $proyectos = $this->db->get('catalogos.programas_proyecto')->result_array();
         return $proyectos;
     }

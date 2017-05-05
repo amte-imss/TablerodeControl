@@ -33,9 +33,9 @@ function aprobados(datos) {
     }
     datos = procesa_datos(datos);
     var periodo = 2016;
-    var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en el " + periodo;
+    var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en " + periodo;
     if (id_programa == "") {
-        titulo_grafica = "Ranking de alumnos aprobados " + " en el " + periodo;
+        titulo_grafica = "Ranking de alumnos aprobados " + " en " + periodo;
     }
     var texto = "Número de alumnos aprobados ";
     var extra = '';
@@ -51,9 +51,9 @@ function eficiencia_terminal(datos) {
     
     datos = procesa_datos_etm(datos);   
     var periodo = 2016;
-    var titulo_grafica = "Ranking por eficiencia terminal del programa " + programa + " en el " + periodo;
+    var titulo_grafica = "Ranking por eficiencia terminal del programa " + programa + " en " + periodo;
     if (id_programa == "") {
-        titulo_grafica = "Ranking por eficiencia terminal " + " en el " + periodo;
+        titulo_grafica = "Ranking por eficiencia terminal " + " en " + periodo;
     }
     var texto = "Porcentaje de eficiencia terminal ";
     var extra = '';

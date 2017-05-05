@@ -44,7 +44,7 @@ $(function () {
             var titulo_grafica = "Comparativa de unidades en " + periodo;
             var texto = "";
             var id_reporte = document.getElementById('reporte').value;
-            colores = ['#999999'];
+            colores = ['#0090b9'];
             switch (id_reporte) {
                 case 1:
                 case "1":
@@ -52,17 +52,17 @@ $(function () {
                     break;
                 case 2:
                 case "2":
-                    colores = ['#43A886'];
+                    colores = ['#43a886'];
                     texto = "Número de alumnos aprobados ";
                     break;
                 case 3:
                 case "3":
-                    colores = ['#0090b9'];
+                    colores = ['#FCB220'];
                     texto = "Porcentaje de alumnos inscritos ";
                     break;
                 case 5:
                 case "5":
-                    colores = ['#EF5350'];
+                    colores = ['#e53935'];
                     texto = "Número de alumnos no aprobados ";
                     break;
             }
