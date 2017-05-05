@@ -49,6 +49,7 @@ $lang['interface'] = array(
         'region' => 'Región',
         'delegacion' => 'Delegación',
         'unidades' => 'Unidades',
+        'unidad' => 'Unidad',
         'umae' => 'UMAE',
         'nivel_atencion' => 'Nivel de atención',
         'nivel_central' => 'Nivel central',

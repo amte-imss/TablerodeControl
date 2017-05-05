@@ -44,24 +44,61 @@ class Informacion_general_model extends CI_Model
         if(isset($params['region']) AND !empty($params['region'])){
             $this->db->where('reg.id_region='.$params['region']);
         }
-        if(isset($params['tipos_busqueda']) AND $params['tipos_busqueda']==$this->config->item('tipo_busqueda')['DELEGACION']['id']){
-            $this->db->where('uni.umae=false');
-            if(isset($params['delegacion']) AND !empty($params['delegacion'])){
-                $this->db->where('del.id_delegacion='.$params['delegacion']);
-            }
-        }
-        if(isset($params['tipos_busqueda']) AND $params['tipos_busqueda']==$this->config->item('tipo_busqueda')['UMAE']['id']){
-            $this->db->where('uni.umae=true');
-            if(isset($params['umae']) AND !empty($params['umae'])){
-                $this->db->where('uni.id_unidad_instituto='.$params['umae']);
+        $tb = $this->config->item('tipos_busqueda');
+        if(isset($params['tipos_busqueda']) AND !empty($params['tipos_busqueda'])){
+            switch ($params['tipos_busqueda']) {
+                case $tb['DELEGACION']['id']:
+                    $this->db->where('uni.umae=false');
+                    if(isset($params['delegacion']) AND !empty($params['delegacion'])){
+                        $this->db->where('del.id_delegacion='.$params['delegacion']);
+                    }
+                    if(isset($params['unidad']) AND !empty($params['unidad'])){
+                        $this->db->where('uni.id_unidad_instituto='.$params['unidad']);
+                    }
+                    if(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['PERFIL']['id']) {
+                        $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
+                    } elseif(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['TIPO_CURSO']['id']) {
+                        $this->db->order_by('tipo_curso');
+                    } else {
+                        $this->db->order_by('del.nombre');
+                    }
+                    break;
+                case $tb['NIVEL_ATENCION']['id']:
+                    $this->db->order_by('nivel_atencion');
+                    break;
+                case $tb['PERFIL']['id']:
+                    $this->db->order_by('sub.order, gc.order');
+                    break;
+                case $tb['PERIODO']['id']:
+                    
+                    break;
+                case $tb['REGION']['id']:
+                    $this->db->order_by('reg.nombre');
+                    break;
+                case $tb['TIPO_CURSO']['id']:
+                    $this->db->order_by('tc.nombre');
+                    break;
+                case $tb['UMAE']['id']:
+                    $this->db->where('uni.umae=true');
+                    if(isset($params['umae']) AND !empty($params['umae'])){
+                        $this->db->where('uni.id_unidad_instituto='.$params['umae']);
+                    }
+                    if(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['PERFIL']['id']) {
+                        $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
+                    } elseif(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['TIPO_CURSO']['id']) {
+                        $this->db->order_by('tipo_curso');
+                    } else {
+                        $this->db->order_by('uni.nombre');
+                    }
+                    break;
             }
         }
         //Condiciones utilizadas en informacion_general/perfil
         if(isset($params['anio']) AND !empty($params['anio'])){
             $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['anio']);
         }
-        if(isset($params['perfil_seleccion']) 
-            AND !empty($params['perfil_seleccion'])){
+        //pr($params);
+        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion'])){
             $this->db->where('gc.id_grupo_categoria IN ('.$params['perfil_seleccion'].')');
         }
         if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
@@ -74,25 +111,46 @@ class Informacion_general_model extends CI_Model
             $this->db->where($params['conditions']);
         }
         if (array_key_exists('order', $params)) {
-            $this->db->order_by($params['order']['field'], $params['order']['type']);
+            $this->db->order_by($params['order']['field']);
         }
 
         //Periodo
         $periodo = '';
-        if(isset($params['periodo_seleccion']) AND !empty($params['periodo_seleccion'])){
+        if(isset($params['periodo_seleccion']) AND !empty($params['periodo_seleccion']) AND !isset($params['destino'])){
             $per = $this->config->item('periodo');
             //pr($per);
             if($params['periodo_seleccion']==$per['SEMESTRAL']['id']){
-               $periodo = ", (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 1 ELSE 2 END) as periodo";
+               $periodo = ", (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 'Enero-Junio' ELSE 'Julio-Diciembre' END) as periodo, (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 1 ELSE 2 END) as periodo_id";
             } elseif($params['periodo_seleccion']==$per['TRIMESTRAL']['id']){
-                $periodo = ', EXTRACT(quarter FROM fecha_inicio) as periodo';
+                $periodo = ", EXTRACT(quarter FROM fecha_inicio) as periodo_id, 
+                    (CASE WHEN EXTRACT(quarter FROM fecha_inicio) = 1 THEN 'Enero-Marzo'
+                    WHEN EXTRACT(quarter FROM fecha_inicio) = 2 THEN 'Abril-Junio'
+                    WHEN EXTRACT(quarter FROM fecha_inicio) = 3 THEN 'Julio-Septiembre' ELSE 'Octubre-Diciembre' END) as periodo";
             } elseif($params['periodo_seleccion']==$per['BIMESTRAL']['id']){
-                $periodo = ', (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer as periodo';
+                $periodo = ", (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer as periodo_id, 
+                    (CASE WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 1 THEN 'Enero-Febrero'
+                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 2 THEN 'Marzo-Abril'
+                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 3 THEN 'Mayo-Junio'
+                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 4 THEN 'Julio-Agosto'
+                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 5 THEN 'Septiembre-Octubre' ELSE 'Noviembre-Diciembre' END) as periodo";
             } elseif($params['periodo_seleccion']==$per['MENSUAL']['id']){
-                $periodo = ', EXTRACT(month FROM fecha_inicio) as periodo';
+                $periodo = ", EXTRACT(month FROM fecha_inicio) as periodo_id,
+                    (CASE WHEN EXTRACT(month FROM fecha_inicio) = 1 THEN 'Enero'
+                    WHEN EXTRACT(month FROM fecha_inicio) = 2 THEN 'Febrero'
+                    WHEN EXTRACT(month FROM fecha_inicio) = 3 THEN 'Marzo' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 4 THEN 'Abril' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 5 THEN 'Mayo' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 6 THEN 'Junio' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 7 THEN 'Julio' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 8 THEN 'Agosto' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 9 THEN 'Septiembre' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 10 THEN 'Octubre' 
+                    WHEN EXTRACT(month FROM fecha_inicio) = 11 THEN 'Noviembre' 
+                    ELSE 'Diciembre' END) as periodo";
             } /* else {
                 $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo_seleccion'].' as periodo');
             }*/
+            $this->db->order_by('periodo_id');
         }
         if(!isset($params['calcular_totales_unidad']) || (isset($params['calcular_totales_unidad']) && $params['calcular_totales_unidad']!=true)){
             $this->load->library('Configuracion_grupos');
@@ -105,15 +163,21 @@ class Informacion_general_model extends CI_Model
 
         //$this->db->limit('500');
         if(isset($params['destino']) AND !empty($params['destino'])){ ///Se utiliza para construir los listados (tree) de vista por_perfil y por_tipo_curso
-            $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso');
+            if($params['destino']==$tb['PERFIL']['id']){
+                $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
+            } else {
+                $this->db->order_by($params['destino']);
+            }
+            $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso, sub.order as subcategoria_orden, gc.order as grupo_categoria_orden');
             $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
         } else {
             $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, mes.nombre as mes,
                 EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
                 del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
-                hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil,
+                hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
                 hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
                 case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
+                sub.order as subcategoria_orden, gc.order as grupo_categoria_orden,
                 COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos,
                 (hia.cantidad_alumnos_inscritos-hia.cantidad_alumnos_certificados-COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_aprobados'.$periodo);
         }
@@ -128,10 +192,10 @@ class Informacion_general_model extends CI_Model
         //$this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region', 'left');
         $this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region');
         $this->db->join('catalogos.categorias cat', 'cat.id_categoria=hia.id_categoria', 'left');
-        $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria', 'left');
+        $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria AND gc.activa=CAST(1 as boolean)', 'left');
         //$this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)', 'left');
         $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)');
-
+        //$this->db->limit(100);
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
         $resultado = $query->result_array();
         //pr($this->db->last_query()); exit();
@@ -151,7 +215,7 @@ class Informacion_general_model extends CI_Model
         if (array_key_exists('order', $params)) {
             $this->db->order_by($params['order']);
         }
-        $this->db->join('grupos_categorias gc', 'gc.id_subcategoria=sub.id_subcategoria', 'left');
+        $this->db->join('grupos_categorias gc', 'gc.id_subcategoria=sub.id_subcategoria AND gc.activa=CAST(1 as boolean)', 'left');
         $query = $this->db->get('subcategorias sub'); //Obtener conjunto de registros
         $resultado = $query->result_array();
         //pr($this->db->last_query());

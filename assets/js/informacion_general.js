@@ -410,6 +410,26 @@ function limpiar_filtros_listados(){
     perfil_tree.reload(SOURCE);
     var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
     tipo_curso_tree.reload(SOURCE2);
+
+    jQuery.each( ['perfil', 'tipo_curso'], function( i, destino ) {
+        //////////////////////////////////////////////////////////////////
+        var tree = $('#'+destino+'_tree').fancytree('getTree');
+        // Get a list of all selected nodes, and convert to a key array:
+        var selKeys = $.map(tree.getSelectedNodes(), function(node){
+            return node.key;
+        });
+        $('#'+destino+'_seleccion').val(selKeys.join(","));
+
+        // Get a list of all selected TOP nodes
+        var selRootNodes = tree.getSelectedNodes(true);
+        // ... and convert to a key array:
+        var selRootKeys = $.map(selRootNodes, function(node){
+            return node.key;
+        });
+        $('#'+destino+'_seleccion_rootkey').val(selRootKeys.join(","));
+        $('#'+destino+'_seleccion_node').val(selRootNodes.join(","));
+        //////////////////////////////////////////////////////////////////
+    });
     $("#temporal_tipo_busqueda").val('');
     setTimeout(function() {   //calls click event after a certain time
        buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
@@ -451,12 +471,12 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
                 text: texto_y
             },
             stackLabels: {
-                enabled: false
-                /*enabled: true,
+                //enabled: false
+                enabled: true,
                 style: {
                     fontWeight: 'bold',
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }*/
+                }
             }
         },
         legend: {
@@ -478,7 +498,8 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             column: {
                 stacking: 'normal',
                 dataLabels: {
-                    enabled: false,
+                    //enabled: false,
+                    enabled: true,
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
                 }
             }

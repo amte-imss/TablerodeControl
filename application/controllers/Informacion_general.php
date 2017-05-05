@@ -49,13 +49,14 @@ class Informacion_general extends MY_Controller
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC', 'condicion'=>'id_periodo>1'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
         //pr($datos['catalogos']);
         $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
+        //pr($listado_subcategorias);
         foreach ($listado_subcategorias as $key_ls => $listado) {
-            $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
+            $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
             if(!empty($listado['grupo_categoria'])){
-                $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
+                $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
             }
         }
         //pr($datos);
@@ -74,9 +75,9 @@ class Informacion_general extends MY_Controller
         $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
         $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
-            $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
+            $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
             if(!empty($listado['grupo_categoria'])){
-                $datos['catalogos']['subcategorias'][$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
+                $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['elementos'][$listado['id_grupo_categoria']] = $listado['grupo_categoria'];
             }
         }
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
@@ -198,11 +199,23 @@ class Informacion_general extends MY_Controller
         //$this->template->setBlank("tc_template/iiindex.tpl.php");    
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }*/
+    private function obtener_grupos_categorias(&$datos_busqueda){
+        $temp = array();
+        foreach (explode(',', $datos_busqueda['perfil_seleccion']) as $key_a => $ps) { //Se valida que solo se filtren los grupos_categorias y no las subcategorías
+            if(is_numeric($ps) OR !in_array($ps, explode(',', $datos_busqueda['perfil_seleccion_rootkey']))){
+                $temp[] = $ps;
+            }
+        }
+        return implode(',', $temp);
+    }
 
     public function buscar_filtros_listados(){
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                if(isset($datos_busqueda['perfil_seleccion']) && !empty($datos_busqueda['perfil_seleccion'])){
+                    $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
+                }
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //pr($datos['datos']);
                 $res = array();
@@ -219,10 +232,10 @@ class Informacion_general extends MY_Controller
                                 foreach ($datos['datos'] as $key_tip => $tipos) {
                                     if(!is_null($tipos['id_subcategoria'])){
                                         //pr($tipos);
-                                        $resultado[$tipos['id_subcategoria']]['principal']=$tipos['perfil'];
+                                        $resultado[$tipos['subcategoria_orden'].'_'.$tipos['id_subcategoria']]['principal']=$tipos['perfil'];
                                         if(isset($tipos['grupo_categoria']) AND !empty($tipos['grupo_categoria'])) {
                                             //pr($tipos['id_grupo_categoria'].'-'.$tipos['grupo_categoria']);
-                                            $resultado[$tipos['id_subcategoria']]['elementos'][$tipos['id_grupo_categoria']] = $tipos['grupo_categoria'];
+                                            $resultado[$tipos['subcategoria_orden'].'_'.$tipos['id_subcategoria']]['elementos'][$tipos['id_grupo_categoria']] = $tipos['grupo_categoria'];
                                         }
                                     }
                                 }
@@ -248,7 +261,7 @@ class Informacion_general extends MY_Controller
                                 }
                             }
                             $res[$key_val]["children"]=$children;
-                        }
+                        } //pr($res);
                     } else {
                         $res = array('no_datos'=>'true');
                     }
@@ -334,22 +347,6 @@ class Informacion_general extends MY_Controller
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
-                        /*if(!isset($resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']])){
-                            $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] = 0;
-                        }
-                        if(!isset($resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']])){
-                            $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
-                        }
-                        if(!isset($resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']])){
-                            $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] = 0;
-                        }
-                        if(!isset($resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']])){
-                            $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] = 0;
-                        }
-                        $resultado['perfil']['incritos'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_inscritos'];
-                        $resultado['perfil']['aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_alumnos_certificados'];
-                        $resultado['perfil']['nunca entraron'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_accesos'];
-                        $resultado['perfil']['no aprobados'][$dato['perfil']][$dato['tipo_curso']] += $dato['cantidad_no_aprobados'];*/
                     }
                     echo json_encode($resultado);
                 } else {
@@ -361,6 +358,12 @@ class Informacion_general extends MY_Controller
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
         }
     }
+    /*nction cmp($a, $b) {
+        if ($a['orden'] == $b['orden']) {
+            return 0;
+        }
+        return ($a['orden'] < $b['orden']) ? -1 : 1;
+    }*/
 
     public function calcular_totales(){
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
@@ -373,6 +376,7 @@ class Informacion_general extends MY_Controller
                 //pr($datos['datos']);
                 $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array(),'region'=>array(),'delegacion'=>array(),'umae'=>array(),'nivel_atencion'=>array());
                 if(!empty($datos['datos'])){
+                    //pr($datos);
                     foreach ($datos['datos'] as $key_d => $dato) {
                         //Total
                         $resultado['total'] = $this->crear_arreglo_por_tipo($resultado['total'], $dato);
@@ -381,18 +385,23 @@ class Informacion_general extends MY_Controller
                             $resultado['perfil'][$dato['perfil']] = array();
                         }
                         $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);
+                        $resultado['perfil'][$dato['perfil']]['orden'] = $dato['perfil_orden'];
+                        //uasort($resultado['perfil'], 'cmp');
+                        /*usort($resultado['perfil'][$dato['perfil']], function($a, $b) {
+                            return $a['orden'] - $b['orden'];
+                        });*/
                         //Tipo de curso
                         if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
-                        ksort($resultado['tipo_curso']);
+                        //ksort($resultado['tipo_curso']);
                         //Nivel atención
                         if(!isset($resultado['nivel_atencion'][$dato['nivel_atencion']])){
                             $resultado['nivel_atencion'][$dato['nivel_atencion']] = array();
                         }
                         $resultado['nivel_atencion'][$dato['nivel_atencion']] = $this->crear_arreglo_por_tipo($resultado['nivel_atencion'][$dato['nivel_atencion']], $dato);
-                        ksort($resultado['nivel_atencion']);
+                        //ksort($resultado['nivel_atencion']);
                         //Periodo
                         if(!isset($resultado['periodo'][$dato['anio_fin']])){
                             $resultado['periodo'][$dato['anio_fin']] = array();
@@ -403,20 +412,20 @@ class Informacion_general extends MY_Controller
                             $resultado['region'][$dato['region']] = array();
                         }
                         $resultado['region'][$dato['region']] = $this->crear_arreglo_por_tipo($resultado['region'][$dato['region']], $dato);
-                        ksort($resultado['region']);
+                        //ksort($resultado['region']);
                         //Delegación
                         if(!isset($resultado['delegacion'][$dato['delegacion']])){
                             $resultado['delegacion'][$dato['delegacion']] = array();
                         }
                         $resultado['delegacion'][$dato['delegacion']] = $this->crear_arreglo_por_tipo($resultado['delegacion'][$dato['delegacion']], $dato);
-                        ksort($resultado['delegacion']);
+                        //ksort($resultado['delegacion']);
                         //UMAE
                         if($dato['umae']==true){
                             if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
                                 $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = array();
                             }
                             $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = $this->crear_arreglo_por_tipo($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']], $dato);
-                            ksort($resultado['umae']);
+                            //ksort($resultado['umae']);
                         }
                     }
                     //pr($datos);
@@ -435,6 +444,9 @@ class Informacion_general extends MY_Controller
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                if(isset($datos_busqueda['perfil_seleccion']) && !empty($datos_busqueda['perfil_seleccion'])){
+                    $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
+                }
                 //pr($datos_busqueda);
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista

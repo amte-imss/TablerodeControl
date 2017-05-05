@@ -134,7 +134,7 @@
         <?php
         $sub = array();
         foreach ($catalogos['subcategorias'] as $key_sub => $subcategoria) {
-            echo '{"title":"'.$subcategoria['subcategoria'].'", "key":'.$key_sub.',
+            echo '{"title":"'.$subcategoria['subcategoria'].'", "key":"'.$key_sub.'",
                 "expanded":"true", "selected": "true", "children":[';
             if(isset($subcategoria['elementos'])){
                 foreach ($subcategoria['elementos'] as $key_ele => $elemento) {
@@ -171,6 +171,10 @@
             if($('#perfil_seleccion').val()==''){
                 $('#perfil_seleccion').val('-1');
             }
+            ///Eliminar datos de tipo_curso debido a que serán recalculados los datos
+            $('#tipo_curso_seleccion').val('');
+            $('#tipo_curso_seleccion_rootkey').val('');
+            $('#tipo_curso_seleccion_node').val('');
             var dataSend = $(form_recurso).serialize();
             //console.log(dataSend);
             $.ajax({
@@ -204,6 +208,24 @@
                         t.push(item)
                     });
                     tree.reload(t);
+
+                    //////////////////////////////////////////////////////////////////
+                    // Get a list of all selected nodes, and convert to a key array:
+                    var selKeys = $.map(tree.getSelectedNodes(), function(node){
+                        return node.key;
+                    });
+                    $('#'+destino+'_seleccion').val(selKeys.join(","));
+
+                    // Get a list of all selected TOP nodes
+                    var selRootNodes = tree.getSelectedNodes(true);
+                    // ... and convert to a key array:
+                    var selRootKeys = $.map(selRootNodes, function(node){
+                        return node.key;
+                    });
+                    $('#'+destino+'_seleccion_rootkey').val(selRootKeys.join(","));
+                    $('#'+destino+'_seleccion_node').val(selRootNodes.join(","));
+                    //////////////////////////////////////////////////////////////////
+
                     $('#'+destino+'_tree').show('slow');
                     $(".collapse_element").collapse("show");
                     buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
@@ -303,6 +325,8 @@
                 });
                 $("#tipo_curso_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#tipo_curso_seleccion_node").val(selRootNodes.join(","));
+
+                buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();
