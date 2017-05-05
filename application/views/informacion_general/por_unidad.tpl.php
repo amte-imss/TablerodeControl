@@ -80,6 +80,7 @@
                             <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                         <?php break;
                         case En_grupos::N3_JSPM: 
+                            $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
                                     'id'=>'tipos_busqueda',
@@ -137,7 +138,8 @@
                                 });
                                 </script>
                         <?php break;
-                        case En_grupos::N2_CPEI:  
+                        case En_grupos::N2_CPEI:
+                            $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
                                     'id'=>'tipos_busqueda',
@@ -218,7 +220,8 @@
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
 
                         <?php break;
-                        case En_grupos::N2_DGU:  
+                        case En_grupos::N2_DGU:
+                            $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
                                     'id'=>'tipos_busqueda',
@@ -277,6 +280,7 @@
 
                         <?php break;
                         case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES:  
+                            $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
                                     'id'=>'tipos_busqueda',

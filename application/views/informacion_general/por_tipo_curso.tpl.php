@@ -276,9 +276,19 @@
                 });
                 $("#perfil_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#perfil_seleccion_node").val(selRootNodes.join(","));
+                /*console.log($("#perfil_seleccion").val());
+                console.log($("#perfil_seleccion_rootkey").val());
+                console.log($("#perfil_seleccion_node").val());*/
 
                 ///Se realiza la búsqueda cuando se selecciona la opción
-                buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+                if($("#perfil_seleccion").val()==''){
+                    $('#container_perfil').html('');
+                    $('#tabla_tipo_curso').html('');
+                    $('#tabla_perfil').html('');
+                    alert('Debe seleccionar algún perfil para mostrar datos.');
+                } else {
+                    buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+                }
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();

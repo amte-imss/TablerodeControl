@@ -326,7 +326,14 @@
                 $("#tipo_curso_seleccion_rootkey").val(selRootKeys.join(","));
                 $("#tipo_curso_seleccion_node").val(selRootNodes.join(","));
 
-                buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+                if($("#tipo_curso_seleccion").val()==''){
+                    $('#container_perfil').html('');
+                    $('#tabla_tipo_curso').html('');
+                    $('#tabla_perfil').html('');
+                    alert('Debe seleccionar algún perfil para mostrar datos.');
+                } else {
+                    buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+                }
             },
             dblclick: function(event, data) {
                 data.node.toggleSelected();

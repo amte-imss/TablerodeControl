@@ -105,6 +105,7 @@ class Informacion_general extends MY_Controller
             }
         }*/
         //pr($datos);
+        $datos['grupo_actual'] = $this->configuracion_grupos->obtener_grupo_actual();
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
         $this->template->setSubTitle($datos['lenguaje']['titulo_por_unidad'].'. '.$this->configuracion_grupos->index_obtener_subtitulo($datos['lenguaje']['titulo']));
         $this->template->setDescripcion($this->mostrar_datos_generales());
