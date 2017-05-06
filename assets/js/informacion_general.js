@@ -331,19 +331,32 @@ function calcular_totales_unidad(path, form_recurso) {
         }
     })
     .done(function (response) {
-        var elemento = 'unidad';
-        if($('#tipos_busqueda').val()=='umae'){
-            elemento = 'umae';
-        }
-        if($('#tipo_grafica').val()=='perfil'){
-            var perfil = obtener_categoria_serie_unidad(response.perfil);
-            crear_grafica_stacked_grouped('comparativa_chrt', 'Gráfica por perfil de \''+$('#'+elemento+' option:selected').text()+'\'', perfil.categorias, 'Número de alumnos', perfil.series);
-            $('#comparativa_chrt2').html('');
-        }
-        if($('#tipo_grafica').val()=='tipo_curso'){
-            var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
-            crear_grafica_stacked('comparativa_chrt2', 'Gráfica por tipo de curso de \''+$('#'+elemento+' option:selected').text()+'\'', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
-            $('#comparativa_chrt').html('');
+        if(typeof(response.error) != "undefined"){
+            $('#comparativa_chrt2').html("");
+            $('#comparativa_chrt').html("");
+            if(response.error == true){
+                $('#comparativa_chrt').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+            }
+        } else {
+            var elemento = 'unidad';
+            if($('#tipos_busqueda').val()=='umae'){
+                elemento = 'umae';
+            }
+            if($('#'+elemento+' option:selected').text()!=''){
+                texto = $('#'+elemento+' option:selected').text();
+            } else {
+                texto = $('#'+elemento+'_titulo').html();
+            }
+            if($('#tipo_grafica').val()=='perfil'){
+                var perfil = obtener_categoria_serie_unidad(response.perfil);
+                crear_grafica_stacked_grouped('comparativa_chrt', 'Gráfica por perfil de \''+texto+'\'', perfil.categorias, 'Número de alumnos', perfil.series);
+                $('#comparativa_chrt2').html('');
+            }
+            if($('#tipo_grafica').val()=='tipo_curso'){
+                var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
+                crear_grafica_stacked('comparativa_chrt2', 'Gráfica por tipo de curso de \''+texto+'\'', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+                $('#comparativa_chrt').html('');
+            }
         }
     })
     .fail(function (jqXHR, textStatus) {
