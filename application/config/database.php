@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 
 $db['default'] = array(
-	'dsn'	=> 'pgsql:host=localhost;dbname=tablero',
-	'hostname' => 'localhost',
-	'username' => 'chrigarc',
-	'password' => 'kiqzer',
+	'dsn'	=> 'pgsql:host=11.32.41.19;dbname=tablero',
+	'hostname' => '11.32.41.19',
+	'username' => 'innovaedu',
+	'password' => 'nPgEoXCqd/?gV.,',
 	'database' => 'tablero',
 	'dbdriver' => 'pdo',
 	'port' => '5432',
