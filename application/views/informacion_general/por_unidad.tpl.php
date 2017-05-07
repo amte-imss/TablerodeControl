@@ -358,7 +358,7 @@
                             ); ?>
                             <div class="col-lg-4 col-md-6 col-sm-12">
                                 <label class="control-label"><?php echo $lenguaje[$titulo]; ?></label>
-                                <div class="form-group form-group-sm">
+                                <div id="<?php echo $titulo.'_titulo'; ?>" class="form-group form-group-sm">
                                     <?php echo $this->session->userdata('usuario')['name_unidad_ist']; ?>
                                 </div>
                                 <span class="material-input"></span>

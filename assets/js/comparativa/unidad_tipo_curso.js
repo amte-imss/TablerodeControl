@@ -113,6 +113,7 @@ function graficar(datos, titulo, texto, year, extra, colores) {
         },
         yAxis: {
             min: 0,
+            allowDecimals: false,
             title: {
                 text: texto
             }

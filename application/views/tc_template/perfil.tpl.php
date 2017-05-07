@@ -4,18 +4,18 @@
         <a href="#">
             <b>Nombre:</b> <?php echo $name_user; ?> <br>
             <b>Matrícula:</b> <?php echo $matricula; ?> <br>
-            <b>Categoría:</b> <?php echo $name_categoria . ' [' . $clave_categoria . ']'; ?> <br>
+            <b>Categoría:</b> <?php echo $name_categoria; ?> <br>
             <?php
             if ($umae)
             {
                 ?>
-                <b>UMAE:</b> <?php echo $name_unidad_ist.' ['.$clave_unidad.']'; ?> <br>
+                <b>UMAE:</b> <?php echo $name_unidad_ist; ?> <br>
                 <?php
             } else
             {
                 ?>
                 <b>Delegación:</b> <?php echo $name_delegacion; ?> <br>
-                <b>Unidad:</b> <?php echo $name_unidad_ist.' ['.$clave_unidad.']'; ?> <br>
+                <b>Unidad:</b> <?php echo $name_unidad_ist; ?> <br>
             <?php } ?>
             <div class="ripple-container"></div></a>
     </li>

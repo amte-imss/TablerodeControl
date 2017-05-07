@@ -74,6 +74,7 @@ class Modulo extends MY_Controller
             $datos['padre'] = $this->input->post('padre', true);
             $datos['orden'] = $this->input->post('orden', true);
             $datos['visible'] = ($this->input->post('visible', true) != null ? true : FALSE);
+            $datos['icono'] = $this->input->post('icono', true);
             $salida['status'] = $this->modulo->update($id_modulo, $datos);
         }
         $salida['modulo'] = $this->modulo->get_modulos($id_modulo)[0];
@@ -90,6 +91,7 @@ class Modulo extends MY_Controller
             $datos['padre'] = (empty($this->input->post('padre', true))?null : $this->input->post('padre', true));
             $datos['orden'] = $this->input->post('orden', true);
             $datos['visible'] = ($this->input->post('visible', true) != null ? true : FALSE);
+            $datos['icono'] = $this->input->post('icono', true);
             $salida['status'] = $this->modulo->insert($datos);
         }
     }

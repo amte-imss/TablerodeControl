@@ -22,7 +22,7 @@ class Menu_model extends CI_Model
         $niveles_menu = 10;
        
         $select = array(
-            'A.id_modulo id_menu', 'A.nombre label', 'A.url enlace', 'A.id_modulo_padre id_menu_padre'
+            'A.id_modulo id_menu', 'A.nombre label', 'A.url enlace', 'A.id_modulo_padre id_menu_padre', 'A.icon'
         );
 
         $this->db->order_by('A.orden');
@@ -52,6 +52,7 @@ class Menu_model extends CI_Model
                     $pre_menu[$row['id_menu']]['titulo'] = $row['label'];
                     $pre_menu[$row['id_menu']]['id_menu'] = $row['id_menu'];
                     $pre_menu[$row['id_menu']]['link'] = $row['enlace'];
+                    $pre_menu[$row['id_menu']]['icon'] = $row['icon'];
                 }
                 if (isset($pre_menu[$row['id_menu_padre']]) /* && !isset($pre_menu[$row['id_menu_padre']]['childs'][$row['id_menu']]) */)
                 {
