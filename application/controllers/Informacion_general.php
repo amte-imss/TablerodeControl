@@ -519,6 +519,7 @@ class Informacion_general extends MY_Controller
                         $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
                     }
                     $resultado['lenguaje'] = $this->lang->line('interface')['informacion_general'];
+                    ksort($resultado['tipo_curso']);
                     $resultado['tabla_tipo_curso'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_tipo_curso', 'titulo'=>$resultado['lenguaje']['tipo_curso'], 'valores'=>$resultado['tipo_curso'], 'lenguaje'=>$resultado['lenguaje']), true);
                     $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_perfil', 'titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$resultado['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
                     //pr($datos);

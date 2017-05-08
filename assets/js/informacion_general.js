@@ -483,6 +483,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             categories: categorias
         },
         yAxis: {
+            tickInterval: 1,
             allowDecimals: false,
             min: 0,
             title: {
@@ -543,6 +544,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
             categories: categorias
         },
         yAxis: {
+            tickInterval: 1,
             allowDecimals: false,
             title: {
                 text: texto_y
@@ -585,6 +587,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
             categories: categorias
         },
         yAxis: {
+            tickInterval: 1,
             allowDecimals: false,
             min: 0,
             title: {
