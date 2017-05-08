@@ -439,8 +439,8 @@ if (!function_exists('is_nivel_operacional'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 6 || $id == 13){
-                //$salida = true;
+            if($id == 3 || $id == 4 || $id == 5){
+                $salida = true;
             }
         }
         return $salida;

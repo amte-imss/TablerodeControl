@@ -2,13 +2,14 @@ $(function () {
     $('.unidad_texto').keyup(function () {
 
         var index = $(this)[0].getAttribute('data-id');
-        keyword = document.getElementById('unidad' + index + '_texto').value;
+        var keyword = document.getElementById('unidad' + index + '_texto').value;
+        var tipo_unidad = document.getElementById('tipo_unidad').value;
         console.log('buscando:' + keyword);
         $.ajax({
             url: site_url + '/buscador/search_unidad_instituto'
             , method: "post"
             , timeout: 200
-            , data: {keyword: keyword}
+            , data: {keyword: keyword, tipo_unidad:tipo_unidad}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }

@@ -6,6 +6,30 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
+            <span class="input-group-addon">Tipo de unidad:</span>
+            <?php
+            $tu = array(
+                'class' => 'form-control  form-control input-sm',
+                'data-toggle' => 'tooltip',
+                'data-placement' => 'top',
+                'title' => 'TIpo de unidad',
+                'onchange' => '');
+            if ($no_edit_tipo_unidad)
+            {
+                $tu += array('disabled' => true);                
+            }
+            echo $this->form_complete->create_element(array('id' => 'tipo_unidad',
+                'type' => 'dropdown',
+                'first' => array('' => 'Seleccione...'),
+                'options' => $tipos_unidades,
+                'value' => $tipo_unidad,
+                'attributes' => $tu));
+            ?>
+        </div>
+        <?php echo form_error_format('tipo_unidad'); ?>
+    </div>
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
             <span class="input-group-addon">Reporte:</span>
             <?php
             echo $this->form_complete->create_element(
@@ -61,7 +85,8 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'data-id' => 1,
-                            'autocomplete' => 'off', 
+                            'autocomplete' => 'off',
+                            'placeholder' => 'Buscar unidad por nombre',
                             'title' => 'Unidad 1')
                     )
             );
@@ -72,7 +97,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-             <span class="input-group-addon">comparar con :</span>
+            <span class="input-group-addon">comparar con :</span>
             <input type="hidden" value="" name="unidad2" id="unidad2">
             <?php
             echo $this->form_complete->create_element(
@@ -82,8 +107,9 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                             'class' => 'form-control  form-control input-sm  unidad_texto',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
-                            'data-id' => 2, 
-                            'autocomplete' => 'off', 
+                            'data-id' => 2,
+                            'autocomplete' => 'off',
+                            'placeholder' => 'Buscar unidad por nombre',
                             'title' => 'Unidad 2')
                     )
             );

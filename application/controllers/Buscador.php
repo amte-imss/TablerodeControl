@@ -24,6 +24,10 @@ class Buscador extends CI_Controller
             $keyword = strtolower($keyword);
             $usuario = $this->session->userdata('usuario');
             if(is_nivel_central($usuario['grupos'])){
+                $tipo_unidad = 0;
+                if($this->input->post('tipo_unidad', true)){
+                    $tipo_unidad = $this->input->post('tipo_unidad', true);
+                }
                 $output['unidades'] = $this->usuario->lista_unidad($keyword);
             }else{
                 $output['unidades'] = $this->usuario->lista_unidad($keyword, $usuario['id_tipo_unidad']);

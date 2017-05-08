@@ -28,6 +28,21 @@ class Comparativa_model extends MY_Model{
         return array(1 => 'Inscritos', 2 => 'Aprobados', 3 => 'Eficiencia terminal',
             5 => 'No aprobados');
     }
+    
+    public function get_tipos_unidades($umae = false, $delegacion = 0){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $this->db->distinct();
+        $select = array('A.id_tipo_unidad', 'A.nombre');
+        $this->db->select($select);
+        $this->db->join('catalogos.unidades_instituto B','B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
+        $this->db->where('B.umae', $umae);
+        if($delegacion > 0){
+            $this->db->where('B.id_delegacion', $delegacion);
+        }
+        $tipos = $this->db->get('catalogos.tipos_unidades A')->result_array();
+        return $tipos;
+    }
 
     public function get_comparar_perfil($filtros = [])
     {

@@ -26,6 +26,7 @@ class Buscador_model extends CI_Model
         if(isset($filtros['subcategoria'])){
             $this->db->where('id_subcategoria', $filtros['subcategoria']);
         }
+        $this->db->order_by('order', 'asd');
         $subcategorias = $this->db->get('catalogos.grupos_categorias')->result_array();
         return $subcategorias;
     }

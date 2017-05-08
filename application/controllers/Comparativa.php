@@ -52,6 +52,7 @@ class Comparativa extends MY_Controller
 
     public function unidades()
     {
+        //pr($this->session->userdata('usuario'));
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
         $view = $this->load->view('comparative/unidades', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -81,6 +82,9 @@ class Comparativa extends MY_Controller
             $output['usuario'] = $this->session->userdata('usuario');
             $output['periodos'] = $this->ranking->get_periodos();
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
+            $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,)
@@ -108,6 +112,9 @@ class Comparativa extends MY_Controller
             $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
+            $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $output['periodos'] = $this->ranking->get_periodos();
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
@@ -153,6 +160,9 @@ class Comparativa extends MY_Controller
             $output['usuario'] = $this->session->userdata('usuario');
             $output['periodos'] = $this->ranking->get_periodos();
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
+            $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
@@ -185,6 +195,9 @@ class Comparativa extends MY_Controller
             $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
+            $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $output['periodos'] = $this->ranking->get_periodos();
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
