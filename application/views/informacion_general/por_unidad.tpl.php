@@ -51,7 +51,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['tipo_grafica'],
                                         'attributes'=>array('class'=>'form-control',
-                                            'onchange'=>"javascript: if(($('#unidad_capa').html().length > 0) || ($('#umae_capa').html().length > 0)){ calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');} else { alert('Debe seleccionar los otros filtros antes de cambiar el tipo de gráfica.'); }"
+                                            'onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
                                         )
                                     )
                                 ); ?>
@@ -68,7 +68,7 @@
                                         'first' => array(''=>$lenguaje['seleccione']),
                                         'attributes'=>array('class'=>'form-control',
                                             //'onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$tipo_busq."', '#form_busqueda', '#".$tipo_busq."_capa')"
-                                            'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#tipo_unidad_capa').html(''); $('#umae_capa').html(''); limpiar_capas();"
+                                            'onchange'=>"javascript: data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#'+$('#tipos_busqueda').val()+'_capa'); $('#tipo_unidad_capa').html(''); $('#umae_capa').html(''); limpiar_capas(); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
                                         )
                                     )
                                 ); ?>
@@ -542,8 +542,8 @@
                     <!-- <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                     <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div> -->
                     <div class="col-lg-12 col-md-12 col-sm-12">
+                        <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>">
                         <input type="button" id="btn_limpiar" name="btn_limpiar" class="btn btn-secondary pull-right" value="<?php echo $lenguaje['limpiar_filtros'];?>">
-                        <!-- <input type="button" id="btn_buscar" name="btn_buscar" class="btn btn-primary pull-right" value="<?php echo $lenguaje['buscar'];?>"> -->
                     </div>
                 </div>
             </div>
@@ -587,7 +587,8 @@
         });
         $('#btn_buscar').click(function() {
             $('#tipos_busqueda').val('');
-            validar_tipos_busqueda('#tipos_busqueda');
+            //validar_tipos_busqueda('#tipos_busqueda');
+            calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
         });
     });
 </script>

@@ -30,6 +30,9 @@ class Informacion_general_model extends CI_Model
         }        
         if(isset($params['tipo_curso']) AND !empty($params['tipo_curso'])){
             $this->db->where('tc.id_tipo_curso='.$params['tipo_curso']);
+        }
+        if(isset($params['tipo_unidad']) AND !empty($params['tipo_unidad'])){
+            $this->db->where('uni.id_tipo_unidad='.$params['tipo_unidad']);
         }        
         if(isset($params['periodo']) AND !empty($params['periodo'])){
             $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo']);

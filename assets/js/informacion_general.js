@@ -349,12 +349,12 @@ function calcular_totales_unidad(path, form_recurso) {
             }
             if($('#tipo_grafica').val()=='perfil'){
                 var perfil = obtener_categoria_serie_unidad(response.perfil);
-                crear_grafica_stacked_grouped('comparativa_chrt', 'Gráfica por perfil de \''+texto+'\'', perfil.categorias, 'Número de alumnos', perfil.series);
+                crear_grafica_stacked_grouped('comparativa_chrt', '', perfil.categorias, 'Número de alumnos', perfil.series);
                 $('#comparativa_chrt2').html('');
             }
             if($('#tipo_grafica').val()=='tipo_curso'){
                 var tipos_curso = obtener_categoria_serie_unidad(response.tipo_curso);
-                crear_grafica_stacked('comparativa_chrt2', 'Gráfica por tipo de curso de \''+texto+'\'', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+                crear_grafica_stacked('comparativa_chrt2', '', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
                 $('#comparativa_chrt').html('');
             }
         }
@@ -483,6 +483,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             categories: categorias
         },
         yAxis: {
+            allowDecimals: false,
             min: 0,
             title: {
                 text: texto_y
@@ -542,6 +543,7 @@ function crear_grafica_area(elemento, titulo, categorias, texto_y, series_datos)
             categories: categorias
         },
         yAxis: {
+            allowDecimals: false,
             title: {
                 text: texto_y
             },
@@ -583,6 +585,7 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
             categories: categorias
         },
         yAxis: {
+            allowDecimals: false,
             min: 0,
             title: {
                 text: texto_y
