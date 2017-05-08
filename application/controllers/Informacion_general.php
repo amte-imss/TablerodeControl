@@ -142,7 +142,7 @@ class Informacion_general extends MY_Controller
                         } else {
                             $resultado['form']['label'] = $lenguaje['delegacion'];
                             $resultado['form']['path'] = 'tipo_unidad';
-                            $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa'); limpiar_capas(); $('#tipo_unidad').val('');");
+                            $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa'); limpiar_capas(); $('#tipo_unidad').val(''); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
                             //$resultado['form']['destino'] = '#tipo_unidad_capa';
                             $datos = $cat_list->obtener_catalogos(array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region)));
                             $resultado['datos'] = $datos['delegaciones'];
@@ -153,7 +153,7 @@ class Informacion_general extends MY_Controller
                     case 'tipo_unidad':
                         $resultado['form']['label'] = $lenguaje['tipo_unidad'];
                         $resultado['form']['path'] = 'unidad';
-                        $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');");
+                        $resultado['form']['evento'] = array('onchange'=>"javascript:data_ajax(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
                         //$resultado['form']['destino'] = '#unidad_capa';
                         $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion));
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_tipo_unidad', 'tipo_unidad');
