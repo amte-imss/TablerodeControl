@@ -10,7 +10,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header" data-background-color="blue" data-toggle="collapse" data-target="#perfil_tree_capa">
-                    <?php echo $lenguaje['filtros']; ?>
+                    <a href="#" data-toggle="collapse" data-target="#filtros_capa"><?php echo $lenguaje['filtros']; ?><i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+                    </a>
                 </div>
                 <div id="perfil_tree_capa" class="card-content">
                     <?php switch ($grupo_actual) {

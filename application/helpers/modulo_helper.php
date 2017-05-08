@@ -21,7 +21,7 @@ if (!function_exists('render_modulo'))
                     <div class="form-group">
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
-                                <a onclick="get_info_modulo(<?php echo $row['id_modulo']; ?>)" data-toggle="modal" data-target="#myModal"><?php echo $row['nombre']; ?></a>
+                                <a style="text-decoration: underline;cursor: pointer;" onclick="get_info_modulo(<?php echo $row['id_modulo']; ?>)" data-toggle="modal" data-target="#myModal"><?php echo $row['nombre']; ?></a>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -40,7 +40,7 @@ if (!function_exists('render_modulo'))
                     if (isset($row['childs']))
                     {
                         ?>
-                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a style="cursor:pointer" href="#">Más</a></p>
+                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a style="cursor:pointer;text-decoration: underline;" href="#">Ver más</a></p>
                         <?php
                         //pr($item['childs']);
                         echo render_modulo($row['childs'], 'modulo' . $row['id_modulo']);
@@ -123,7 +123,7 @@ if (!function_exists('render_modulos_grupo'))
                     if (isset($row['childs']))
                     {
                         ?>
-                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a href="#" style="cursor:pointer">Más</a></p>
+                    <p data-toggle="collapse" data-target="#modulo<?php echo $row['id_modulo']; ?>"><a href="#" style="cursor:pointer;text-decoration: underline;">Ver más</a></p>
                         <?php
                         //pr($item['childs']);
                         echo render_modulos_grupo($CI, $row['childs'], 'modulo' . $row['id_modulo']);

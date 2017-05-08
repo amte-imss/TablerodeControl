@@ -83,6 +83,7 @@ class Welcome extends CI_Controller
 
     function dashboard()
     {
+    /*
         $this->load->model('Menu_model', 'menu');
         $usuario = $this->session->userdata('usuario');
         if (isset($usuario['id_usuario']))
@@ -96,7 +97,8 @@ class Welcome extends CI_Controller
             $this->template->setMainContent($main_content);
             $this->template->getTemplate();
         }
-        //redirect(site_url('/informacion_general'));
+     */
+        redirect(site_url('/informacion_general'));
     }
 
     function cerrar_sesion()
