@@ -19,6 +19,7 @@
 
         <!--  Material Dashboard CSS    -->
         <link href="<?php echo base_url(); ?>assets/tablero_tpl/css/material-dashboard.css" rel="stylesheet"/>
+        <link href="<?php echo base_url(); ?>assets/tablero_tpl/css/my-material-dashboard.css" rel="stylesheet"/>
 
         <!--  CSS for Demo Purpose, don't include it in your project     -->
         <link href="<?php echo base_url(); ?>assets/tablero_tpl/css/demo.css" rel="stylesheet" />

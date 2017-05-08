@@ -521,7 +521,7 @@ class CI_Profiler {
 				$val = print_r($val, TRUE);
 			}
 
-			$output .= '<tr><td style="padding:5px;vertical-align:top;color:#900;background-color:#ddd;">'
+			@$output .= '<tr><td style="padding:5px;vertical-align:top;color:#900;background-color:#ddd;">'
 				.$key.'&nbsp;&nbsp;</td><td style="padding:5px;color:#000;background-color:#ddd;">'.htmlspecialchars($val, ENT_QUOTES, config_item('charset'))."</td></tr>\n";
 		}
 

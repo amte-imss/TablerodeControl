@@ -491,14 +491,15 @@ if(!function_exists('dropdown')){
       $opt = "";
       foreach($section as $id_sec=>$seccion){
         if(is_null($options)){
-          $opt .= "<li><a href='#'>".$seccion."</a></li>";
+          $opt .= "<li><a href='#' class='drop-option {$config["id"]}' data-id='$id_sec'>{$seccion}</a></li>";
         }else{
-          $opt .= "<li class='dropdown-header'>".$seccion."</li>";
+          $opt .= "<li class='dropdown-header' class='{$config["id"]}' data-id='$id_sec'>".$seccion."</li>";
           foreach($options as $option){
             if($option["id_subcategoria"] == $id_sec){
-              $opt .= "<li><a href='#'>".$option[$config["subseccion"]]."</a></li>";
+              $opt .= "<li><a href='#' class='drop-option {$config["id"]}' data-id='{$option[$config["id_sub"]]}'>".$option[$config["subseccion"]]."</a></li>";
             }
           }
+          $opt .= "<li class='divider'></li>";
         }
       }
       $drop = sprintf($drop,$css,$config["id"],$attribs,$config["title"],$config["id"],$opt );

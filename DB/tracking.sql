@@ -97,4 +97,5 @@ alter table catalogos.grupos_categorias add column activa bool NOT NULL DEFAULT 
 alter table catalogos.grupos_categorias add column "order" numeric(2) NULL DEFAULT 0;
 
 /* viernes 5 de mayo chris */
-alter table sistema.grupos add column orden int not null default 1
+alter table sistema.grupos add column orden int not null default 1;
+Alter table sistema.modulos add column icon varchar(20);

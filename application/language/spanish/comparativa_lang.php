@@ -8,9 +8,9 @@ $lang["formulario"] = array(
 	"descripcion"=>"",
 );
 $lang["region"] = array(
-	"title"=>"Comparativa",
+	"title"=>"Comparativa de regiones",
 	"subtitle"=>"Comparativa de regiones",
-	"descripcion"=>"En esta comparativa usted podrá contrastar el estado de una región, con otra o contra el promedio nacional.",
+	"descripcion"=>"En esta comparativa usted podrá contrastar el estado de una región con respecto a las demás.",
 	"lbl_region"=>"Región que desea comparar",
 	"lbl_anio"=>"Año",
 	"lbl_regiones"=>"Regiones",
@@ -19,4 +19,11 @@ $lang["region"] = array(
 	"lbl_perfil"=>"Perfil",
 	"lbl_tipo_perfil"=>"Tipo de perfil",
 	"seleccion"=>"Seleccione una opción",
+);
+$lang["delegacion"] = array(
+	"title"=>"Comparativa de delegaciones",
+	"subtitle"=>"Comparativa de delegaciones",
+	"descripcion"=>"En esta comparativa usted podrá contrastar el estado de una delegación con respecto a las demás.",
+	"lbl_anio"=>"Año",
+	"lbl_regiones"=>"Regiones",
 );

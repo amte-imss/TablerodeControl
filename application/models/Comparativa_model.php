@@ -7,8 +7,8 @@
  */
 class Comparativa_model extends MY_Model{
   const
-    PERFIL = 1,
-    TIPO_CURSO = 2;
+    PERFIL = 'p',
+    TIPO_CURSO = 'tc';
 
     public function __construct()
     {
@@ -236,7 +236,7 @@ class Comparativa_model extends MY_Model{
     * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
     * @param {int} anio - Año de la comparativa
     * @param {int} id - clave del perfil o tipo de curso, según aplique
-    * @return:
+    * @return: {array} Comparativa de regiones
     */
     function get_comparativa_region($id=null,$anio=2016,$tipo_reporte=Self::PERFIL){
       if(is_null($id)){
@@ -247,7 +247,7 @@ class Comparativa_model extends MY_Model{
         $where = "WHERE cur.id_tipo_curso = $id";
         $group = ",ct.id_tipo_curso, ct.tipo_curso";
       }else{
-        $select = ",per.id_grupo_categoria id_perfil,per.nombre perfil";
+        $select = ",per.id_grupo_categoria id_perfil,per.descripcion perfil";
         $where = " WHERE per.id_grupo_categoria = $id";
         $group = ",per.id_grupo_categoria, per.nombre";
       }
@@ -260,6 +260,7 @@ class Comparativa_model extends MY_Model{
         trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
         del.id_region,reg.nombre region
         $select
+        ,EXTRACT(year FROM imp.fecha_inicio) anio
         from hechos.hechos_implementaciones_alumnos himp
          left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion and EXTRACT(year FROM imp.fecha_inicio)  = $anio)
          left join catalogos.cursos cur ON(cur.id_curso = imp.id_curso)
@@ -276,7 +277,7 @@ class Comparativa_model extends MY_Model{
          		acc.id_sexo = himp.id_sexo
         	)
           $where
-        group by del.id_region, region $group
+        group by del.id_region, region $group , anio
         order by 1,3 asc";
 
         $result = $this->db->query($query);
@@ -286,6 +287,73 @@ class Comparativa_model extends MY_Model{
         $this->db->stop_cache();
         $this->db->flush_cache();
         return $regiones;
+    }
+
+    /*
+    * @Author: Mr. Guag
+    * @Version: 1.0
+    * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
+    * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
+    * @param {int} anio - Año de la comparativa
+    * @param {int} id - clave del perfil o tipo de curso, según aplique
+    * @param {int} region - clave de region 
+    * @return: Comparativa de delegaciones
+    */
+    function get_comparativa_delegacion($id=null,$anio=2016,$tipo_reporte=Self::PERFIL,$region = 0){
+        if(is_null($id)){
+            return false;
+        }
+
+        //filtros
+        
+        $where = " WHERE  unit.nivel_atencion in (1,2)";
+        if($tipo_reporte == Self::TIPO_CURSO){
+            $select = ",ct.id_tipo_curso,ct.tipo_curso";
+            $where .= " AND cur.id_tipo_curso = $id";
+            $group = ",ct.id_tipo_curso, ct.tipo_curso";
+          }else{
+            $select = ",per.id_grupo_categoria id_perfil,per.descripcion perfil";
+            $where .= " AND per.id_grupo_categoria = $id";
+            $group = ",per.id_grupo_categoria, per.nombre";
+          }
+          $where .= $region > 0 ? " AND del.id_region = $region" : "";
+
+        $query = "select
+        sum(himp.cantidad_alumnos_inscritos) inscritos,
+        sum(himp.cantidad_alumnos_certificados) aprobados,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) -  sum(acc.cantidad_no_accesos) no_aprobados,
+        sum(acc.cantidad_no_accesos) nunca_entraron,
+        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
+        del.clave_delegacional id_del, del.nombre delegacion
+        $select
+        ,EXTRACT(year FROM imp.fecha_inicio) anio
+        from hechos.hechos_implementaciones_alumnos himp
+         left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion and EXTRACT(year FROM imp.fecha_inicio)  = $anio)
+         left join catalogos.cursos cur ON(cur.id_curso = imp.id_curso)
+         left join catalogos.curso_tipo ct ON(ct.id_tipo_curso = cur.id_tipo_curso)
+         left join catalogos.unidades_instituto unit ON(
+            unit.id_unidad_instituto = himp.id_unidad_instituto)
+         left join catalogos.delegaciones del ON(del.id_delegacion = unit.id_delegacion)
+         left join catalogos.categorias cat ON(cat.id_categoria = himp.id_categoria)
+         left join catalogos.grupos_categorias per ON(per.id_grupo_categoria = cat.id_grupo_categoria)
+         left join hechos.accesos_implemetaciones acc ON(
+                acc.id_implementacion = himp.id_implementacion and
+                acc.id_unidad_instituto = himp.id_unidad_instituto and
+                acc.id_categoria = himp.id_categoria and
+                acc.id_sexo = himp.id_sexo
+            )
+          $where
+        group by id_del, delegacion $group , anio
+        order by id_del,3 asc";
+
+        $result = $this->db->query($query);
+        $delegaciones = $result->result_array();
+        unset($result);
+        $this->db->start_cache();
+        $this->db->stop_cache();
+        $this->db->flush_cache();
+        return $delegaciones;
     }
 
 }

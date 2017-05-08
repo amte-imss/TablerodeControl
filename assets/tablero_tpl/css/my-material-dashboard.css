@@ -1,0 +1,46 @@
+.card .card-header.card-header-icon {
+  float: left;
+}
+.card .card-header.card-header-icon i {
+  width: 33px;
+  height: 33px;
+  text-align: center;
+  line-height: 33px;
+}
+
+.card .card-header.card-header-icon + .card-content .card-title {
+  padding-bottom: 15px;
+}
+
+.label {
+
+    border-radius: 12px;
+    padding: 5px 12px;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.label, .label.label-default {
+  background-color: #FFFFFF;
+}
+.label.label-inverse {
+  background-color: #212121;
+}
+.label.label-primary {
+  background-color: #9c27b0;
+}
+.label.label-success {
+  background-color: #4caf50;
+}
+.label.label-info {
+  background-color: #0090b9;
+}
+.label.label-warning {
+  background-color: #ff9800;
+}
+.label.label-danger {
+  background-color: #f44336;
+}
+.label.label-rose {
+  background-color: #e91e63;
+}

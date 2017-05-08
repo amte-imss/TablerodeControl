@@ -64,4 +64,7 @@ class Nomina_model extends MY_Model{
       return $resultado;
     }
 
+    function get_dropdown_perfil(){
+      
+    }
 }
