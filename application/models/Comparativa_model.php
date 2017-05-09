@@ -5,10 +5,12 @@
  *
  * @author chrigarc, mr. guag
  */
-class Comparativa_model extends MY_Model{
-  const
-    PERFIL = 'p',
-    TIPO_CURSO = 'tc';
+class Comparativa_model extends MY_Model
+{
+
+    const
+            PERFIL = 'p',
+            TIPO_CURSO = 'tc';
 
     public function __construct()
     {
@@ -28,16 +30,18 @@ class Comparativa_model extends MY_Model{
         return array(1 => 'Inscritos', 2 => 'Aprobados', 3 => 'Eficiencia terminal',
             5 => 'No aprobados');
     }
-    
-    public function get_tipos_unidades($umae = false, $delegacion = 0){
+
+    public function get_tipos_unidades($umae = false, $delegacion = 0)
+    {
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->distinct();
         $select = array('A.id_tipo_unidad', 'A.nombre');
         $this->db->select($select);
-        $this->db->join('catalogos.unidades_instituto B','B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
+        $this->db->join('catalogos.unidades_instituto B', 'B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
         $this->db->where('B.umae', $umae);
-        if($delegacion > 0){
+        if ($delegacion > 0)
+        {
             $this->db->where('B.id_delegacion', $delegacion);
         }
         $tipos = $this->db->get('catalogos.tipos_unidades A')->result_array();
@@ -46,16 +50,32 @@ class Comparativa_model extends MY_Model{
 
     public function get_comparar_perfil($filtros = [])
     {
-        $datos['unidad1'] = $this->get_data_perfil($filtros['unidad1'], $filtros);
-        $datos['unidad2'] = $this->get_data_perfil($filtros['unidad2'], $filtros);
-        return $datos;
+        $datos_arreglo = [];
+        $index = 0;
+        foreach ($this->get_tipos_reportes() as $key => $value)
+        {
+            $filtros['reporte'] = $key;
+            $datos = [];
+            $datos['unidad1'] = $this->get_data_perfil($filtros['unidad1'], $filtros);
+            $datos['unidad2'] = $this->get_data_perfil($filtros['unidad2'], $filtros);
+            $datos_arreglo[$index++] = $datos;
+        }
+        return $datos_arreglo;
     }
 
     public function get_comparar_tipo_curso($filtros = [])
     {
-        $datos['unidad1'] = $this->get_data_tipo_curso($filtros['unidad1'], $filtros);
-        $datos['unidad2'] = $this->get_data_tipo_curso($filtros['unidad2'], $filtros);
-        return $datos;
+        $datos_arreglo = [];
+        $index = 0;
+        foreach ($this->get_tipos_reportes() as $key => $value)
+        {
+            $filtros['reporte'] = $key;
+            $datos = [];
+            $datos['unidad1'] = $this->get_data_tipo_curso($filtros['unidad1'], $filtros);
+            $datos['unidad2'] = $this->get_data_tipo_curso($filtros['unidad2'], $filtros);
+            $datos_arreglo[$index++] = $datos;
+        }
+        return $datos_arreglo;
     }
 
     private function get_data_tipo_curso($unidad = 0, &$filtros = array())
@@ -93,8 +113,8 @@ class Comparativa_model extends MY_Model{
         if ($unidad > 0)
         {
             $select = array(
-                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',*/
-                '"B".nombre', 
+                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
+                '"B".nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("AA".cantidad_no_accesos) no_acceso'
@@ -117,7 +137,8 @@ class Comparativa_model extends MY_Model{
         if (isset($filtros['umae']) && $filtros['umae'])
         {
             $this->db->where('B.umae', true);
-        }else{
+        } else
+        {
             $this->db->where('B.umae', false);
         }
         if (isset($filtros['tipo_curso']))
@@ -129,7 +150,7 @@ class Comparativa_model extends MY_Model{
             $this->db->where('B.id_unidad_instituto', $unidad);
 
             $group_by = array(
-                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'*/
+                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)' */
                 '"B".nombre'
             );
             $this->db->group_by($group_by);
@@ -186,8 +207,8 @@ class Comparativa_model extends MY_Model{
         if ($unidad > 0)
         {
             $select = array(
-                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre',*/
-                '"B".nombre', 
+                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
+                '"B".nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("AA".cantidad_no_accesos) no_acceso'
@@ -210,7 +231,8 @@ class Comparativa_model extends MY_Model{
         if (isset($filtros['umae']) && $filtros['umae'])
         {
             $this->db->where('B.umae', true);
-        }else{
+        } else
+        {
             $this->db->where('B.umae', false);
         }
         if (isset($filtros['subperfil']))
@@ -221,7 +243,7 @@ class Comparativa_model extends MY_Model{
         {
             $this->db->where('B.id_unidad_instituto', $unidad);
             $group_by = array(
-                'B.id_unidad_instituto', /*'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'*/
+                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)' */
                 '"B".nombre'
             );
             $this->db->group_by($group_by);
@@ -245,28 +267,33 @@ class Comparativa_model extends MY_Model{
     }
 
     /*
-    * @Author: Mr. Guag
-    * @Version: 1.0
-    * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
-    * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
-    * @param {int} anio - Año de la comparativa
-    * @param {int} id - clave del perfil o tipo de curso, según aplique
-    * @return: {array} Comparativa de regiones
-    */
-    function get_comparativa_region($id=null,$anio=2016,$tipo_reporte=Self::PERFIL){
-      if(is_null($id)){
-        return false;
-      }
-      if($tipo_reporte == Self::TIPO_CURSO){
-        $select = ",ct.id_tipo_curso,ct.tipo_curso";
-        $where = "WHERE cur.id_tipo_curso = $id";
-        $group = ",ct.id_tipo_curso, ct.tipo_curso";
-      }else{
-        $select = ",per.id_grupo_categoria id_perfil,per.descripcion perfil";
-        $where = " WHERE per.id_grupo_categoria = $id";
-        $group = ",per.id_grupo_categoria, per.nombre";
-      }
-      $query = "select
+     * @Author: Mr. Guag
+     * @Version: 1.0
+     * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
+     * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
+     * @param {int} anio - Año de la comparativa
+     * @param {int} id - clave del perfil o tipo de curso, según aplique
+     * @return: {array} Comparativa de regiones
+     */
+
+    function get_comparativa_region($id = null, $anio = 2016, $tipo_reporte = Self::PERFIL)
+    {
+        if (is_null($id))
+        {
+            return false;
+        }
+        if ($tipo_reporte == Self::TIPO_CURSO)
+        {
+            $select = ",ct.id_tipo_curso,ct.tipo_curso";
+            $where = "WHERE cur.id_tipo_curso = $id";
+            $group = ",ct.id_tipo_curso, ct.tipo_curso";
+        } else
+        {
+            $select = ",per.id_grupo_categoria id_perfil,per.descripcion perfil";
+            $where = " WHERE per.id_grupo_categoria = $id";
+            $group = ",per.id_grupo_categoria, per.nombre";
+        }
+        $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
         sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,
@@ -305,33 +332,38 @@ class Comparativa_model extends MY_Model{
     }
 
     /*
-    * @Author: Mr. Guag
-    * @Version: 1.0
-    * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
-    * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
-    * @param {int} anio - Año de la comparativa
-    * @param {int} id - clave del perfil o tipo de curso, según aplique
-    * @param {int} region - clave de region 
-    * @return: Comparativa de delegaciones
-    */
-    function get_comparativa_delegacion($id=null,$anio=2016,$tipo_reporte=Self::PERFIL,$region = 0){
-        if(is_null($id)){
+     * @Author: Mr. Guag
+     * @Version: 1.0
+     * @Description: Esta función realiza una comparativa entre regiones, dependiendo de los parametros asignados
+     * @param {int} tipo_reporte - Recibe como parámetro una de las constantes TIPO_CURSO o PERFIL(por default)
+     * @param {int} anio - Año de la comparativa
+     * @param {int} id - clave del perfil o tipo de curso, según aplique
+     * @param {int} region - clave de region 
+     * @return: Comparativa de delegaciones
+     */
+
+    function get_comparativa_delegacion($id = null, $anio = 2016, $tipo_reporte = Self::PERFIL, $region = 0)
+    {
+        if (is_null($id))
+        {
             return false;
         }
 
         //filtros
-        
+
         $where = " WHERE  unit.nivel_atencion in (1,2)";
-        if($tipo_reporte == Self::TIPO_CURSO){
+        if ($tipo_reporte == Self::TIPO_CURSO)
+        {
             $select = ",ct.id_tipo_curso,ct.tipo_curso";
             $where .= " AND cur.id_tipo_curso = $id";
             $group = ",ct.id_tipo_curso, ct.tipo_curso";
-          }else{
+        } else
+        {
             $select = ",per.id_grupo_categoria id_perfil,per.descripcion perfil";
             $where .= " AND per.id_grupo_categoria = $id";
             $group = ",per.id_grupo_categoria, per.nombre";
-          }
-          $where .= $region > 0 ? " AND del.id_region = $region" : "";
+        }
+        $where .= $region > 0 ? " AND del.id_region = $region" : "";
 
         $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,

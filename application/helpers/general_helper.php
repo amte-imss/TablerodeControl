@@ -461,6 +461,20 @@ if (!function_exists('is_nivel_tactico'))
     }
 }
 
+if (!function_exists('is_nivel_estrategico'))
+{
+    function is_nivel_estrategico($grupos = array()){
+        $salida = false;
+        foreach ($grupos as $grupo){
+            $id = $grupo['id_grupo'];
+            if($id == 6 || $id == 13){
+                //$salida = true;
+            }
+        }
+        return $salida;
+    }
+}
+
 if(!function_exists('dropdown')){
   function dropdown($config,$section=array(),$options = null){
     //title

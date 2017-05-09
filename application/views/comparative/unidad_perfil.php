@@ -3,53 +3,8 @@ echo js('chart_options.js');
 echo js('comparativa/unidad_perfil.js');
 echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_umae'));
 ?>
+<hr>
 <div class="row form-group">
-    <div class="col-md-4">
-        <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de unidad:</span>
-            <?php
-            $tu = array(
-                'class' => 'form-control  form-control input-sm',
-                'data-toggle' => 'tooltip',
-                'data-placement' => 'top',
-                'title' => 'TIpo de unidad',
-                'onchange' => '');
-            if ($no_edit_tipo_unidad)
-            {
-                $tu += array('disabled' => true);
-            }
-            echo $this->form_complete->create_element(array('id' => 'tipo_unidad',
-                'type' => 'dropdown',
-                'first' => array('' => 'Seleccione...'),
-                'options' => $tipos_unidades,
-                'value' => $tipo_unidad,
-                'attributes' => $tu));
-            ?>
-        </div>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-4">
-        <div class="input-group input-group-sm">
-            <span class="input-group-addon">Reporte:</span>
-            <?php
-            echo $this->form_complete->create_element(
-                    array('id' => 'reporte',
-                        'type' => 'dropdown',
-                        'first' => array('' => 'Seleccione...'),
-                        'options' => $reportes,
-                        'attributes' => array(
-                            'class' => 'form-control  form-control input-sm',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                            'title' => 'Region',
-                            'onchange' => '')
-                    )
-            );
-            ?>
-        </div>
-        <?php echo form_error_format('reporte'); ?>
-    </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Tipo de perfil:</span>
@@ -92,8 +47,53 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('subperfil'); ?>
     </div>
-</div>            
-<div class="row form-group">
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Nivel de atención:</span>
+            <?php
+            echo $this->form_complete->create_element(
+                    array('id' => 'nivel',
+                        'type' => 'dropdown',
+                        'first' => array('' => 'Seleccione...'),
+                        'options' => $tipos_cursos,
+                        'attributes' => array(
+                            'class' => 'form-control  form-control input-sm',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'title' => 'Nivel de atención',
+                            'onchange' => '')
+                    )
+            );
+            ?>
+        </div>
+        <?php echo form_error_format('nivel'); ?>
+    </div>    
+</div>
+<hr>
+<div class="row form-group">    
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Tipo de unidad:</span>
+            <?php
+            $tu = array(
+                'class' => 'form-control  form-control input-sm',
+                'data-toggle' => 'tooltip',
+                'data-placement' => 'top',
+                'title' => 'TIpo de unidad',
+                'onchange' => '');
+            if ($no_edit_tipo_unidad)
+            {
+                $tu += array('disabled' => true);
+            }
+            echo $this->form_complete->create_element(array('id' => 'tipo_unidad',
+                'type' => 'dropdown',
+                'first' => array('' => 'Seleccione...'),
+                'options' => $tipos_unidades,
+                'value' => $tipo_unidad,
+                'attributes' => $tu));
+            ?>
+        </div>
+    </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Unidad:</span>
@@ -140,6 +140,9 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('unidad2'); ?>
     </div>
+</div>            
+<hr>
+<div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Año:</span>
@@ -162,6 +165,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
         <?php echo form_error_format('periodo'); ?>
     </div>
 </div>            
+<hr>
 <div class="row form-group">
     <div class="col-md-6">
         <div class="input-group input-group-sm">

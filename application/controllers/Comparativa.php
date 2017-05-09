@@ -24,6 +24,7 @@ class Comparativa extends MY_Controller
         $this->lang->load('interface'); //Cargar archivo de lenguaje
         $this->load->model('Comparativa_model', 'comparativa');
         $this->load->library('form_validation');
+        $this->load->library('Catalogo_listado');
     }
 
     public function index()
@@ -54,6 +55,10 @@ class Comparativa extends MY_Controller
     {
         //pr($this->session->userdata('usuario'));
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $output += $cat_list->obtener_catalogos(array(
+            Catalogo_listado::REGIONES)
+        );
         $view = $this->load->view('comparative/unidades', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($view);
@@ -77,7 +82,6 @@ class Comparativa extends MY_Controller
             }
         } else
         {
-            $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
             $output['periodos'] = $this->ranking->get_periodos();
@@ -109,7 +113,6 @@ class Comparativa extends MY_Controller
             }
         } else
         {
-            $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
@@ -128,6 +131,10 @@ class Comparativa extends MY_Controller
     public function umae()
     {
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $output += $cat_list->obtener_catalogos(array(
+            Catalogo_listado::REGIONES)
+        );
         $view = $this->load->view('comparative/umae', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($view);
@@ -155,7 +162,6 @@ class Comparativa extends MY_Controller
             }
         } else
         {
-            $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
             $output['periodos'] = $this->ranking->get_periodos();
@@ -192,7 +198,6 @@ class Comparativa extends MY_Controller
             }
         } else
         {
-            $this->load->library('Catalogo_listado');
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
@@ -212,7 +217,8 @@ class Comparativa extends MY_Controller
         }
     }
 
-    public function region($num = null,$year=null, $type=null){
+    public function region($num = null, $year = null, $type = null)
+    {
         //1. modificar plantilla con campos y gráfica estática
         //2. generar querys para reporte
         //3. generar json dinamico
@@ -226,8 +232,6 @@ class Comparativa extends MY_Controller
         $this->template->setDescripcion($data["texts"]["descripcion"]);
 
         $data["catalogos"]["perfil"] = $this->nom->get_perfil();
-        
-        $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $data['catalogos'] += $cat_list->obtener_catalogos(array(
             Catalogo_listado::TIPOS_CURSOS,
@@ -238,30 +242,33 @@ class Comparativa extends MY_Controller
             Catalogo_listado::SUBCATEGORIAS
         ));
         $data["catalogos"]["reporte"] = array(
-            "tc"=>"Tipo de curso",
-            "p"=>"Perfil"
+            "tc" => "Tipo de curso",
+            "p" => "Perfil"
         );
-        
 
-        if(!is_null($num) && !is_null($year) && !is_null($type)){
-            $this->load->model("Comparativa_model","comp");
-                $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
-                $data["filters"]["year"] = $year;
-                if($type == 'p'){
-                    $cat =  $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS=>array(
-                            'valor'=> 'id_grupo_categoria,descripcion',
-                            'condicion'=> "id_grupo_categoria = $num"
-                            )
+
+        if (!is_null($num) && !is_null($year) && !is_null($type))
+        {
+            $this->load->model("Comparativa_model", "comp");
+            $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
+            $data["filters"]["year"] = $year;
+            if ($type == 'p')
+            {
+                $cat = $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS => array(
+                        'valor' => 'id_grupo_categoria,descripcion',
+                        'condicion' => "id_grupo_categoria = $num"
+                    )
                         )
-                    );
-                    $data["filters"]["num"] = $cat["grupos_categorias"][$num];
-                }elseif($type == 'tc'){
-                    $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
-                }
-                
-                
-                //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
-            $data["comparativa"] = $this->comp->get_comparativa_region($num,$year,$type);
+                );
+                $data["filters"]["num"] = $cat["grupos_categorias"][$num];
+            } elseif ($type == 'tc')
+            {
+                $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
+            }
+
+
+            //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
+            $data["comparativa"] = $this->comp->get_comparativa_region($num, $year, $type);
         }
 
         $this->template->setBlank("comparative/region.tpl.php", $data, FALSE);
@@ -271,7 +278,8 @@ class Comparativa extends MY_Controller
         //$this->output->enable_profiler(true);
     }
 
-    public function delegacion($num = null,$year=2016, $type=null,$region=0){
+    public function delegacion($num = null, $year = 2016, $type = null, $region = 0)
+    {
         //1. modificar plantilla con campos y gráfica estática
         //2. generar querys para reporte
         //3. generar json dinamico
@@ -287,8 +295,6 @@ class Comparativa extends MY_Controller
         $this->template->setDescripcion($data["texts"]["descripcion"]);
 
         $data["catalogos"]["perfil"] = $this->nom->get_perfil();
-        
-        $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
 
 
@@ -302,42 +308,44 @@ class Comparativa extends MY_Controller
             Catalogo_listado::REGIONES,
         ));
         $data["catalogos"]["reporte"] = array(
-            "tc"=>"Tipo de curso",
-            "p"=>"Perfil"
+            "tc" => "Tipo de curso",
+            "p" => "Perfil"
         );
         //solo NC
-        $data["catalogos"]["regiones"][0]="Todas las regiones";
-        
+        $data["catalogos"]["regiones"][0] = "Todas las regiones";
 
-        if(!is_null($num) && !is_null($type)){
-            $this->load->model("Comparativa_model","comp");
-                $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
-                $data["filters"]["year"] = $year;
-                $data["filters"]["region"] = $data["catalogos"]["regiones"][$region];
-                if($type == 'p'){
-                    $cat =  $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS=>array(
-                            'valor'=> 'id_grupo_categoria,descripcion',
-                            'condicion'=> "id_grupo_categoria = $num"
-                            )
+
+        if (!is_null($num) && !is_null($type))
+        {
+            $this->load->model("Comparativa_model", "comp");
+            $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
+            $data["filters"]["year"] = $year;
+            $data["filters"]["region"] = $data["catalogos"]["regiones"][$region];
+            if ($type == 'p')
+            {
+                $cat = $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS => array(
+                        'valor' => 'id_grupo_categoria,descripcion',
+                        'condicion' => "id_grupo_categoria = $num"
+                    )
                         )
-                    );
-                    $data["filters"]["num"] = $cat["grupos_categorias"][$num];
-                }elseif($type == 'tc'){
-                    $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
-                    $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
-                }
-                
-                
-                //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
-            $data["comparativa"] = $this->comp->get_comparativa_delegacion($num,$year,$type,$region);
+                );
+                $data["filters"]["num"] = $cat["grupos_categorias"][$num];
+            } elseif ($type == 'tc')
+            {
+                $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
+                $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
+            }
+
+
+            //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
+            $data["comparativa"] = $this->comp->get_comparativa_delegacion($num, $year, $type, $region);
         }
 
         $this->template->setBlank("comparative/delegacion.tpl.php", $data, FALSE);
         //$this->template->setBlank("tc_template/index.tpl.php");
 
         $this->template->getTemplate(null, "tc_template/index.tpl.php");
-        $this->output->enable_profiler(true);
-
+//        $this->output->enable_profiler(true);
     }
 
 }

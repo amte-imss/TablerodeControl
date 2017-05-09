@@ -1,7 +1,7 @@
 
 <ul class="dropdown-menu">
     <li>
-        <a href="#">
+        <a class="link_ficha_usuario" href="#">
             <b>Nombre:</b> <?php echo $name_user; ?> <br>
             <b>Matrícula:</b> <?php echo $matricula; ?> <br>
             <b>Categoría:</b> <?php echo $name_categoria; ?> <br>
@@ -20,13 +20,13 @@
             <div class="ripple-container"></div></a>
     </li>
     <li>
-        <a href="<?php echo site_url()?>/perfil_usuario">
+        <a class="link_ficha_usuario" href="<?php echo site_url() ?>/perfil_usuario">
             <i class="material-icons">mode_edit</i>
             Editar perfil
             <div class="ripple-container"></div></a>
     </li>
     <li>
-        <a href="<?php echo site_url()?>/welcome/cerrar_sesion">
+        <a class="link_ficha_usuario" href="<?php echo site_url() ?>/welcome/cerrar_sesion">
             <i class="fa fa-sign-out"></i>
             Cerrar sesión
         </a>

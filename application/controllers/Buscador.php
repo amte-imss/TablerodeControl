@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Buscador
  *
@@ -13,6 +13,14 @@ class Buscador extends CI_Controller
         parent::__construct();
         $this->load->library('session');
     }
+    
+    
+    public function get_delegaciones($id_region = 0)
+    {
+        $this->load->model('Buscador_model', 'buscador');
+        $delegaciones = $this->buscador->get_delegaciones($id_region);
+        echo json_encode($delegaciones);
+    }
 
     public function search_unidad_instituto()
     {
@@ -22,17 +30,32 @@ class Buscador extends CI_Controller
             $this->load->model('Usuario_model', 'usuario');
             $keyword = $this->input->post('keyword', true);
             $keyword = strtolower($keyword);
-            $usuario = $this->session->userdata('usuario');
-            if(is_nivel_central($usuario['grupos'])){
-                $tipo_unidad = 0;
-                if($this->input->post('tipo_unidad', true)){
-                    $tipo_unidad = $this->input->post('tipo_unidad', true);
+            $tipo_unidad = 0;
+            $delegacion = 0;
+            if ($keyword != null)
+            {
+                $usuario = $this->session->userdata('usuario');
+                if(is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos'])){
+                    $delegacion = $usuario['id_delegacion'];
+                    $tipo_unidad = $usuario['id_tipo_unidad'];
                 }
-                $output['unidades'] = $this->usuario->lista_unidad($keyword);
-            }else{
-                $output['unidades'] = $this->usuario->lista_unidad($keyword, $usuario['id_tipo_unidad']);
+                if (is_nivel_central($usuario['grupos']) || is_nivel_tactico($usuario['grupos']) 
+                        || is_nivel_estrategico($usuario['grupos']))
+                {
+                    if ($this->input->post('tipo_unidad', true))
+                    {
+                        $tipo_unidad = $this->input->post('tipo_unidad', true);
+                    }                    
+                }
+                if(is_nivel_central($usuario['grupos']) || is_nivel_estrategico($usuario['grupos'])){
+                    if ($this->input->post('delegacion', true))
+                    {
+                        $delegacion = $this->input->post('delegacion', true);
+                    }                    
+                }
+                $output['unidades'] = $this->usuario->lista_unidad($keyword, $tipo_unidad, $delegacion);                
+                echo $this->load->view('buscador/unidades_instituto', $output, true);
             }
-            echo $this->load->view('buscador/unidades_instituto', $output, true);
         }
     }
 
@@ -48,12 +71,15 @@ class Buscador extends CI_Controller
             echo $this->load->view('buscador/categorias', $output, true);
         }
     }
-    
-    public function search_grupos_categorias(){
-        if($this->input->post()){
+
+    public function search_grupos_categorias()
+    {
+        if ($this->input->post())
+        {
             $this->load->model('Buscador_model', 'buscador');
             $grupos_categorias = $this->buscador->get_grupos_categorias($this->input->post());
             echo json_encode($grupos_categorias);
         }
     }
+
 }

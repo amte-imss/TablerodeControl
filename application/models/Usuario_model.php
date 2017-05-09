@@ -55,12 +55,14 @@ class Usuario_model extends CI_Model
         return $categoria;
     }
 
-    public function lista_unidad($keyword = null, $tipo_unidad = 0)
+    public function lista_unidad($keyword = null, $tipo_unidad = 0, $delegacion = 0)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->select(array(
-            'id_unidad_instituto', 'nombre'
+            'id_unidad_instituto'
+            //,'nombre'
+            ,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
         ));
         if ($keyword != null)
         {
@@ -69,6 +71,9 @@ class Usuario_model extends CI_Model
         }
         if($tipo_unidad > 0){
             $this->db->where('id_tipo_unidad', $tipo_unidad);
+        }
+        if($delegacion > 0){
+            $this->db->where('id_delegacion', $delegacion);
         }
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
         return $resultado_unidades;

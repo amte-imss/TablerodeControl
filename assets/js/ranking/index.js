@@ -53,9 +53,9 @@ function eficiencia_terminal(datos) {
     datos = procesa_datos_etm(datos);
     var periodo = 2016;
     var colores = ['#FCB220'];
-    var titulo_grafica = "Ranking por eficiencia terminal del programa " + programa + " en " + periodo;
+    var titulo_grafica = "Ranking por eficiencia terminal modificada del programa " + programa + " en " + periodo;
     if (id_programa == "") {
-        titulo_grafica = "Ranking por eficiencia terminal " + " en " + periodo;
+        titulo_grafica = "Ranking por eficiencia terminal modificada  " + " en " + periodo;
     }
     var texto = "Porcentaje de eficiencia terminal ";
     var extra = '';
@@ -122,7 +122,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
             enabled: false
         },
         tooltip: {
-            pointFormat: texto + ' en ' + year + ' : <b>{point.y:.1f} ' + extra + '</b>'
+            pointFormat: texto + ' en ' + year + ' : <b>{point.y} ' + extra + '</b>'
         },
         series: [{
                 name: texto,
