@@ -218,6 +218,7 @@ class Informacion_general extends MY_Controller
                     $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
                 }
                 $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                //pr($datos_busqueda);
                 //pr($datos['datos']);
                 $res = array();
                 if(!empty($datos['datos'])){
@@ -453,16 +454,37 @@ class Informacion_general extends MY_Controller
                     $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
                 }
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, "mes"."nombre" as "mes", 
+                    EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, "cur"."id_tipo_curso", 
+                    "tc"."nombre" as "tipo_curso", "gc"."id_grupo_categoria", "gc"."nombre" as "grupo_categoria", 
+                    "gc"."order" as "grupo_categoria_orden", "sub"."id_subcategoria", "sub"."nombre" as "perfil", "sub"."order" as "perfil_orden", 
+                    SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, 
+                    "gc"."order" as "grupo_categoria_orden", COALESCE(SUM(no_acc.cantidad_no_accesos), 0) as cantidad_no_accesos, 
+                    (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-COALESCE(SUM(no_acc.cantidad_no_accesos), 0)) as cantidad_no_aprobados, 
+                    EXTRACT(month FROM fecha_inicio) as periodo_id, (CASE WHEN EXTRACT(month FROM fecha_inicio) = 1 THEN \'Enero\'
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 2 THEN \'Febrero\'
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 3 THEN \'Marzo\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 4 THEN \'Abril\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 5 THEN \'Mayo\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 6 THEN \'Junio\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 7 THEN \'Julio\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 8 THEN \'Agosto\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 9 THEN \'Septiembre\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 10 THEN \'Octubre\' 
+                                    WHEN EXTRACT(month FROM fecha_inicio) = 11 THEN \'Noviembre\' 
+                                    ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio), "mes"."nombre", 
+                    EXTRACT(YEAR FROM imp.fecha_inicio), "cur"."id_tipo_curso", "tc"."nombre", 
+                    "gc"."id_grupo_categoria", "gc"."nombre", "gc"."order", 
+                    "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
-                //pr($datos['datos']); 
+                //pr($datos['datos']); exit();
                 $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array());
+                $tablas = array('perfil'=>array(),'tipo_curso'=>'');
                 if(!empty($datos['datos'])){
                     foreach ($datos['datos'] as $key_d => $dato) {
                         if(!isset($dato['periodo']) OR empty($dato['periodo'])) {
                             $dato['periodo'] = $dato['anio_fin'];
-                        }
-
+                        }                        
                         //Total
                         $resultado['total'] = $this->crear_arreglo_por_tipo($resultado['total'], $dato);
                         //Periodo
@@ -475,11 +497,33 @@ class Informacion_general extends MY_Controller
                             $resultado['perfil'][$dato['perfil']] = array();
                         }
                         $resultado['perfil'][$dato['perfil']] = $this->crear_arreglo_por_tipo($resultado['perfil'][$dato['perfil']], $dato);
+                        //$tablas['perfil'][$dato['perfil_orden']][$dato['perfil']] = $dato['perfil'];
+                        if(!isset($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']])){
+                            $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']] = array();
+                        }
+                        if(!isset($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']])){
+                            $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']] = array();
+                        }
+                        $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']] = $this->crear_arreglo_por_tipo($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']], $dato);
+                        $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']] = $this->crear_arreglo_por_tipo($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']], $dato);
+                        ksort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']]);
+                        ksort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]);
+                        //array_multisort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']], SORT_ASC, SORT_STRING, 
+                            //$tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']], SORT_NUMERIC, SORT_ASC);
+                        //pr($dato);
+                        //pr($tablas); exit();
                         //Tipo de curso
                         if(!isset($resultado['tipo_curso'][$dato['tipo_curso']])){
                             $resultado['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $resultado['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($resultado['tipo_curso'][$dato['tipo_curso']], $dato);
+                        
+                        /*if(!isset($tablas['tipo_curso'][$dato['tipo_curso']])){
+                            $tablas['tipo_curso'][$dato['tipo_curso']] = array();
+                        }
+                        $tablas['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($tablas['tipo_curso'][$dato['grupo_categoria_orden'].'_'.$dato['tipo_curso']], $dato);*/
+                        ksort($resultado['tipo_curso'][$dato['tipo_curso']]);
+                        
                         //pr($resultado);
                         //Periodo
                         /*if(!isset($resultado['periodo'][$dato['periodo']]['cantidad_alumnos_inscritos'])){
@@ -519,10 +563,10 @@ class Informacion_general extends MY_Controller
                         $resultado['total']['cantidad_alumnos_certificados'] += $dato['cantidad_alumnos_certificados'];*/
                     }
                     $resultado['lenguaje'] = $this->lang->line('interface')['informacion_general'];
-                    ksort($resultado['tipo_curso']);
+                    //ksort($resultado['tipo_curso']);
                     $resultado['tabla_tipo_curso'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_tipo_curso', 'titulo'=>$resultado['lenguaje']['tipo_curso'], 'valores'=>$resultado['tipo_curso'], 'lenguaje'=>$resultado['lenguaje']), true);
-                    $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_perfil', 'titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$resultado['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
-                    //pr($datos);
+                    $resultado['tabla_perfil'] = $this->load->view('informacion_general/tabla.tpl.php', array('id'=>'tabla_perfil', 'titulo'=>$resultado['lenguaje']['perfil'], 'valores'=>$tablas['perfil'], 'lenguaje'=>$resultado['lenguaje']), true);
+                    //pr($tablas);
                     echo json_encode($resultado);
                 } else {
                     $resultado['total'] = 0;

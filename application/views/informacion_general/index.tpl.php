@@ -9,7 +9,7 @@
                 <i class="fa fa-user"></i>
             </div>
             <div class="card-content">
-                <p class="category"><?php echo $lenguaje['alumnos_inscritos']; ?></p>
+                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_inscritos']; ?></p>
                 <h3 class="title" id="total_alumnos_inscritos">-</h3>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <i class="fa fa-check"></i>
             </div>
             <div class="card-content">
-                <p class="category"><?php echo $lenguaje['alumnos_aprobados']; ?></p>
+                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_aprobados']; ?></p>
                 <h3 class="title" id="total_alumnos_aprobados">-</h3>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <i class="fa fa-close"></i>
             </div>
             <div class="card-content">
-                <p class="category"><?php echo $lenguaje['alumnos_no_aprobados']; ?></p>
+                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_no_aprobados']; ?></p>
                 <h3 class="title" id="total_alumnos_no_aprobados">-</h3>
             </div>
         </div>
@@ -42,7 +42,7 @@
                 <i class="fa fa-exclamation-triangle"></i>
             </div>
             <div class="card-content">
-                <p class="category"><?php echo $lenguaje['alumnos_no_acceso']; ?></p>
+                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_no_acceso']; ?></p>
                 <h3 class="title" id="total_alumnos_no_acceso">-</h3>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 <i class="fa fa-percent"></i>
             </div>
             <div class="card-content">
-                <p class="category"><?php echo $lenguaje['eficiencia_terminal']; ?></p>
+                <p class="category" style="min-height:65px;"><?php echo $lenguaje['eficiencia_terminal']; ?></p>
                 <h3 class="title" id="total_eficiencia_terminal">-</h3>
             </div>
         </div>

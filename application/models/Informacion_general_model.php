@@ -107,15 +107,6 @@ class Informacion_general_model extends CI_Model
         if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
             $this->db->where('tc.id_tipo_curso IN ('.$params['tipo_curso_seleccion'].')');
         }
-        if (array_key_exists('fields', $params)) {
-            $this->db->select($params['fields']);
-        }
-        if (array_key_exists('conditions', $params)) {
-            $this->db->where($params['conditions']);
-        }
-        if (array_key_exists('order', $params)) {
-            $this->db->order_by($params['order']['field']);
-        }
 
         //Periodo
         $periodo = '';
@@ -165,24 +156,39 @@ class Informacion_general_model extends CI_Model
         }
 
         //$this->db->limit('500');
-        if(isset($params['destino']) AND !empty($params['destino'])){ ///Se utiliza para construir los listados (tree) de vista por_perfil y por_tipo_curso
-            if($params['destino']==$tb['PERFIL']['id']){
-                $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
-            } else {
-                $this->db->order_by($params['destino']);
+        if(isset($params['fields']) AND !empty($params['fields'])) { //En caso de que se envien valores a través desde el controlador
+            if (array_key_exists('fields', $params)) {
+                $this->db->select($params['fields']);
             }
-            $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso, sub.order as subcategoria_orden, gc.order as grupo_categoria_orden');
-            $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
         } else {
-            $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, mes.nombre as mes,
-                EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
-                del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
-                hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
-                hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
-                case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
-                sub.order as subcategoria_orden, gc.order as grupo_categoria_orden,
-                COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos,
-                (hia.cantidad_alumnos_inscritos-hia.cantidad_alumnos_certificados-COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_aprobados'.$periodo);
+            if(isset($params['destino']) AND !empty($params['destino'])){ ///Se utiliza para construir los listados (tree) de vista por_perfil y por_tipo_curso
+                if($params['destino']==$tb['PERFIL']['id']){
+                    $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
+                } else {
+                    $this->db->order_by($params['destino']);
+                }
+                $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso, sub.order as subcategoria_orden, gc.order as grupo_categoria_orden');
+                $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
+            } else {
+                $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, mes.nombre as mes,
+                    EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
+                    del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
+                    hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
+                    hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
+                    case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
+                    sub.order as subcategoria_orden, gc.order as grupo_categoria_orden,
+                    COALESCE(no_acc.cantidad_no_accesos, 0) as cantidad_no_accesos,
+                    (hia.cantidad_alumnos_inscritos-hia.cantidad_alumnos_certificados-COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_aprobados'.$periodo);
+            }
+        }
+        if (array_key_exists('group', $params)) {
+            $this->db->group_by($params['group']);
+        }
+        if (array_key_exists('conditions', $params)) {
+            $this->db->where($params['conditions']);
+        }
+        if (array_key_exists('order', $params)) {
+            $this->db->order_by($params['order']['field']);
         }
 
         $this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');
@@ -198,7 +204,7 @@ class Informacion_general_model extends CI_Model
         $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria AND gc.activa=CAST(1 as boolean)', 'left');
         //$this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)', 'left');
         $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)');
-        //$this->db->limit(100);
+        //$this->db->limit(50);
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
         $resultado = $query->result_array();
         //pr($this->db->last_query()); exit();
