@@ -202,12 +202,15 @@
                     $('#'+destino+'_tree').after('<div id="no_existe_datos"><?php echo $lenguaje['no_existe_datos']; ?></div>');
                     $('#'+destino+'_tree').hide();
                     ocultar_loader();
-                } else { console.log(response);
+                } else { //console.log(response);
                     var tree = $('#'+destino+'_tree').fancytree('getTree');
                     var t = [];
                     $.each(response, function(i, item) {
                         var children = [];
                         $.each(item.children, function(sub, subitem) {
+                            tmp = subitem.key.split('_');
+                            subitem.key = tmp[1];
+                            console.log(subitem);
                             children.push(subitem);
                         });
                         item.children=children;

@@ -46,6 +46,7 @@ function calcular_totales_generales(path) {
     $.ajax({
         url: path,
         method: 'POST',
+        data: 'anio='+$('#anio').val(),
         dataType: 'json',
         beforeSend: function (xhr) {
             mostrar_loader();
@@ -53,11 +54,25 @@ function calcular_totales_generales(path) {
     })
     .done(function (response) {
         if(typeof(response.total) != "undefined"){
-            $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
-            $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
-            $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
-            $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
-            $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
+            $('#capa_periodo_principal').html($('#anio').val());
+            if(response.total == null || response.total.length <= 0) {
+                $('#container_perfil').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+                $('#container_perfil').show();
+            } else {
+                $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
+                $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+                $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
+                $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
+                $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
+                $('#container_perfil').html('');
+            }
+            $('#tipos_busqueda').val('');
+            $('#container_tipo_curso').html('');
+            $('#container_nivel_atencion').html('');
+            $('#container_region').html('');
+            $('#container_periodo').html('');
+            $('#container_delegacion').html('');
+            $('#container_umae').html('');
         }
     })
     .fail(function (jqXHR, textStatus) {
@@ -115,146 +130,157 @@ function calcular_totales(path, form_recurso) {
         }
     })
     .done(function (response) {
-        if(typeof(response.total) != "undefined"){
-            $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
-            $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
-            $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
-            $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
-            $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
-        }
-        /////////Perfiles
-        /*var perfiles = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        var no_acceso = [];
-        var no_aprobado = [];
-        jQuery.each( response.perfil, function( i, val ) {
-            perfiles.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-            no_acceso.push(val.cantidad_no_accesos);
-            no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
-        });
-        series_datos = [{
-                name: 'Inscritos',
-                data: inscritos,
-                stack: 'inscritos'
-            }, {
-                name: 'Aprobados',
-                data: certificados,
-                stack: 'aprobados'
-            }, {
-                name: 'No acceso',
-                data: no_acceso,
-                stack: 'no_aprobado'
-            }, {
-                name: 'No aprobado',
-                data: no_aprobado,
-                stack: 'no_aprobado'
-            }];*/
-        var perfil = obtener_categoria_serie(response.perfil);
-        crear_grafica_stacked_grouped('container_perfil', 'Gráfica por perfil', perfil.categorias, 'Número de alumnos', perfil.series);
-        ////////Tipos de curso
-        /*var tipos_curso = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.tipo_curso, function( i, val ) {
-            tipos_curso.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-            }];*/
-        var tipos_curso = obtener_categoria_serie(response.tipo_curso);
-        crear_grafica_stacked('container_tipo_curso', 'Gráfica por tipo de curso', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
-        ////////Región
-        /*var region = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.region, function( i, val ) {
-            region.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-            }];*/
-        var region = obtener_categoria_serie(response.region);
-        crear_grafica_stacked('container_region', 'Gráfica por región', region.categorias, 'Número de alumnos', region.series);
-        ////////Delegación
-        /*var delegacion = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.delegacion, function( i, val ) {
-            delegacion.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-            }];*/
-        var delegacion = obtener_categoria_serie(response.delegacion);
-        crear_grafica_stacked('container_delegacion', 'Gráfica por delegación', delegacion.categorias, 'Número de alumnos', delegacion.series);
-        ////////UMAE
-        /*var umae = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.umae, function( i, val ) {
-            umae.push(i);
-            inscritos.push(val.cantidad_alumnos_inscritos);
-            certificados.push(val.cantidad_alumnos_certificados);
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-            }];*/
-        var umae = obtener_categoria_serie(response.umae);
-        crear_grafica_stacked('container_umae', 'Gráfica por UMAE', umae.categorias, 'Número de alumnos', umae.series);
-        ////////Periodo
-        /*var periodo = [];
-        var series_datos = [];
-        var inscritos = [];
-        var certificados = [];
-        jQuery.each( response.periodo, function( i, val ) {
-            //jQuery.each( val, function( inc, value ) {
-                periodo.push(i);
+        if(typeof(response.error) != "undefined"){
+            $('#container_perfil').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+            $('#container_perfil').show();
+            $('#container_tipo_curso').html('');
+            $('#container_nivel_atencion').html('');
+            $('#container_region').html('');
+            $('#container_periodo').html('');
+            $('#container_delegacion').html('');
+            $('#container_umae').html('');
+        } else {
+            if(typeof(response.total) != "undefined"){
+                $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
+                $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);
+                $('#total_alumnos_no_aprobados').html(response.total.cantidad_no_aprobados);
+                $('#total_alumnos_no_acceso').html(response.total.cantidad_no_accesos);
+                $('#total_eficiencia_terminal').html(calcular_eficiencia_terminal(response.total.cantidad_alumnos_inscritos, response.total.cantidad_alumnos_certificados, response.total.cantidad_no_accesos));
+            }
+            /////////Perfiles
+            /*var perfiles = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            var no_acceso = [];
+            var no_aprobado = [];
+            jQuery.each( response.perfil, function( i, val ) {
+                perfiles.push(i);
                 inscritos.push(val.cantidad_alumnos_inscritos);
                 certificados.push(val.cantidad_alumnos_certificados);
-            //});
-        });
-        series_datos = [{
-                name: 'Aprobados',
-                data: certificados
-            }, {
-                name: 'Inscritos',
-                data: inscritos
-            }];*/
-        var periodo = obtener_categoria_serie(response.periodo);
-        crear_grafica_stacked('container_periodo', 'Gráfica por periodo', periodo.categorias, 'Número de alumnos', periodo.series);
-        ////////Nivel de atención
-        var nivel_atencion = obtener_categoria_serie(response.nivel_atencion);
-        crear_grafica_stacked('container_nivel_atencion', 'Gráfica por nivel de atención', nivel_atencion.categorias, 'Número de alumnos', nivel_atencion.series);
+                no_acceso.push(val.cantidad_no_accesos);
+                no_aprobado.push(val.cantidad_alumnos_inscritos-val.cantidad_alumnos_certificados-val.cantidad_no_accesos);
+            });
+            series_datos = [{
+                    name: 'Inscritos',
+                    data: inscritos,
+                    stack: 'inscritos'
+                }, {
+                    name: 'Aprobados',
+                    data: certificados,
+                    stack: 'aprobados'
+                }, {
+                    name: 'No acceso',
+                    data: no_acceso,
+                    stack: 'no_aprobado'
+                }, {
+                    name: 'No aprobado',
+                    data: no_aprobado,
+                    stack: 'no_aprobado'
+                }];*/
+            var perfil = obtener_categoria_serie(response.perfil);
+            crear_grafica_stacked_grouped('container_perfil', 'Gráfica por perfil', perfil.categorias, 'Número de alumnos', perfil.series);
+            ////////Tipos de curso
+            /*var tipos_curso = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            jQuery.each( response.tipo_curso, function( i, val ) {
+                tipos_curso.push(i);
+                inscritos.push(val.cantidad_alumnos_inscritos);
+                certificados.push(val.cantidad_alumnos_certificados);
+            });
+            series_datos = [{
+                    name: 'Aprobados',
+                    data: certificados
+                }, {
+                    name: 'Inscritos',
+                    data: inscritos
+                }];*/
+            var tipos_curso = obtener_categoria_serie(response.tipo_curso);
+            crear_grafica_stacked('container_tipo_curso', 'Gráfica por tipo de curso', tipos_curso.categorias, 'Número de alumnos', tipos_curso.series);
+            ////////Región
+            /*var region = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            jQuery.each( response.region, function( i, val ) {
+                region.push(i);
+                inscritos.push(val.cantidad_alumnos_inscritos);
+                certificados.push(val.cantidad_alumnos_certificados);
+            });
+            series_datos = [{
+                    name: 'Aprobados',
+                    data: certificados
+                }, {
+                    name: 'Inscritos',
+                    data: inscritos
+                }];*/
+            var region = obtener_categoria_serie(response.region);
+            crear_grafica_stacked('container_region', 'Gráfica por región', region.categorias, 'Número de alumnos', region.series);
+            ////////Delegación
+            /*var delegacion = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            jQuery.each( response.delegacion, function( i, val ) {
+                delegacion.push(i);
+                inscritos.push(val.cantidad_alumnos_inscritos);
+                certificados.push(val.cantidad_alumnos_certificados);
+            });
+            series_datos = [{
+                    name: 'Aprobados',
+                    data: certificados
+                }, {
+                    name: 'Inscritos',
+                    data: inscritos
+                }];*/
+            var delegacion = obtener_categoria_serie(response.delegacion);
+            crear_grafica_stacked('container_delegacion', 'Gráfica por delegación', delegacion.categorias, 'Número de alumnos', delegacion.series);
+            ////////UMAE
+            /*var umae = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            jQuery.each( response.umae, function( i, val ) {
+                umae.push(i);
+                inscritos.push(val.cantidad_alumnos_inscritos);
+                certificados.push(val.cantidad_alumnos_certificados);
+            });
+            series_datos = [{
+                    name: 'Aprobados',
+                    data: certificados
+                }, {
+                    name: 'Inscritos',
+                    data: inscritos
+                }];*/
+            var umae = obtener_categoria_serie(response.umae);
+            crear_grafica_stacked('container_umae', 'Gráfica por UMAE', umae.categorias, 'Número de alumnos', umae.series);
+            ////////Periodo
+            /*var periodo = [];
+            var series_datos = [];
+            var inscritos = [];
+            var certificados = [];
+            jQuery.each( response.periodo, function( i, val ) {
+                //jQuery.each( val, function( inc, value ) {
+                    periodo.push(i);
+                    inscritos.push(val.cantidad_alumnos_inscritos);
+                    certificados.push(val.cantidad_alumnos_certificados);
+                //});
+            });
+            series_datos = [{
+                    name: 'Aprobados',
+                    data: certificados
+                }, {
+                    name: 'Inscritos',
+                    data: inscritos
+                }];*/
+            var periodo = obtener_categoria_serie(response.periodo);
+            crear_grafica_stacked('container_periodo', 'Gráfica por periodo', periodo.categorias, 'Número de alumnos', periodo.series);
+            ////////Nivel de atención
+            var nivel_atencion = obtener_categoria_serie(response.nivel_atencion);
+            crear_grafica_stacked('container_nivel_atencion', 'Gráfica por nivel de atención', nivel_atencion.categorias, 'Número de alumnos', nivel_atencion.series);
+        }
     })
     .fail(function (jqXHR, textStatus) {
         $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
@@ -331,6 +357,7 @@ function calcular_totales_unidad(path, form_recurso) {
         }
     })
     .done(function (response) {
+        $('#capa_periodo_principal').html($('#anio').val());
         if(typeof(response.error) != "undefined"){
             $('#comparativa_chrt2').html("");
             $('#comparativa_chrt').html("");
@@ -387,6 +414,7 @@ function buscar_perfil(path, form_recurso) {
     })
     .done(function (response) {
         if(typeof(response.total) != "undefined"){
+            $('#capa_periodo_principal').html($('#anio').val());
             if(response.total == 0){
                 $('#total_alumnos_inscritos').html('-');
                 $('#total_alumnos_aprobados').html('-');

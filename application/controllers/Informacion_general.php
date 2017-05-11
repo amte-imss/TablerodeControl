@@ -30,7 +30,7 @@ class Informacion_general extends MY_Controller
         //pr($_SESSION['usuario']);
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
         $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
         $datos['catalogos'] = $cat_list->obtener_catalogos($configuracion['catalogos']); //Catalogo_listado::PERIODO        
         $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos        
@@ -237,7 +237,7 @@ class Informacion_general extends MY_Controller
                                         $resultado[$tipos['subcategoria_orden'].'_'.$tipos['id_subcategoria']]['principal']=$tipos['perfil'];
                                         if(isset($tipos['grupo_categoria']) AND !empty($tipos['grupo_categoria'])) {
                                             //pr($tipos['id_grupo_categoria'].'-'.$tipos['grupo_categoria']);
-                                            $resultado[$tipos['subcategoria_orden'].'_'.$tipos['id_subcategoria']]['elementos'][$tipos['id_grupo_categoria']] = $tipos['grupo_categoria'];
+                                            $resultado[$tipos['subcategoria_orden'].'_'.$tipos['id_subcategoria']]['elementos'][$tipos['grupo_categoria_orden'].'_'.$tipos['id_grupo_categoria']] = $tipos['grupo_categoria'];
                                         }
                                     }
                                 }
@@ -305,9 +305,9 @@ class Informacion_general extends MY_Controller
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             //if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 
-                //$datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales(array()); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']);
                 $resultado = array('total'=>array());
@@ -320,7 +320,7 @@ class Informacion_general extends MY_Controller
                     echo json_encode($resultado);
                     exit();
                 } else {
-                    echo data_not_exist(); //Mostrar mensaje de datos no existentes
+                    echo json_encode($resultado); //Mostrar mensaje de datos no existentes
                 }
             //}
         } else {
@@ -506,8 +506,8 @@ class Informacion_general extends MY_Controller
                         }
                         $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']] = $this->crear_arreglo_por_tipo($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']], $dato);
                         $tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']] = $this->crear_arreglo_por_tipo($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']], $dato);
-                        ksort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']]);
-                        ksort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]);
+                        ksort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos']);
+                        ksort($tablas['perfil']);
                         //array_multisort($tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']], SORT_ASC, SORT_STRING, 
                             //$tablas['perfil'][$dato['perfil_orden'].'_'.$dato['perfil']]['elementos'][$dato['grupo_categoria_orden'].'_'.$dato['grupo_categoria']], SORT_NUMERIC, SORT_ASC);
                         //pr($dato);
@@ -522,7 +522,7 @@ class Informacion_general extends MY_Controller
                             $tablas['tipo_curso'][$dato['tipo_curso']] = array();
                         }
                         $tablas['tipo_curso'][$dato['tipo_curso']] = $this->crear_arreglo_por_tipo($tablas['tipo_curso'][$dato['grupo_categoria_orden'].'_'.$dato['tipo_curso']], $dato);*/
-                        ksort($resultado['tipo_curso'][$dato['tipo_curso']]);
+                        ksort($resultado['tipo_curso']);
                         
                         //pr($resultado);
                         //Periodo

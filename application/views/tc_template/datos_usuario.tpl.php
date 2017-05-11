@@ -33,10 +33,12 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <label class="col-form-label"><?php echo $name_delegacion; ?></label>
             </div>
-            <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['unidad']; ?>:</label>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <label class="col-form-label"><?php echo $name_unidad_ist; ?></label>
-            </div>
-        <?php }
+            <?php if(in_array($grupos[0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES))) { ?>
+                <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['unidad']; ?>:</label>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <label class="col-form-label"><?php echo $name_unidad_ist; ?></label>
+                </div>
+            <?php }
+        }
     }?>
 </div>

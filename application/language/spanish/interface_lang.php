@@ -32,7 +32,7 @@ $lang['interface'] = array(
         'titulo_por_perfil' => 'Por perfil',
         'titulo_por_unidad' => 'Por unidad',
         'titulo_por_tipo_usuario' => 'Por tipo de curso',
-        'titulo' => 'Resultados generales de cursos $tipo_curso $unidad $delegacion, durante el periodo $periodo',
+        'titulo' => 'Resultados generales de cursos $tipo_curso $unidad $delegacion, durante el periodo <span id="capa_periodo_principal">$periodo</span>',
         'alumnos_inscritos' => 'Alumnos inscritos',
         'alumnos_aprobados' => 'Alumnos aprobados',
         'alumnos_no_aprobados' => 'Alumnos no aprobados',

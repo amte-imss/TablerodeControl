@@ -205,17 +205,17 @@
                                     </div>
                                     <span class="material-input"></span>
                                 </div>
-
-                            <?php echo $this->form_complete->create_element( ///Necesario para este tipo de rol(grupo_categoria)
+                                <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                            <?php /*echo $this->form_complete->create_element( ///Necesario para este tipo de rol(grupo_categoria)
                                 array(
                                     'id'=>'tipo_unidad',
                                     'type'=>'hidden',
                                     'value'=>$this->session->userdata('usuario')['id_tipo_unidad']
                                 )
-                            ); ?>
+                            );*/ ?>
                             <script type="text/javascript">
                             $(function(){
-                                data_ajax(site_url+'/informacion_general/cargar_listado/unidad', '#form_busqueda', '#unidad_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
+                                data_ajax(site_url+'/informacion_general/cargar_listado/tipo_unidad', '#form_busqueda', '#tipo_unidad_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
                             });
                             </script>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
@@ -271,11 +271,13 @@
                                 </div>
                                 <span class="material-input"></span><br>
                             </div>
+                            <!-- <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div> -->
                             <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
 
                             <script type="text/javascript">
                             $(function(){
                                 data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#umae_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
+                                //data_ajax(site_url+'/informacion_general/cargar_listado/tipo_unidad', '#form_busqueda', '#tipo_unidad_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
                             });
                             </script>
 
@@ -582,6 +584,7 @@
         ocultar_loader();
     }
     $(function(){
+        $('#capa_periodo_principal').html($('#anio').val());
         $('#btn_limpiar').click(function() {
             $('#tipos_busqueda').val('');
             validar_tipos_busqueda('#tipos_busqueda');

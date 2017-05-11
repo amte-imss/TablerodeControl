@@ -9,8 +9,8 @@
                 <i class="fa fa-user"></i>
             </div>
             <div class="card-content">
-                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_inscritos']; ?></p>
-                <h3 class="title" id="total_alumnos_inscritos">-</h3>
+                <p class="category pull-right" style="height:40px; width: 110px;"><?php echo $lenguaje['alumnos_inscritos']; ?></p>
+                <h4 class="title" id="total_alumnos_inscritos">-</h4>
             </div>
         </div>
     </div>
@@ -20,8 +20,8 @@
                 <i class="fa fa-check"></i>
             </div>
             <div class="card-content">
-                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_aprobados']; ?></p>
-                <h3 class="title" id="total_alumnos_aprobados">-</h3>
+                <p class="category pull-right" style="height:40px; width: 120px;"><?php echo $lenguaje['alumnos_aprobados']; ?></p>
+                <h4 class="title" id="total_alumnos_aprobados">-</h4>
             </div>
         </div>
     </div>
@@ -31,8 +31,8 @@
                 <i class="fa fa-close"></i>
             </div>
             <div class="card-content">
-                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_no_aprobados']; ?></p>
-                <h3 class="title" id="total_alumnos_no_aprobados">-</h3>
+                <p class="category pull-right" style="height:40px; width: 120px;"><?php echo $lenguaje['alumnos_no_aprobados']; ?></p>
+                <h4 class="title" id="total_alumnos_no_aprobados">-</h4>
             </div>
         </div>
     </div>
@@ -42,8 +42,8 @@
                 <i class="fa fa-exclamation-triangle"></i>
             </div>
             <div class="card-content">
-                <p class="category" style="min-height:65px;"><?php echo $lenguaje['alumnos_no_acceso']; ?></p>
-                <h3 class="title" id="total_alumnos_no_acceso">-</h3>
+                <p class="category pull-right" style="height:40px; width: 120px;"><?php echo $lenguaje['alumnos_no_acceso']; ?></p>
+                <h4 class="title" id="total_alumnos_no_acceso">-</h4>
             </div>
         </div>
     </div>
@@ -53,15 +53,30 @@
                 <i class="fa fa-percent"></i>
             </div>
             <div class="card-content">
-                <p class="category" style="min-height:65px;"><?php echo $lenguaje['eficiencia_terminal']; ?></p>
-                <h3 class="title" id="total_eficiencia_terminal">-</h3>
+                <p class="category pull-right" style="height:40px; width: 120px;"><?php echo $lenguaje['eficiencia_terminal']; ?></p>
+                <h4 class="title" id="total_eficiencia_terminal">-</h4>
             </div>
         </div>
     </div>
     <div class="col-lg-1 col-md-0 col-sm-0"></div>
     <?php echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
     <div class="col-lg-12 col-md-12 col-sm-">
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div>
+                <label class="control-label"><?php echo $lenguaje['anio']; ?>: </label>
+                <?php echo $this->form_complete->create_element(
+                    array(
+                        'id'=>'anio',
+                        'type'=>'dropdown',
+                        'options'=>$catalogos['implementaciones'],
+                        'attributes'=>array('class'=>'form-control',
+                            'onchange'=>"javascript:calcular_totales_generales(site_url+'/informacion_general/calcular_totales_generales');"
+                        )
+                    )
+                ); ?>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
             <div>
                 <label class="control-label"><?php echo $lenguaje['texto_informativo']; ?>: </label>
                 <?php echo $this->form_complete->create_element(
@@ -76,7 +91,7 @@
                 ); ?>
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-6 col-sm-12">
             <div id="capa_perfil" style="display:none;">
                 <div>
                     <div>
