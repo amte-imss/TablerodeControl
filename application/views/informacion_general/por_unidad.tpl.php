@@ -39,6 +39,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
                                         )
                                     )
                                 ); ?>
@@ -97,6 +98,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
                                         )
                                     )
                                 ); ?>
@@ -139,7 +141,7 @@
                                 });
                                 </script>
                         <?php break;
-                        case En_grupos::N2_CPEI:
+                        case En_grupos::N2_CPEI: case En_grupos::N2_CAME:
                             $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
@@ -156,6 +158,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
                                         )
                                     )
                                 ); ?>
@@ -238,6 +241,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
                                         )
                                     )
                                 ); ?>
@@ -282,7 +286,7 @@
                             </script>
 
                         <?php break;
-                        case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES:  
+                        case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES:
                             $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(
@@ -299,6 +303,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
                                         )
                                     )
                                 ); ?>

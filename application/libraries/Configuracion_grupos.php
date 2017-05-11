@@ -55,12 +55,12 @@ class Configuracion_grupos {
 		        );
                 $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
     			break;
-    		case En_grupos::N2_CPEI: case En_grupos::N2_DGU:
+    		case En_grupos::N2_CPEI: case En_grupos::N2_DGU: case En_grupos::N2_CAME:
     			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor'], $tb['PERIODO']['id']=>$tb['PERIODO']['valor']);
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
 		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
 		        );
-                if($grupo_actual == En_grupos::N2_CPEI){ //Si es unidad tiene diferentes condionales a las de una UMAE
+                if(in_array($grupo_actual, array(En_grupos::N2_CPEI, En_grupos::N2_CAME))){ //Si es unidad tiene diferentes condionales a las de una UMAE
                     $resultado['condicion_calcular_totales'] = "del.clave_delegacional='".$this->obtener_delegacion_actual()."' AND uni.id_tipo_unidad=".$this->obtener_tipo_unidad_actual();
                 } else {
                     $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();

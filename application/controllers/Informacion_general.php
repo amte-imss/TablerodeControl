@@ -130,7 +130,7 @@ class Informacion_general extends MY_Controller
                     case 'ud':
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
                             $resultado['form']['label'] = $lenguaje['umae'];
                             $resultado['form']['path'] = 'unidad';
                             $resultado['form']['evento'] = array('onchange'=>"javascript:calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");

@@ -17,8 +17,9 @@
             <?php
             foreach ($valores as $llave => $valor) {
                 if(isset($valor['cantidad_alumnos_inscritos'])){
+                    $bold = (isset($valor['elementos'])) ? 'style="font-weight:700;"' : '';
                     $tmp_llave = explode('_', $llave);
-                    echo '<tr>
+                    echo '<tr '.$bold.'>
                         <td>'.(isset($tmp_llave[1]) ? $tmp_llave[1] : $llave ).'</td>
                         <td><div id="total_alumnos_inscritos" class="text-center">'.$valor['cantidad_alumnos_inscritos'].'</div></td>
                         <td><div id="total_alumnos_aprobados" class="text-center">'.$valor['cantidad_alumnos_certificados'].'</div></td>

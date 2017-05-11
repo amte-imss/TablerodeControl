@@ -13,6 +13,7 @@ class En_grupos {
             N1_DEIS = 9,
             N1_DM = 8,
             N1_JDES = 10,
+            N2_CAME = 14,
             N2_CPEI = 2,
             N2_DGU = 7,
             N3_JSPM = 1,
