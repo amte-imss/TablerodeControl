@@ -292,7 +292,8 @@
                     allowDecimals: false,
                     title: {
                         text: ytext
-                    }
+                    }, 
+                    visible: false
                 },
                 tooltip: {
                     formatter: function () {

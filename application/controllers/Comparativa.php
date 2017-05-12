@@ -340,6 +340,8 @@ class Comparativa extends MY_Controller
         );
         //solo NC
         $data["catalogos"]["regiones"][0] = "Todas las regiones";
+        $data["catalogos"]["regiones"]['promedio'] = "Promedio";
+        
 
 
         if (!is_null($num) && !is_null($type))

@@ -20,34 +20,38 @@ $(function () {
                 var datos = JSON.parse(response);
                 for (i = 0; i < reportes.length; i++) {
                     var datos_g = procesa_datos(datos[i]);
-                    console.log(datos_g);
-                    var periodo = 2016;
-                    var titulo_grafica = "Comparativa de UMAE en " + periodo;
+                    var periodo = $("#periodo option:selected").text();                    
                     var texto = "";
+                    var texto_t = "";
                     var id_reporte = reportes[i];
                     var colores = ['#0090b9'];
-                    var extra = '';
+                    
                     switch (id_reporte) {
                         case 1:
                         case "1":
                             texto = "Número de alumnos inscritos ";
+                            texto_t = "inscritos";
                             break;
                         case 2:
                         case "2":
                             colores = ['#43a886'];
                             texto = "Número de alumnos aprobados ";
+                            texto_t = "aprobados";
                             break;
                         case 3:
                         case "3":
                             colores = ['#FCB220'];
                             texto = "Porcentaje de eficiencia terminal modificada ";
+                            texto_t = "por eficiencia terminal modificada";
                             break;
                         case 5:
                         case "5":
                             colores = ['#e53935'];
                             texto = "Número de alumnos no aprobados ";
+                            texto_t = "no aprobados";
                             break;
                     }
+                    var titulo_grafica = "Comparativa de alumnos " + texto_t + " en " + periodo;
                     graficar(i, datos_g, titulo_grafica, texto, periodo, extra, colores);
                 }
                 ocultar_loader();
@@ -112,7 +116,8 @@ function graficar(id, datos, titulo, texto, year, extra, colores) {
             min: 0,
             title: {
                 text: texto
-            }
+            }, 
+            visible: false
         },
         legend: {
             enabled: false

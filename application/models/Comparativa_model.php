@@ -149,6 +149,12 @@ class Comparativa_model extends MY_Model
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
             $this->db->where('B.umae', true);
@@ -240,9 +246,16 @@ class Comparativa_model extends MY_Model
 
         $this->db->select($select);
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
             $this->db->where('B.umae', true);

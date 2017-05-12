@@ -116,7 +116,8 @@ function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
             allowDecimals: false,
             title: {
                 text: texto
-            }
+            }, 
+            visible: false
         },
         legend: {
             enabled: false

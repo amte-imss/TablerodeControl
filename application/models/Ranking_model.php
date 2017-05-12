@@ -99,6 +99,12 @@ class Ranking_model extends CI_Model
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', true);
         $this->db->where('CI.activa', true);
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -145,6 +151,12 @@ class Ranking_model extends CI_Model
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', false);
         $this->db->where('CI.activa', true);
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -191,6 +203,12 @@ class Ranking_model extends CI_Model
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', true);
         $this->db->where('CI.activa', true);
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
@@ -243,6 +261,12 @@ class Ranking_model extends CI_Model
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
         $this->db->where('B.umae', false);
         $this->db->where('CI.activa', true);
+        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
+            $inicio = $filtros['periodo'].'/01/01';
+            $fin = $filtros['periodo'].'/12/31';
+            $this->db->where('D.fecha_inicio >=', $inicio);
+            $this->db->where('D.fecha_fin <=', $fin);
+        }
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);

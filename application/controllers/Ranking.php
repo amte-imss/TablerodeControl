@@ -32,7 +32,7 @@ class Ranking extends MY_Controller
             $output['usuario']['central'] = true;
         }
         $output['programas'] = dropdown_options($this->ranking->get_programas(), 'id_programa_proyecto', 'proyecto');
-        $output['periodos'] = $this->ranking->get_periodos();
+        $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
         $output['graficas'] = $this->ranking->get_tipos_reportes();
         $this->template->setTitle($output['lenguaje']['title']);
         $this->template->setSubTitle($output['lenguaje']['subtitle']);
