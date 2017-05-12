@@ -61,8 +61,8 @@ class Usuario_model extends CI_Model
         $this->db->reset_query();
         $this->db->select(array(
             'id_unidad_instituto'
-            //,'nombre'
-            ,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
+            ,'nombre'
+            //,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
         ));
         if ($keyword != null)
         {
@@ -76,6 +76,7 @@ class Usuario_model extends CI_Model
             $this->db->where('id_delegacion', $delegacion);
         }
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
+        //pr($this->db->last_query());
         return $resultado_unidades;
     }
 

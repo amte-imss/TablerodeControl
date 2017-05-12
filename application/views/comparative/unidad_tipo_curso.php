@@ -26,29 +26,35 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
         </div>
         <?php echo form_error_format('tipo_curso'); ?>
     </div>    
-    
+
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Nivel de atención:</span>
             <?php
-            echo $this->form_complete->create_element(
-                    array('id' => 'nivel',
-                        'type' => 'dropdown',
-                        'first' => array('' => 'Seleccione...'),
-                        'options' => $tipos_cursos,
-                        'attributes' => array(
+            $atributos_niveles = array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'title' => 'Nivel de atención',
-                            'onchange' => '')
+                            'onchange' => 'cmbox_nivel()');
+            if (is_nivel_operacional($usuario['grupos']))
+            {
+                $atributos_niveles += array('disabled' => true);
+            }
+            echo $this->form_complete->create_element(
+                    array('id' => 'nivel',
+                        'type' => 'dropdown',
+                        'first' => array('' => 'Seleccione...'),
+                        'value' => $usuario['nivel_atencion'],
+                        'options' => $niveles,
+                        'attributes' => $atributos_niveles
                     )
             );
             ?>
         </div>
         <?php echo form_error_format('nivel'); ?>
     </div>    
-    
+
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Tipo de unidad:</span>
@@ -61,7 +67,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                 'onchange' => '');
             if ($no_edit_tipo_unidad)
             {
-                $tu += array('disabled' => true);                
+                $tu += array('disabled' => true);
             }
             echo $this->form_complete->create_element(array('id' => 'tipo_unidad',
                 'type' => 'dropdown',
@@ -79,25 +85,31 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Unidad:</span>
-            <input type="hidden" value="" name="unidad1" id="unidad1">
+            <input type="hidden" value="<?php echo $usuario['id_unidad_instituto']; ?>" name="unidad1" id="unidad1">
             <?php
+            $atributos_unidad1 = array(
+                'class' => 'form-control  form-control input-sm  unidad_texto',
+                'data-toggle' => 'tooltip',
+                'data-placement' => 'top',
+                'data-id' => 1,
+                'autocomplete' => 'off',
+                'placeholder' => 'Buscar unidad por nombre',
+                'title' => 'Unidad 1');
+            if (is_nivel_operacional($usuario['grupos']))
+            {
+                $atributos_unidad1 += array('disabled' => true);
+            }
             echo $this->form_complete->create_element(
                     array('id' => 'unidad1_texto',
                         'type' => 'text',
-                        'attributes' => array(
-                            'class' => 'form-control  form-control input-sm  unidad_texto',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                            'data-id' => 1,
-                            'autocomplete' => 'off',
-                            'placeholder' => 'Buscar unidad por nombre',
-                            'title' => 'Unidad 1')
+                        'value' => $usuario['name_unidad_ist'],
+                        'attributes' => $atributos_unidad1
                     )
             );
             ?>
             <ul data-autocomplete-id="1" id="unidad1_autocomplete" style="display:none;"></ul>
         </div>
-        <?php echo form_error_format('unidad1'); ?>
+<?php echo form_error_format('unidad1'); ?>
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -120,7 +132,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             ?>
             <ul data-autocomplete-id="2" id="unidad2_autocomplete" style="display:none;"></ul>
         </div>
-        <?php echo form_error_format('unidad2'); ?>
+<?php echo form_error_format('unidad2'); ?>
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -141,7 +153,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             );
             ?>
         </div>
-        <?php echo form_error_format('periodo'); ?>
+<?php echo form_error_format('periodo'); ?>
     </div>
 </div>    
 <hr>

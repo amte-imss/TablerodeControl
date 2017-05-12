@@ -54,10 +54,12 @@ class Comparativa extends MY_Controller
     public function unidades()
     {
         //pr($this->session->userdata('usuario'));
+        $output['usuario'] = $this->session->userdata('usuario');
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $output += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::REGIONES)
+            Catalogo_listado::REGIONES,
+            Catalogo_listado::DELEGACIONES => array('condicion' => array('id_region' => $output['usuario']['id_region'])))
         );
         $view = $this->load->view('comparative/unidades', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -68,7 +70,7 @@ class Comparativa extends MY_Controller
 
     public function unidades_perfil()
     {
-        if ($this->input->post())
+        if ($this->input->post() && $this->input->post('vista', true) == null)
         {
 
             $this->config->load('form_validation'); //Cargar archivo con validaciones
@@ -83,11 +85,16 @@ class Comparativa extends MY_Controller
         } else
         {
             $this->load->model('Ranking_model', 'ranking');
+            $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
             $output['usuario'] = $this->session->userdata('usuario');
-            $output['periodos'] = $this->ranking->get_periodos();
+            $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $delegacion = $output['usuario']['id_delegacion'];
+            if($this->input->post('delegacion') && (is_nivel_estrategico($output['usuario']['grupos']) || is_nivel_central($output['usuario']['grupos']))){
+                $delegacion = $this->input->post('delegacion', true);
+            }
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
@@ -99,7 +106,7 @@ class Comparativa extends MY_Controller
 
     public function unidades_tipo_curso()
     {
-        if ($this->input->post())
+        if ($this->input->post() && $this->input->post('vista', true) == null)
         {
 
             $this->config->load('form_validation'); //Cargar archivo con validaciones
@@ -115,10 +122,15 @@ class Comparativa extends MY_Controller
         {
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
+            $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $delegacion = $output['usuario']['id_delegacion'];
+            if($this->input->post('delegacion') && (is_nivel_estrategico($output['usuario']['grupos']) || is_nivel_central($output['usuario']['grupos']))){
+                $delegacion = $this->input->post('delegacion', true);
+            }
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
-            $output['periodos'] = $this->ranking->get_periodos();
+            $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
@@ -130,10 +142,12 @@ class Comparativa extends MY_Controller
 
     public function umae()
     {
+        $output['usuario'] = $this->session->userdata('usuario');
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $output += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::REGIONES)
+            Catalogo_listado::REGIONES,
+            Catalogo_listado::DELEGACIONES => array('condicion' => array('id_region' => $output['usuario']['id_region'])))
         );
         $view = $this->load->view('comparative/umae', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -144,7 +158,7 @@ class Comparativa extends MY_Controller
 
     public function umae_perfil()
     {
-        if ($this->input->post())
+        if ($this->input->post() && $this->input->post('vista', true) == null)
         {
 
             $this->config->load('form_validation'); //Cargar archivo con validaciones
@@ -164,26 +178,33 @@ class Comparativa extends MY_Controller
         {
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
-            $output['periodos'] = $this->ranking->get_periodos();
+            $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
+            $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $delegacion = $output['usuario']['id_delegacion'];
+            if($this->input->post('delegacion') && (is_nivel_estrategico($output['usuario']['grupos']) || is_nivel_central($output['usuario']['grupos']))){
+                $delegacion = $this->input->post('delegacion', true);
+            }
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(true, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')") */
+                    'condicion' => array('umae' => true, 'id_delegacion' => $output['usuario']['id_delegacion']),
+                    /* 'valor' => "concat(nombre,' [',clave_unidad, ']')") */
                     'valor' => 'nombre')
                     )
             );
+            
             $view = $this->load->view('comparative/umae_perfil', $output);
         }
     }
 
     public function umae_tipo_curso()
     {
-        if ($this->input->post())
+        if ($this->input->post() && $this->input->post('vista', true) == null)
         {
 
             $this->config->load('form_validation'); //Cargar archivo con validaciones
@@ -200,16 +221,22 @@ class Comparativa extends MY_Controller
         {
             $this->load->model('Ranking_model', 'ranking');
             $output['usuario'] = $this->session->userdata('usuario');
+            $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($output['usuario']['umae']), 'id_tipo_unidad', 'nombre');
+            $delegacion = $output['usuario']['id_delegacion'];
+            if($this->input->post('delegacion') && (is_nivel_estrategico($output['usuario']['grupos']) || is_nivel_central($output['usuario']['grupos']))){
+                $delegacion = $this->input->post('delegacion', true);
+            }
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(true, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
-            $output['periodos'] = $this->ranking->get_periodos();
+            $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => 'umae=true', /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
+                    'condicion' => array('umae' => true, 'id_delegacion' => $output['usuario']['id_delegacion'])
+                    , /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
                     'valor' => 'nombre')
                     )
             );

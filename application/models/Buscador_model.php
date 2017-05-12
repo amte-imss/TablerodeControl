@@ -45,5 +45,5 @@ class Buscador_model extends CI_Model
         $this->db->where('A.id_region', $id_region);
         $delegaciones = $this->db->get('catalogos.delegaciones A')->result_array();
         return $delegaciones;
-    }
+    }    
 }

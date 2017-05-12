@@ -51,17 +51,23 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Nivel de atención:</span>
             <?php
-            echo $this->form_complete->create_element(
-                    array('id' => 'nivel',
-                        'type' => 'dropdown',
-                        'first' => array('' => 'Seleccione...'),
-                        'options' => $tipos_cursos,
-                        'attributes' => array(
+            $atributos_niveles = array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'title' => 'Nivel de atención',
-                            'onchange' => '')
+                            'onchange' => 'cmbox_nivel()');
+            if (is_nivel_operacional($usuario['grupos']))
+            {
+                $atributos_niveles += array('disabled' => true);
+            }
+            echo $this->form_complete->create_element(
+                    array('id' => 'nivel',
+                        'type' => 'dropdown',
+                        'first' => array('' => 'Seleccione...'),
+                        'value' => $usuario['nivel_atencion'],
+                        'options' => $niveles,
+                        'attributes' => $atributos_niveles
                     )
             );
             ?>
@@ -99,17 +105,23 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
             <span class="input-group-addon">Unidad:</span>
             <input type="hidden" value="" name="unidad1" id="unidad1">
             <?php
+            $atributos_unidad1 = array(
+                'class' => 'form-control  form-control input-sm  unidad_texto',
+                'data-toggle' => 'tooltip',
+                'data-placement' => 'top',
+                'data-id' => 1,
+                'autocomplete' => 'off',
+                'placeholder' => 'Buscar unidad por nombre',
+                'title' => 'Unidad 1');
+            if (is_nivel_operacional($usuario['grupos']))
+            {
+                $atributos_unidad1 += array('disabled' => true);
+            }
             echo $this->form_complete->create_element(
                     array('id' => 'unidad1_texto',
                         'type' => 'text',
-                        'attributes' => array(
-                            'class' => 'form-control  form-control input-sm  unidad_texto',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                            'data-id' => 1,
-                            'autocomplete' => 'off',
-                            'placeholder' => 'Buscar unidad por nombre',
-                            'title' => 'Unidad 1')
+                        'value' => $usuario['name_unidad_ist'],
+                        'attributes' => $atributos_unidad1
                     )
             );
             ?>

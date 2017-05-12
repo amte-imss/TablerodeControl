@@ -453,8 +453,8 @@ if (!function_exists('is_nivel_tactico'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 6 || $id == 13){
-                //$salida = true;
+            if($id == 2){
+                $salida = true;
             }
         }
         return $salida;

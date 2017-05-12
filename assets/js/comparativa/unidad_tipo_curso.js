@@ -1,93 +1,67 @@
 $(function () {
     $('.unidad_texto').keyup(function () {
-
-        var index = $(this)[0].getAttribute('data-id');
-        var keyword = document.getElementById('unidad' + index + '_texto').value;
-        var tipo_unidad = document.getElementById('tipo_unidad').value;
-        console.log('buscando:' + keyword);
-        $.ajax({
-            url: site_url + '/buscador/search_unidad_instituto'
-            , method: "post"
-            , timeout: 200
-            , data: {keyword: keyword, tipo_unidad: tipo_unidad}
-            , error: function () {
-                console.warn("No se pudo realizar la conexión");
-            }
-        }).done(function (response) {
-            if (index > 1) {
-                response = '<li class="autocomplete_unidad" data-unidad-nombre="PROMEDIO" data-unidad-id="0" onclick="set_value_unidad(this)" >PROMEDIO</li>' + response;
-            }
-            $('#unidad' + index + '_autocomplete').css('display', 'block');
-            $('#unidad' + index + '_autocomplete').html(response);
-        });
-
+        search_unidad($(this));
     });
+
     $('#form_comparativa_unidad').submit(function (event) {
         event.preventDefault();
-        $.ajax({
-            url: $(this).attr('action')
-            , method: "post"
-            , data: $(this).serialize()
-            , error: function () {
-                console.warn("No se pudo realizar la conexión");
-                ocultar_loader();
-            }
-            , beforeSend: function (xhr) {
-                $('#area_graph').html('');
-                mostrar_loader();
-                $('#area_reportes').css('display','none');
-            }
-        }).done(function (response) {
-            var reportes = [1, 2, 3, 5];
-            var datos = JSON.parse(response);
-            for (i = 0; i < reportes.length; i++) {
-                var datos_g = procesa_datos(datos[i]);
-                console.log(datos_g);
-                var periodo = 2016;
-                var titulo_grafica = "Comparativa de unidades en " + periodo;
-                var texto = "";
-                var id_reporte = reportes[i];
-                var colores = ['#0090b9'];
-                switch (id_reporte) {
-                    case 1:
-                    case "1":
-                        texto = "Número de alumnos inscritos ";
-                        break;
-                    case 2:
-                    case "2":
-                        colores = ['#43a886'];
-                        texto = "Número de alumnos aprobados ";
-                        break;
-                    case 3:
-                    case "3":
-                        colores = ['#FCB220'];
-                        texto = "Porcentaje de eficiencia terminal modificada";
-                        break;
-                    case 5:
-                    case "5":
-                        colores = ['#e53935'];
-                        texto = "Número de alumnos no aprobados ";
-                        break;
+        if (valida_filtros('tipo_curso')) {
+            $.ajax({
+                url: $(this).attr('action')
+                , method: "post"
+                , data: $(this).serialize()
+                , error: function () {
+                    console.warn("No se pudo realizar la conexión");
+                    ocultar_loader();
                 }
-                var extra = '';
-                graficar(i, datos_g, titulo_grafica, texto, periodo, extra, colores);
-            }
-            ocultar_loader();
-            $('#area_reportes').css('display','block');
-        });
+                , beforeSend: function (xhr) {
+                    $('#area_graph').html('');
+                    mostrar_loader();
+                    $('#area_reportes').css('display', 'none');
+                }
+            }).done(function (response) {
+                var reportes = [1, 2, 3, 5];
+                var datos = JSON.parse(response);
+                for (i = 0; i < reportes.length; i++) {
+                    var datos_g = procesa_datos(datos[i]);
+                    console.log(datos_g);
+                    var periodo = 2016;
+                    var titulo_grafica = "Comparativa de unidades en " + periodo;
+                    var texto = "";
+                    var id_reporte = reportes[i];
+                    var colores = ['#0090b9'];
+                    switch (id_reporte) {
+                        case 1:
+                        case "1":
+                            texto = "Número de alumnos inscritos ";
+                            break;
+                        case 2:
+                        case "2":
+                            colores = ['#43a886'];
+                            texto = "Número de alumnos aprobados ";
+                            break;
+                        case 3:
+                        case "3":
+                            colores = ['#FCB220'];
+                            texto = "Porcentaje de eficiencia terminal modificada";
+                            break;
+                        case 5:
+                        case "5":
+                            colores = ['#e53935'];
+                            texto = "Número de alumnos no aprobados ";
+                            break;
+                    }
+                    var extra = '';
+                    graficar(i, datos_g, titulo_grafica, texto, periodo, extra, colores);
+                }
+                ocultar_loader();
+                $('#area_reportes').css('display', 'block');
+            });
+        } else {
+            alert('Debe seleccionar los filtros, antes de realizar una comparación');
+        }
     });
 });
-
-function set_value_unidad(item) {
-    var id_unidad = item.getAttribute("data-unidad-id");
-    var unidad = item.getAttribute("data-unidad-nombre");
-    var index = item.parentElement.getAttribute('data-autocomplete-id');
-    console.log(index);
-    document.getElementById('unidad' + index).value = id_unidad;
-    document.getElementById('unidad' + index + '_texto').value = unidad;
-    $('#unidad' + index + '_autocomplete').css('display', 'none');
-    $('#unidad' + index + '_autocomplete').html('');
-}
 
 function procesa_datos(datos) {
     var salida = [];

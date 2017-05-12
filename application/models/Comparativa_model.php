@@ -30,8 +30,19 @@ class Comparativa_model extends MY_Model
         return array(1 => 'Inscritos', 2 => 'Aprobados', 3 => 'Eficiencia terminal',
             5 => 'No aprobados');
     }
+    
+    public function get_niveles(){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $this->db->distinct();
+        $this->db->select('nivel_atencion');
+        $this->db->where('nivel_atencion is not null');
+        $this->db->order_by('nivel_atencion');
+        $niveles = $this->db->get('catalogos.unidades_instituto')->result_array();
+        return $niveles;
+    }
 
-    public function get_tipos_unidades($umae = false, $delegacion = 0)
+    public function get_tipos_unidades($umae = false, $delegacion = 0, $nivel = "")
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -44,7 +55,11 @@ class Comparativa_model extends MY_Model
         {
             $this->db->where('B.id_delegacion', $delegacion);
         }
+        if($nivel != ""){
+            $this->db->where('B.nivel_atencion', $nivel);
+        }        
         $tipos = $this->db->get('catalogos.tipos_unidades A')->result_array();
+        //pr($this->db->last_query());
         return $tipos;
     }
 

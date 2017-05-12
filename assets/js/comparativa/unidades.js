@@ -8,9 +8,11 @@ function cmbox_comparativa() {
         if (id_destino == 2) {
             destino = site_url + '/comparativa/unidades_perfil';
         }
+        var delegacion = document.getElementById('delegacion').value;
         $.ajax({
             url: destino
             , method: "post"
+            , data: {delegacion: delegacion, vista: 1}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -50,4 +52,75 @@ function cmbox_region() {
         });
         ocultar_loader();
     });
+}
+
+function search_unidad(elemento) {
+    var index = elemento[0].getAttribute('data-id');
+    var keyword = document.getElementById('unidad' + index + '_texto').value;
+    var tipo_unidad = document.getElementById('tipo_unidad').value;
+    var delegacion = document.getElementById('delegacion').value;
+    console.log('buscando:' + keyword);
+    $.ajax({
+        url: site_url + '/buscador/search_unidad_instituto'
+        , method: "post"
+        , timeout: 200
+        , data: {keyword: keyword, tipo_unidad: tipo_unidad, delegacion: delegacion}
+        , error: function () {
+            console.warn("No se pudo realizar la conexión");
+        }
+    }).done(function (response) {
+        if (index > 1 && response != null && response != "") {
+            response = '<li class="autocomplete_unidad" data-unidad-nombre="PROMEDIO" data-unidad-id="0" onclick="set_value_unidad(this)" >PROMEDIO</li>' + response;
+        }
+        $('#unidad' + index + '_autocomplete').css('display', 'block');
+        $('#unidad' + index + '_autocomplete').html(response);
+    });
+}
+
+function set_value_unidad(item) {
+    var id_unidad = item.getAttribute("data-unidad-id");
+    var unidad = item.getAttribute("data-unidad-nombre");
+    var index = item.parentElement.getAttribute('data-autocomplete-id');
+    console.log(index);
+    document.getElementById('unidad' + index).value = id_unidad;
+    document.getElementById('unidad' + index + '_texto').value = unidad;
+    $('#unidad' + index + '_autocomplete').css('display', 'none');
+    $('#unidad' + index + '_autocomplete').html('');
+}
+
+function cmbox_delegacion() {
+    if (document.getElementById('nivel') != null) {
+        var nivel = document.getElementById('nivel').value;
+        var delegacion = document.getElementById('delegacion').value;
+        if (delegacion != null && delegacion != "") {
+            var datos = {delegacion: delegacion, nivel: nivel};
+            if (document.getElementById('umae')) {
+                datos = {delegacion: delegacion, nivel: nivel, umae: 1};
+            }
+            $.ajax({
+                url: site_url + "/buscador/get_tipo_unidad/"
+                , method: "post"
+                , data: datos
+                , error: function () {
+                    console.warn("No se pudo realizar la conexión");
+                }
+                , beforeSend: function (xhr) {
+                    mostrar_loader();
+                }
+            }).done(function (response) {
+                $('#tipo_unidad').empty()
+                var opts = $.parseJSON(response);
+                $('#tipo_unidad').append('<option value="">Seleccionar...</option>');
+                // Use jQuery's each to iterate over the opts value
+                $.each(opts, function (i, d) {
+                    $('#tipo_unidad').append('<option value="' + d.id_tipo_unidad + '">' + d.nombre + '</option>');
+                });
+                $('#unidad1').val("");
+                $('#unidad1_texto').val("");
+                $('#unidad2').val("");
+                $('#unidad2_texto').val("");
+                ocultar_loader();
+            });
+        }
+    }
 }

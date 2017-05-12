@@ -19,7 +19,7 @@ class Ranking_model extends CI_Model
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'id_programa_proyecto',/* 'concat(nombre, $$ [$$, clave, $$]$$) proyecto'*/
+            'id_programa_proyecto', /* 'concat(nombre, $$ [$$, clave, $$]$$) proyecto' */
             'nombre proyecto'
         );
         $this->db->select($select);
@@ -31,7 +31,14 @@ class Ranking_model extends CI_Model
 
     public function get_periodos()
     {
-        return array('2016' => '2016');
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $this->db->distinct();
+        $this->db->select('extract(year from fecha_inicio) periodo');
+        $this->db->where('activo', true);
+        $this->db->order_by('extract(year from fecha_inicio)');
+        $periodos = $this->db->get('catalogos.implementaciones')->result_array();
+        return $periodos;
     }
 
     public function get_tipos_reportes()
@@ -95,7 +102,7 @@ class Ranking_model extends CI_Model
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
-             $group_by = array(
+            $group_by = array(
                 'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)', 'G.nombre'
             );
             $this->db->group_by($group_by);

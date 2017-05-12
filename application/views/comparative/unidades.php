@@ -1,5 +1,9 @@
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
+<?php
+echo js('comparativa/comparativa.js');
+echo js('comparativa/unidades.js');
+?>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
@@ -8,7 +12,6 @@
                 </a>
             </div>
             <?php
-            echo js('comparativa/unidades.js');
             echo form_open('comparativa/unidades', array('id' => 'form_comparativa'));
             ?>
             <div id="filtros_capa" class="card-content collapse">
@@ -18,17 +21,23 @@
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon">Región:</span>
                                 <?php
+                                $atributos_region = array(
+                                    'class' => 'form-control  form-control input-sm ',
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'top',
+                                    'title' => 'Tipo de comparativa',
+                                    'onchange' => 'cmbox_region()');
+                                if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
+                                {
+                                    $atributos_region += array('disabled' => true);
+                                }
                                 echo $this->form_complete->create_element(
                                         array('id' => 'region',
                                             'type' => 'dropdown',
                                             'first' => array('' => 'Seleccione...'),
+                                            'value' => $usuario['id_region'],
                                             'options' => $regiones,
-                                            'attributes' => array(
-                                                'class' => 'form-control  form-control input-sm ',
-                                                'data-toggle' => 'tooltip',
-                                                'data-placement' => 'top',
-                                                'title' => 'Tipo de comparativa',
-                                                'onchange' => 'cmbox_region()')
+                                            'attributes' => $atributos_region
                                         )
                                 );
                                 ?>
@@ -38,15 +47,23 @@
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon">Delegación:</span>
                                 <?php
+                                $atributos_delegacion = array(
+                                    'class' => 'form-control  form-control input-sm ',
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'top',
+                                    'title' => 'Tipo de comparativa',
+                                    'onchange' => 'cmbox_delegacion()');
+                                if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
+                                {
+                                    $atributos_delegacion += array('disabled' => true);
+                                }
                                 echo $this->form_complete->create_element(
                                         array('id' => 'delegacion',
                                             'type' => 'dropdown',
                                             'first' => array('' => 'Seleccione...'),
-                                            'attributes' => array(
-                                                'class' => 'form-control  form-control input-sm ',
-                                                'data-toggle' => 'tooltip',
-                                                'data-placement' => 'top',
-                                                'title' => 'Tipo de comparativa')
+                                            'value' => $usuario['id_delegacion'],
+                                            'options' => $delegaciones,
+                                            'attributes' => $atributos_delegacion
                                         )
                                 );
                                 ?>
@@ -115,7 +132,7 @@
                             </li>
                             <li class="">
                                 <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
-                                    Suspendidos
+                                    No Aprobados
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
@@ -126,7 +143,7 @@
             <div class="card-content">
                 <div class="tab-content">
                     <!--inscritos-->
-                    <div class="tab-pane" id="inscritos">
+                    <div class="tab-pane active" id="inscritos">
                         <div class="col-md-12">                            
                             <div id="area_graph0"></div>
                         </div>
@@ -146,7 +163,7 @@
                         </div>
                     </div>
                     <!--suspendodos-->
-                    <div class="tab-pane active" id="etm">
+                    <div class="tab-pane" id="etm">
                         <div class="col-md-12">           
                             <div id="area_graph2"></div>
                         </div>                        

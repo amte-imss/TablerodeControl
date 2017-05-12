@@ -12,6 +12,7 @@ class Buscador extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Catalogo_listado');
     }
     
     
@@ -79,6 +80,40 @@ class Buscador extends CI_Controller
             $this->load->model('Buscador_model', 'buscador');
             $grupos_categorias = $this->buscador->get_grupos_categorias($this->input->post());
             echo json_encode($grupos_categorias);
+        }
+    }
+    
+    public function get_tipo_unidad(){
+        if($this->input->post()){
+            $this->load->model('Comparativa_model', 'comparativa');
+            $usuario = $this->session->userdata('usuario');
+            $delegacion = $this->input->post('delegacion', true);
+            $nivel = $this->input->post('nivel', true);
+            $umae = $usuario['umae'];
+            if(is_nivel_central($usuario['grupos']) && $this->input->post('umae') && $this->input->post('umae') == 1){
+                $umae = true;
+            }
+            $tipos_unidades = $this->comparativa->get_tipos_unidades($umae,$delegacion, $nivel);
+            echo json_encode($tipos_unidades);
+        }
+    }
+    
+    public function get_unidades($umae = 0){
+        if($this->input->post()){
+            $id_tipo_unidad = $this->input->post('tipo_unidad', true);
+            $umae = $umae == 1?true:false;
+            $delegacion = $this->input->post('delegacion', true);
+            $cat_list = new Catalogo_listado(); //Obtener catálogos
+            $output = $cat_list->obtener_catalogos(array(
+                Catalogo_listado::UNIDADES_INSTITUTO => array(
+                    'condicion' => array('umae' => $umae, 
+                        'id_delegacion' => $delegacion,
+                        'id_tipo_unidad' => $id_tipo_unidad)
+                    , /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
+                    'valor' => 'nombre')
+                    )
+            );
+            echo json_encode($output);
         }
     }
 

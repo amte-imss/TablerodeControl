@@ -30,17 +30,23 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Nivel de atención:</span>
             <?php
+            $atributos_niveles = array(
+                'class' => 'form-control  form-control input-sm',
+                'data-toggle' => 'tooltip',
+                'data-placement' => 'top',
+                'title' => 'Nivel de atención',
+                'onchange' => 'cmbox_nivel()');
+            if (is_nivel_operacional($usuario['grupos']))
+            {
+                $atributos_niveles += array('disabled' => true);
+            }
             echo $this->form_complete->create_element(
                     array('id' => 'nivel',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'options' => $tipos_cursos,
-                        'attributes' => array(
-                            'class' => 'form-control  form-control input-sm',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                            'title' => 'Nivel de atención',
-                            'onchange' => '')
+                        'value' => 3, //UMAE SOLO TERCER NIVEL
+                        'options' => $niveles,
+                        'attributes' => $atributos_niveles
                     )
             );
             ?>
@@ -56,7 +62,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
                 'data-toggle' => 'tooltip',
                 'data-placement' => 'top',
                 'title' => 'TIpo de unidad',
-                'onchange' => '');
+                'onchange' => 'cmbox_tipo_unidad()');
             if ($no_edit_tipo_unidad)
             {
                 $tu += array('disabled' => true);
@@ -71,7 +77,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('tipo_unidad'); ?>
     </div>
-       
+
 </div>            
 <hr>
 <div class="row form-group">
@@ -83,6 +89,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
                     array('id' => 'unidad1',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
+                        'value' => $usuario['id_unidad_instituto'], 
                         'options' => $unidades_instituto,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
