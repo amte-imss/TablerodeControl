@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Matrícula: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'matricula', 'type' => 'number', 'value' => $usuarios['matricula'], 'attributes' => array('name' => 'matricula', 'readonly' => ' ', 'class' => 'form-control')));
                             ?>
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Correo electrónico: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'email', 'type' => 'email', 'value' => $usuarios['email'], 'attributes' => array('name' => 'email', 'class' => 'form-control')));
                             ?>
@@ -40,7 +40,7 @@
                         <label class="col-md-4 control-label">Categoría: </label>
                         <div class="col-md-6 input-group">
                             <input type="hidden" name="categoria" id="categoria" value="<?php echo $usuarios['clave_categoria']; ?>">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'categoria_texto', 
                                 'type' => 'text', 
@@ -56,7 +56,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Unidad: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <input type="hidden" name="unidad" id="unidad" value="<?php echo $usuarios['id_unidad_instituto']; ?>">
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'unidad_texto', 
@@ -110,9 +110,9 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Contraseña: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
-                            echo $this->form_complete->create_element(array('id' => 'pass', 'type' => 'password', 'attributes' => array('name' => 'pass', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'pass', 'type' => 'password','value'=> '', 'attributes' => array('name' => 'pass', 'class' => 'form-control', 'autocomplete'=>'off')));
                             ?>
                         </div>
                         <?php echo form_error_format('pass'); ?>
@@ -120,7 +120,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Confirmar contraseña: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'pass_confirm', 'type' => 'password', 'attributes' => array('name' => 'pass_confirm', 'class' => 'form-control')));
                             ?>

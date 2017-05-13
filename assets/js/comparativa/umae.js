@@ -8,11 +8,10 @@ function cmbox_comparativa() {
         if (id_destino == 2) {
             destino = site_url + '/comparativa/umae_perfil';
         }
-        var delegacion = document.getElementById('delegacion').value;
         $.ajax({
             url: destino
             , method: "post"
-            , data: {delegacion: delegacion, vista: 1}
+            , data: {vista: 1}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -91,13 +90,12 @@ function cmbox_delegacion() {
 }
 
 function cmbox_tipo_unidad() {
-    var delegacion = document.getElementById('delegacion').value;
     var tipo_unidad = document.getElementById('tipo_unidad').value;
     var umae = 1;
     $.ajax({
         url: site_url + "/buscador/get_unidades/" + umae
         , method: "post"
-        , data: {delegacion:delegacion, tipo_unidad:tipo_unidad}
+        , data: {tipo_unidad:tipo_unidad}
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }

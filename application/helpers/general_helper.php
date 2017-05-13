@@ -521,3 +521,10 @@ if(!function_exists('dropdown')){
       return $drop;
   }
 }
+
+
+if(!function_exists('format_label_icon')){
+    function format_label_icon($label = '', $icon = 'stars'){
+        return '<span>'.$label.'<li class="material-icons">'.$icon.'</li></span>';
+    }
+}

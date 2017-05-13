@@ -1,7 +1,7 @@
 $(function () {
     $('#form_comparativa_umae').submit(function (event) {
         event.preventDefault();
-        if (valida_filtros('tipo_curso')) {
+        if (valida_filtros('tipo_curso')) {            
             $.ajax({
                 url: $(this).attr('action')
                 , method: "post"

@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Matrícula: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'matricula', 'type' => 'number', 'value' => $usuarios['matricula'], 'attributes' => array('name' => 'matricula', 'readonly' => ' ', 'class' => 'form-control')));
                             ?>
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Correo electrónico: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'email', 'type' => 'email', 'value' => $usuarios['email'], 'attributes' => array('name' => 'email', 'class' => 'form-control')));
                             ?>
@@ -76,9 +76,9 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Contraseña: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
-                            echo $this->form_complete->create_element(array('id' => 'pass', 'type' => 'password', 'attributes' => array('name' => 'pass', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'pass', 'type' => 'password', 'value'=> '', 'attributes' => array('name' => 'pass', 'class' => 'form-control', 'autocomplete'=>'off')));
                             ?>
                         </div>
                         <?php echo form_error_format('pass'); ?>
@@ -86,9 +86,9 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Confirmar contraseña: </label>
                         <div class="col-md-6 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
-                            echo $this->form_complete->create_element(array('id' => 'repass', 'type' => 'password', 'attributes' => array('name' => 'repass', 'class' => 'form-control')));
+                            echo $this->form_complete->create_element(array('id' => 'repass', 'type' => 'password', 'value'=> '','attributes' => array('name' => 'repass', 'class' => 'form-control','autocomplete'=>'off')));
                             ?>
                         </div>
                         <?php echo form_error_format('repass'); ?>

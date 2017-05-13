@@ -1,5 +1,7 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * Description of Buscador
  *
@@ -14,8 +16,7 @@ class Buscador extends CI_Controller
         $this->load->library('session');
         $this->load->library('Catalogo_listado');
     }
-    
-    
+
     public function get_delegaciones($id_region = 0)
     {
         $this->load->model('Buscador_model', 'buscador');
@@ -36,25 +37,26 @@ class Buscador extends CI_Controller
             if ($keyword != null)
             {
                 $usuario = $this->session->userdata('usuario');
-                if(is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos'])){
+                if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
+                {
                     $delegacion = $usuario['id_delegacion'];
                     $tipo_unidad = $usuario['id_tipo_unidad'];
                 }
-                if (is_nivel_central($usuario['grupos']) || is_nivel_tactico($usuario['grupos']) 
-                        || is_nivel_estrategico($usuario['grupos']))
+                if (is_nivel_central($usuario['grupos']) || is_nivel_tactico($usuario['grupos']) || is_nivel_estrategico($usuario['grupos']))
                 {
                     if ($this->input->post('tipo_unidad', true))
                     {
                         $tipo_unidad = $this->input->post('tipo_unidad', true);
-                    }                    
+                    }
                 }
-                if(is_nivel_central($usuario['grupos']) || is_nivel_estrategico($usuario['grupos'])){
+                if (is_nivel_central($usuario['grupos']) || is_nivel_estrategico($usuario['grupos']))
+                {
                     if ($this->input->post('delegacion', true))
                     {
                         $delegacion = $this->input->post('delegacion', true);
-                    }                    
+                    }
                 }
-                $output['unidades'] = $this->usuario->lista_unidad($keyword, $tipo_unidad, $delegacion);                
+                $output['unidades'] = $this->usuario->lista_unidad($keyword, $tipo_unidad, $delegacion);
                 echo $this->load->view('buscador/unidades_instituto', $output, true);
             }
         }
@@ -82,33 +84,48 @@ class Buscador extends CI_Controller
             echo json_encode($grupos_categorias);
         }
     }
-    
-    public function get_tipo_unidad(){
-        if($this->input->post()){
+
+    public function get_tipo_unidad()
+    {
+        if ($this->input->post())
+        {
             $this->load->model('Comparativa_model', 'comparativa');
             $usuario = $this->session->userdata('usuario');
-            $delegacion = $this->input->post('delegacion', true);
+            $delegacion = 0;
+            if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
+            {
+                $delegacion = $usuario['id_delegacion'];
+            }
             $nivel = $this->input->post('nivel', true);
             $umae = $usuario['umae'];
-            if(is_nivel_central($usuario['grupos']) && $this->input->post('umae') && $this->input->post('umae') == 1){
+            if (is_nivel_central($usuario['grupos']) && $this->input->post('umae') && $this->input->post('umae') == 1)
+            {
                 $umae = true;
             }
-            $tipos_unidades = $this->comparativa->get_tipos_unidades($umae,$delegacion, $nivel);
+            $tipos_unidades = $this->comparativa->get_tipos_unidades($umae, $delegacion, $nivel);
             echo json_encode($tipos_unidades);
         }
     }
-    
-    public function get_unidades($umae = 0){
-        if($this->input->post()){
+
+    public function get_unidades($umae = 0)
+    {
+        if ($this->input->post())
+        {
+            $usuario = $this->session->userdata('usuario');
             $id_tipo_unidad = $this->input->post('tipo_unidad', true);
-            $umae = $umae == 1?true:false;
-            $delegacion = $this->input->post('delegacion', true);
+            $umae = $umae == 1 ? true : false;
+            $delegacion = 0;
+            $condiciones = array('umae' => $umae,
+                'id_tipo_unidad' => $id_tipo_unidad);
+            if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
+            {
+                $delegacion = $usuario['id_delegacion'];
+                $condiciones += array('id_delegacion' => $delegacion);
+            }
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output = $cat_list->obtener_catalogos(array(
                 Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => array('umae' => $umae, 
-                        'id_delegacion' => $delegacion,
-                        'id_tipo_unidad' => $id_tipo_unidad)
+                    'condicion' => $condiciones
                     , /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
                     'valor' => 'nombre')
                     )

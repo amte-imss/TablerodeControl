@@ -15,61 +15,7 @@ echo js('comparativa/unidades.js');
             echo form_open('comparativa/unidades', array('id' => 'form_comparativa'));
             ?>
             <div id="filtros_capa" class="card-content collapse">
-                <div class="row form-group">                    
-                    <div id="area_geografica">
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-addon">Región:</span>
-                                <?php
-                                $atributos_region = array(
-                                    'class' => 'form-control  form-control input-sm ',
-                                    'data-toggle' => 'tooltip',
-                                    'data-placement' => 'top',
-                                    'title' => 'Tipo de comparativa',
-                                    'onchange' => 'cmbox_region()');
-                                if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
-                                {
-                                    $atributos_region += array('disabled' => true);
-                                }
-                                echo $this->form_complete->create_element(
-                                        array('id' => 'region',
-                                            'type' => 'dropdown',
-                                            'first' => array('' => 'Seleccione...'),
-                                            'value' => $usuario['id_region'],
-                                            'options' => $regiones,
-                                            'attributes' => $atributos_region
-                                        )
-                                );
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-addon">Delegación:</span>
-                                <?php
-                                $atributos_delegacion = array(
-                                    'class' => 'form-control  form-control input-sm ',
-                                    'data-toggle' => 'tooltip',
-                                    'data-placement' => 'top',
-                                    'title' => 'Tipo de comparativa',
-                                    'onchange' => 'cmbox_delegacion()');
-                                if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
-                                {
-                                    $atributos_delegacion += array('disabled' => true);
-                                }
-                                echo $this->form_complete->create_element(
-                                        array('id' => 'delegacion',
-                                            'type' => 'dropdown',
-                                            'first' => array('' => 'Seleccione...'),
-                                            'value' => $usuario['id_delegacion'],
-                                            'options' => $delegaciones,
-                                            'attributes' => $atributos_delegacion
-                                        )
-                                );
-                                ?>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row form-group">                                        
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">Tipo de comparativa:</span>

@@ -1,8 +1,7 @@
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
 <script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php
-echo js('comparativa/comparativa.js');
-echo js('comparativa/umae.js');
+echo js('comparativa/delegacion.js');
 ?>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -11,11 +10,11 @@ echo js('comparativa/umae.js');
                 <a href="#" data-toggle="collapse" data-target="#filtros_capa">Filtros<i class="fa fa-arrow-right pull-right" aria-hidden="true"></i><!-- <div class="material-icons pull-right">keyword_arrow_right</div> -->
                 </a>
             </div>
-            <?php
-            echo form_open('comparativa/umae', array('id' => 'form_comparativa'));
-            ?>
-            <input type="hidden" value="1" name="umae" id="umae">
+
             <div id="filtros_capa" class="card-content collapse">
+                <?php
+                echo form_open('comparativa/umae', array('id' => 'form_comparativa'));
+                ?>           
                 <div class="row form-group">                    
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
@@ -41,7 +40,9 @@ echo js('comparativa/umae.js');
                 <?php
                 echo form_close();
                 ?>
-                <div id="area_comparativa"></div>
+                <div id="area_comparativa">
+
+                </div>
             </div>
         </div>
     </div>

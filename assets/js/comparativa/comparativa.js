@@ -28,12 +28,11 @@ function valida_filtros_aux(campos) {
 }
 
 function cmbox_nivel() {
-    var nivel = document.getElementById('nivel').value;
-    var delegacion = document.getElementById('delegacion').value;
-    if (nivel != null && nivel != "" && delegacion != null && delegacion != "") {
-        var datos = {delegacion: delegacion, nivel: nivel};
+    var nivel = document.getElementById('nivel').value;  
+    if (nivel != null && nivel != "") {
+        var datos = {nivel: nivel};
         if (document.getElementById('umae')) {
-            datos = {delegacion: delegacion, nivel: nivel, umae: 1};
+            datos = {nivel: nivel, umae: 1};
         }
         $.ajax({
             url: site_url + "/buscador/get_tipo_unidad/"

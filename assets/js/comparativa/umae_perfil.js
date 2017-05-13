@@ -25,7 +25,7 @@ $(function () {
                     var texto_t = "";
                     var id_reporte = reportes[i];
                     var colores = ['#0090b9'];
-                    
+                    var extre = "";
                     switch (id_reporte) {
                         case 1:
                         case "1":

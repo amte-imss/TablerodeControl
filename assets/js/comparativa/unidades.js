@@ -8,11 +8,10 @@ function cmbox_comparativa() {
         if (id_destino == 2) {
             destino = site_url + '/comparativa/unidades_perfil';
         }
-        var delegacion = document.getElementById('delegacion').value;
         $.ajax({
             url: destino
             , method: "post"
-            , data: {delegacion: delegacion, vista: 1}
+            , data: {vista: 1}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -23,7 +22,6 @@ function cmbox_comparativa() {
         }).done(function (response) {
             $('#area_comparativa').html(response);
             $('#area_graph').html('');
-            $('#area_geografica').css('display', 'block');
             $('#area_reportes').css('display', 'none');
             ocultar_loader();
         });
@@ -57,14 +55,13 @@ function cmbox_region() {
 function search_unidad(elemento) {
     var index = elemento[0].getAttribute('data-id');
     var keyword = document.getElementById('unidad' + index + '_texto').value;
-    var tipo_unidad = document.getElementById('tipo_unidad').value;
-    var delegacion = document.getElementById('delegacion').value;
+    var tipo_unidad = document.getElementById('tipo_unidad').value;    
     console.log('buscando:' + keyword);
     $.ajax({
         url: site_url + '/buscador/search_unidad_instituto'
         , method: "post"
         , timeout: 200
-        , data: {keyword: keyword, tipo_unidad: tipo_unidad, delegacion: delegacion}
+        , data: {keyword: keyword, tipo_unidad: tipo_unidad}
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }
