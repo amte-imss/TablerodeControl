@@ -33,8 +33,41 @@ $( document ).ready(function() {
     });
 });
 
-function limpiar_capas() {
-    $('#unidad_capa').html(''); 
+function data_ajax_listado(path, form_recurso, elemento_resultado, callback) {
+    var dataSend = $(form_recurso).serialize();
+    $.ajax({
+        url: path,
+        data: dataSend,
+        method: 'POST',
+        beforeSend: function (xhr) {
+            //$(elemento_resultado).html(create_loader());
+            mostrar_loader();
+        }
+        })
+        .done(function (response) {
+            if (typeof callback !== 'undefined' && typeof callback === 'function') {
+                $(elemento_resultado).html(response).promise().done(callback());
+            } else {
+                $(elemento_resultado).html(response);
+            }
+            calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
+        })
+        .fail(function (jqXHR, textStatus) {
+            $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+        })
+        .always(function () {
+            //remove_loader();
+            //ocultar_loader();
+        });
+}
+
+function limpiar_capas(arreglo, arreglo2) {
+    for (var i = 0; i < arreglo.length; i++) { ///Eliminar elementos de las capas
+        $('#'+arreglo[i]).html('');
+    };
+    for (var i = 0; i < arreglo2.length; i++) { ///Los listados dependientes se els eliminará la selección anterior.
+        $('#'+arreglo2[i]).val('');
+    };
     $('#comparativa_chrt').html(''); 
     $('#comparativa_chrt2').html('');
 }

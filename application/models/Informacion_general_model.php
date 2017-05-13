@@ -242,7 +242,7 @@ class Informacion_general_model extends CI_Model
             $this->db->where($params['conditions']);
         }
         if (array_key_exists('order', $params)) {
-            $this->db->order_by($params['order']['field'], $params['order']['type']);
+            $this->db->order_by($params['order']);
         }
         $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=ins.id_delegacion');
         $this->db->join('catalogos.tipos_unidades tipo_uni', 'tipo_uni.id_tipo_unidad=ins.id_tipo_unidad');
