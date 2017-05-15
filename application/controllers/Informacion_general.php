@@ -126,7 +126,7 @@ class Informacion_general extends MY_Controller
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
                 $this->load->library('Catalogo_listado');
                 $cat_list = new Catalogo_listado(); //Obtener catálogos
-                $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : '';
+                $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND del.id_region=".$datos_busqueda['region'] : '';
                 $c_delegacion = (isset($datos_busqueda['delegacion']) AND !empty($datos_busqueda['delegacion'])) ? ' AND del.id_delegacion='.$datos_busqueda['delegacion'] : '';
                 $c_nivel_atencion = (isset($datos_busqueda['nivel_atencion']) AND !empty($datos_busqueda['nivel_atencion'])) ? ' AND ins.nivel_atencion='.$datos_busqueda['nivel_atencion'] : '';
                 $c_tipo_unidad = (isset($datos_busqueda['tipo_unidad']) AND !empty($datos_busqueda['tipo_unidad'])) ? ' AND ins.id_tipo_unidad='.$datos_busqueda['tipo_unidad'] : '';
@@ -151,6 +151,7 @@ class Informacion_general extends MY_Controller
                             $resultado['form']['path'] = 'nivel_atencion';
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['tipo_unidad_capa', 'umae_capa', 'unidad_capa'], ['nivel_atencion']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                             //$resultado['form']['destino'] = '#tipo_unidad_capa';
+                            $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : ''; ///Validación generada específicamente para la consulta
                             $datos = $cat_list->obtener_catalogos(array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region)));
                             $resultado['datos'] = $datos['delegaciones'];
                             $resultado['resultado'] = true;
