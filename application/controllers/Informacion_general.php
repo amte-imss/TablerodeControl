@@ -321,7 +321,7 @@ class Informacion_general extends MY_Controller
                 
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']);
                 $resultado = array('total'=>array());
