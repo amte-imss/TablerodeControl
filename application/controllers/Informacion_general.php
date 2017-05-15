@@ -156,7 +156,7 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['path'] = 'tipo_unidad';
                         $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['tipo_unidad']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                         //$resultado['form']['destino'] = '#unidad_capa';
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion, 'order'=>'nivel_atencion_nombre'));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_nivel_atencion', 'nivel_atencion_nombre');
                         $resultado['resultado'] = true;
                         break;
@@ -165,10 +165,10 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['path'] = 'unidad';
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#umae_capa');");
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
                         } else {
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/unidad', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
                         }
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_tipo_unidad', 'tipo_unidad');
                         $resultado['resultado'] = true;
@@ -177,7 +177,7 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['label'] = $lenguaje['unidades'];
                         $resultado['form']['path'] = 'unidad';
                         $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
                         $resultado['resultado'] = true;
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
                         //$vista = 'listado_radio.tpl.php';

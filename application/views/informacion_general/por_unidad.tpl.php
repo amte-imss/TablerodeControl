@@ -39,7 +39,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
-                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val()); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
                                         )
                                     )
                                 ); ?>
@@ -80,6 +80,25 @@
                             <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                            <script type="text/javascript">
+                            function validar_tipos_busqueda(elemento){
+                                mostrar_loader();
+                                if($(elemento).val()==''){
+                                    $('#region_capa').hide();
+                                } else {
+                                    $('#region').val('');
+                                    $('#region_capa').show();
+                                }
+                                $('#umae_capa').html('');
+                                $('#unidad_capa').html('');
+                                $('#delegacion_capa').html('');
+                                $('#nivel_atencion_capa').html('');
+                                $('#tipo_unidad_capa').html('');
+                                $('#comparativa_chrt').html('');
+                                $('#comparativa_chrt2').html('');
+                                calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
+                            }
+                            </script>
                         <?php break;
                         case En_grupos::N3_JSPM: 
                             $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
@@ -98,7 +117,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
-                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val()); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
                                         )
                                     )
                                 ); ?>
@@ -138,8 +157,19 @@
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <script type="text/javascript">
                                 $(function(){
-                                    data_ajax(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#delegacion_capa'); limpiar_capas([]);
+                                    data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#delegacion_capa'); limpiar_capas([]);
                                 });
+                                function validar_tipos_busqueda(elemento){
+                                    mostrar_loader();
+                                    $('#umae_capa').html('');
+                                    $('#unidad_capa').html('');
+                                    $('#delegacion').val('');
+                                    $('#nivel_atencion_capa').html('');
+                                    $('#tipo_unidad_capa').html('');
+                                    $('#comparativa_chrt').html('');
+                                    $('#comparativa_chrt2').html('');
+                                    calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
+                                }
                                 </script>
                         <?php break;
                         case En_grupos::N2_CPEI: case En_grupos::N2_CAME:
@@ -159,7 +189,7 @@
                                         'type'=>'dropdown',
                                         'options'=>$catalogos['implementaciones'],
                                         'attributes'=>array('class'=>'form-control',
-                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val());"
+                                            'onchange'=>"javascript:$('#capa_periodo_principal').html($('#anio').val()); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
                                         )
                                     )
                                 ); ?>
@@ -220,8 +250,18 @@
                             );*/ ?>
                             <script type="text/javascript">
                             $(function(){
-                                data_ajax(site_url+'/informacion_general/cargar_listado/nivel_atencion', '#form_busqueda', '#nivel_atencion_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
+                                data_ajax_listado(site_url+'/informacion_general/cargar_listado/nivel_atencion', '#form_busqueda', '#nivel_atencion_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
                             });
+                            function validar_tipos_busqueda(elemento){
+                                mostrar_loader();
+                                $('#umae_capa').html('');
+                                $('#unidad_capa').html('');
+                                $('#nivel_atencion').val('');
+                                $('#tipo_unidad_capa').html('');
+                                $('#comparativa_chrt').html('');
+                                $('#comparativa_chrt2').html('');
+                                calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
+                            }
                             </script>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
 
@@ -284,6 +324,15 @@
                             $(function(){
                                 data_ajax_listado(site_url+'/informacion_general/cargar_listado/tipo_unidad', '#form_busqueda', '#tipo_unidad_capa');
                             });
+                            function validar_tipos_busqueda(elemento){
+                                mostrar_loader();
+                                $('#umae_capa').html('');
+                                $('#unidad_capa').html('');
+                                $('#tipo_unidad').val('');
+                                $('#comparativa_chrt').html('');
+                                $('#comparativa_chrt2').html('');
+                                calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
+                            }
                             </script>
 
                         <?php break;
@@ -376,10 +425,15 @@
                             $(function(){
                                 calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');
                             });
+                            function validar_tipos_busqueda(elemento){
+                                mostrar_loader();
+                                $('#comparativa_chrt').html('');
+                                $('#comparativa_chrt2').html('');
+                                ocultar_loader();
+                            }
                             </script>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
-
                         <?php break;
 
                     } ?>                    
@@ -406,27 +460,9 @@
     <?php echo form_close(); ?>
 </div>
 <script type="text/javascript">
-    function validar_tipos_busqueda(elemento){
-        mostrar_loader();
-        if($(elemento).val()==''){
-            $('#region_capa').hide();
-        } else {
-            $('#region').val('');
-            $('#region_capa').show();
-        }
-        $('#umae_capa').html('');
-        $('#unidad_capa').html('');
-        $('#delegacion_capa').html('');
-        $('#nivel_atencion_capa').html('');
-        $('#tipo_unidad_capa').html('');
-        $('#comparativa_chrt').html('');
-        $('#comparativa_chrt2').html('');
-        ocultar_loader();
-    }
     $(function(){
         $('#capa_periodo_principal').html($('#anio').val());
         $('#btn_limpiar').click(function() {
-            $('#tipos_busqueda').val('');
             validar_tipos_busqueda('#tipos_busqueda');
         });
         $('#btn_buscar').click(function() {
