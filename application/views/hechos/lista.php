@@ -1,4 +1,4 @@
-<?php echo js('carga_hechos/get_lista.js'); ?>
+<?php echo js('hechos/get_lista.js'); ?>
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">
         <div class="panel panel-default">
@@ -12,7 +12,7 @@
                     }
                     ?>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row" style="margin:5px;">
+                        <div class="row" style="margin:5px; overflow: auto;">
                             <div class="container">
                                 <table class="table table-striped responsive">
                                     <thead>

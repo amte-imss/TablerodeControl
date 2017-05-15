@@ -112,7 +112,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
                 'data-id' => 1,
                 'autocomplete' => 'off',
                 'placeholder' => 'Buscar unidad por nombre',
-                'title' => 'Unidad 1');
+                'title' => 'Por favor escriba el nombre de la unidad');
             if (is_nivel_operacional($usuario['grupos']))
             {
                 $atributos_unidad1 += array('disabled' => true);
@@ -144,7 +144,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
                             'data-id' => 2,
                             'autocomplete' => 'off',
                             'placeholder' => 'Buscar unidad por nombre',
-                            'title' => 'Unidad 2')
+                            'title' => 'Por favor escriba el nombre de la unidad')
                     )
             );
             ?>

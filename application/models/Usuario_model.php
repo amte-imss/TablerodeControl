@@ -229,13 +229,23 @@ class Usuario_model extends CI_Model
         $this->db->join('catalogos.delegaciones d', 'd.clave_delegacional = u.clave_delegacional', 'left');
         $this->db->join('catalogos.unidades_instituto ui', 'ui.id_unidad_instituto = u.id_unidad_instituto', 'left');
         $this->db->join('catalogos.regiones r', 'r.id_region = d.id_region', 'left');
+        
+        if(isset($filtros['type']) && isset($filtros['keyword']) && 
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email' ))){
+            $this->db->like('u.'.$filtros['type'], $filtros['keyword']);
+        }
+        
         $this->db->order_by('u.id_usuario');
         $tabla = $this->db->get('sistema.usuarios u')->result_array();
         //pr($this->db->last_query());
         $this->db->reset_query();
         $resultado['tabla'] = $tabla;
+        if(isset($filtros['type']) && isset($filtros['keyword']) && 
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email' ))){
+            $this->db->like('u.'.$filtros['type'], $filtros['keyword']);
+        }
         $this->db->select('count(*) cantidad');
-        $resultado['total'] = $this->db->get('sistema.usuarios')->result_array()[0]['cantidad'];
+        $resultado['total'] = $this->db->get('sistema.usuarios u')->result_array()[0]['cantidad'];
 
         return $resultado;
     }

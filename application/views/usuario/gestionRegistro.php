@@ -27,7 +27,7 @@
                         <label class="col-md-4 control-label">Matrícula: </label>
                         <!-- <div class="col-md-4 inputGroupContainer"> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"></span>
                             <input id="matricula" name="matricula" placeholder="Escriba su matrícula" class="form-control"  type="number" required>
                         </div>
                         <?php echo form_error_format('matricula'); ?>
@@ -38,7 +38,7 @@
                         <label class="col-md-4 control-label">Correo electrónico: </label>
                         <!-- <div class="col-md-4 inputGroupContainer"> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                            <span class="input-group-addon"></span>
                             <input id="email" name="email" placeholder="correo@imss.com" class="form-control"  type="email" required>
                         </div>
                         <?php echo form_error_format('email'); ?>
@@ -49,7 +49,7 @@
                         <label class="col-md-4 control-label">Contraseña: </label>
                         <!-- <div class="col-md-4 inputGroupContainer"> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-eye-close"></i></span>
+                            <span class="input-group-addon"></span>
                             <input id="pass" name="pass" placeholder="Escribe tu contraseña" class="form-control" type="password" required>
                         </div>
                         <?php echo form_error_format('pass'); ?>
@@ -60,7 +60,7 @@
                         <label class="col-md-4 control-label">Confirmar contraseña: </label>
                         <!-- <div class="col-md-4 inputGroupContainer"> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-eye-close"></i></span>
+                            <span class="input-group-addon"></span>
                             <input id="repass" name="repass" placeholder="Repite tu contraseña" class="form-control" type="password" required >
                         </div>
                         <?php echo form_error_format('repass'); ?>
@@ -71,7 +71,7 @@
                         <label class="col-md-4 control-label">Delegación: </label>
                         <!-- <div class="col-md-4 "> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'delegacion', 'type' => 'dropdown', 'options' => $delegaciones, 'first' => array('' => 'Seleccione una opción'), 'attributes' => array('name' => 'delegacion', 'class' => 'form-control')));
                             ?>
@@ -84,7 +84,7 @@
                         <label class="col-md-4 control-label">Nivel de atención: </label>
                         <!-- <div class="col-md-4 selectContainer"> -->
                         <div class="col-md-4 input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
+                            <span class="input-group-addon"></span>
                             <?php
                             echo $this->form_complete->create_element(array('id' => 'niveles', 'type' => 'dropdown', 'options' => $nivel_atencion, 'first' => array('' => 'Seleccione una opción'), 'attributes' => array('name' => 'niveles', 'class' => 'form-control')));
                             ?>

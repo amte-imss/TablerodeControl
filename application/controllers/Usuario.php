@@ -73,9 +73,11 @@ class Usuario extends MY_Controller
             {
                 $filtros['current_row'] = $this->input->post('current_row', true);
             }
+            $filtros['keyword'] = $this->input->post('keyword', true);
+            $filtros['type'] = $this->input->post('filtro_texto', true);
             $output['current_row'] = $filtros['current_row'];
         }
-        //pr($filtros);
+        //pr($filtros);        
         $output['usuarios'] = $this->registro->ver($filtros);
         $filtros['total'] = $output['usuarios']['total'];
         $paginacion = $this->template->pagination_data($filtros);

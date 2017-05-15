@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['interface'] = array(
     'informacion_general' => array(
         'titulo_principal' => 'Información general',
-        'texto_informativo' => 'Para ver más resultados selecciona el tipo de gráfica a mostrar.',
+        'texto_informativo' => 'Para ver más resultados selecciona el tipo de gráfica a mostrar',
         'titulo_por_perfil' => 'Por perfil',
         'titulo_por_unidad' => 'Por unidad',
         'titulo_por_tipo_usuario' => 'Por tipo de curso',

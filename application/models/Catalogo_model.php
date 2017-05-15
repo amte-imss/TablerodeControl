@@ -82,15 +82,33 @@ class Catalogo_model extends CI_Model
             'B.clave_unidad'
         );
         $this->db->select($select);
+        $this->db->start_cache();
         $this->db->join('catalogos.unidades_instituto B', 'B.id_unidad_instituto = A.id_unidad_instituto', 'inner');
         $this->db->where('A.activa', true);
         $this->db->where('B.activa', true);
+        if (isset($filtros['type']) && isset($filtros['keyword']) &&
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('clave_departamental', 'departamento', 'unidad', 'clave_unidad')))
+        {
+            $type = $filtros['type'];
+            switch ($filtros['type'])
+            {
+                case 'departamento': $type = 'A.nombre';
+                    break;
+                case 'unidad': $type = 'B.nombre';
+                    break;
+            }
+
+            $this->db->like($type, $filtros['keyword']);
+        }
+        $this->db->stop_cache();
         $departamentos['data'] = $this->db->get('catalogos.departamentos_instituto A')->result_array();
         $this->db->reset_query();
-        $this->db->select('count(*) total');
+        $this->db->select('count(*) total');        
         $departamentos['total'] = $this->db->get('catalogos.departamentos_instituto A')->result_array()[0]['total'];
         $departamentos['per_page'] = $filtros['per_page'];
         $departamentos['current_row'] = $filtros['current_row'];
+        $this->db->flush_cache();
+        $this->db->reset_query();
         return $departamentos;
     }
 
@@ -116,20 +134,39 @@ class Catalogo_model extends CI_Model
         }
 
         $select = array(
-            'A.id_unidad_instituto', 'A.nombre unidad', 'A.clave_unidad', 
+            'A.id_unidad_instituto', 'A.nombre unidad', 'A.clave_unidad',
             'A.clave_presupuestal', 'A.id_delegacion', 'B.nombre delegacion',
             'A.id_tipo_unidad', 'C.nombre tipo', 'A.umae', 'A.latitud', 'A.longitud'
         );
         $this->db->select($select);
-        $this->db->join('catalogos.delegaciones B','B.id_delegacion = A.id_delegacion', 'inner');
-        $this->db->join('catalogos.tipos_unidades C','C.id_tipo_unidad = A.id_tipo_unidad', 'left');
+        $this->db->start_cache();
+        $this->db->join('catalogos.delegaciones B', 'B.id_delegacion = A.id_delegacion', 'inner');
+        $this->db->join('catalogos.tipos_unidades C', 'C.id_tipo_unidad = A.id_tipo_unidad', 'left');       
         $this->db->where('A.activa', true);
+        if (isset($filtros['type']) && isset($filtros['keyword']) &&
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('clave_unidad', 'unidad', 'clave_presupuestal', 'delegacion', 'tipo')))
+        {
+            $type = $filtros['type'];
+            switch ($filtros['type'])
+            {
+                case 'delegacion': $type = 'B.nombre';
+                    break;
+                case 'unidad': $type = 'A.nombre';
+                    break;
+                case 'tipo': $type = 'C.nombre';
+            }
+
+            $this->db->like($type, $filtros['keyword']);
+        }
+        $this->db->stop_cache();
         $unidades['data'] = $this->db->get('catalogos.unidades_instituto A')->result_array();
         $this->db->reset_query();
         $this->db->select('count(*) total');
         $unidades['total'] = $this->db->get('catalogos.unidades_instituto A')->result_array()[0]['total'];
         $unidades['per_page'] = $filtros['per_page'];
         $unidades['current_row'] = $filtros['current_row'];
+        $this->db->flush_cache();
+        $this->db->reset_query();
         return $unidades;
     }
 

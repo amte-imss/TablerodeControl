@@ -30,12 +30,12 @@ class Catalogo extends MY_Controller
         {
             $this->db->schema = 'catalogos';
             //pr($this->db->list_tables()); //Muestra el listado de tablas pertenecientes al esquema seleccionado
-            /*$this->load->library('Catalogo_listado');
-            $cl = new Catalogo_listado();
-            $cl->obtener_catalogos(array(Catalogo_listado::LINEAS_ESTRATEGICAS, Catalogo_listado::DELEGACIONES
-                //Catalogo_listado::DELEGACIONES => array('llave'=>'clave_delegacional', 'valor'=>"CONCAT(nombre,'(',clave_delegacional,')')", 'orden'=>'clave_delegacional DESC', 'condicion'=>"clave_delegacional>'05'")
-                ));
-            echo '<button id="print" onclick="imprimir_contenido(\'.card-header .card-chart\');" >Imprimir</button>';*/
+            /* $this->load->library('Catalogo_listado');
+              $cl = new Catalogo_listado();
+              $cl->obtener_catalogos(array(Catalogo_listado::LINEAS_ESTRATEGICAS, Catalogo_listado::DELEGACIONES
+              //Catalogo_listado::DELEGACIONES => array('llave'=>'clave_delegacional', 'valor'=>"CONCAT(nombre,'(',clave_delegacional,')')", 'orden'=>'clave_delegacional DESC', 'condicion'=>"clave_delegacional>'05'")
+              ));
+              echo '<button id="print" onclick="imprimir_contenido(\'.card-header .card-chart\');" >Imprimir</button>'; */
 
             $crud = $this->new_crud();
             $crud->set_table('alineaciones_estrategicas');
@@ -218,7 +218,8 @@ class Catalogo extends MY_Controller
         {
             $filtros['order'] = $this->input->post('order', true);
             $filtros['per_page'] = $this->input->post('per_page', true);
-
+            $filtros['keyword'] = $this->input->post('keyword', true);
+            $filtros['type'] = $this->input->post('filtro_texto', true);
             if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
             {
                 $filtros['current_row'] = $this->input->post('current_row', true);
@@ -668,7 +669,8 @@ class Catalogo extends MY_Controller
         {
             $filtros['order'] = $this->input->post('order', true);
             $filtros['per_page'] = $this->input->post('per_page', true);
-
+            $filtros['keyword'] = $this->input->post('keyword', true);
+            $filtros['type'] = $this->input->post('filtro_texto', true);
             if ($this->input->post('current_row') && is_numeric($this->input->post('current_row', true)))
             {
                 $filtros['current_row'] = $this->input->post('current_row', true);

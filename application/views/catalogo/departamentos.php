@@ -8,6 +8,24 @@
                     echo form_open('catalogo/departamento/', array('id' => 'form_paginacion'));
                     ?>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button id="btn-filtro-tablero" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clave departamental<span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="option-input-tablero" data-id="clave_departamental" href="#">Clave departamental</a></li>
+                                        <li><a class="option-input-tablero" data-id="departamento" href="#">Departamento</a></li>
+                                        <li><a class="option-input-tablero" data-id="unidad" href="#">Unidad</a></li>
+                                        <li><a class="option-input-tablero" data-id="clave_unidad" href="#">Clave unidad</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                                <input type="text" class="form-control" aria-label="..." name="keyword">
+                            </div><!-- /input-group -->
+                            <input type="hidden" id="filtro_texto" name="filtro_texto" value="clave_departamental">
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
                     <?php
                     if (isset($departamentos['current_row']))
                     {
@@ -15,7 +33,6 @@
                         <input id="pagination_current_page" type="hidden" name="current_row" value="<?php echo $departamentos['current_row']; ?>" />
                         <input id="pagination_limit" type="hidden" name="pagination_limit" value="<?php echo $departamentos['per_page']; ?>" />
                     <?php }
-                    
                     ?>
 
                     <div class="form-group">
@@ -77,8 +94,9 @@
                     <!--tablas de usuarios-->
 
                     <br>
-                    <p><?php echo 'Total: '.$departamentos['total'];  
-                       echo $paginacion['links'];?></p>
+                    <p><?php echo 'Total: ' . $departamentos['total'];
+                    echo $paginacion['links'];
+                    ?></p>
                     <table class="table table-striped">
                         <thead>
                             <tr>

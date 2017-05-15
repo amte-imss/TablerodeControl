@@ -8,6 +8,25 @@
                     echo form_open('catalogo/unidad_instituto/', array('id' => 'form_paginacion'));
                     ?>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button id="btn-filtro-tablero" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clave unidad<span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="option-input-tablero" data-id="clave_unidad" href="#">Clave unidad</a></li>
+                                        <li><a class="option-input-tablero" data-id="unidad" href="#">Unidad</a></li>
+                                        <li><a class="option-input-tablero" data-id="clave_presupuestal" href="#">Clave presupuestal</a></li>
+                                        <li><a class="option-input-tablero" data-id="delegacion" href="#">Delegación</a></li>
+                                        <li><a class="option-input-tablero" data-id="tipo" href="#">Tipo</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                                <input type="text" class="form-control" aria-label="..." name="keyword">
+                            </div><!-- /input-group -->
+                            <input type="hidden" id="filtro_texto" name="filtro_texto" value="clave_unidad">
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    
                     <?php
                     if (isset($unidades['current_row']))
                     {
