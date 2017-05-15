@@ -15,7 +15,31 @@ echo js('comparativa/delegacion.js');
                 <?php
                 echo form_open('comparativa/umae', array('id' => 'form_comparativa'));
                 ?>           
-                <div class="row form-group">                    
+                <div class="row form-group">       
+                    <?php
+                    if (is_nivel_central($usuario['grupos']))
+                    {
+                        ?>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Nivel:</span>
+                                <?php
+                                echo $this->form_complete->create_element(
+                                        array('id' => 'umae',
+                                            'type' => 'dropdown',
+                                            'first' => array('' => 'Seleccione...'),
+                                            'options' => array(0 => 'Delegacional', 1 => 'UMAE'),
+                                            'attributes' => array(
+                                                'class' => 'form-control  form-control input-sm',
+                                                'data-toggle' => 'tooltip',
+                                                'data-placement' => 'top',
+                                                'title' => 'UMAE')
+                                        )
+                                );
+                                ?>
+                            </div>
+                        </div>
+                    <?php } ?>
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">Tipo de comparativa:</span>

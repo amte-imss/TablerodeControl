@@ -160,7 +160,7 @@ class Comparativa extends MY_Controller
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $output += $cat_list->obtener_catalogos(array(
             Catalogo_listado::REGIONES,
-            Catalogo_listado::DELEGACIONES => array('condicion' => array('id_region' => $output['usuario']['id_region'])))
+            Catalogo_listado::DELEGACIONES => array('condicion' => array('id_region' => $output['usuario']['id_region'])),)
         );
         $view = $this->load->view('comparative/umae', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -260,7 +260,11 @@ class Comparativa extends MY_Controller
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
+                Catalogo_listado::UNIDADES_INSTITUTO => array(
+                    'condicion' => $condiciones_unidad,
+                    /* 'valor' => "concat(nombre,' [',clave_unidad, ']')") */
+                    'valor' => 'nombre'),)
             );
             $view = $this->load->view('comparative/umae_tipo_curso', $output, false);
         }
@@ -365,6 +369,9 @@ class Comparativa extends MY_Controller
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
                 $filtros['region'] = $output['usuario']['id_region'];
+            }
+            if(is_nivel_central($output['usuario']['grupos']) && $this->input->post('umae')){
+                $filtros['umae'] = $this->input->post('umae', true) == 1;
             }
             $datos = $this->comparativa->get_comparar_delegacion($filtros);
             echo json_encode($datos);

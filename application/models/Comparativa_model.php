@@ -140,7 +140,7 @@ class Comparativa_model extends MY_Model
             $this->db->where('D.fecha_inicio >=', $inicio);
             $this->db->where('D.fecha_fin <=', $fin);
         }
-        if (isset($filtros['umae']) && $filtros['umae'])
+        if (isset($filtros['umae']) && $filtros['umae'] != null && $filtros['umae'])
         {
             $this->db->where('B.umae', true);
         } else

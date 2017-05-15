@@ -32,7 +32,7 @@ function aprobados(datos) {
         programa = datos[0].programa;
     }
     datos = procesa_datos(datos);
-    var periodo = 2016;
+    var periodo = $("#periodo option:selected").text();
     var colores = ['#0090b9'];
     var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en " + periodo;
     if (id_programa == "") {
@@ -89,7 +89,27 @@ function procesa_datos_etm(datos) {
 }
 
 function render_graph() {
-    $('#form_ranking').submit();
+    if (valida_filtros()) {
+        $('#form_ranking').submit();
+    }
+}
+
+function valida_filtros() {
+    var campos = ['periodo'];
+    var valido = true;
+    for (i = 0; i < campos.length; i++) {
+        if (document.getElementById(campos[i]) != null) {
+            var value = document.getElementById(campos[i]).value;
+            if (value == null || value == "") {
+                valido = false;
+                console.log('elemento no encontrado: ' + campos[i]);
+            }
+        } else {
+            console.log('elemento no encontrado: ' + campos[i]);
+            valido = false;
+        }
+    }
+    return valido;
 }
 
 function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
@@ -104,7 +124,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
         xAxis: {
             type: 'category',
             labels: {
-                rotation: -45,
+                rotation: -90,
                 style: {
                     fontSize: '13px',
                     fontFamily: 'Verdana, sans-serif'
@@ -116,7 +136,7 @@ function    graficar_ranking(datos, titulo, texto, year, extra, colores) {
             allowDecimals: false,
             title: {
                 text: texto
-            }, 
+            },
             visible: false
         },
         legend: {

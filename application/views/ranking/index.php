@@ -38,7 +38,6 @@
                                 );
                                 ?>
                             </div>
-                            <?php echo form_error_format('periodo'); ?>
                         </div>
                     </div>            
                     <?php

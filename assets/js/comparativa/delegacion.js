@@ -57,12 +57,47 @@ function valida_filtros_aux(campos) {
     return valido;
 }
 
+function cmbox_nivel() {
+    var nivel = document.getElementById('nivel').value;  
+    if (nivel != null && nivel != "") {
+        var datos = {nivel: nivel};
+        if (document.getElementById('umae') && document.getElementById('umae').value == 1) {
+            datos = {nivel: nivel, umae: 1};
+        }
+        $.ajax({
+            url: site_url + "/buscador/get_tipo_unidad/"
+            , method: "post"
+            , data: datos
+            , error: function () {
+                console.warn("No se pudo realizar la conexión");
+            }
+            , beforeSend: function (xhr) {
+                mostrar_loader();
+            }
+        }).done(function (response) {
+            $('#tipo_unidad').empty()
+            var opts = $.parseJSON(response);
+            $('#tipo_unidad').append('<option value="">Seleccionar...</option>');
+            // Use jQuery's each to iterate over the opts value
+            $.each(opts, function (i, d) {
+                $('#tipo_unidad').append('<option value="' + d.id_tipo_unidad + '">' + d.nombre + '</option>');
+            });
+            ocultar_loader();
+        });
+    }
+}
+
+
 function submit_delegacion(elemento) {
     if (valida_filtros(document.getElementById('tipo_comparativa').value)) {
+        var datos = elemento.serialize();
+        if(document.getElementById('umae')!=null && document.getElementById('umae').value != ""){
+            datos+='&umae='+document.getElementById('umae').value;
+        }
         $.ajax({
             url: elemento.attr('action')
             , method: "post"
-            , data: elemento.serialize()
+            , data: datos
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
                 ocultar_loader();
