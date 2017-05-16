@@ -4,7 +4,8 @@ $(function () {
     });
     $('#form_comparativa_umae').submit(function (event) {
         event.preventDefault();
-        if (valida_filtros('perfil')) {
+        $('.alert-comparativa').css('display', 'none');
+        if (valida_filtros('perfil')) {            
             $.ajax({
                 url: $(this).attr('action')
                 , method: "post"
@@ -23,7 +24,7 @@ $(function () {
                 var reportes = [1, 2, 3, 5];
                 var datos = JSON.parse(response);
                 for (i = 0; i < reportes.length; i++) {
-                    var datos_g = procesa_datos(datos[i]);
+                    var datos_g = procesa_datos(datos[i],i);
                     var periodo = $("#periodo option:selected").text();                    
                     var texto = "";
                     var texto_t = "";
@@ -92,10 +93,22 @@ function cmbox_perfil() {
     });
 }
 
-function procesa_datos(datos) {
+function procesa_datos(datos, index) {
     var salida = [];
+    if (datos.unidad1.unidad == "") {
+        datos.unidad1.unidad = $("#unidad1 option:selected").text();
+    }
+    if (datos.unidad2.unidad == "") {
+        datos.unidad2.unidad = $("#unidad2 option:selected").text();
+    }
     salida[0] = [datos.unidad1.unidad, datos.unidad1.cantidad];
     salida[1] = [datos.unidad2.unidad, datos.unidad2.cantidad];
+    if (salida[0][1] == 0 && salida[1][1] == 0) {
+        $('#area_graph' + index).css('display', 'none');
+        $('#alert-comparativa' + index).css('display', 'block');
+    } else {
+        $('#area_graph' + index).css('display', 'block');
+    }
     return salida;
 }
 

@@ -87,6 +87,7 @@ class Comparativa extends MY_Controller
                 }
                 $datos = $this->comparativa->get_comparar_perfil($filtros);
                 echo json_encode($datos);
+                //$this->output->enable_profiler(TRUE);
             }
         } else
         {
@@ -340,7 +341,7 @@ class Comparativa extends MY_Controller
         //$this->template->setBlank("tc_template/index.tpl.php");
 
         $this->template->getTemplate(null, "tc_template/index.tpl.php");
-        //$this->output->enable_profiler(true);
+//        $this->output->enable_profiler(true);
     }
 
     public function delegacion_v2()

@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-addon">Año:</span>
+                            <span class="input-group-addon">* Año:</span>
                             <?php
                             echo $this->form_complete->create_element(
                                     array('id' => 'periodo',
@@ -117,4 +117,10 @@
 
 <div class="row">
     <div id="area_graph"></div>
+</div>
+
+<div id="alert-ranking" class="alert alert-warning alert-comparativa" style="display: none">
+    <span>
+        No existen resultados para esa busqueda, intente con otros filtros por favor.
+    </span>
 </div>

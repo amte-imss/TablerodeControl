@@ -40,6 +40,7 @@ class Ranking extends MY_Controller
         $main_content = $this->load->view('ranking/index', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
+        //$this->output->enable_profiler(true);
     }
 
     public function get_data()
@@ -53,6 +54,7 @@ class Ranking extends MY_Controller
             }
             $datos = $this->ranking->get_data($usuario, $this->input->post());
             echo json_encode($datos);
+            //$this->output->enable_profiler(true);
         }
     }
 

@@ -51,7 +51,6 @@ echo js('comparativa/umae.js');
     <div id="area_graph"></div>
 </div>     
 
-
 <div id="area_reportes" class="row" style="display:none;">
     <div class="col-lg-12 col-md-12">
         <div class="card card-nav-tabs">
@@ -72,7 +71,7 @@ echo js('comparativa/umae.js');
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>                            
-                            
+
                             <li class="">
                                 <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
                                     No Aprobabos
@@ -95,6 +94,11 @@ echo js('comparativa/umae.js');
                     <div class="tab-pane active" id="inscritos">
                         <div class="col-md-12">                            
                             <div id="area_graph0"></div>
+                            <div id="alert-comparativa0" class="alert alert-warning alert-comparativa" style="display: none">
+                                <span>
+                                    No existen resultados para esa busqueda, intente con otros filtros por favor.
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -102,19 +106,33 @@ echo js('comparativa/umae.js');
                     <div class="tab-pane" id="aprobados">
                         <div class="col-md-12">                            
                             <div id="area_graph1"></div>
+                            <div id="alert-comparativa1" class="alert alert-warning alert-comparativa" style="display: none">
+                                <span>
+                                    No existen resultados para esa busqueda, intente con otros filtros por favor.
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <!--etm-->
                     <div class="tab-pane" id="suspendidos">
                         <div class="col-md-12">                           
                             <div id="area_graph3"></div>
-
+                            <div id="alert-comparativa3" class="alert alert-warning alert-comparativa" style="display: none">
+                                <span>
+                                    No existen resultados para esa busqueda, intente con otros filtros por favor.
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <!--suspendodos-->
                     <div class="tab-pane" id="etm">
                         <div class="col-md-12">           
                             <div id="area_graph2"></div>
+                            <div id="alert-comparativa2" class="alert alert-warning alert-comparativa" style="display: none">
+                                <span>
+                                    No existen resultados para esa busqueda, intente con otros filtros por favor.
+                                </span>
+                            </div>
                         </div>                        
                     </div>
                 </div>

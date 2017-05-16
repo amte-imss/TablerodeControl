@@ -1,6 +1,7 @@
 $(function () {
     $('#form_ranking').submit(function (event) {
         event.preventDefault();
+        $('#alert-ranking').css('display', 'none');
         $.ajax({
             url: $(this).attr('action')
             , method: "post"
@@ -14,11 +15,16 @@ $(function () {
             }
         }).done(function (response) {
             var datos = JSON.parse(response);
-            var grafica = document.getElementById('tipo').value;
-            if (grafica == "" || grafica == 1) {
-                aprobados(datos);
-            } else {
-                eficiencia_terminal(datos);
+            console.log(datos);
+            if (datos.length > 0) {
+                var grafica = document.getElementById('tipo').value;
+                if (grafica == "" || grafica == 1) {
+                    aprobados(datos);
+                } else {
+                    eficiencia_terminal(datos);
+                }
+            }else{
+                $('#alert-ranking').css('display', 'block');
             }
             ocultar_loader();
         });

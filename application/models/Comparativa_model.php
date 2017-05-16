@@ -174,6 +174,8 @@ class Comparativa_model extends MY_Model
             $this->db->group_by($group_by);
         }
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
+        $this->db->flush_cache();
+        $this->db->reset_query();
         //pr($this->db->last_query());
         //pr($filtros);
         if (count($datos) == 0)
@@ -461,21 +463,17 @@ class Comparativa_model extends MY_Model
             $where = " WHERE per.id_grupo_categoria = $id";
             $group = ",per.id_grupo_categoria, per.nombre";
         }
-        $where.= ' and del.id_region is not null ';
+        $where.= ' and del.id_region is not null and imp.fecha_inicio >= $$'.$anio.'/01/01$$ and imp.fecha_fin <= $$'.$anio.'/12/31$$';
         $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
-        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,
-        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) -  sum(acc.cantidad_no_accesos) no_aprobados,
-        sum(acc.cantidad_no_accesos) nunca_entraron,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,        
+        sum(acc.cantidad_no_accesos) nunca_entraron,        
         trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
-        del.id_region,reg.nombre region
-        $select
-        ,EXTRACT(year FROM imp.fecha_inicio) anio
+        del.id_region,reg.nombre region                
         from hechos.hechos_implementaciones_alumnos himp
-         left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion and EXTRACT(year FROM imp.fecha_inicio)  = $anio)
-         left join catalogos.cursos cur ON(cur.id_curso = imp.id_curso)
-         left join catalogos.curso_tipo ct ON(ct.id_tipo_curso = cur.id_tipo_curso)
+         left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion)
+         left join catalogos.cursos cur ON(cur.id_curso = imp.id_curso)         
          left join catalogos.unidades_instituto unit ON(unit.id_unidad_instituto = himp.id_unidad_instituto)
          left join catalogos.delegaciones del ON(del.id_delegacion = unit.id_delegacion)
          left join catalogos.regiones reg ON(reg.id_region = del.id_region)
@@ -488,7 +486,7 @@ class Comparativa_model extends MY_Model
          		acc.id_sexo = himp.id_sexo
         	)
           $where
-        group by del.id_region, region $group , anio
+        group by del.id_region, region
         order by 1,3 asc";
 
         $result = $this->db->query($query);

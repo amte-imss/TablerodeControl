@@ -58,7 +58,7 @@ function valida_filtros_aux(campos) {
 }
 
 function cmbox_nivel() {
-    var nivel = document.getElementById('nivel').value;  
+    var nivel = document.getElementById('nivel').value;
     if (nivel != null && nivel != "") {
         var datos = {nivel: nivel};
         if (document.getElementById('umae') && document.getElementById('umae').value == 1) {
@@ -91,9 +91,10 @@ function cmbox_nivel() {
 function submit_delegacion(elemento) {
     if (valida_filtros(document.getElementById('tipo_comparativa').value)) {
         var datos = elemento.serialize();
-        if(document.getElementById('umae')!=null && document.getElementById('umae').value != ""){
-            datos+='&umae='+document.getElementById('umae').value;
+        if (document.getElementById('umae') != null && document.getElementById('umae').value != "") {
+            datos += '&umae=' + document.getElementById('umae').value;
         }
+        $('.alert-comparativa').css('display', 'none');
         $.ajax({
             url: elemento.attr('action')
             , method: "post"
@@ -111,7 +112,7 @@ function submit_delegacion(elemento) {
             var reportes = [1, 2, 3, 5];
             var datos = JSON.parse(response);
             for (i = 0; i < reportes.length; i++) {
-                var datos_g = procesa_datos(datos[i]);
+                var datos_g = procesa_datos(datos[i], i);
                 var periodo = $("#periodo option:selected").text();
                 var texto = "";
                 var texto_t = "";
@@ -148,16 +149,29 @@ function submit_delegacion(elemento) {
             }
             ocultar_loader();
             $('#area_reportes').css('display', 'block');
+
         });
     } else {
         alert('Debe seleccionar los filtros, antes de realizar una comparación');
     }
 }
 
-function procesa_datos(datos) {
+function procesa_datos(datos, index) {
     var salida = [];
+    if (datos.delegacion1.delegacion == "") {
+        datos.delegacion1.delegacion = $("#delegacion1 option:selected").text();
+    }
+    if (datos.delegacion2.delegacion == "") {
+        datos.delegacion2.delegacion = $("#delegacion2 option:selected").text();
+    }
     salida[0] = [datos.delegacion1.delegacion, datos.delegacion1.cantidad];
     salida[1] = [datos.delegacion2.delegacion, datos.delegacion2.cantidad];
+    if (salida[0][1] == 0 && salida[1][1] == 0) {
+        $('#area_graph'+index).css('display', 'none');
+        $('#alert-comparativa' + index).css('display', 'block');
+    }else{
+        $('#area_graph'+index).css('display', 'block');
+    }
     return salida;
 }
 
