@@ -6,7 +6,7 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de curso:</span>
+            <span class="input-group-addon">* Tipo de curso:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'tipo_curso',
@@ -77,7 +77,7 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Delegación:</span>
+            <span class="input-group-addon">* Delegación:</span>
             <?php
             $atributos_del = array(
                             'class' => 'form-control  form-control input-sm',
@@ -103,7 +103,7 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">comparar con :</span>
+            <span class="input-group-addon">* comparar con :</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'delegacion2',
@@ -124,7 +124,7 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Año:</span>
+            <span class="input-group-addon">* Año:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'periodo',

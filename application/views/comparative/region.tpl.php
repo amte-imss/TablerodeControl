@@ -140,7 +140,7 @@
                         </li>
                         <li class="">
                           <a href="#suspendidos" data-toggle="tab">
-                            Suspendidos
+                            No Aprobados
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -163,7 +163,7 @@
                   <!--inscritos-->
                     <div class="tab-pane active" id="inscritos">
                         <div class="col-md-12">
-                          <div id="chrt_inscritos" style="min-width: 310px; height: 400px; margin: 0 auto">
+                          <div id="chrt_inscritos" >
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -184,7 +184,7 @@
                       <!--aprobados-->
                       <div class="tab-pane" id="aprobados">
                         <div class="col-md-12">
-                          <div id="chrt_aprobados" style="min-width: 310px; height: 400px; margin: 0 auto">
+                          <div id="chrt_aprobados" >
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -205,7 +205,7 @@
                       <!--suspendodos-->
                       <div class="tab-pane" id="suspendidos">
                         <div class="col-md-12">
-                          <div id="chrt_suspendidos" style="min-width: 310px; height: 400px; margin: 0 auto">
+                          <div id="chrt_suspendidos" >
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -213,7 +213,7 @@
                             <thead class="text-primary">
                                 <tr>
                                     <th>Región</th>
-                                    <th>Número de Alumnos suspendidos</th>
+                                    <th>Número de Alumnos No Aprobados</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -226,7 +226,7 @@
                       <!--etm-->
                       <div class="tab-pane" id="etm">
                         <div class="col-md-12">
-                          <div id="chrt_etm" style="min-width: 310px; height: 400px; margin: 0 auto">
+                          <div id="chrt_etm" >
                           </div>
                         </div>
                         <div class="col-md-12">

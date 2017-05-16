@@ -97,15 +97,16 @@ echo js('comparativa/delegacion.js');
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>                            
+                            
                             <li class="">
-                                <a href="#etm" data-toggle="tab" aria-expanded="false">
-                                    Eficiencia Terminal Modificada
+                                <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
+                                    No Aprobabos
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
-                                    No Aprobabos
+                                <a href="#etm" data-toggle="tab" aria-expanded="false">
+                                    Eficiencia Terminal Modificada
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>

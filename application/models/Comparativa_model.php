@@ -461,6 +461,7 @@ class Comparativa_model extends MY_Model
             $where = " WHERE per.id_grupo_categoria = $id";
             $group = ",per.id_grupo_categoria, per.nombre";
         }
+        $where.= ' and del.id_region is not null ';
         $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
@@ -492,6 +493,7 @@ class Comparativa_model extends MY_Model
 
         $result = $this->db->query($query);
         $regiones = $result->result_array();
+//        pr($this->db->last_query());
         unset($result);
         $this->db->start_cache();
         $this->db->stop_cache();

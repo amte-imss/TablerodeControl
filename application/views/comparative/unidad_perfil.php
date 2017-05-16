@@ -7,7 +7,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de perfil:</span>
+            <span class="input-group-addon">* Tipo de perfil:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'perfil',
@@ -28,7 +28,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Perfil:</span>
+            <span class="input-group-addon">* Perfil:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'subperfil',
@@ -79,14 +79,14 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
 <div class="row form-group">    
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de unidad:</span>
+            <span class="input-group-addon">* Tipo de unidad:</span>
             <?php
             $tu = array(
                 'class' => 'form-control  form-control input-sm',
                 'data-toggle' => 'tooltip',
                 'data-placement' => 'top',
                 'title' => 'TIpo de unidad',
-                'onchange' => '');
+                'onchange' => 'cmbox_tipo_unidad()');
             if ($no_edit_tipo_unidad)
             {
                 $tu += array('disabled' => true);
@@ -102,7 +102,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Unidad:</span>
+            <span class="input-group-addon">* Unidad:</span>
             <input type="hidden" value="" name="unidad1" id="unidad1">
             <?php
             $atributos_unidad1 = array(
@@ -131,7 +131,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">comparar con :</span>
+            <span class="input-group-addon">* comparar con :</span>
             <input type="hidden" value="" name="unidad2" id="unidad2">
             <?php
             echo $this->form_complete->create_element(
@@ -157,7 +157,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Año:</span>
+            <span class="input-group-addon">* Año:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'periodo',

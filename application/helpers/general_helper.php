@@ -525,6 +525,6 @@ if(!function_exists('dropdown')){
 
 if(!function_exists('format_label_icon')){
     function format_label_icon($label = '', $icon = 'stars'){
-        return '<span>'.$label.'<li class="material-icons">'.$icon.'</li></span>';
+        return '<span style="text-decoration:underline;">'.$label.'</span>';
     }
 }

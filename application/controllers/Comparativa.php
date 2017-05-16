@@ -302,6 +302,7 @@ class Comparativa extends MY_Controller
 
         if (!is_null($num) && !is_null($year) && !is_null($type))
         {
+            $usuario = $this->session->userdata('usuario');
             $this->load->model("Comparativa_model", "comp");
             $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
             $data["filters"]["year"] = $year;
@@ -322,6 +323,17 @@ class Comparativa extends MY_Controller
 
             //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
             $data["comparativa"] = $this->comp->get_comparativa_region($num, $year, $type);
+//            pr($data['comparativa']);
+//            pr($usuario);
+            
+            foreach ($data['comparativa'] as $key => $value)
+            {
+                if ($value['region'] == $usuario['name_region'])
+                {
+                    $data['comparativa'][$key]['region'] = format_label_icon($data['comparativa'][$key]['region']);
+                }
+            }
+            
         }
 
         $this->template->setBlank("comparative/region.tpl.php", $data, FALSE);

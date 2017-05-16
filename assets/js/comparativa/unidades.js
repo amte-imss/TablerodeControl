@@ -55,7 +55,7 @@ function cmbox_region() {
 function search_unidad(elemento) {
     var index = elemento[0].getAttribute('data-id');
     var keyword = document.getElementById('unidad' + index + '_texto').value;
-    var tipo_unidad = document.getElementById('tipo_unidad').value;    
+    var tipo_unidad = document.getElementById('tipo_unidad').value;
     console.log('buscando:' + keyword);
     $.ajax({
         url: site_url + '/buscador/search_unidad_instituto'
@@ -120,4 +120,11 @@ function cmbox_delegacion() {
             });
         }
     }
+}
+
+function cmbox_tipo_unidad() {
+    $('#unidad1').val("");
+    $('#unidad1_texto').val("");
+    $('#unidad2').val("");
+    $('#unidad2_texto').val("");
 }

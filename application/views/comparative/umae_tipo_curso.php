@@ -7,7 +7,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de curso:</span>
+            <span class="input-group-addon">* Tipo de curso:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'tipo_curso',
@@ -55,7 +55,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
     </div>    
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Tipo de unidad:</span>
+            <span class="input-group-addon">* Tipo de unidad:</span>
             <?php
             $tu = array(
                 'class' => 'form-control  form-control input-sm',
@@ -83,7 +83,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">UMAE:</span>
+            <span class="input-group-addon">* UMAE:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'unidad1',
@@ -105,7 +105,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">comparar con :</span>
+            <span class="input-group-addon">* comparar con :</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'unidad2',
@@ -126,7 +126,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">Año:</span>
+            <span class="input-group-addon">* Año:</span>
             <?php
             echo $this->form_complete->create_element(
                     array('id' => 'periodo',

@@ -70,30 +70,6 @@ function procesa_datos(datos) {
     return salida;
 }
 
-function cmbox_perfil() {
-    var subcategoria = document.getElementById('perfil').value;
-    $.ajax({
-        url: site_url + '/buscador/search_grupos_categorias'
-        , method: "post"
-        , data: {subcategoria: subcategoria}
-        , error: function () {
-            console.warn("No se pudo realizar la conexión");
-        }
-        , beforeSend: function (xhr) {
-            mostrar_loader();
-        }
-    }).done(function (response) {
-        $('#subperfil').empty()
-        var opts = $.parseJSON(response);
-        $('#subperfil').append('<option value="">Seleccionar...</option>');
-        // Use jQuery's each to iterate over the opts value
-        $.each(opts, function (i, d) {
-            $('#subperfil').append('<option value="' + d.id_grupo_categoria + '">' + d.nombre + '</option>');
-        });
-        ocultar_loader();
-    });
-}
-
 function graficar(id, datos, titulo, texto, year, extra, colores) {
     Highcharts.chart('area_graph' + id, {
         chart: {

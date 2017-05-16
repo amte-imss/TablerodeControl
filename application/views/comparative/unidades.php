@@ -70,15 +70,16 @@ echo js('comparativa/unidades.js');
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>                            
+                            
                             <li class="">
-                                <a href="#etm" data-toggle="tab" aria-expanded="false">
-                                    Eficiencia Terminal Modificada
+                                <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
+                                    No Aprobados
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="#suspendidos" data-toggle="tab" aria-expanded="false">
-                                    No Aprobados
+                                <a href="#etm" data-toggle="tab" aria-expanded="false">
+                                    Eficiencia Terminal Modificada
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
