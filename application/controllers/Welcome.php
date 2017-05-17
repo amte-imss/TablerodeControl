@@ -67,7 +67,7 @@ class Welcome extends CI_Controller
             $this->template->setSubTitle($data["texts"]["subtitle"]);
             $this->template->setDescripcion($data["texts"]["descripcion"]);
 
-            $this->template->setMainContent("tc_template/login.tpl.php", $data, FALSE);
+            $this->template->setMainContent("tc_template/login_v2.tpl.php", $data, FALSE);
             //$this->template->setBlank("tc_template/index.tpl.php");
 
             $this->template->getTemplate(null, "tc_template/blank.tpl.php");
