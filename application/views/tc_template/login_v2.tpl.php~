@@ -140,6 +140,9 @@
             </div>          
             <div id="cores-area-principal" class="row cores-background">
                 <div class="col-md-9">
+                    <div class="cores-logo-animation">
+                        <img src="<?php echo base_url(); ?>assets/login/cores.png">    
+                    </div>                    
                     <div id="cores-area-animation"></div>
                 </div>
                 <div class="col-md-3 cores-column-info">
