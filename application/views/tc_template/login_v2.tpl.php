@@ -34,14 +34,14 @@
                     <div class="modal-header">                        
                         <div class="col-md-12">
                             <img class="cores-logo" src="<?php echo base_url(); ?>assets/login/cores.png">
-                            Inicio de sesión
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">Cerrar <span aria-hidden="true">&times;</span></button>
                         </div>
                     </div>
                     <div class="modal-body">
                         <div class="row">
 
-                            <div class="col-md-12">                                
+                            <div class="col-md-12">         
+                                Inicio de sesión                       
                                 <div class="login-html">
                                     <div class="login-form">
                                         <?php echo form_open('welcome/index', array('id' => 'session_form')); ?>
@@ -139,6 +139,7 @@
                 </div>
             </div>          
             <div id="cores-area-principal" class="row cores-background">
+            	<div class="cores-orbitas"></div>
                 <div class="col-md-9">
                     <div id="cores-area-animation"></div>
                 </div>
@@ -167,7 +168,7 @@
             function cores_animation() {
                 //var txt = x += 1;
                 //document.getElementById("demo").innerHTML = txt;
-                cores_render_points();
+                cores_render_points2();
             }
         </script>
     </body>

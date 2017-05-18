@@ -131,6 +131,6 @@ function cores_agrega_punto2(area1, size, i, sector) {
     var circle = $('<div>')
             .css(css)
             .addClass('cores-circle')
-            .css('animation-duration', (5+i)+'s');
+            .css('animation-duration', (3+i)+'s');
     area1.append(circle);    
 }

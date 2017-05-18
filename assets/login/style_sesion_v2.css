@@ -29,6 +29,16 @@ html, body{
     margin-right: 30px;
 }
 
+.cores-orbitas{
+    background-image: url("orbitas.png");
+    height: 81%;
+	width: 100%;
+	position: absolute;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	z-index: 30;
+}
+
 .cores-background{
     background-image: url("cores-background.jpg");
     height: 85%;
@@ -57,11 +67,13 @@ html, body{
 
 .cores-column-info{
     height: 100%;
+    z-index: 100;
 }
 
 .cores-slider-text{
-    font-size: 44px;
-    padding-top: 40px;
+	font-size: 35px;
+	margin-top: 50%;
+	line-height: 1.3em;
 }
 
 .modal-body{
@@ -184,19 +196,17 @@ html, body{
 }
 
 .cores-logo{
-    height: 50px;
+    height: 100px;
     margin-left: 10px;
 }
 
 
 .cores-help-modal{
     text-align: center;
-    color:white;
-    background-color: #009b9b;
 }
 
 .cores-help-modal a{
-    color:white;   
+ 
 }
 
 .cores-modal-left{
@@ -204,11 +214,19 @@ html, body{
 }
 
 .cores-orbit{
-    -webkit-animation: spin-right 500s linear infinite;
-    -moz-animation: spin-right 500s linear infinite;
-    -ms-animation: spin-right 500s linear infinite;
-    -o-animation: spin-right 500s linear infinite;
-    animation: spin-right 500s linear infinite;
+    -webkit-animation: spin-right 200s linear infinite;
+    -moz-animation: spin-right 200s linear infinite;
+    -ms-animation: spin-right 200s linear infinite;
+    -o-animation: spin-right 200s linear infinite;
+    animation: spin-right 200s linear infinite;
+}
+
+.cores-circle{
+	-webkit-animation: parpadeo 4s linear infinite;
+    -moz-animation: parpadeo 4s linear infinite;
+    -ms-animation: parpadeo 4s linear infinite;
+    -o-animation: parpadeo 4s linear infinite;
+    animation: parpadeo 4s linear infinite;
 }
 
 @keyframes spin-right {
@@ -219,5 +237,20 @@ html, body{
         -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes parpadeo {
+    0%   {width: 5px; height: 5px;}
+    50%  {width: 11px; height: 11px;}
+    100%  {width: 5px; height: 5px;}    
+}
+
+/* Standard syntax */
+@keyframes parpadeo {
+    0%   {width: 5px; height: 5px;}
+    50%  {width: 11px; height: 11px;}
+    100%  {width: 5px; height: 5px;}    
 }
 
