@@ -69,3 +69,25 @@ label.col-form-label{
 a.link_ficha_usuario:hover{
     background-color: #734e97 !important;
 }
+
+
+li .li-autocomplete:before {
+    color: #555;
+    content: '\f0f8';
+    font-family: FontAwesome;
+    margin-left: 0px;
+    padding-right: 3px;
+    color: #734e97;
+}
+
+.autocomplete_unidad:hover{
+    margin-bottom-color:red;
+    cursor:hand; 
+    text-decoration: underline;
+    color:#734e97;
+}
+
+.ul-autocomplete{
+    background: #ddd;
+    margin-top: -7px;
+}

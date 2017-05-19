@@ -1,11 +1,3 @@
-<style>
-    .autocomplete_unidad{
-        cursor: pointer;
-    }
-    .autocomplete_unidad:hover{
-        font-style: italic;
-    }
-</style>
 
 <?php foreach($unidades as $unidad){
     ?>
