@@ -138,7 +138,7 @@ class User_model extends CI_Model
             , 'u.clave_delegacional', 'd.nombre name_delegacion'
             , 'u.clave_categoria', 'c.nombre name_categoria'
             , 'u.id_unidad_instituto', 'ui.nombre name_unidad_ist', 'ui.clave_unidad'
-            , 'r.id_region', 'r.nombre name_region', 'r.clave_regional'
+            , 'r.id_region', 'r.nombre name_region'
             , 'u.email', 'ui.umae', 'ui.id_tipo_unidad'
             , 'ui.nivel_atencion', 'd.id_delegacion'
         );

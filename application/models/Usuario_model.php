@@ -61,18 +61,20 @@ class Usuario_model extends CI_Model
         $this->db->reset_query();
         $this->db->select(array(
             'id_unidad_instituto'
-            ,'nombre'
-            //,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
+            , 'nombre'
+                //,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
         ));
         if ($keyword != null)
         {
             $this->db->like('lower(concat(clave_unidad,$$ $$, nombre))', $keyword);
             $this->db->limit(10);
         }
-        if($tipo_unidad > 0){
+        if ($tipo_unidad > 0)
+        {
             $this->db->where('id_tipo_unidad', $tipo_unidad);
         }
-        if($delegacion > 0){
+        if ($delegacion > 0)
+        {
             $this->db->where('id_delegacion', $delegacion);
         }
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
@@ -80,9 +82,22 @@ class Usuario_model extends CI_Model
         return $resultado_unidades;
     }
 
-    public function registra_departamento($clave)
+    public function localiza_unidad($clave)
     {
-        return null;
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $unidad = null;
+        if (strlen($clave) > 7)
+        {
+            $busqueda = substr($clave, 0, 7);
+            $this->db->like('clave_unidad', $clave, 'after');
+            $resultado = $this->db->get('catalogos.unidades_instituto')->result_array();
+            if ($resultado)
+            {
+                $unidad = $resultado[0];
+            }
+        }
+        return $unidad;
     }
 
     public function registro_usuario(&$parametros = null)
@@ -104,7 +119,7 @@ class Usuario_model extends CI_Model
             $unidad_instituto = $this->get_unidad($usuario['adscripcion']);
             if ($unidad_instituto == null)
             {
-                $unidad_instituto = $this->registra_departamento($usuario['adscripcion']);
+                $unidad_instituto = $this->localiza_unidad($usuario['adscripcion']);
             }
             if ($unidad_instituto != null)
             {
@@ -229,20 +244,22 @@ class Usuario_model extends CI_Model
         $this->db->join('catalogos.delegaciones d', 'd.clave_delegacional = u.clave_delegacional', 'left');
         $this->db->join('catalogos.unidades_instituto ui', 'ui.id_unidad_instituto = u.id_unidad_instituto', 'left');
         $this->db->join('catalogos.regiones r', 'r.id_region = d.id_region', 'left');
-        
-        if(isset($filtros['type']) && isset($filtros['keyword']) && 
-                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email' ))){
-            $this->db->like('u.'.$filtros['type'], $filtros['keyword']);
+
+        if (isset($filtros['type']) && isset($filtros['keyword']) &&
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email')))
+        {
+            $this->db->like('u.' . $filtros['type'], $filtros['keyword']);
         }
-        
+
         $this->db->order_by('u.id_usuario');
         $tabla = $this->db->get('sistema.usuarios u')->result_array();
         //pr($this->db->last_query());
         $this->db->reset_query();
         $resultado['tabla'] = $tabla;
-        if(isset($filtros['type']) && isset($filtros['keyword']) && 
-                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email' ))){
-            $this->db->like('u.'.$filtros['type'], $filtros['keyword']);
+        if (isset($filtros['type']) && isset($filtros['keyword']) &&
+                !empty($filtros['keyword']) && in_array($filtros['type'], array('nombre', 'matricula', 'email')))
+        {
+            $this->db->like('u.' . $filtros['type'], $filtros['keyword']);
         }
         $this->db->select('count(*) cantidad');
         $resultado['total'] = $this->db->get('sistema.usuarios u')->result_array()[0]['cantidad'];
@@ -264,7 +281,7 @@ class Usuario_model extends CI_Model
             , 'u.clave_delegacional', 'd.nombre name_delegacion'
             , 'u.clave_categoria', 'c.nombre name_categoria'
             , 'u.id_unidad_instituto', 'ui.nombre name_unidad_ist', 'ui.clave_unidad'
-            , 'r.id_region', 'd.nombre name_region', 'r.clave_regional', 'u.password'
+            , 'r.id_region', 'd.nombre name_region', 'u.password'
             , 'u.email', 'ui.umae'
             , 'g.id_grupo', 'g.nombre nombre_grupo', 'g.nivel'
             , 'u.token'
@@ -288,8 +305,8 @@ class Usuario_model extends CI_Model
         if (count($result) > 0)
         {
             $return = $result[0];
-            $return['unidad_texto'] = $return['name_unidad_ist'].' ['.$return['clave_unidad'].']';
-            $return['categoria_texto'] = $return['name_categoria'].' ['.$return['clave_categoria'].']';
+            $return['unidad_texto'] = $return['name_unidad_ist'] . ' [' . $return['clave_unidad'] . ']';
+            $return['categoria_texto'] = $return['name_categoria'] . ' [' . $return['clave_categoria'] . ']';
         }
 
         $query->free_result();
@@ -301,11 +318,11 @@ class Usuario_model extends CI_Model
         $salida = false;
 
         $this->db->select('B.clave_delegacional');
-        $this->db->join('catalogos.delegaciones B','B.id_delegacion = A.id_delegacion', 'inner');
+        $this->db->join('catalogos.delegaciones B', 'B.id_delegacion = A.id_delegacion', 'inner');
         $this->db->where('A.id_unidad_instituto', $data ['unidad']);
         $id_delegacion = $this->db->get('catalogos.unidades_instituto A')->result_array()[0]['clave_delegacional'];
         $this->db->reset_query();
-        
+
         $this->db->where('id_usuario', $data ['id_usuario']);
         $this->db->set('email', $data ['email']);
         $this->db->set('clave_delegacional', $id_delegacion);
@@ -438,7 +455,7 @@ class Usuario_model extends CI_Model
 
                     if ($unidad_instituto == null)
                     {
-                        $unidad_instituto = $this->registra_departamento($usuario['adscripcion']);
+                        $unidad_instituto = $this->localiza_unidad($usuario['adscripcion']);
                     }
                     if ($unidad_instituto != null)
                     {

@@ -425,7 +425,7 @@ if (!function_exists('is_nivel_central'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 6 || $id == 13){
+            if($id == 3 || $id == 2 || $id == 1){
                 $salida = true;
             }
         }
@@ -439,7 +439,7 @@ if (!function_exists('is_nivel_operacional'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 3 || $id == 4 || $id == 5){
+            if($id == 6){
                 $salida = true;
             }
         }
@@ -453,7 +453,7 @@ if (!function_exists('is_nivel_tactico'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 2){
+            if($id == 5){
                 $salida = true;
             }
         }
@@ -467,8 +467,8 @@ if (!function_exists('is_nivel_estrategico'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 6 || $id == 13){
-                //$salida = true;
+            if($id == 4){
+                $salida = true;
             }
         }
         return $salida;

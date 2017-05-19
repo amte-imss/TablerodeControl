@@ -45,9 +45,9 @@
                             echo $this->form_complete->create_element(array('id' => 'categoria_texto', 
                                 'type' => 'text', 
                                 'value' => $usuarios['categoria_texto'],
-                                'attributes' => array('name' => 'categoria_texto', 'class' => 'form-control')));
+                                'attributes' => array('name' => 'categoria_texto', 'class' => 'form-control', 'autocomplete'=>'off')));
                             ?>
-                            <ul id="ul-autocomplete categoria_autocomplete" style="display:none;">
+                            <ul class="ul-autocomplete" id="categoria_autocomplete" style="display:none;">
                                 
                             </ul>
                         </div>
@@ -62,9 +62,9 @@
                             echo $this->form_complete->create_element(array('id' => 'unidad_texto', 
                                 'type' => 'text', 
                                 'value' => $usuarios['unidad_texto'], 
-                                'attributes' => array('name' => 'unidad_texto', 'class' => 'form-control')));
+                                'attributes' => array('name' => 'unidad_texto', 'class' => 'form-control', 'autocomplete'=>'off')));
                             ?>
-                            <ul id="ul-autocomplete unidad_autocomplete" style="display:none;">
+                            <ul class="ul-autocomplete" id="unidad_autocomplete" style="display:none;">
                                 
                             </ul>
                         </div>

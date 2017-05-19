@@ -114,7 +114,7 @@ class Comparativa_model extends MY_Model
                 '"DEL".nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("AA".cantidad_no_accesos) no_acceso'
+                'sum("C".cantidad_no_accesos) no_acceso'
             );
         } else
         {
@@ -122,14 +122,13 @@ class Comparativa_model extends MY_Model
                 '0', "'PROMEDIO' nombre",
                 'sum("C".cantidad_alumnos_certificados)/count(distinct "B".id_delegacion) aprobados',
                 'sum("C".cantidad_alumnos_inscritos)/count(distinct "B".id_delegacion) inscritos',
-                'sum("AA".cantidad_no_accesos)/count(distinct "B".id_delegacion) no_acceso'
+                'sum("C".cantidad_no_accesos)/count(distinct "B".id_delegacion) no_acceso'
             );
         }
 
         $this->db->select($select);
         $this->db->join('catalogos.delegaciones DEL', 'DEL.id_delegacion = B.id_delegacion', 'left');
-        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
-        $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');        
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'left');
@@ -139,6 +138,7 @@ class Comparativa_model extends MY_Model
             $fin = $filtros['periodo'].'/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
             $this->db->where('D.fecha_fin <=', $fin);
+            $this->db->where('E.anio', $filtros['periodo']);            
         }
         if (isset($filtros['umae']) && $filtros['umae'] != null && $filtros['umae'])
         {
@@ -261,7 +261,7 @@ class Comparativa_model extends MY_Model
                 '"B".nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("AA".cantidad_no_accesos) no_acceso'
+                'sum("C".cantidad_no_accesos) no_acceso'
             );
         } else
         {
@@ -269,13 +269,12 @@ class Comparativa_model extends MY_Model
                 '0', "'PROMEDIO' nombre",
                 'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
                 'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
-                'sum("AA".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
+                'sum("C".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
             );
         }
 
         $this->db->select($select);
-        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
-        $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');        
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
@@ -283,6 +282,7 @@ class Comparativa_model extends MY_Model
             $fin = $filtros['periodo'].'/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
             $this->db->where('D.fecha_fin <=', $fin);
+            $this->db->where('E.anio', $filtros['periodo']);            
         }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
@@ -367,7 +367,7 @@ class Comparativa_model extends MY_Model
                 '"B".nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("AA".cantidad_no_accesos) no_acceso'
+                'sum("C".cantidad_no_accesos) no_acceso'
             );
         } else
         {
@@ -375,21 +375,20 @@ class Comparativa_model extends MY_Model
                 '0', "'PROMEDIO' nombre",
                 'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
                 'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
-                'sum("AA".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
+                'sum("C".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
             );
         }
 
         $this->db->select($select);
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('hechos.accesos_implemetaciones AA', ' AA.id_categoria = C.id_categoria and AA.id_implementacion = C.id_implementacion and AA.id_sexo = C.id_sexo and AA.id_unidad_instituto = C.id_unidad_instituto', 'left');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');        
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
             $inicio = $filtros['periodo'].'/01/01';
             $fin = $filtros['periodo'].'/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
-            $this->db->where('D.fecha_fin <=', $fin);
+            $this->db->where('D.fecha_fin <=', $fin);           
         }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
@@ -463,13 +462,13 @@ class Comparativa_model extends MY_Model
             $where = " WHERE per.id_grupo_categoria = $id";
             $group = ",per.id_grupo_categoria, per.nombre";
         }
-        $where.= ' and del.id_region is not null and imp.fecha_inicio >= $$'.$anio.'/01/01$$ and imp.fecha_fin <= $$'.$anio.'/12/31$$';
+        $where.= ' and del.id_region is not null and imp.fecha_inicio >= $$'.$anio.'/01/01$$ and imp.fecha_fin <= $$'.$anio.'/12/31$$  AND cur.anio = '.$anio;
         $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
         sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,        
-        sum(acc.cantidad_no_accesos) nunca_entraron,        
-        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
+        sum(himp.cantidad_no_accesos) nunca_entraron,        
+        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(himp.cantidad_no_accesos))::float*100) etm,
         del.id_region,reg.nombre region                
         from hechos.hechos_implementaciones_alumnos himp
          left join catalogos.implementaciones imp ON(imp.id_implementacion = himp.id_implementacion)
@@ -479,12 +478,7 @@ class Comparativa_model extends MY_Model
          left join catalogos.regiones reg ON(reg.id_region = del.id_region)
          left join catalogos.categorias cat ON(cat.id_categoria = himp.id_categoria)
          left join catalogos.grupos_categorias per ON(per.id_grupo_categoria = cat.id_grupo_categoria)
-         left join hechos.accesos_implemetaciones acc ON(
-         		acc.id_implementacion = himp.id_implementacion and
-         		acc.id_unidad_instituto = himp.id_unidad_instituto and
-         		acc.id_categoria = himp.id_categoria and
-         		acc.id_sexo = himp.id_sexo
-        	)
+        
           $where
         group by del.id_region, region
         order by 1,3 asc";
@@ -540,9 +534,9 @@ class Comparativa_model extends MY_Model
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
         sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) suspendidos,
-        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) -  sum(acc.cantidad_no_accesos) no_aprobados,
-        sum(acc.cantidad_no_accesos) nunca_entraron,
-        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(acc.cantidad_no_accesos))::float*100) etm,
+        sum(himp.cantidad_alumnos_inscritos) - sum(himp.cantidad_alumnos_certificados) -  sum(himp.cantidad_no_accesos) no_aprobados,
+        sum(himp.cantidad_no_accesos) nunca_entraron,
+        trunc(sum(himp.cantidad_alumnos_certificados)/(sum(himp.cantidad_alumnos_inscritos)-sum(himp.cantidad_no_accesos))::float*100) etm,
         del.clave_delegacional id_del, del.nombre delegacion
         $select
         ,EXTRACT(year FROM imp.fecha_inicio) anio
@@ -554,13 +548,7 @@ class Comparativa_model extends MY_Model
             unit.id_unidad_instituto = himp.id_unidad_instituto)
          left join catalogos.delegaciones del ON(del.id_delegacion = unit.id_delegacion)
          left join catalogos.categorias cat ON(cat.id_categoria = himp.id_categoria)
-         left join catalogos.grupos_categorias per ON(per.id_grupo_categoria = cat.id_grupo_categoria)
-         left join hechos.accesos_implemetaciones acc ON(
-                acc.id_implementacion = himp.id_implementacion and
-                acc.id_unidad_instituto = himp.id_unidad_instituto and
-                acc.id_categoria = himp.id_categoria and
-                acc.id_sexo = himp.id_sexo
-            )
+         left join catalogos.grupos_categorias per ON(per.id_grupo_categoria = cat.id_grupo_categoria)        
           $where
         group by id_del, delegacion $group , anio
         order by id_del,3 asc";
