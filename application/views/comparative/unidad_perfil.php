@@ -125,7 +125,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
                     )
             );
             ?>
-            <ul data-autocomplete-id="1" id="unidad1_autocomplete" style="display:none;"></ul>
+            <ul class="ul-autocomplete" data-autocomplete-id="1" id="unidad1_autocomplete" style="display:none;"></ul>
         </div>
         <?php echo form_error_format('unidad1'); ?>
     </div>
@@ -148,7 +148,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
                     )
             );
             ?>
-            <ul data-autocomplete-id="2" id="unidad2_autocomplete" style="display:none;"></ul>
+            <ul class="ul-autocomplete" data-autocomplete-id="2" id="unidad2_autocomplete" style="display:none;"></ul>
         </div>
         <?php echo form_error_format('unidad2'); ?>
     </div>

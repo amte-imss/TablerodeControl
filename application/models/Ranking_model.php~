@@ -82,12 +82,12 @@ class Ranking_model extends CI_Model
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $select = array(
-                'B.id_unidad_instituto', '"B".nombre nombre', 'G.nombre programa', 'sum("C".cantidad_alumnos_certificados) cantidad'
+                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', 'G.nombre programa', 'sum("C".cantidad_alumnos_certificados) cantidad'
             );
         } else
         {
             $select = array(
-                'B.id_unidad_instituto', '"B".nombre nombre', 'sum("C".cantidad_alumnos_certificados) cantidad'
+                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', 'sum("C".cantidad_alumnos_certificados) cantidad'
             );
         }
         $this->db->select($select);
@@ -109,13 +109,13 @@ class Ranking_model extends CI_Model
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
             $group_by = array(
-                'B.id_unidad_instituto', '"B".nombre', 'G.nombre'
+                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)', 'G.nombre'
             );
             $this->db->group_by($group_by);
         } else
         {
             $group_by = array(
-                'B.id_unidad_instituto', '"B".nombre'
+                'B.id_unidad_instituto', 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)'
             );
             $this->db->group_by($group_by);
         }

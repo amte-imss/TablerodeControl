@@ -52,8 +52,6 @@ class Welcome extends CI_Controller
                         $this->session->set_flashdata('flash_usuario', $mensajes[$valido]);
                         break;
                 }
-            }else{
-            	$data['errores'] = validation_errors();
             }
         }
 

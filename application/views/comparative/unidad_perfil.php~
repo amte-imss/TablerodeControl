@@ -1,32 +1,52 @@
 <?php
 echo js('chart_options.js');
-echo js('comparativa/unidad_tipo_curso.js');
-echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativa_unidad'));
+echo js('comparativa/unidad_perfil.js');
+echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_umae'));
 ?>
 <hr>
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">* Tipo de curso:</span>
+            <span class="input-group-addon">* Tipo de perfil:</span>
             <?php
             echo $this->form_complete->create_element(
-                    array('id' => 'tipo_curso',
+                    array('id' => 'perfil',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'options' => $tipos_cursos,
+                        'options' => $subcategorias,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
-                            'title' => 'Tipo de curso',
+                            'title' => 'perfil',
+                            'onchange' => 'cmbox_perfil()')
+                    )
+            );
+            ?>
+        </div>
+        <?php echo form_error_format('perfil'); ?>
+    </div>
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">* Perfil:</span>
+            <?php
+            echo $this->form_complete->create_element(
+                    array('id' => 'subperfil',
+                        'type' => 'dropdown',
+                        'first' => array('' => 'Seleccione...'),
+                        'options' => [],
+                        'attributes' => array(
+                            'class' => 'form-control  form-control input-sm',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'title' => 'subperfil',
                             'onchange' => '')
                     )
             );
             ?>
         </div>
-        <?php echo form_error_format('tipo_curso'); ?>
-    </div>    
-
+        <?php echo form_error_format('subperfil'); ?>
+    </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">Nivel de atención:</span>
@@ -54,7 +74,9 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
         </div>
         <?php echo form_error_format('nivel'); ?>
     </div>    
-
+</div>
+<hr>
+<div class="row form-group">    
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Tipo de unidad:</span>
@@ -77,15 +99,11 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                 'attributes' => $tu));
             ?>
         </div>
-        <?php echo form_error_format('tipo_unidad'); ?>
     </div>
-</div>           
-<hr>
-<div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Unidad:</span>
-            <input type="hidden" value="<?php echo $usuario['id_unidad_instituto']; ?>" name="unidad1" id="unidad1">
+            <input type="hidden" value="" name="unidad1" id="unidad1">
             <?php
             $atributos_unidad1 = array(
                 'class' => 'form-control  form-control input-sm  unidad_texto',
@@ -94,7 +112,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                 'data-id' => 1,
                 'autocomplete' => 'off',
                 'placeholder' => 'Buscar unidad por nombre',
-                'title' => 'Unidad 1');
+                'title' => 'Por favor escriba el nombre de la unidad');
             if (is_nivel_operacional($usuario['grupos']))
             {
                 $atributos_unidad1 += array('disabled' => true);
@@ -109,7 +127,7 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             ?>
             <ul class="ul-autocomplete" data-autocomplete-id="1" id="unidad1_autocomplete" style="display:none;"></ul>
         </div>
-<?php echo form_error_format('unidad1'); ?>
+        <?php echo form_error_format('unidad1'); ?>
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -126,14 +144,17 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
                             'data-id' => 2,
                             'autocomplete' => 'off',
                             'placeholder' => 'Buscar unidad por nombre',
-                            'title' => 'Unidad 2')
+                            'title' => 'Por favor escriba el nombre de la unidad')
                     )
             );
             ?>
-            <ul class="ul-autocomplete" data-autocomplete-id="2" id="unidad2_autocomplete" style="display:none;"></ul>
+            <ul data-autocomplete-id="2" id="unidad2_autocomplete" style="display:none;"></ul>
         </div>
-<?php echo form_error_format('unidad2'); ?>
+        <?php echo form_error_format('unidad2'); ?>
     </div>
+</div>            
+<hr>
+<div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Año:</span>
@@ -153,11 +174,11 @@ echo form_open('comparativa/unidades_tipo_curso', array('id' => 'form_comparativ
             );
             ?>
         </div>
-<?php echo form_error_format('periodo'); ?>
+        <?php echo form_error_format('periodo'); ?>
     </div>
-</div>    
+</div>            
 <hr>
-<div class="row form-group">    
+<div class="row form-group">
     <div class="col-md-6">
         <div class="input-group input-group-sm">
             <input type="submit" name="submit" value="Comparar" class="btn btn-primary">

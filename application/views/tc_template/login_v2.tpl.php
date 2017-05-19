@@ -105,7 +105,7 @@
                                                 <br>
                                                 <div class="captcha-container" id="captcha_first">
                                                     <img id="captcha_img" src="<?php echo site_url(); ?>/captcha" alt="CAPTCHA Image" />
-                                                    <a class="btn btn-lg btn-primary pull-right" onclick="new_captcha()">
+                                                    <a class="btn btn-lg btn-success pull-right" onclick="new_captcha()">
                                                         <span class="glyphicon glyphicon-refresh"></span>
                                                     </a>
                                                 </div>                                                                                                
@@ -139,14 +139,14 @@
                 </div>
             </div>          
             <div id="cores-area-principal" class="row cores-background">
-            	<div class="cores-orbitas"></div>
+                <div class="cores-orbitas"></div>
                 <div class="col-md-9">
                     <div id="cores-area-animation"></div>
                 </div>
                 <div class="col-md-3 cores-column-info">
                     <div class="cores-info">
                         <div class="row">
-                            <div><p><a href="#" data-toggle="modal" data-target="#myModal">Acceso <i class="fa fa-bars" aria-hidden="true"></i></a></p></div>                    
+                            <div><p><a class="cores-acceso" href="#" data-toggle="modal" data-target="#myModal">Acceso <i class="fa fa-bars" aria-hidden="true"></i></a></p></div>                    
                         </div>                        
                         <div class="row cores-slider-text">
                             <div><p id="cores-banner">Decisiones basadas en información</p></div>                    
@@ -170,6 +170,14 @@
                 //document.getElementById("demo").innerHTML = txt;
                 cores_render_points2();
             }
+<?php
+if (isset($errores))
+{
+    ?>
+        $('#myModal').modal({show:true});
+    <?php
+}
+?>
         </script>
     </body>
 </html>

@@ -64,7 +64,7 @@
                                 'value' => $usuarios['unidad_texto'], 
                                 'attributes' => array('name' => 'unidad_texto', 'class' => 'form-control')));
                             ?>
-                            <ul id="ul-autocomplete unidad_autocomplete" style="display:none;">
+                            <ul id="unidad_autocomplete" style="display:none;">
                                 
                             </ul>
                         </div>

@@ -10,6 +10,18 @@ html, body{
     font-family: "Roboto-Regular";
 }
 
+.fa {
+	color: #6a6f8c !important; 
+}
+
+.btn-success{
+	background-color: #009b9b;
+}
+
+a.cores-acceso{
+	color: #6a6f8c !important; 
+}
+
 .cores-logos{
     float: right;
     margin-right: 30px;
@@ -203,8 +215,6 @@ html, body{
 
 .cores-help-modal{
     text-align: center;
-    color:white;
-    background-color: #009b9b;
 }
 
 .cores-help-modal a{

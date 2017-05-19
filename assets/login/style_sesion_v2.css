@@ -10,6 +10,18 @@ html, body{
     font-family: "Roboto-Regular";
 }
 
+.fa {
+	color: #6a6f8c !important; 
+}
+
+.btn-success{
+	background-color: #009b9b !important;
+}
+
+a.cores-acceso{
+	color: #6a6f8c !important; 
+}
+
 .cores-logos{
     float: right;
     margin-right: 30px;
