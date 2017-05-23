@@ -12,10 +12,10 @@ $config['alert_msg'] = array(
 
 $config['periodo'] = array(
 	//'ANUAL' => array('id'=>1),
-	'SEMESTRAL' => array('id'=>2),
-	'TRIMESTRAL' => array('id'=>3),
-	'BIMESTRAL' => array('id'=>4),
-	'MENSUAL' => array('id'=>5),
+	'SEMESTRAL' => array('id'=>2, 'valor'=>'Semestral'),
+	'TRIMESTRAL' => array('id'=>3, 'valor'=>'Trimestral'),
+	'BIMESTRAL' => array('id'=>4, 'valor'=>'Bimestral'),
+	'MENSUAL' => array('id'=>5, 'valor'=>'Mensual'),
 );
 
 $config['tipo_busqueda'] = array(
@@ -32,7 +32,7 @@ $config['tipos_busqueda'] = array(
 	'DELEGACION' => array('id'=>'delegacion', 'valor'=>'Delegación'),
 	'NIVEL_ATENCION' => array('id'=>'nivel_atencion', 'valor'=>'Nivel de atención'),
 	'PERFIL' => array('id'=>'perfil', 'valor'=>'Perfil'),
-	'PERIODO' => array('id'=>'periodo', 'valor'=>'Periodo'),
+	//'PERIODO' => array('id'=>'periodo', 'valor'=>'Periodo'),
 	'REGION' => array('id'=>'region', 'valor'=>'Región'),
 	'TIPO_CURSO' => array('id'=>'tipo_curso', 'valor'=>'Tipo de curso'),
 	'UMAE' => array('id'=>'umae', 'valor'=>'UMAE')

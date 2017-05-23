@@ -5,8 +5,7 @@
  * @author      : JZDP
  * */
 class En_grupos {
-    const
-            __default = '',
+    /*__default = '',
             N1_CEIS = 5,
             N1_DH = 3,
             N1_DUMF = 4,
@@ -20,6 +19,22 @@ class En_grupos {
             NIVEL_CENTRAL = 13,
             ADMIN = 11,
             SUPERADMIN = 6
+        ;*/
+    const
+            __default = '',
+            N1_CEIS = 6,
+            N1_DH = 6,
+            N1_DUMF = 6,
+            N1_DEIS = 8,
+            N1_DM = 8,
+            N1_JDES = 8,
+            N2_CAME = 5,
+            N2_CPEI = 5,
+            N2_DGU = 7,
+            N3_JSPM = 4,
+            NIVEL_CENTRAL = 3,
+            ADMIN = 2,
+            SUPERADMIN = 1
         ;
 /*11	Administrador
 13	Nivel Central

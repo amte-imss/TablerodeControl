@@ -30,7 +30,7 @@ class Informacion_general extends MY_Controller
         //pr($_SESSION['usuario']);
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+        $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
         $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
         $datos['catalogos'] = $cat_list->obtener_catalogos($configuracion['catalogos']); //Catalogo_listado::PERIODO        
         $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos        
@@ -49,10 +49,11 @@ class Informacion_general extends MY_Controller
         $datos = array('catalogos'=>array('implementaciones'=>array(),'periodo'=>array()));
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];        
         if(!is_null($this->session->userdata('usuario'))){
-            $this->load->library('Catalogo_listado');
+            $this->load->library('Catalogo_listado'); //pr($this->config->item('periodo'));
             $cat_list = new Catalogo_listado(); //Obtener catálogos
-            $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC', 'condicion'=>'id_periodo>1'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
+            $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC')));
             //pr($datos['catalogos']);
+            $datos['catalogos']['periodo'] = dropdown_options($this->config->item('periodo'), 'id', 'valor');
             $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
             //pr($listado_subcategorias);
             foreach ($listado_subcategorias as $key_ls => $listado) {
@@ -77,7 +78,8 @@ class Informacion_general extends MY_Controller
         if(!is_null($this->session->userdata('usuario'))){        
             $this->load->library('Catalogo_listado');
             $cat_list = new Catalogo_listado(); //Obtener catálogos
-            $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::PERIODO=>array('orden'=>'id_periodo DESC'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
+            $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC')));
+            $datos['catalogos']['periodo'] = dropdown_options($this->config->item('periodo'), 'id', 'valor');
             $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
             foreach ($listado_subcategorias as $key_ls => $listado) {
                 $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
@@ -97,7 +99,7 @@ class Informacion_general extends MY_Controller
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $this->load->library('Catalogo_listado');
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::REGIONES, Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')));
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::REGIONES, Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC')));
         $tipos_busqueda = $this->config->item('tipo_busqueda');
         $tipo_grafica = $this->config->item('tipo_grafica');
         $datos['catalogos']['tipos_busqueda'] = array($tipos_busqueda['UMAE']['id']=>$tipos_busqueda['UMAE']['valor'], $tipos_busqueda['DELEGACION']['id']=>$tipos_busqueda['DELEGACION']['valor']);
@@ -137,7 +139,8 @@ class Informacion_general extends MY_Controller
                     case 'ud':
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
+                            //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
                             $resultado['form']['label'] = $lenguaje['umae'];
                             $resultado['form']['path'] = 'unidad';
                             $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
@@ -163,7 +166,8 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['path'] = 'tipo_unidad';
                         $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['tipo_unidad']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                         //$resultado['form']['destino'] = '#unidad_capa';
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
+                        //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_nivel_atencion', 'nivel_atencion_nombre');
                         $resultado['resultado'] = true;
                         break;
@@ -172,10 +176,12 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['path'] = 'unidad';
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#umae_capa');");
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
                         } else {
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/unidad', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.clave, tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
                         }
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_tipo_unidad', 'tipo_unidad');
                         $resultado['resultado'] = true;
@@ -184,7 +190,8 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['label'] = $lenguaje['unidades'];
                         $resultado['form']['path'] = 'unidad';
                         $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
+                        //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
                         $resultado['resultado'] = true;
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
                         //$vista = 'listado_radio.tpl.php';
@@ -330,7 +337,7 @@ class Informacion_general extends MY_Controller
                 if(!is_null($this->session->userdata('usuario'))){
                     $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
                     //pr($datos_busqueda);
-                    $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                    $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                     //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                     //pr($datos['datos']);                
                     if(!empty($datos['datos'])){
@@ -404,36 +411,36 @@ class Informacion_general extends MY_Controller
                     case $tipos_busqueda['PERFIL']['id']:
                         $extra = array('fields'=>'"hia"."id_categoria", "gc"."id_grupo_categoria", "gc"."nombre" as "grupo_categoria", "gc"."order" as "grupo_categoria_orden", "sub"."id_subcategoria", "sub"."nombre" as "perfil", "sub"."order" as "perfil_orden",
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'"hia"."id_categoria", "gc"."id_grupo_categoria", "gc"."nombre", "gc"."order", "sub"."id_subcategoria", "sub"."nombre", "sub"."order"');
                         break;
                     case $tipos_busqueda['TIPO_CURSO']['id']:
                         $extra = array('fields'=>'"cur"."id_tipo_curso", "tc"."nombre" as "tipo_curso",
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'"cur"."id_tipo_curso", "tc"."nombre"');
                         break;
                     case $tipos_busqueda['NIVEL_ATENCION']['id']:
                         $extra = array('fields'=>'case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion, 
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'uni.nivel_atencion');
                         break;
-                    case $tipos_busqueda['PERIODO']['id']:
-                        $extra = array('fields'=>'EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin,
+                    /*case $tipos_busqueda['PERIODO']['id']:
+                        $extra = array('fields'=>'imp.anio anio_fin,
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'imp.fecha_inicio');
-                        break;
+                        break;*/
                     case $tipos_busqueda['REGION']['id']:
                         $extra = array('fields'=>'"reg"."id_region", "reg"."nombre" as "region",
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'"reg"."id_region", "reg"."nombre"');
                         break;
                     case $tipos_busqueda['DELEGACION']['id']:
                         $extra = array('fields'=>'"del"."id_delegacion", "del"."nombre" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(no_acc.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(no_acc.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
                             'group'=>'"del"."id_delegacion", "del"."nombre"');
                     break;
                 }
@@ -477,13 +484,13 @@ class Informacion_general extends MY_Controller
                             $resultado['nivel_atencion'][$dato['nivel_atencion']] = $this->crear_arreglo_por_tipo($resultado['nivel_atencion'][$dato['nivel_atencion']], $dato);
                         }
                         //ksort($resultado['nivel_atencion']);
-                        if($datos_busqueda['tipos_busqueda']==$tipos_busqueda['PERIODO']['id']){
+                        /*if($datos_busqueda['tipos_busqueda']==$tipos_busqueda['PERIODO']['id']){
                             //Periodo
                             if(!isset($resultado['periodo'][$dato['anio_fin']])){
                                 $resultado['periodo'][$dato['anio_fin']] = array();
                             }
                             $resultado['periodo'][$dato['anio_fin']] = $this->crear_arreglo_por_tipo($resultado['periodo'][$dato['anio_fin']], $dato);
-                        }
+                        }*/
                         if($datos_busqueda['tipos_busqueda']==$tipos_busqueda['REGION']['id']){
                             //Región
                             if(!isset($resultado['region'][$dato['region']])){
@@ -533,13 +540,13 @@ class Informacion_general extends MY_Controller
                     $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
                 }
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, "mes"."nombre" as "mes", 
-                    EXTRACT(YEAR FROM imp.fecha_inicio) anio_fin, "cur"."id_tipo_curso", 
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda/*+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
+                    imp.anio anio_fin, "cur"."id_tipo_curso", 
                     "tc"."nombre" as "tipo_curso", "gc"."id_grupo_categoria", "gc"."nombre" as "grupo_categoria", 
                     "gc"."order" as "grupo_categoria_orden", "sub"."id_subcategoria", "sub"."nombre" as "perfil", "sub"."order" as "perfil_orden", 
                     SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, 
-                    "gc"."order" as "grupo_categoria_orden", COALESCE(SUM(no_acc.cantidad_no_accesos), 0) as cantidad_no_accesos, 
-                    (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-COALESCE(SUM(no_acc.cantidad_no_accesos), 0)) as cantidad_no_aprobados, 
+                    "gc"."order" as "grupo_categoria_orden", COALESCE(SUM(hia.cantidad_no_accesos), 0) as cantidad_no_accesos, 
+                    (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-COALESCE(SUM(hia.cantidad_no_accesos), 0)) as cantidad_no_aprobados, 
                     EXTRACT(month FROM fecha_inicio) as periodo_id, (CASE WHEN EXTRACT(month FROM fecha_inicio) = 1 THEN \'Enero\'
                                     WHEN EXTRACT(month FROM fecha_inicio) = 2 THEN \'Febrero\'
                                     WHEN EXTRACT(month FROM fecha_inicio) = 3 THEN \'Marzo\' 
@@ -551,10 +558,10 @@ class Informacion_general extends MY_Controller
                                     WHEN EXTRACT(month FROM fecha_inicio) = 9 THEN \'Septiembre\' 
                                     WHEN EXTRACT(month FROM fecha_inicio) = 10 THEN \'Octubre\' 
                                     WHEN EXTRACT(month FROM fecha_inicio) = 11 THEN \'Noviembre\' 
-                                    ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio), "mes"."nombre", 
-                    EXTRACT(YEAR FROM imp.fecha_inicio), "cur"."id_tipo_curso", "tc"."nombre", 
+                                    ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio), 
+                    imp.anio, "cur"."id_tipo_curso", "tc"."nombre", 
                     "gc"."id_grupo_categoria", "gc"."nombre", "gc"."order", 
-                    "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                    "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')*/); ////Obtener listado de evaluaciones de acuerdo al año seleccionado --"mes"."nombre" as "mes", "mes"."nombre", 
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']); exit();
                 $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array());
@@ -656,6 +663,19 @@ class Informacion_general extends MY_Controller
             }
         } else {
             redirect(site_url()); //Redirigir al inicio del sistema si se desea acceder al método mediante una petición normal, no ajax
+        }
+    }
+
+    public function obtener_umae(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+
+                $cat_list = new Catalogo_listado(); //Obtener catálogos
+                $catalogos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND anio='.$datos_busqueda['anio'], 'valor'=>"nombre"))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+                
+                echo json_encode($catalogos['unidades_instituto']);
+            }
         }
     }
 }

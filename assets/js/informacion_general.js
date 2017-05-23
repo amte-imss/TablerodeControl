@@ -83,6 +83,11 @@ function calcular_totales_generales(path) {
         dataType: 'json',
         beforeSend: function (xhr) {
             mostrar_loader();
+            $('#tipos_curso').val('');
+            $('#nivel_atencion').val('');
+            $('#region').val('');
+            $('#delegacion').val('');
+            $('#umae').val('');
         }
     })
     .done(function (response) {
@@ -516,10 +521,12 @@ function limpiar_filtros_listados(){
 
 function mostrar_tipo_grafica(elemento){
     $(elemento+" > option").each(function() {
-        //alert(this.text + ' - ' + this.value+' - '+this.selected);
         if($('#capa_'+this.value).length>0){
             $('#'+this.value).val('');
             if(this.selected==true){
+                if($('#tipos_busqueda').val()=='umae'){ ///Realizar carga de catálogo de UMAEs
+                    obtener_umae(site_url+'/informacion_general/obtener_umae', '#form_busqueda', '#umae')
+                }
                 $('#capa_'+this.value).show();
                 $('#container_'+this.value).show();
                 calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');
@@ -528,6 +535,36 @@ function mostrar_tipo_grafica(elemento){
                 $('#container_'+this.value).hide();
             }
         }
+    });
+}
+
+function obtener_umae(path, form_recurso, elemento_resultado) {
+    var dataSend = $(form_recurso).serialize();
+    $.ajax({
+        url: path,
+        data: dataSend,
+        method: 'POST',
+        dataType: 'JSON',
+        beforeSend: function (xhr) {
+            //$(elemento_resultado).html(create_loader());
+            //mostrar_loader();
+        }
+    })
+    .done(function (response) {
+        //var $el = $(elemento_resultado);
+        $(elemento_resultado+' option:gt(0)').remove();
+        //$el.empty(); // remove old options
+        $.each(response, function(key,value) {
+            console.log(key+' : '+value);
+            $(elemento_resultado).append($("<option></option>").attr("value", key).text(value));
+        });
+    })
+    .fail(function (jqXHR, textStatus) {
+        $(elemento_resultado).html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+    })
+    .always(function () {
+        //remove_loader();
+        //ocultar_loader();
     });
 }
 

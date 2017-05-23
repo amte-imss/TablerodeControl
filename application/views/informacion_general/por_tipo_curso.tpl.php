@@ -257,6 +257,14 @@
         $('#btn_buscar').click(function() {
             buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
         });
+        $('#periodo_seleccion').change(function() {
+            //buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+            buscar_filtros_listados(site_url+'/informacion_general/buscar_filtros_listados', '#form_busqueda', 'tipo_curso', 'perfil');
+        });
+        $('#anio').change(function() {
+            //buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
+            buscar_filtros_listados(site_url+'/informacion_general/buscar_filtros_listados', '#form_busqueda', 'tipo_curso', 'perfil');
+        });
         $( "#btn_limpiar" ).click(function() {
             limpiar_filtros_listados();
         });
