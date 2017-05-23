@@ -56,7 +56,8 @@ class Buscador extends CI_Controller
                         $delegacion = $this->input->post('delegacion', true);
                     }
                 }
-                $output['unidades'] = $this->usuario->lista_unidad($keyword, $tipo_unidad, $delegacion);
+                $periodo = $this->input->post('periodo', true);
+                $output['unidades'] = $this->usuario->lista_unidad($keyword, $tipo_unidad, $delegacion, $periodo);
                 echo $this->load->view('buscador/unidades_instituto', $output, true);
             }
         }
@@ -111,25 +112,22 @@ class Buscador extends CI_Controller
     {
         if ($this->input->post())
         {
+            $this->load->model('Buscador_model', 'buscador');
             $usuario = $this->session->userdata('usuario');
             $id_tipo_unidad = $this->input->post('tipo_unidad', true);
             $umae = $umae == 1 ? true : false;
             $delegacion = 0;
             $condiciones = array('umae' => $umae,
-                'id_tipo_unidad' => $id_tipo_unidad);
+                'id_tipo_unidad' => $id_tipo_unidad, 'agrupamiento' => 0);
             if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
                 $delegacion = $usuario['id_delegacion'];
                 $condiciones += array('id_delegacion' => $delegacion);
+            }            
+            if(is_nivel_central($usuario['grupos']) && $this->input->post('agrupamiento') &&  $this->input->post('agrupamiento', true) == 1){
+                $condiciones['agrupamiento'] = 1;
             }
-            $cat_list = new Catalogo_listado(); //Obtener catálogos
-            $output = $cat_list->obtener_catalogos(array(
-                Catalogo_listado::UNIDADES_INSTITUTO => array(
-                    'condicion' => $condiciones
-                    , /* 'valor' => "concat(nombre,' [',clave_unidad, ']')" */
-                    'valor' => 'nombre')
-                    )
-            );
+            $output = $this->buscador->get_unidades($condiciones);
             echo json_encode($output);
         }
     }

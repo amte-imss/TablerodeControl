@@ -55,10 +55,13 @@ class Usuario_model extends CI_Model
         return $categoria;
     }
 
-    public function lista_unidad($keyword = null, $tipo_unidad = 0, $delegacion = 0)
+    public function lista_unidad($keyword = null, $tipo_unidad = 0, $delegacion = 0, $periodo = "")
     {
         $this->db->flush_cache();
         $this->db->reset_query();
+        if($periodo == null ||$periodo == ""){
+            $periodo = date("Y");
+        }
         $this->db->select(array(
             'id_unidad_instituto'
             , 'nombre'
@@ -77,8 +80,9 @@ class Usuario_model extends CI_Model
         {
             $this->db->where('id_delegacion', $delegacion);
         }
+        $this->db->where('anio', $periodo);
         $resultado_unidades = $this->db->get('catalogos.unidades_instituto')->result_array();
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         return $resultado_unidades;
     }
 

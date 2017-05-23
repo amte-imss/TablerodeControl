@@ -8,10 +8,14 @@ function cmbox_comparativa() {
         if (id_destino == 2) {
             destino = site_url + '/comparativa/umae_perfil';
         }
+        var agrupamiento = 0;
+        if (document.getElementById('agrupamiento') != null) {
+            agrupamiento = document.getElementById('agrupamiento').value;
+        }
         $.ajax({
             url: destino
             , method: "post"
-            , data: {vista: 1}
+            , data: {vista: 1, agrupamiento: agrupamiento}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -82,7 +86,7 @@ function cmbox_delegacion() {
                 $('#unidad1').empty();
                 $('#unidad1').append('<option value="">Seleccionar...</option>');
                 $('#unidad2').empty();
-                $('#unidad2').append('<option value="">Seleccionar...</option>');               
+                $('#unidad2').append('<option value="">Seleccionar...</option>');
                 ocultar_loader();
             });
         }
@@ -92,10 +96,14 @@ function cmbox_delegacion() {
 function cmbox_tipo_unidad() {
     var tipo_unidad = document.getElementById('tipo_unidad').value;
     var umae = 1;
+    var agrupamiento = 0;
+    if (document.getElementById('agrupamiento') != null) {
+        agrupamiento = document.getElementById('agrupamiento').value;
+    }
     $.ajax({
         url: site_url + "/buscador/get_unidades/" + umae
         , method: "post"
-        , data: {tipo_unidad:tipo_unidad}
+        , data: {tipo_unidad: tipo_unidad, agrupamiento: agrupamiento}
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }
@@ -111,11 +119,9 @@ function cmbox_tipo_unidad() {
         $('#unidad2').append('<option value="0">PROMEDIO</option>');
         // Use jQuery's each to iterate over the opts value
         $.each(opts, function (i, d) {
-            $.each(d, function(j, data){            
-                $('#unidad1').append('<option value="' + j + '">' + data + '</option>');
-                $('#unidad2').append('<option value="' + j + '">' + data + '</option>');
-            });
-        });       
+            $('#unidad1').append('<option value="' + d.id_unidad_instituto + '">' + d.nombre + '</option>');
+            $('#unidad2').append('<option value="' + d.id_unidad_instituto + '">' + d.nombre + '</option>');
+        });
         ocultar_loader();
     });
 }

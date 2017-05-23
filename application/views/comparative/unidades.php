@@ -7,13 +7,13 @@ echo js('comparativa/unidades.js');
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
-            <div id="filtros_capa_header" class="card-header" data-background-color="blue" data-toggle="collapse" data-target="#filtros_capa">
+            <div id="filtros_capa_header" class="card-header" data-background-color="green" data-toggle="collapse" data-target="#filtros_capa">
                 <a href="#" data-toggle="collapse" data-target="#filtros_capa">Filtros<i class="fa fa-arrow-right pull-right" aria-hidden="true"></i><!-- <div class="material-icons pull-right">keyword_arrow_right</div> -->
                 </a>
             </div>
             <?php
             echo form_open('comparativa/unidades', array('id' => 'form_comparativa'));
-            ?>
+            ?>            
             <div id="filtros_capa" class="card-content collapse">
                 <div class="row form-group">                                        
                     <div class="col-md-4">

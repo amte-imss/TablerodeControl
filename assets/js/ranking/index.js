@@ -2,10 +2,14 @@ $(function () {
     $('#form_ranking').submit(function (event) {
         event.preventDefault();
         $('#alert-ranking').css('display', 'none');
+        var agrupamiento = 0;
+        if(document.getElementById('agrupamiento') != null){
+            agrupamiento = document.getElementById('agrupamiento').value;
+        }
         $.ajax({
             url: $(this).attr('action')
             , method: "post"
-            , data: $(this).serialize()
+            , data: $(this).serialize() + '&agrupamiento=' + agrupamiento
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -39,7 +43,7 @@ function aprobados(datos) {
     }
     datos = procesa_datos(datos);
     var periodo = $("#periodo option:selected").text();
-    var colores = ['#0090b9'];
+    var colores = ['#0095bc'];
     var titulo_grafica = "Ranking de alumnos aprobados del programa " + programa + " en " + periodo;
     if (id_programa == "") {
         titulo_grafica = "Ranking de alumnos aprobados " + " en " + periodo;
@@ -58,7 +62,7 @@ function eficiencia_terminal(datos) {
 
     datos = procesa_datos_etm(datos);
     var periodo = 2016;
-    var colores = ['#FCB220'];
+    var colores = ['#f3b510'];
     var titulo_grafica = "Ranking por eficiencia terminal modificada del programa " + programa + " en " + periodo;
     if (id_programa == "") {
         titulo_grafica = "Ranking por eficiencia terminal modificada  " + " en " + periodo;

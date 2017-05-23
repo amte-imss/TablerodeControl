@@ -53,6 +53,7 @@ class Ranking extends MY_Controller
                 $usuario['umae'] = true;
             }
             $datos = $this->ranking->get_data($usuario, $this->input->post());
+//            pr($this->db->last_query());
             echo json_encode($datos);
             //$this->output->enable_profiler(true);
         }

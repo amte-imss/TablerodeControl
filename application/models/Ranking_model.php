@@ -78,7 +78,7 @@ class Ranking_model extends CI_Model
     private function get_aprobados_umae(&$filtros = array())
     {
         $this->db->flush_cache();
-        $this->db->reset_query();
+        $this->db->reset_query();                    
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $select = array(
@@ -94,10 +94,10 @@ class Ranking_model extends CI_Model
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
         $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
-        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
-        $this->db->where('B.umae', true);
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');       
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = E.id_programa_proyecto', 'left');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");        
         $this->db->where('CI.activa', true);
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
             $inicio = $filtros['periodo'].'/01/01';
@@ -123,7 +123,7 @@ class Ranking_model extends CI_Model
         }
         $this->db->order_by('cantidad', 'desc');
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         //pr($filtros);
         return $datos;
     }
@@ -132,15 +132,23 @@ class Ranking_model extends CI_Model
     {
         $this->db->flush_cache();
         $this->db->reset_query();
+        
+        $grupo_principal[0] = 'A.grupo_delegacion';
+        $grupo_principal[1] = 'A.nombre_grupo_delegacion';
+        if(isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1){
+            $grupo_principal[0] = 'A.id_delegacion';
+            $grupo_principal[1] = 'A.nombre';
+        }        
+        
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $select = array(
-                'A.id_delegacion', 'A.nombre', 'G.nombre programa', 'sum("C".cantidad_alumnos_certificados) cantidad'
+                $grupo_principal[0], $grupo_principal[1].' nombre', 'G.nombre programa', 'sum("C".cantidad_alumnos_certificados) cantidad'
             );
         } else
         {
             $select = array(
-                'A.id_delegacion', 'A.nombre', 'sum("C".cantidad_alumnos_certificados) cantidad'
+                $grupo_principal[0], $grupo_principal[1].' nombre', 'sum("C".cantidad_alumnos_certificados) cantidad'
             );
         }
         $this->db->select($select);
@@ -148,10 +156,10 @@ class Ranking_model extends CI_Model
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
         $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
-        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
-        $this->db->where('B.umae', false);
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');        
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = E.id_programa_proyecto', 'left');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
         $this->db->where('CI.activa', true);
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
             $inicio = $filtros['periodo'].'/01/01';
@@ -163,14 +171,14 @@ class Ranking_model extends CI_Model
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
-            $this->db->group_by('A.id_delegacion, A.nombre, G.nombre');
+            $this->db->group_by($grupo_principal[0].', '.$grupo_principal[1].', G.nombre');
         } else
         {
-            $this->db->group_by('A.id_delegacion, A.nombre');
+            $this->db->group_by($grupo_principal[0].', '.$grupo_principal[1]);
         }
         $this->db->order_by('cantidad', 'desc');
         $datos = $this->db->get('catalogos.delegaciones A')->result_array();
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         //pr($filtros);
         return $datos;
     }
@@ -178,7 +186,7 @@ class Ranking_model extends CI_Model
     private function get_eficiencia_terminal_umae(&$filtros = array())
     {
         $this->db->flush_cache();
-        $this->db->reset_query();
+        $this->db->reset_query();              
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $select = array(
@@ -200,10 +208,10 @@ class Ranking_model extends CI_Model
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
         $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');        
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
-        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
-        $this->db->where('B.umae', true);
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');        
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = E.id_programa_proyecto', 'left');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
         $this->db->where('CI.activa', true);
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
             $inicio = $filtros['periodo'].'/01/01';
@@ -236,10 +244,16 @@ class Ranking_model extends CI_Model
     {
         $this->db->flush_cache();
         $this->db->reset_query();
+        $grupo_principal[0] = 'A.grupo_delegacion';
+        $grupo_principal[1] = 'A.nombre_grupo_delegacion';
+        if(isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1){
+            $grupo_principal[0] = 'A.id_delegacion';
+            $grupo_principal[1] = 'A.nombre';
+        }        
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $select = array(
-                'A.id_delegacion', 'A.nombre', 'G.nombre programa',
+                $grupo_principal[0], $grupo_principal[1].' nombre', 'G.nombre programa',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -247,7 +261,7 @@ class Ranking_model extends CI_Model
         } else
         {
             $select = array(
-                'A.id_delegacion', 'A.nombre',
+                $grupo_principal[0], $grupo_principal[1].' nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -258,10 +272,10 @@ class Ranking_model extends CI_Model
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
         $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');        
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->join('catalogos.curso_programa F ', ' F.id_curso = E.id_curso', 'left');
-        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = F.id_programa_proyecto', 'left');
-        $this->db->where('B.umae', false);
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');        
+        $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = E.id_programa_proyecto', 'left');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
         $this->db->where('CI.activa', true);
         if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
             $inicio = $filtros['periodo'].'/01/01';
@@ -273,13 +287,13 @@ class Ranking_model extends CI_Model
         if (isset($filtros['programa']) && !empty($filtros['programa']))
         {
             $this->db->where('G.id_programa_proyecto', $filtros['programa']);
-            $this->db->group_by('A.id_delegacion, A.nombre, G.nombre');
+            $this->db->group_by($grupo_principal[0].', '.$grupo_principal[1].', G.nombre');
         } else
         {
-            $this->db->group_by('A.id_delegacion, A.nombre');
+            $this->db->group_by($grupo_principal[0].', '.$grupo_principal[1]);
         }
         $datos = $this->db->get('catalogos.delegaciones A')->result_array();
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         //pr($filtros);
         return $datos;
     }

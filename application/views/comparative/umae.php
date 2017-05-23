@@ -7,7 +7,7 @@ echo js('comparativa/umae.js');
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
-            <div id="filtros_capa_header" class="card-header" data-background-color="blue" data-toggle="collapse" data-target="#filtros_capa">
+            <div id="filtros_capa_header" class="card-header" data-background-color="green" data-toggle="collapse" data-target="#filtros_capa">
                 <a href="#" data-toggle="collapse" data-target="#filtros_capa">Filtros<i class="fa fa-arrow-right pull-right" aria-hidden="true"></i><!-- <div class="material-icons pull-right">keyword_arrow_right</div> -->
                 </a>
             </div>
@@ -17,6 +17,33 @@ echo js('comparativa/umae.js');
             <input type="hidden" value="1" name="umae" id="umae">
             <div id="filtros_capa" class="card-content collapse">
                 <div class="row form-group">                    
+                    <?php
+                    if (is_nivel_central($usuario['grupos']))
+                    {
+                        ?>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Agrupamiento:</span>
+                                <?php
+                                echo $this->form_complete->create_element(
+                                        array('id' => 'agrupamiento',
+                                            'type' => 'dropdown',
+                                            'options' => array(0 => 'Si', 1 => 'No'),
+                                            'attributes' => array(
+                                                'class' => 'form-control  form-control input-sm',
+                                                'data-toggle' => 'tooltip',
+                                                'data-placement' => 'top',
+                                                'title' => 'Agrupamiento',
+                                                'onchange' => 'cmbox_comparativa()'
+                                            )
+                                        )
+                                );
+                                ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">Tipo de comparativa:</span>

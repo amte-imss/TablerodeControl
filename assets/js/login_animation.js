@@ -1,4 +1,4 @@
-var cores_colores = ['#98c56e', '#f3b510', '#f05f50', '#0095bc'];
+var cores_colores = ['#0095bc', '#f05f50', '#f3b510', '#98c56e'];
 var cores_textos = ['Decisiones basadas en información', '¿Qué está pasando en materia educativa?', 'Nuestra visión, enfocarnos en los resultados', 'Claridad y significado en los datos'];
 var cores_cantidad_bloques = 6;
 var cores_time_ms = 5000;

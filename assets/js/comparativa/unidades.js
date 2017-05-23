@@ -56,12 +56,14 @@ function search_unidad(elemento) {
     var index = elemento[0].getAttribute('data-id');
     var keyword = document.getElementById('unidad' + index + '_texto').value;
     var tipo_unidad = document.getElementById('tipo_unidad').value;
+    var periodo = document.getElementById('periodo').value;;
+    
     console.log('buscando:' + keyword);
     $.ajax({
         url: site_url + '/buscador/search_unidad_instituto'
         , method: "post"
         , timeout: 200
-        , data: {keyword: keyword, tipo_unidad: tipo_unidad}
+        , data: {keyword: keyword, tipo_unidad: tipo_unidad, periodo: periodo}
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }

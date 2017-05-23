@@ -6,10 +6,14 @@ function cmbox_comparativa() {
         $('#area_reportes').css('display', 'none');
     } else {
         var destino = site_url + '/comparativa/delegacion_v2/';
+        var agrupamiento = 0;
+        if(document.getElementById('agrupamiento') != null){
+            agrupamiento = document.getElementById('agrupamiento').value;
+        }
         $.ajax({
             url: destino
             , method: "post"
-            , data: {view: id_destino}
+            , data: {view: id_destino, agrupamiento:agrupamiento}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -116,6 +120,9 @@ function submit_delegacion(elemento) {
         var datos = elemento.serialize();
         if (document.getElementById('umae') != null && document.getElementById('umae').value != "") {
             datos += '&umae=' + document.getElementById('umae').value;
+        }        
+        if(document.getElementById('agrupamiento') != null){
+            datos += '&agrupamiento=' + document.getElementById('agrupamiento').value;
         }
         $('.alert-comparativa').css('display', 'none');
         $.ajax({
@@ -140,7 +147,7 @@ function submit_delegacion(elemento) {
                 var texto = "";
                 var texto_t = "";
                 var id_reporte = reportes[i];
-                var colores = ['#0090b9'];
+                var colores = ['#0095bc'];
                 switch (id_reporte) {
                     case 1:
                     case "1":
@@ -149,19 +156,19 @@ function submit_delegacion(elemento) {
                         break;
                     case 2:
                     case "2":
-                        colores = ['#43a886'];
+                        colores = ['#98c56e'];
                         texto = "Número de alumnos aprobados ";
                         texto_t = "aprobados";
                         break;
                     case 3:
                     case "3":
-                        colores = ['#FCB220'];
+                        colores = ['#f3b510'];
                         texto = "Porcentaje de eficiencia terminal modificada ";
                         texto_t = "por eficiencia terminal modificada";
                         break;
                     case 5:
                     case "5":
-                        colores = ['#e53935'];
+                        colores = ['#f05f50'];
                         texto = "Número de alumnos no aprobados ";
                         texto_t = "no aprobados";
                         break;

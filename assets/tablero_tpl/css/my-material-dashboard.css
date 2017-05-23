@@ -63,13 +63,12 @@ label.col-form-label{
 }
 
 .btn.btn-primary, .btn.btn-primary:hover, .btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary.active, .btn.btn-primary:active:focus, .btn.btn-primary:active:hover, .btn.btn-primary.active:focus, .btn.btn-primary.active:hover, .open > .btn.btn-primary.dropdown-toggle, .open > .btn.btn-primary.dropdown-toggle:focus, .open > .btn.btn-primary.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-primary, .navbar .navbar-nav > li > a.btn.btn-primary:hover, .navbar .navbar-nav > li > a.btn.btn-primary:focus, .navbar .navbar-nav > li > a.btn.btn-primary:active, .navbar .navbar-nav > li > a.btn.btn-primary.active, .navbar .navbar-nav > li > a.btn.btn-primary:active:focus, .navbar .navbar-nav > li > a.btn.btn-primary:active:hover, .navbar .navbar-nav > li > a.btn.btn-primary.active:focus, .navbar .navbar-nav > li > a.btn.btn-primary.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:hover{
-    background-color: #734e97;
+    background-color: #009c9b;
 }
 
 a.link_ficha_usuario:hover{
-    background-color: #734e97 !important;
+    background-color: #009c9b !important;
 }
-
 
 li .li-autocomplete:before {
     color: #555;
@@ -90,4 +89,43 @@ li .li-autocomplete:before {
 .ul-autocomplete{
     background: #ddd;
     margin-top: -7px;
+}
+
+a {
+  color: #999999;
+}
+a:hover, a:focus {
+  color: #999999;
+  text-decoration: none;
+}
+
+.card [data-background-color="green"] {
+  background: linear-gradient(60deg, #009c9b, #009c9b);
+  
+}
+
+.sidebar[data-color="green"] .nav li.active a,
+.off-canvas-sidebar[data-color="green"] .nav li.active a {
+  background-color: #009c9b;
+  
+}
+
+.card .card-header {  
+  margin: -20px 15px 0;
+  border-radius: 3px;
+  padding: 15px;
+  background-color: #999999;
+  box-shadow: initial;
+}
+
+.form-control,
+.form-group .form-control {
+  background-image: linear-gradient(#009c9b, #009c9b), linear-gradient(#D2D2D2, #D2D2D2) !important;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li a:focus,
+.dropdown-menu li a:active {
+  background-color: #009c9b !important;
+  color: #FFFFFF;
 }

@@ -8,7 +8,7 @@
 <!--titulo-->
 <div class="col-md-12">
     <div class="card">
-        <div class="card-header" data-background-color="purple">
+        <div class="card-header" data-background-color="">
             <h4 class="title"><?php echo isset($texts["title"]) ? $texts["title"] : "" ?></h4>
             <p class="category"><?php echo isset($texts["descripcion"]) ? $texts["descripcion"] : "" ?></p>
         </div>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header card-header-icon" data-background-color="blue" >
+                        <div class="card-header card-header-icon" data-background-color="green" >
                             <h4 class="card-title"><i class="fa fa-filter" aria-hidden="true"></i> Filtros</h4>
                         </div>
                         <div class="card-content" id="div-filters">
@@ -285,10 +285,10 @@
                     }
                     $(document).ready(function () {
                         //chart
-                        chart("chrt_inscritos", "table_inscritos", "", "Número de Alumnos Inscritos", ['#0090b9']);
-                        chart("chrt_aprobados", "table_aprobados", "", "Número de Alumnos Aprobados", ['#43a886']);
-                        chart("chrt_suspendidos", "table_suspendidos", "", "Número de Alumnos suspendidos", ['#ef5350']);
-                        chart("chrt_etm", "table_etm", "", "Porcentaje de Eficiencia Terminal Modificada", ['#FCB220']);
+                        chart("chrt_inscritos", "table_inscritos", "", "Número de Alumnos Inscritos", ['#0095bc']);
+                        chart("chrt_aprobados", "table_aprobados", "", "Número de Alumnos Aprobados", ['#98c56e']);
+                        chart("chrt_suspendidos", "table_suspendidos", "", "Número de Alumnos suspendidos", ['#f05f50']);
+                        chart("chrt_etm", "table_etm", "", "Porcentaje de Eficiencia Terminal Modificada", ['#f3b510']);
                     });
                 </script>
                 <?php

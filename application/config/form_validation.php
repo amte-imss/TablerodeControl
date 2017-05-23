@@ -126,12 +126,12 @@ $config['filtros_comparativa_tipo_curso'] = array(
     array(
         'field' => 'unidad1', 
         'label' => 'unidad1', 
-        'rules' => 'required|is_numeric'
+        'rules' => 'required'
     ), 
     array(
         'field' => 'unidad2', 
         'label' => 'unidad2', 
-        'rules' => 'required|is_numeric'
+        'rules' => 'required'
     ),     
     array(
         'field' => 'tipo_curso', 
@@ -144,17 +144,17 @@ $config['filtros_comparativa_perfil'] = array(
     array(
         'field' => 'periodo', 
         'label' => 'Año', 
-        'rules' => 'required|is_numeric'
+        'rules' => 'required'
     ), 
     array(
         'field' => 'unidad1', 
         'label' => 'unidad1', 
-        'rules' => 'required|is_numeric'
+        'rules' => 'required'
     ), 
     array(
         'field' => 'unidad2', 
         'label' => 'unidad2', 
-        'rules' => 'required|is_numeric'
+        'rules' => 'required'
     ),     
     array(
         'field' => 'subperfil', 

@@ -30,8 +30,9 @@ class Comparativa_model extends MY_Model
         return array(1 => 'Inscritos', 2 => 'Aprobados', 3 => 'Eficiencia terminal',
             5 => 'No aprobados');
     }
-    
-    public function get_niveles(){
+
+    public function get_niveles()
+    {
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->distinct();
@@ -55,15 +56,41 @@ class Comparativa_model extends MY_Model
         {
             $this->db->where('B.id_delegacion', $delegacion);
         }
-        if($nivel != ""){
+        if ($nivel != "")
+        {
             $this->db->where('B.nivel_atencion', $nivel);
-        }        
+        }
         $tipos = $this->db->get('catalogos.tipos_unidades A')->result_array();
         //pr($this->db->last_query());
         return $tipos;
     }
 
-    public function get_comparar_delegacion($filtros = []){
+    public function get_delegaciones($filtros = [])
+    {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $grupo_principal[0] = 'A.grupo_delegacion';
+        $grupo_principal[1] = 'A.nombre_grupo_delegacion';
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
+        {
+            $grupo_principal[0] = 'A.id_delegacion';
+            $grupo_principal[1] = 'A.nombre';
+        }
+        $select = array($grupo_principal[0] . ' id', $grupo_principal[1] . ' nombre');
+        $this->db->select($select);
+        if (isset($filtros['id_region']))
+        {
+            $this->db->where('A.id_region', $filtros['id_region']);
+        }
+        $this->db->group_by($grupo_principal[0] . ', ' . $grupo_principal[1]);
+        $this->db->order_by('id', 'asc');
+        $delegaciones = $this->db->get('catalogos.delegaciones A')->result_array();
+        $this->db->reset_query();
+        return $delegaciones;
+    }
+
+    public function get_comparar_delegacion($filtros = [])
+    {
         $datos_arreglo = [];
         $index = 0;
         foreach ($this->get_tipos_reportes() as $key => $value)
@@ -76,8 +103,9 @@ class Comparativa_model extends MY_Model
         }
         return $datos_arreglo;
     }
-    
-    public function get_data_delegacion($delegacion = 0, &$filtros = array()){
+
+    public function get_data_delegacion($delegacion = 0, &$filtros = array())
+    {
         $datos = [];
 
         $pre_datos = $this->get_data_delegacion_aux($delegacion, $filtros);
@@ -102,16 +130,25 @@ class Comparativa_model extends MY_Model
         $datos['cantidad'] = intval($datos['cantidad']);
         return $datos;
     }
-    
-    public function get_data_delegacion_aux($delegacion = 0, &$filtros = array()){
+
+    public function get_data_delegacion_aux($delegacion = '0', &$filtros = array())
+    {
         $this->db->flush_cache();
         $this->db->reset_query();
 
-        if ($delegacion > 0)
+        $grupo_principal[0] = '"DEL".grupo_delegacion';
+        $grupo_principal[1] = '"DEL".nombre_grupo_delegacion';
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
+        {
+            $grupo_principal[0] = '"DEL".id_delegacion';
+            $grupo_principal[1] = '"DEL".nombre';
+        }
+
+        if ($delegacion != '0')
         {
             $select = array(
-                'B.id_delegacion', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                '"DEL".nombre',
+                $grupo_principal[0] . ' id',
+                $grupo_principal[1] . ' nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -120,32 +157,35 @@ class Comparativa_model extends MY_Model
         {
             $select = array(
                 '0', "'PROMEDIO' nombre",
-                'sum("C".cantidad_alumnos_certificados)/count(distinct "B".id_delegacion) aprobados',
-                'sum("C".cantidad_alumnos_inscritos)/count(distinct "B".id_delegacion) inscritos',
-                'sum("C".cantidad_no_accesos)/count(distinct "B".id_delegacion) no_acceso'
+                'sum("C".cantidad_alumnos_certificados)/count(distinct ' . $grupo_principal[0] . ') aprobados',
+                'sum("C".cantidad_alumnos_inscritos)/count(distinct ' . $grupo_principal[0] . ') inscritos',
+                'sum("C".cantidad_no_accesos)/count(distinct ' . $grupo_principal[0] . ') no_acceso'
             );
         }
 
         $this->db->select($select);
         $this->db->join('catalogos.delegaciones DEL', 'DEL.id_delegacion = B.id_delegacion', 'left');
-        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');        
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'left');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'left');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
-        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
-            $inicio = $filtros['periodo'].'/01/01';
-            $fin = $filtros['periodo'].'/12/31';
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+
+        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+        {
+            $inicio = $filtros['periodo'] . '/01/01';
+            $fin = $filtros['periodo'] . '/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
             $this->db->where('D.fecha_fin <=', $fin);
-            $this->db->where('E.anio', $filtros['periodo']);            
+            $this->db->where('E.anio', $filtros['periodo']);
         }
         if (isset($filtros['umae']) && $filtros['umae'] != null && $filtros['umae'])
         {
-            $this->db->where('B.umae', true);
+            $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
         } else
         {
-            $this->db->where('B.umae', false);
+            $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
         }
         if (isset($filtros['subperfil']) && !empty($filtros['subperfil']))
         {
@@ -155,28 +195,35 @@ class Comparativa_model extends MY_Model
         {
             $this->db->where('B.nivel_atencion', $filtros['nivel']);
         }
-        if (isset($filtros['tipo_curso'])&& !empty($filtros['tipo_curso']))
+        if (isset($filtros['tipo_curso']) && !empty($filtros['tipo_curso']))
         {
             $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
         }
-        if(isset($filtros['tipo_unidad']) && !empty($filtros['tipo_unidad'])){
+        if (isset($filtros['tipo_unidad']) && !empty($filtros['tipo_unidad']))
+        {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        
-        if ($delegacion > 0)
+
+        if ($delegacion != '0')
         {
-            $this->db->where('B.id_delegacion', $delegacion);
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
+            {
+                $this->db->where('DEL.id_delegacion', $delegacion);
+            } else
+            {
+                $this->db->having('DEL.grupo_delegacion', $delegacion);
+            }
 
             $group_by = array(
-                'B.id_delegacion', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)' */
-                '"DEL".nombre'
+                $grupo_principal[0],
+                $grupo_principal[1]
             );
             $this->db->group_by($group_by);
         }
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
         $this->db->flush_cache();
         $this->db->reset_query();
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         //pr($filtros);
         if (count($datos) == 0)
         {
@@ -188,10 +235,10 @@ class Comparativa_model extends MY_Model
                 'no_acceso' => 0
             );
         }
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         return $datos;
     }
-    
+
     public function get_comparar_perfil($filtros = [])
     {
         $datos_arreglo = [];
@@ -249,16 +296,24 @@ class Comparativa_model extends MY_Model
         return $datos;
     }
 
-    private function get_data_tipo_curso_aux($unidad = 0, &$filtros = array())
+    private function get_data_tipo_curso_aux($unidad = '0', &$filtros = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
 
-        if ($unidad > 0)
+        $grupo_principal[0] = '"B".id_unidad_instituto';
+        $grupo_principal[1] = '"B".nombre';
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
+        {
+            $grupo_principal[0] = '"B".unidad_principal';
+            $grupo_principal[1] = '"B".nombre_unidad_principal';
+        }
+
+        if ($unidad != '0')
         {
             $select = array(
-                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                '"B".nombre',
+                $grupo_principal[0] . ' id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
+                $grupo_principal[0] . ' nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -267,48 +322,55 @@ class Comparativa_model extends MY_Model
         {
             $select = array(
                 '0', "'PROMEDIO' nombre",
-                'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
-                'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
-                'sum("C".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
+                'sum("C".cantidad_alumnos_certificados)/count(distinct ' . $grupo_principal[0] . ') aprobados',
+                'sum("C".cantidad_alumnos_inscritos)/count(distinct ' . $grupo_principal[0] . ') inscritos',
+                'sum("C".cantidad_no_accesos)/count(distinct ' . $grupo_principal[0] . ') no_acceso'
             );
         }
 
         $this->db->select($select);
-        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');        
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
-            $inicio = $filtros['periodo'].'/01/01';
-            $fin = $filtros['periodo'].'/12/31';
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+        {
+            $inicio = $filtros['periodo'] . '/01/01';
+            $fin = $filtros['periodo'] . '/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
             $this->db->where('D.fecha_fin <=', $fin);
-            $this->db->where('E.anio', $filtros['periodo']);            
+            $this->db->where('E.anio', $filtros['periodo']);
         }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
-            $this->db->where('B.umae', true);
+            $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
         } else
         {
-            $this->db->where('B.umae', false);
+            $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
         }
         if (isset($filtros['tipo_curso']))
         {
             $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
         }
-        if(isset($filtros['tipo_unidad'])){
+        if (isset($filtros['tipo_unidad']))
+        {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        if(isset($filtros['delegacion']) && $filtros['delegacion'] > 0){
+        if (isset($filtros['delegacion']) && $filtros['delegacion'] > 0)
+        {
             $this->db->where('B.id_delegacion', $filtros['delegacion']);
         }
-        if ($unidad > 0)
+        if ($unidad != '0')
         {
-            $this->db->where('B.id_unidad_instituto', $unidad);
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
+            {
+                $this->db->having($grupo_principal[0], $unidad);
+            } else
+            {
+                $this->db->where('B.id_unidad_instituto', $unidad);
+            }
 
-            $group_by = array(
-                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)' */
-                '"B".nombre'
-            );
+            $group_by = $grupo_principal;
             $this->db->group_by($group_by);
         }
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
@@ -324,6 +386,7 @@ class Comparativa_model extends MY_Model
                 'no_acceso' => 0
             );
         }
+//        pr($filtros);
         //pr($this->db->last_query());
         return $datos;
     }
@@ -355,16 +418,24 @@ class Comparativa_model extends MY_Model
         return $datos;
     }
 
-    private function get_data_perfil_aux($unidad = 0, &$filtros = array())
+    private function get_data_perfil_aux($unidad = '0', &$filtros = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
 
-        if ($unidad > 0)
+        $grupo_principal[0] = '"B".id_unidad_instituto';
+        $grupo_principal[1] = '"B".nombre';
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
+        {
+            $grupo_principal[0] = '"B".unidad_principal';
+            $grupo_principal[1] = '"B".nombre_unidad_principal';
+        }
+
+        if ($unidad != '0')
         {
             $select = array(
-                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                '"B".nombre',
+                $grupo_principal[0] . ' id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
+                $grupo_principal[0] . ' nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -373,48 +444,56 @@ class Comparativa_model extends MY_Model
         {
             $select = array(
                 '0', "'PROMEDIO' nombre",
-                'sum("C".cantidad_alumnos_certificados)/count(distinct "C".id_unidad_instituto) aprobados',
-                'sum("C".cantidad_alumnos_inscritos)/count(distinct "C".id_unidad_instituto) inscritos',
-                'sum("C".cantidad_no_accesos)/count(distinct "C".id_unidad_instituto) no_acceso'
+                'sum("C".cantidad_alumnos_certificados)/count(distinct ' . $grupo_principal[0] . ') aprobados',
+                'sum("C".cantidad_alumnos_inscritos)/count(distinct ' . $grupo_principal[0] . ') inscritos',
+                'sum("C".cantidad_no_accesos)/count(distinct ' . $grupo_principal[0] . ') no_acceso'
             );
         }
 
         $this->db->select($select);
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');        
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
-        if(isset($filtros['periodo']) && !empty($filtros['periodo'])){
-            $inicio = $filtros['periodo'].'/01/01';
-            $fin = $filtros['periodo'].'/12/31';
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+        {
+            $inicio = $filtros['periodo'] . '/01/01';
+            $fin = $filtros['periodo'] . '/12/31';
             $this->db->where('D.fecha_inicio >=', $inicio);
-            $this->db->where('D.fecha_fin <=', $fin);           
+            $this->db->where('D.fecha_fin <=', $fin);
         }
         if (isset($filtros['umae']) && $filtros['umae'])
         {
-            $this->db->where('B.umae', true);
+            $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
         } else
         {
-            $this->db->where('B.umae', false);
+            $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
         }
         if (isset($filtros['subperfil']))
         {
             $this->db->where('H.id_grupo_categoria', $filtros['subperfil']);
         }
-        if(isset($filtros['tipo_unidad'])){
+        if (isset($filtros['tipo_unidad']))
+        {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        if(isset($filtros['delegacion'])){
+        if (isset($filtros['delegacion']))
+        {
             $this->db->where('B.id_delegacion', $filtros['delegacion']);
         }
-        
-        if ($unidad > 0)
+
+        if ($unidad != '0')
         {
-            $this->db->where('B.id_unidad_instituto', $unidad);
-            $group_by = array(
-                'B.id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$)' */
-                '"B".nombre'
-            );
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
+            {
+                $this->db->having($grupo_principal[0], $unidad);
+            } else
+            {
+                $this->db->where('B.id_unidad_instituto', $unidad);
+            }
+
+            $group_by = $group_by = $grupo_principal;
             $this->db->group_by($group_by);
         }
 
@@ -462,7 +541,7 @@ class Comparativa_model extends MY_Model
             $where = " WHERE per.id_grupo_categoria = $id";
             $group = ",per.id_grupo_categoria, per.nombre";
         }
-        $where.= ' and del.id_region is not null and imp.fecha_inicio >= $$'.$anio.'/01/01$$ and imp.fecha_fin <= $$'.$anio.'/12/31$$  AND cur.anio = '.$anio;
+        $where .= ' and del.id_region is not null and imp.fecha_inicio >= $$' . $anio . '/01/01$$ and imp.fecha_fin <= $$' . $anio . '/12/31$$  AND cur.anio = ' . $anio;
         $query = "select
         sum(himp.cantidad_alumnos_inscritos) inscritos,
         sum(himp.cantidad_alumnos_certificados) aprobados,
@@ -526,8 +605,9 @@ class Comparativa_model extends MY_Model
             $group = ",per.id_grupo_categoria, per.nombre";
         }
         $where .= $region > 0 ? " AND del.id_region = $region" : "";
-        if($umae != null){
-            $where .= ' and unit.umae = '.$umae.' ';
+        if ($umae != null)
+        {
+            $where .= ' and unit.umae = ' . $umae . ' ';
         }
 
         $query = "select

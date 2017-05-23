@@ -75,7 +75,7 @@
 
         <div class="wrapper">
             <div class="sidebar"
-                 data-color="purple"
+                 data-color="green"
                  data-image="<?php echo base_url(); ?>assets/tablero_tpl/img/Escultura-Ortiz.jpg">
                 <!--
                     Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -162,7 +162,7 @@
                                         if (isset($sub_title) && !empty($sub_title))
                                         {
                                             ?>
-                                            <div class="card-header" data-background-color="purple">
+                                            <div class="card-header" data-background-color="">
                                                 <h4 class="title">
                                                     <?php echo $sub_title; ?>
                                                 </h4>
