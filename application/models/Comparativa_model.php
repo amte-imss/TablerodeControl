@@ -43,7 +43,7 @@ class Comparativa_model extends MY_Model
         return $niveles;
     }
 
-    public function get_tipos_unidades($umae = false, $delegacion = 0, $nivel = "")
+    public function get_tipos_unidades($umae = false, $delegacion = '0', $nivel = "")
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -52,9 +52,9 @@ class Comparativa_model extends MY_Model
         $this->db->select($select);
         $this->db->join('catalogos.unidades_instituto B', 'B.id_tipo_unidad = A.id_tipo_unidad', 'inner');
         $this->db->where('B.umae', $umae);
-        if ($delegacion > 0)
+        if ($delegacion != '0')
         {
-            $this->db->where('B.id_delegacion', $delegacion);
+            $this->db->where('B.grupo_delegacion', $delegacion);
         }
         if ($nivel != "")
         {
@@ -206,14 +206,9 @@ class Comparativa_model extends MY_Model
 
         if ($delegacion != '0')
         {
-            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
-            {
-                $this->db->where('DEL.id_delegacion', $delegacion);
-            } else
-            {
-                $this->db->having('DEL.grupo_delegacion', $delegacion);
-            }
-
+            
+            $this->db->having('DEL.grupo_delegacion', $delegacion);
+            
             $group_by = array(
                 $grupo_principal[0],
                 $grupo_principal[1]
@@ -303,6 +298,7 @@ class Comparativa_model extends MY_Model
 
         $grupo_principal[0] = '"B".id_unidad_instituto';
         $grupo_principal[1] = '"B".nombre';
+        $grupo_principal[2] = '"B".grupo_delegacion';
         if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
         {
             $grupo_principal[0] = '"B".unidad_principal';
@@ -356,9 +352,9 @@ class Comparativa_model extends MY_Model
         {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        if (isset($filtros['delegacion']) && $filtros['delegacion'] > 0)
+        if (isset($filtros['delegacion']) && $filtros['delegacion'] != '0')
         {
-            $this->db->where('B.id_delegacion', $filtros['delegacion']);
+            $this->db->where('B.grupo_delegacion', $filtros['delegacion']);
         }
         if ($unidad != '0')
         {
@@ -386,7 +382,7 @@ class Comparativa_model extends MY_Model
                 'no_acceso' => 0
             );
         }
-//        pr($filtros);
+        //pr($filtros);
         //pr($this->db->last_query());
         return $datos;
     }
@@ -425,6 +421,7 @@ class Comparativa_model extends MY_Model
 
         $grupo_principal[0] = '"B".id_unidad_instituto';
         $grupo_principal[1] = '"B".nombre';
+        $grupo_principal[2] = '"B".grupo_delegacion';
         if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
         {
             $grupo_principal[0] = '"B".unidad_principal';
@@ -480,7 +477,7 @@ class Comparativa_model extends MY_Model
         }
         if (isset($filtros['delegacion']))
         {
-            $this->db->where('B.id_delegacion', $filtros['delegacion']);
+            $this->db->where('B.grupo_delegacion', $filtros['delegacion']);
         }
 
         if ($unidad != '0')

@@ -14,7 +14,7 @@
             } else
             {
                 ?>
-                <b>Delegación:</b> <?php echo $name_delegacion; ?> <br>
+                <b>Delegación:</b> <?php echo $nombre_grupo_delegacion; ?> <br>
                 <b>Unidad:</b> <?php echo $name_unidad_ist; ?> <br>
             <?php } ?>
             <div class="ripple-container"></div></a>

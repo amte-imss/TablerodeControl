@@ -8,7 +8,7 @@
 
         <title>
             <?php echo (!is_null($title)) ? "{$title}&nbsp;|" : "" ?>
-            <?php echo (!is_null($main_title)) ? $main_title : "Tablero de control" ?>
+            <?php echo (!is_null($main_title)) ? $main_title : "CORES" ?>
         </title>
 
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -115,7 +115,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <h2>Tablero de control</h2>
+                            <h2>CORES</h2>
                         </div>
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">

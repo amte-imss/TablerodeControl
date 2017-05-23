@@ -27,6 +27,7 @@ class Ranking extends MY_Controller
         $output = array();
         $output['lenguaje'] = $this->lang->line('index');
         $output['usuario'] = $this->session->userdata('usuario');        
+//        pr($output['usuario']);
         if (is_nivel_central($output['usuario']['grupos']))
         {
             $output['usuario']['central'] = true;

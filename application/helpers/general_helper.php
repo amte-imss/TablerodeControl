@@ -453,7 +453,7 @@ if (!function_exists('is_nivel_tactico'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 5){
+            if($id == 5 || $id == 8){
                 $salida = true;
             }
         }
@@ -467,7 +467,7 @@ if (!function_exists('is_nivel_estrategico'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 4){
+            if($id == 4 || $id == 7){
                 $salida = true;
             }
         }

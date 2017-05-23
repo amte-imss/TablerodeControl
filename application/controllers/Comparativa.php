@@ -53,7 +53,7 @@ class Comparativa extends MY_Controller
 
     public function unidades()
     {
-        //pr($this->session->userdata('usuario'));
+//        pr($this->session->userdata('usuario'));
         $output['usuario'] = $this->session->userdata('usuario');
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
         $cat_list = new Catalogo_listado(); //Obtener catálogos
@@ -83,7 +83,7 @@ class Comparativa extends MY_Controller
                 $filtros = $this->input->post();
                 if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
                 {
-                    $filtros['delegacion'] = $output['usuario']['id_delegacion'];
+                    $filtros['delegacion'] = $output['usuario']['grupo_delegacion'];
                 }
                 $datos = $this->comparativa->get_comparar_perfil($filtros);
                 echo json_encode($datos);
@@ -99,7 +99,7 @@ class Comparativa extends MY_Controller
             $delegacion = 0;
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
-                $delegacion = $output['usuario']['id_delegacion'];
+                $delegacion = $output['usuario']['grupo_delegacion'];
             }
             $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
@@ -126,7 +126,7 @@ class Comparativa extends MY_Controller
                 $filtros = $this->input->post();
                 if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
                 {
-                    $filtros['delegacion'] = $output['usuario']['id_delegacion'];
+                    $filtros['delegacion'] = $output['usuario']['grupo_delegacion'];
                 }
                 $datos = $this->comparativa->get_comparar_tipo_curso($filtros);
                 echo json_encode($datos);
@@ -140,7 +140,7 @@ class Comparativa extends MY_Controller
             $delegacion = 0;
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
-                $delegacion = $output['usuario']['id_delegacion'];
+                $delegacion = $output['usuario']['grupo_delegacion'];
             }
             $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, $delegacion, $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
             $output['no_edit_tipo_unidad'] = is_nivel_operacional($output['usuario']['grupos']);
@@ -184,7 +184,7 @@ class Comparativa extends MY_Controller
                 $filtros = $this->input->post() + array('umae' => true);
                 if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
                 {
-                    $filtros['delegacion'] = $output['usuario']['id_delegacion'];
+                    $filtros['delegacion'] = $output['usuario']['grupo_delegacion'];
                 }
                 $filtros['agrupamiento'] = 0;
                 if(is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') &&  $this->input->post('agrupamiento',true) == 1){
@@ -208,7 +208,7 @@ class Comparativa extends MY_Controller
             $condiciones_unidad = array('umae' => true, 'agrupamiento' => 0);
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
-                $delegacion = $output['usuario']['id_delegacion'];
+                $delegacion = $output['usuario']['grupo_delegacion'];
                 $condiciones_unidad += array('id_delegacion' => $delegacion);
             }
             if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') && $this->input->post('agrupamiento', true) == 1)
@@ -240,7 +240,7 @@ class Comparativa extends MY_Controller
                 $filtros = $this->input->post() + array('umae' => true);
                 if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
                 {
-                    $filtros['delegacion'] = $output['usuario']['id_delegacion'];
+                    $filtros['delegacion'] = $output['usuario']['grupo_delegacion'];
                 }
                 $filtros['agrupamiento'] = 0;
                 if(is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') &&  $this->input->post('agrupamiento',true) == 1){
@@ -262,7 +262,7 @@ class Comparativa extends MY_Controller
             $condiciones_unidad = array('umae' => true, 'agrupamiento' => 0);
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
-                $delegacion = $output['usuario']['id_delegacion'];
+                $delegacion = $output['usuario']['grupo_delegacion'];
                 $condiciones_unidad += array('id_delegacion' => $delegacion);
             }            
             if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') && $this->input->post('agrupamiento', true) == 1)
@@ -358,6 +358,7 @@ class Comparativa extends MY_Controller
     {
         $this->load->model('Ranking_model', 'ranking');
         $output['usuario'] = $this->session->userdata('usuario');
+//        pr($output['usuario']);
         $output["texts"] = $this->lang->line('delegacion'); //Mensajes
         if ($this->input->post('view'))
         {
@@ -400,6 +401,7 @@ class Comparativa extends MY_Controller
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
                 $filtros['region'] = $output['usuario']['id_region'];
+                $filtros['delegacion1'] = $output['usuario']['grupo_delegacion'];
             }
             if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('umae'))
             {

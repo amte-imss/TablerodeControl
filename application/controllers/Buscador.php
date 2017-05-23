@@ -39,7 +39,7 @@ class Buscador extends CI_Controller
                 $usuario = $this->session->userdata('usuario');
                 if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
                 {
-                    $delegacion = $usuario['id_delegacion'];
+                    $delegacion = $usuario['grupo_delegacion'];
                     $tipo_unidad = $usuario['id_tipo_unidad'];
                 }
                 if (is_nivel_central($usuario['grupos']) || is_nivel_tactico($usuario['grupos']) || is_nivel_estrategico($usuario['grupos']))
@@ -95,7 +95,7 @@ class Buscador extends CI_Controller
             $delegacion = 0;
             if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
-                $delegacion = $usuario['id_delegacion'];
+                $delegacion = $usuario['grupo_delegacion'];
             }
             $nivel = $this->input->post('nivel', true);
             $umae = $usuario['umae'];
@@ -121,7 +121,7 @@ class Buscador extends CI_Controller
                 'id_tipo_unidad' => $id_tipo_unidad, 'agrupamiento' => 0);
             if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
-                $delegacion = $usuario['id_delegacion'];
+                $delegacion = $usuario['grupo_delegacion'];
                 $condiciones += array('id_delegacion' => $delegacion);
             }            
             if(is_nivel_central($usuario['grupos']) && $this->input->post('agrupamiento') &&  $this->input->post('agrupamiento', true) == 1){

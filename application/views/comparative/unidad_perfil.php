@@ -103,7 +103,7 @@ echo form_open('comparativa/unidades_perfil', array('id' => 'form_comparativa_um
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Unidad:</span>
-            <input type="hidden" value="" name="unidad1" id="unidad1">
+            <input type="hidden" value="<?php echo $usuario['id_unidad_instituto']; ?>" name="unidad1" id="unidad1">
             <?php
             $atributos_unidad1 = array(
                 'class' => 'form-control  form-control input-sm  unidad_texto',

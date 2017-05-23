@@ -20,26 +20,26 @@ echo js('comparativa/delegacion.js');
                     if (is_nivel_central($usuario['grupos']))
                     {
                         ?>
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-addon">Agrupamiento:</span>
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="input-group input-group-sm">-->
+                                <!--<span class="input-group-addon">Agrupamiento:</span>-->
                                 <?php
-                                echo $this->form_complete->create_element(
-                                        array('id' => 'agrupamiento',
-                                            'type' => 'dropdown',
-                                            'options' => array(0 => 'Si', 1 => 'No'),
-                                            'attributes' => array(
-                                                'class' => 'form-control  form-control input-sm',
-                                                'data-toggle' => 'tooltip',
-                                                'data-placement' => 'top',
-                                                'title' => 'Agrupamiento',
-                                                'onchange' => 'cmbox_comparativa()'
-                                            )
-                                        )
-                                );
+//                                echo $this->form_complete->create_element(
+//                                        array('id' => 'agrupamiento',
+//                                            'type' => 'dropdown',
+//                                            'options' => array(0 => 'Si', 1 => 'No'),
+//                                            'attributes' => array(
+//                                                'class' => 'form-control  form-control input-sm',
+//                                                'data-toggle' => 'tooltip',
+//                                                'data-placement' => 'top',
+//                                                'title' => 'Agrupamiento',
+//                                                'onchange' => 'cmbox_comparativa()'
+//                                            )
+//                                        )
+//                                );
                                 ?>
-                            </div>
-                        </div>
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon">Nivel:</span>

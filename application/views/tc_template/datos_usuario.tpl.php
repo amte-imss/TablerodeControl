@@ -31,7 +31,7 @@
         <?php } else { ?>
             <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['delegacion']; ?>:</label>
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <label class="col-form-label"><?php echo $name_delegacion; ?></label>
+                <label class="col-form-label"><?php echo $nombre_grupo_delegacion; ?></label>
             </div>
             <?php if(in_array($grupos[0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES))) { ?>
                 <label class="col-lg-1 col-md-6 col-sm-6 col-form-label"><?php echo $lenguaje['unidad']; ?>:</label>

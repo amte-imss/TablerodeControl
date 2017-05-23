@@ -114,7 +114,7 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
                     array('id' => 'delegacion1',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'value' => $usuario['id_delegacion'],
+                        'value' => $usuario['grupo_delegacion'],
                         'options' => $delegaciones,
                         'attributes' => $atributos_del
                     )

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php echo isset($texts["title"]) ? $texts["title"] . "::" : ""; ?>Tablero de control</title>
+        <title><?php echo isset($texts["title"]) ? $texts["title"] . "::" : ""; ?>CORES</title>
         <link href="<?php echo base_url(); ?>assets/login/fonts.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/login/bootstrap.css" rel="stylesheet"/>
         <link href="<?php echo base_url(); ?>assets/login/styles_tablero_control.css" rel="stylesheet" type="text/css"/>

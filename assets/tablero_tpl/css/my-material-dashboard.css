@@ -129,3 +129,14 @@ a:hover, a:focus {
   background-color: #009c9b !important;
   color: #FFFFFF;
 }
+
+.btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary:hover,
+.navbar .navbar-nav > li > a.btn.btn-primary:focus,
+.navbar .navbar-nav > li > a.btn.btn-primary:active,
+.navbar .navbar-nav > li > a.btn.btn-primary:hover {
+  box-shadow: none;
+}
+
+.text-primary {
+  color: #999999;
+}
