@@ -398,7 +398,10 @@ if (!function_exists('get_ip_cliente')) {
 ///////Función general para calcular la eficiencia terminal modificada
 if (!function_exists('calcular_eficiencia_terminal')) {
     function calcular_eficiencia_terminal($inscritos, $aprobados, $no_acceso){
-        $eficiencia_terminal = ($aprobados/($inscritos-$no_acceso))*100;
+        $eficiencia_terminal = 0;
+        if($inscritos-$no_acceso > 0){
+            $eficiencia_terminal = ($aprobados/($inscritos-$no_acceso))*100;
+        }
         return intval($eficiencia_terminal).' %';
     }
 }
@@ -520,4 +523,11 @@ if(!function_exists('dropdown')){
 
       return $drop;
   }
+}
+
+
+if(!function_exists('format_label_icon')){
+    function format_label_icon($label = '', $icon = 'stars'){
+        return '<span style="text-decoration:underline;">'.$label.'</span>';
+    }
 }

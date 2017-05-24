@@ -54,10 +54,10 @@ class Informacion_general_model extends CI_Model
                     //$this->db->where('uni.umae=false');
                     $this->db->where("uni.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')");
                     if(isset($params['delegacion']) AND !empty($params['delegacion'])){
-                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
-                            $this->db->where("del.grupo_delegacion='".$params['delegacion']."'");
-                        } else {
+                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
                             $this->db->where("del.id_delegacion='".$params['delegacion']."'");
+                        } else {
+                            $this->db->where("del.grupo_delegacion='".$params['delegacion']."'");
                         }
                     }
                     if(isset($params['unidad']) AND !empty($params['unidad'])){
@@ -68,10 +68,10 @@ class Informacion_general_model extends CI_Model
                     } elseif(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['TIPO_CURSO']['id']) {
                         $this->db->order_by('tipo_curso');
                     } else {
-                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                            $this->db->order_by('del.nombre');
                             $this->db->order_by('del.nombre_grupo_delegacion');
                         } else {
-                            $this->db->order_by('del.nombre');
                         }
                     }
                     break;

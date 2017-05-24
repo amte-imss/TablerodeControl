@@ -139,7 +139,7 @@ class Informacion_general extends MY_Controller
                 $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND del.id_region=".$datos_busqueda['region'] : '';
                 $c_delegacion = '';
                 if(isset($datos_busqueda['delegacion']) AND !empty($datos_busqueda['delegacion'])) {
-                    if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                    if(isset($datos_busqueda['agrupamiento']) && $datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
                         $c_delegacion = ' AND del.id_delegacion='.$datos_busqueda['delegacion'];
                     } else {
                         $c_delegacion = " AND del.grupo_delegacion='".$datos_busqueda['delegacion']."'";
@@ -155,7 +155,11 @@ class Informacion_general extends MY_Controller
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
                             //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>"ins.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
+                            if(isset($datos_busqueda['agrupamiento']) && $datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                                $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>"ins.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
+                            } else {
+                                $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.unidad_principal as id_unidad_instituto, ins.nombre_unidad_principal as institucion", 'conditions'=>"ins.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio'], 'group'=>'ins.unidad_principal, ins.nombre_unidad_principal, ins.grupo_tipo_unidad'));
+                            }
                             $resultado['form']['label'] = $lenguaje['umae'];
                             $resultado['form']['path'] = 'unidad';
                             $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
@@ -170,7 +174,7 @@ class Informacion_general extends MY_Controller
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['tipo_unidad_capa', 'umae_capa', 'unidad_capa'], ['nivel_atencion']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                             //$resultado['form']['destino'] = '#tipo_unidad_capa';
                             $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : ''; ///Validación generada específicamente para la consulta
-                            if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                            if(isset($datos_busqueda['agrupamiento']) && $datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
                                 $extra = array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region));
                             } else {
                                 $extra = array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region, 'llave'=>'grupo_delegacion', 'valor'=>'nombre_grupo_delegacion',
@@ -349,6 +353,21 @@ class Informacion_general extends MY_Controller
 
         return $resultado;
     }
+    public function obtener_condicionales(){
+        $conditions = array();
+        $grupo_actual = $this->configuracion_grupos->obtener_grupo_actual();
+        switch ($grupo_actual) {
+            case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES: case En_grupos::N2_DGU: 
+                $conditions = array('conditions'=>"uni.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')");
+                break;
+            case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N2_CPEI: case En_grupos::N2_CAME: case En_grupos::N3_JSPM:
+                $conditions = array('conditions'=>"uni.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')");
+                break;
+            case En_grupos::NIVEL_CENTRAL: case En_grupos::ADMIN: case En_grupos::SUPERADMIN:                
+                break;
+        }
+        return $conditions;
+    }
 
     public function calcular_totales_generales(){
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
@@ -357,8 +376,10 @@ class Informacion_general extends MY_Controller
 
                 if(!is_null($this->session->userdata('usuario'))){
                     $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                    
+                    $conditions = $this->obtener_condicionales();
                     //pr($datos_busqueda);
-                    $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+array('fields'=>'SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                    $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+$conditions+array('fields'=>'SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados')); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                     //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                     //pr($datos['datos']);                
                     if(!empty($datos['datos'])){
@@ -482,9 +503,10 @@ class Informacion_general extends MY_Controller
                         }
                     break;
                 }
+                $conditions = $this->obtener_condicionales();
 
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales(array_merge($datos_busqueda,$extra)); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
+                $datos['datos'] = $this->inf_gen_model->calcular_totales(array_merge($datos_busqueda,$extra,$conditions)); ////Obtener listado de evaluaciones de acuerdo al año seleccionado
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']);
                 
@@ -577,8 +599,10 @@ class Informacion_general extends MY_Controller
                 if(isset($datos_busqueda['perfil_seleccion']) && !empty($datos_busqueda['perfil_seleccion'])){
                     $datos_busqueda['perfil_seleccion'] = $this->obtener_grupos_categorias($datos_busqueda);
                 }
+
+                $conditions = $this->obtener_condicionales();
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda/*+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+$conditions);/*+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
                     imp.anio anio_fin, "cur"."id_tipo_curso", 
                     "tc"."nombre" as "tipo_curso", "gc"."id_grupo_categoria", "gc"."nombre" as "grupo_categoria", 
                     "gc"."order" as "grupo_categoria_orden", "sub"."id_subcategoria", "sub"."nombre" as "perfil", "sub"."order" as "perfil_orden", 
@@ -599,7 +623,7 @@ class Informacion_general extends MY_Controller
                                     ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio), 
                     imp.anio, "cur"."id_tipo_curso", "tc"."nombre", 
                     "gc"."id_grupo_categoria", "gc"."nombre", "gc"."order", 
-                    "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')*/); ////Obtener listado de evaluaciones de acuerdo al año seleccionado --"mes"."nombre" as "mes", "mes"."nombre", 
+                    "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')*/ ////Obtener listado de evaluaciones de acuerdo al año seleccionado --"mes"."nombre" as "mes", "mes"."nombre", 
                 //$datos['usuario']['string_values'] = array_merge($this->lang->line('interface_administracion')['usuario'], $this->lang->line('interface_administracion')['general']); //Cargar textos utilizados en vista
                 //pr($datos['datos']); exit();
                 $resultado = array('total'=>array(),'perfil'=>array(),'tipo_curso'=>array(),'periodo'=>array());

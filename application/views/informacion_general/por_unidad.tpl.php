@@ -3,7 +3,16 @@
 <script src="<?php echo base_url(); ?>assets/third-party/fancytree/lib/jquery-ui.custom.js"></script>
 <link href="<?php echo base_url(); ?>assets/third-party/fancytree/src/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url(); ?>assets/third-party/fancytree/src/jquery.fancytree.js"></script>
-<?php echo js('informacion_general.js'); ?>
+<?php echo js('informacion_general.js');
+//pr($_SESSION['usuario']);
+if(isset($catalogos['agrupamiento']) AND !empty($catalogos['agrupamiento'])) {
+    $id_delegacion = $this->session->userdata('usuario')['id_delegacion'];
+    $nombre_delegacion = $this->session->userdata('usuario')['name_delegacion'];
+} else {
+    $id_delegacion = $this->session->userdata('usuario')['grupo_delegacion'];
+    $nombre_delegacion = $this->session->userdata('usuario')['nombre_grupo_delegacion'];
+} 
+?>
 <div class="row">
     <?php echo form_open('', array('id'=>'form_busqueda', 'name'=>'form_busqueda')); ?>
     <div id="filtros" class="col-lg-12 col-md-12 col-sm-12">
@@ -140,6 +149,7 @@
                                     //if($(this).attr('id')=='capa_agrupamiento_'+valor) {
                                     if('delegacion'==valor) {
                                         $('#capa_agrupamiento_'+valor).show();
+                                        $('#capa_agrupamiento_umae').hide();
                                     } else {
                                         $('#'+$(this).attr('id')).hide();
                                     }
@@ -206,19 +216,34 @@
                                 </div>
                                 <span class="material-input"></span><br>
                             </div>
-                            <div id="delegacion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                            <!--<div id="delegacion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>-->
+                            <?php echo $this->form_complete->create_element(
+                                    array(
+                                        'id'=>'delegacion',
+                                        'type'=>'hidden',
+                                        'value'=>$id_delegacion
+                                    )
+                                ); ?>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <label class="control-label"><?php echo $lenguaje['delegacion']; ?></label>
+                                    <div class="form-group form-group-sm">
+                                        <?php echo $nombre_delegacion; ?>
+                                    </div>
+                                    <span class="material-input"></span>
+                                </div>
                             <div id="nivel_atencion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <script type="text/javascript">
                                 $(function(){
-                                    data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#delegacion_capa'); limpiar_capas([]);
+                                    //data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#delegacion_capa'); limpiar_capas([]);
+                                    data_ajax_listado(site_url+'/informacion_general/cargar_listado/nivel_atencion', '#form_busqueda', '#nivel_atencion_capa'); $('#comparativa_chrt').html(''); $('#comparativa_chrt2').html('');
                                 });
                                 function validar_tipos_busqueda(elemento){
                                     mostrar_loader();
                                     $('#umae_capa').html('');
                                     $('#unidad_capa').html('');
-                                    $('#delegacion').val('');
+                                    //$('#delegacion').val('');
                                     $('#nivel_atencion_capa').html('');
                                     $('#tipo_unidad_capa').html('');
                                     $('#comparativa_chrt').html('');
@@ -284,13 +309,13 @@
                                     array(
                                         'id'=>'delegacion',
                                         'type'=>'hidden',
-                                        'value'=>$this->session->userdata('usuario')['id_delegacion']
+                                        'value'=>$id_delegacion
                                     )
                                 ); ?>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <label class="control-label"><?php echo $lenguaje['delegacion']; ?></label>
                                     <div class="form-group form-group-sm">
-                                        <?php echo $this->session->userdata('usuario')['name_delegacion']; ?>
+                                        <?php echo $nombre_delegacion; ?>
                                     </div>
                                     <span class="material-input"></span>
                                 </div>
@@ -451,13 +476,13 @@
                                         array(
                                             'id'=>'delegacion',
                                             'type'=>'hidden',
-                                            'value'=>$this->session->userdata('usuario')['id_delegacion']
+                                            'value'=>$id_delegacion
                                         )
                                     ); ?>
                                     <div class="col-lg-4 col-md-6 col-sm-12">
                                         <label class="control-label"><?php echo $lenguaje['delegacion']; ?></label>
                                         <div class="form-group form-group-sm">
-                                            <?php echo $this->session->userdata('usuario')['name_delegacion']; ?>
+                                            <?php echo $nombre_delegacion; ?>
                                         </div>
                                         <span class="material-input"></span>
                                     </div>
