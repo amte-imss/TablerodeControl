@@ -335,16 +335,9 @@ class Comparativa extends MY_Controller
 
             //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
             $data["comparativa"] = $this->comp->get_comparativa_region($num, $year, $type);
+            $data['usuario'] = $usuario;
 //            pr($data['comparativa']);
 //            pr($usuario);
-
-            foreach ($data['comparativa'] as $key => $value)
-            {
-                if ($value['region'] == $usuario['name_region'])
-                {
-                    $data['comparativa'][$key]['region'] = format_label_icon($data['comparativa'][$key]['region']);
-                }
-            }
         }
 
         $this->template->setBlank("comparative/region.tpl.php", $data, FALSE);

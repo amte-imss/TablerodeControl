@@ -3,6 +3,9 @@ var cores_textos = ['Decisiones basadas en información', '¿Qué está pasando 
 var cores_cantidad_bloques = 6;
 var cores_time_ms = 5000;
 var cores_index_banner = 0;
+var cores_image_w = 1942;
+var cores_nucleo_centro_w = 830;
+var cores_nucleo_centro_h = 480;
 
 $(function () {    
     cores_render_points2();
@@ -79,12 +82,18 @@ function cores_get_css(size, index) {
 
 function cores_render_points2(){
     $('#cores-area-animation').html('');
-    var size_limite = $('.cores-background').height() > $('#cores-area-animation').width() ? $('#cores-area-animation').width() : $('.cores-background').height();
-    //var size_limite = $('.cores-background').height() > $('#cores-area-principal').width() ? $('#cores-area-principal').width() : $('.cores-background').height();
+//    var size_limite = $('.cores-background').height() > $('#cores-area-animation').width() ? $('#cores-area-animation').width() : $('.cores-background').height();
+    var size_limite = $('.cores-background').height() > $('#cores-area-principal').width() ? $('#cores-area-principal').width() : $('.cores-background').height();
     var size = size_limite * .75;
-    var centro_h = ($('.cores-background').height() / 2) - (size / 2);
-    var centro_w = ($('#cores-area-animation').width() / 2) - (size / 2);
-            //var centro_w = ($('#cores-area-principal').width() / 2) - (size / 2);
+//    var centro_h = ($('.cores-background').height() / 2) - (size / 2);
+//    var centro_w = ($('#cores-area-animation').width() / 2) - (size / 2);
+//    var centro_w = ($('#cores-area-principal').width() / 2) - (size / 2) + 30;
+    var s_w = $('#cores-area-principal').width() + 30; //30 son de los margenes
+//    console.log(s_w);
+    s_w = s_w / cores_image_w ; //escala a trabajar
+//    console.log(s_w);
+    var centro_h = 0 - (size / 2) + (cores_nucleo_centro_h * s_w);
+    var centro_w = 0 - (size / 2) + (cores_nucleo_centro_w * s_w);
     var area1 = $('<div>')
                     .css({width: size, height: size, top: centro_h, left: centro_w, position: 'absolute'});                       
 	for(i=0;i<6;i++){
@@ -103,7 +112,7 @@ function cores_agrega_punto2(area1, size, i, sector) {
 	var time = i;
 	var x = 0;
 	var y = 0;
-	console.log(sector);
+//	console.log(sector);
 	switch(sector){
 		case 0: 
 			x = step*time;

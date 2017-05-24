@@ -94,20 +94,25 @@
             {
                 foreach ($comparativa as $region)
                 {
-                    // pr($region);
-                    $inscritos .= "<tr>
+                    $class_region = '';
+                    if($region['region'] == $usuario['name_region']){
+                        $class_region = 'current_comparativa_region';
+                        $region['region'] = '* '.$region['region'];
+                    }
+//                     pr($region['region'].' '.$usuario['name_region']);
+                    $inscritos .= "<tr class='".$class_region."'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["inscritos"] . "</td>
                             </tr>";
-                    $aprobados .= "<tr>
+                    $aprobados .= "<tr class='".$class_region."'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["aprobados"] . "</td>
                             </tr>";
-                    $suspendidos .= "<tr>
+                    $suspendidos .= "<tr class='".$class_region."'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["suspendidos"] . "</td>
                             </tr>";
-                    $etm .= "<tr>
+                    $etm .= "<tr class='".$class_region."'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["etm"] . "</td>
                             </tr>";

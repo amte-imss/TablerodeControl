@@ -128,6 +128,15 @@ a:hover, a:focus {
 .dropdown-menu li a:active {
   background-color: #009c9b !important;
   color: #FFFFFF;
+  box-shadow: none;
+}
+
+.navbar .dropdown-menu li a:hover,
+.navbar .dropdown-menu li a:focus,
+.navbar .dropdown-menu li a:active, .navbar.navbar-default .dropdown-menu li a:hover,
+.navbar.navbar-default .dropdown-menu li a:focus,
+.navbar.navbar-default .dropdown-menu li a:active {  
+  box-shadow: none;
 }
 
 .btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary:hover,
@@ -139,4 +148,8 @@ a:hover, a:focus {
 
 .text-primary {
   color: #999999;
+}
+
+.current_comparativa_region{
+    background-color:  #e2e2e2;
 }

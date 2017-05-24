@@ -75,7 +75,7 @@ function eficiencia_terminal(datos) {
 function procesa_datos(datos) {
     var salida = [];
     for (i = 0; i < datos.length; i++) {
-        salida[i] = [datos[i].nombre, datos[i].cantidad];
+        salida[i] = [datos[i].nombre, parseInt(""+ datos[i].cantidad)];
     }
     return salida;
 }

@@ -16,6 +16,7 @@ html, body{
 
 .btn-success{
 	background-color: #009b9b !important;
+        border-color: #009b9b !important;
 }
 
 a.cores-acceso{
@@ -45,10 +46,25 @@ a.cores-acceso{
     background-image: url("orbitas.png");
     height: 81%;
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	z-index: 30;
+}
+
+.div-logos{
+    z-index: 50;    
+    position: relative;
+    background: white;
+}
+
+.cores-bottom{
+    bottom: 0px;
+    width: 100%;
+    height: 5%;
+    z-index: 50;
+    background-color: white;
+    position: fixed;
 }
 
 .cores-background{

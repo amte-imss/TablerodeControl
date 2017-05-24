@@ -132,14 +132,15 @@
             </div>
         </div>
         <div class="panel-body">
-            <div class="row">
+            <div class="row div-logos">
                 <div class="cores-logos">
                     <img src="<?php echo base_url(); ?>assets/tablero_tpl/img/ces.png">
                     <img src="<?php echo base_url(); ?>assets/tablero_tpl/img/imss.png">
                 </div>
             </div>          
+            <div class="row cores-orbitas"></div>
             <div id="cores-area-principal" class="row cores-background">
-                <div class="cores-orbitas"></div>
+                
                 <div class="col-md-9">
                     <div id="cores-area-animation"></div>
                 </div>
@@ -157,8 +158,8 @@
                     </div>                   
                 </div>
             </div>
-        </div>    
-
+            <div class="cores-bottom"></div>            
+        </div>            
         <script>
             document.getElementsByTagName("BODY")[0].onresize = function () {
                 cores_animation()
