@@ -102,6 +102,7 @@ class Catalogo_listado {
     	$arreglo_datos['valor'] = (isset($arreglo['valor']) AND !empty($arreglo['valor'])) ? $arreglo['valor'] : $this->catalogos[$cat]['valor'];
     	$arreglo_datos['orden'] = (isset($arreglo['orden']) AND !empty($arreglo['orden'])) ? $arreglo['orden'] : $this->catalogos[$cat]['orden'];
     	$arreglo_datos['condicion'] = (isset($arreglo['condicion']) AND !empty($arreglo['condicion'])) ? $arreglo['condicion'] : '';
+    	$arreglo_datos['group'] = (isset($arreglo['group']) AND !empty($arreglo['group'])) ? $arreglo['group'] : '';
 
     	return $arreglo_datos;
     }
@@ -116,10 +117,14 @@ class Catalogo_listado {
 		   	if(!empty($datos['condicion'])){
 		   		$this->CI->db->where($datos['condicion']);
 		   	}
+		   	if(!empty($datos['group'])){
+		   		$this->CI->db->group_by($datos['group']);
+		   	}
 		   	$this->CI->db->select($datos['llave'].' as llave, '.$datos['valor'].' as valor');
 		   	$this->CI->db->order_by($datos['orden']);
 		   	
 		   	$query = $this->CI->db->get($datos['table']);
+		   	//echo $this->CI->db->last_query();
 		   	$registro = $query->result_array();
 		   	foreach ($registro as $key => $value) {
 		   		//pr($registro);

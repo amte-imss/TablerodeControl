@@ -51,9 +51,14 @@ class Informacion_general_model extends CI_Model
         if(isset($params['tipos_busqueda']) AND !empty($params['tipos_busqueda'])){
             switch ($params['tipos_busqueda']) {
                 case $tb['DELEGACION']['id']:
-                    $this->db->where('uni.umae=false');
+                    //$this->db->where('uni.umae=false');
+                    $this->db->where("uni.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')");
                     if(isset($params['delegacion']) AND !empty($params['delegacion'])){
-                        $this->db->where('del.id_delegacion='.$params['delegacion']);
+                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                            $this->db->where("del.grupo_delegacion='".$params['delegacion']."'");
+                        } else {
+                            $this->db->where("del.id_delegacion='".$params['delegacion']."'");
+                        }
                     }
                     if(isset($params['unidad']) AND !empty($params['unidad'])){
                         $this->db->where('uni.id_unidad_instituto='.$params['unidad']);
@@ -63,7 +68,11 @@ class Informacion_general_model extends CI_Model
                     } elseif(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['TIPO_CURSO']['id']) {
                         $this->db->order_by('tipo_curso');
                     } else {
-                        $this->db->order_by('del.nombre');
+                        if(isset($params['agrupamiento']) AND $params['agrupamiento']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                            $this->db->order_by('del.nombre_grupo_delegacion');
+                        } else {
+                            $this->db->order_by('del.nombre');
+                        }
                     }
                     break;
                 case $tb['NIVEL_ATENCION']['id']:
@@ -82,16 +91,25 @@ class Informacion_general_model extends CI_Model
                     $this->db->order_by('tc.nombre');
                     break;
                 case $tb['UMAE']['id']:
-                    $this->db->where('uni.umae=true');
+                    //$this->db->where('uni.umae=true');
+                    $this->db->where("uni.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')");
                     if(isset($params['umae']) AND !empty($params['umae'])){
-                        $this->db->where('uni.id_unidad_instituto='.$params['umae']);
+                        if(isset($params['agrupamiento_umae']) AND $params['agrupamiento_umae']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                            $this->db->where("uni.unidad_principal='".$params['umae']."'");
+                        } else {
+                            $this->db->where('uni.id_unidad_instituto='.$params['umae']);
+                        }
                     }
                     if(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['PERFIL']['id']) {
                         $this->db->order_by('subcategoria_orden, grupo_categoria_orden');
                     } elseif(isset($params['tipo_grafica']) AND $params['tipo_grafica']==$tb['TIPO_CURSO']['id']) {
                         $this->db->order_by('tipo_curso');
                     } else {
-                        $this->db->order_by('uni.nombre');
+                        if(isset($params['agrupamiento_umae']) AND $params['agrupamiento_umae']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                            $this->db->order_by('uni.nombre');
+                        } else {                            
+                            $this->db->order_by('uni.nombre_unidad_principal');
+                        }
                     }
                     break;
             }
@@ -101,10 +119,10 @@ class Informacion_general_model extends CI_Model
             $this->db->where('imp.anio='.$params['anio']);
         }
         //pr($params);
-        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion'])){
+        if(isset($params['perfil_seleccion']) AND !empty($params['perfil_seleccion']) AND $params['perfil_seleccion']>0){
             $this->db->where('gc.id_grupo_categoria IN ('.$params['perfil_seleccion'].')');
         }
-        if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion'])){
+        if(isset($params['tipo_curso_seleccion']) AND !empty($params['tipo_curso_seleccion']) AND $params['tipo_curso_seleccion']>0){
             $this->db->where('tc.id_tipo_curso IN ('.$params['tipo_curso_seleccion'].')');
         }
 
@@ -174,7 +192,7 @@ class Informacion_general_model extends CI_Model
             } else {
                 $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
                     imp.anio anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
-                    del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae,
+                    del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae, uni.grupo_tipo_unidad,
                     hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
                     hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
                     case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
@@ -190,7 +208,7 @@ class Informacion_general_model extends CI_Model
             $this->db->where($params['conditions']);
         }
         if (array_key_exists('order', $params)) {
-            $this->db->order_by($params['order']['field']);
+            $this->db->order_by($params['order']);
         }
 
         //$this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');
@@ -242,6 +260,9 @@ class Informacion_general_model extends CI_Model
         }
         if (array_key_exists('conditions', $params)) {
             $this->db->where($params['conditions']);
+        }
+        if (array_key_exists('group', $params)) {
+            $this->db->group_by($params['group']);
         }
         if (array_key_exists('order', $params)) {
             $this->db->order_by($params['order']);

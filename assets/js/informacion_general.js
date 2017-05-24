@@ -524,8 +524,13 @@ function mostrar_tipo_grafica(elemento){
         if($('#capa_'+this.value).length>0){
             $('#'+this.value).val('');
             if(this.selected==true){
+                if($('#tipos_busqueda').val()=='delegacion'){ ///Realizar carga de catálogo de Delegaciones
+                    obtener_umae(site_url+'/informacion_general/obtener_delegacion', '#form_busqueda', '#delegacion');
+                    $('#capa_agrupamiento_'+this.value).show();
+                }
                 if($('#tipos_busqueda').val()=='umae'){ ///Realizar carga de catálogo de UMAEs
                     obtener_umae(site_url+'/informacion_general/obtener_umae', '#form_busqueda', '#umae')
+                    $('#capa_agrupamiento_'+this.value).show();
                 }
                 $('#capa_'+this.value).show();
                 $('#container_'+this.value).show();
@@ -533,12 +538,16 @@ function mostrar_tipo_grafica(elemento){
             } else {
                 $('#capa_'+this.value).hide();
                 $('#container_'+this.value).hide();
+                if($('#capa_agrupamiento_'+this.value).length>0){
+                    $('#capa_agrupamiento_'+this.value).hide();
+                }
             }
         }
     });
 }
 
 function obtener_umae(path, form_recurso, elemento_resultado) {
+    $(elemento_resultado).val(''); ///Seleccionar por default
     var dataSend = $(form_recurso).serialize();
     $.ajax({
         url: path,

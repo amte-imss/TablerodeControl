@@ -186,7 +186,6 @@
                                     //'autocomplete'=>'off',
                                     //'data-toggle'=>'tooltip',
                                     //'data-placement'=>'bottom',
-                                    //'title'=>'Delegaci&oacute;n de trabajo',
                                     )
                                 )
                             );
@@ -222,6 +221,33 @@
                     <span class="material-input"></span>
                 </div>
             </div>
+            <div id="capa_agrupamiento_delegacion" style="display:none;">
+                <?php if(isset($catalogos['agrupamiento']) AND !empty($catalogos['agrupamiento'])) { ?>
+                    <div>
+                        <div>
+                            <label class="control-label"><?php echo $lenguaje['agrupar']; ?></label>
+                            <?php echo $this->form_complete->create_element(
+                                array(
+                                    'id'=>'agrupamiento',
+                                    'type'=>'dropdown',
+                                    'options'=>$catalogos['agrupamiento'],
+                                    'attributes'=>array(
+                                        'class'=>'form-control',
+                                        'onchange'=>"javascript:obtener_umae(site_url+'/informacion_general/obtener_delegacion', '#form_busqueda', '#delegacion'); calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');"
+                                        //'autocomplete'=>'off',
+                                        //'data-toggle'=>'tooltip',
+                                        //'data-placement'=>'bottom',
+                                        //'title'=>'Delegaci&oacute;n de trabajo',
+                                        )
+                                    )
+                                );
+                            ?>
+                            <span class="material-input"></span>
+                        </div>
+                        <span class="material-input"></span>
+                    </div>
+                <?php } ?>
+            </div>
             <div id="capa_umae" style="display:none;">
                 <div>
                     <div>
@@ -247,6 +273,33 @@
                     </div>
                     <span class="material-input"></span>
                 </div>
+            </div>
+            <div id="capa_agrupamiento_umae" style="display:none;">
+                <?php if(isset($catalogos['agrupamiento_umae']) AND !empty($catalogos['agrupamiento_umae'])) { ?>
+                    <div>
+                        <div>
+                            <label class="control-label"><?php echo $lenguaje['agrupar']; ?></label>
+                            <?php echo $this->form_complete->create_element(
+                                array(
+                                    'id'=>'agrupamiento_umae',
+                                    'type'=>'dropdown',
+                                    'options'=>$catalogos['agrupamiento_umae'],
+                                    'attributes'=>array(
+                                        'class'=>'form-control',
+                                        'onchange'=>"javascript:obtener_umae(site_url+'/informacion_general/obtener_umae', '#form_busqueda', '#umae'); calcular_totales(site_url+'/informacion_general/calcular_totales', '#form_busqueda');"
+                                        //'autocomplete'=>'off',
+                                        //'data-toggle'=>'tooltip',
+                                        //'data-placement'=>'bottom',
+                                        //'title'=>'Delegaci&oacute;n de trabajo',
+                                        )
+                                    )
+                                );
+                            ?>
+                            <span class="material-input"></span>
+                        </div>
+                        <span class="material-input"></span>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>

@@ -35,6 +35,10 @@ class Informacion_general extends MY_Controller
         $datos['catalogos'] = $cat_list->obtener_catalogos($configuracion['catalogos']); //Catalogo_listado::PERIODO        
         $datos['catalogos']+=$nivel_atencion;//Agregar arreglo de niveles de atención a los demás catálogos        
         $datos['catalogos']['tipos_busqueda'] = $configuracion['tipos_busqueda'];
+        if(in_array($this->configuracion_grupos->obtener_grupo_actual(), array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))) { //Agregar para superusuarios y administradores
+            $datos['catalogos']['agrupamiento'] = dropdown_options($this->config->item('agrupamiento'), 'id', 'valor'); ///Agregar opciones para agrupamiento de delegaciones
+            $datos['catalogos']['agrupamiento_umae'] = dropdown_options($this->config->item('agrupamiento'), 'id', 'valor'); ///Agregar opciones para agrupamiento de UMAEs
+        }
         //pr($datos['catalogos']);
 
         $this->template->setTitle($datos['lenguaje']['titulo_principal']);
@@ -104,6 +108,10 @@ class Informacion_general extends MY_Controller
         $tipo_grafica = $this->config->item('tipo_grafica');
         $datos['catalogos']['tipos_busqueda'] = array($tipos_busqueda['UMAE']['id']=>$tipos_busqueda['UMAE']['valor'], $tipos_busqueda['DELEGACION']['id']=>$tipos_busqueda['DELEGACION']['valor']);
         $datos['catalogos']['tipo_grafica'] = array($tipo_grafica['PERFIL']['id']=>$tipo_grafica['PERFIL']['valor'], $tipo_grafica['TIPO_CURSO']['id']=>$tipo_grafica['TIPO_CURSO']['valor']);
+        if(in_array($this->configuracion_grupos->obtener_grupo_actual(), array(En_grupos::NIVEL_CENTRAL, En_grupos::ADMIN, En_grupos::SUPERADMIN))) { //Agregar para superusuarios y administradores
+            $datos['catalogos']['agrupamiento'] = dropdown_options($this->config->item('agrupamiento'), 'id', 'valor'); ///Agregar opciones para agrupamiento de delegaciones
+            $datos['catalogos']['agrupamiento_umae'] = dropdown_options($this->config->item('agrupamiento'), 'id', 'valor'); ///Agregar opciones para agrupamiento de UMAEs
+        }
         //pr($datos['catalogos']);
         /*$listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria'));
         foreach ($listado_subcategorias as $key_ls => $listado) {
@@ -129,7 +137,14 @@ class Informacion_general extends MY_Controller
                 $this->load->library('Catalogo_listado');
                 $cat_list = new Catalogo_listado(); //Obtener catálogos
                 $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND del.id_region=".$datos_busqueda['region'] : '';
-                $c_delegacion = (isset($datos_busqueda['delegacion']) AND !empty($datos_busqueda['delegacion'])) ? ' AND del.id_delegacion='.$datos_busqueda['delegacion'] : '';
+                $c_delegacion = '';
+                if(isset($datos_busqueda['delegacion']) AND !empty($datos_busqueda['delegacion'])) {
+                    if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                        $c_delegacion = ' AND del.id_delegacion='.$datos_busqueda['delegacion'];
+                    } else {
+                        $c_delegacion = " AND del.grupo_delegacion='".$datos_busqueda['delegacion']."'";
+                    }
+                }
                 $c_nivel_atencion = (isset($datos_busqueda['nivel_atencion']) AND !empty($datos_busqueda['nivel_atencion'])) ? ' AND ins.nivel_atencion='.$datos_busqueda['nivel_atencion'] : '';
                 $c_tipo_unidad = (isset($datos_busqueda['tipo_unidad']) AND !empty($datos_busqueda['tipo_unidad'])) ? ' AND ins.id_tipo_unidad='.$datos_busqueda['tipo_unidad'] : '';
                 $resultado=array('resultado'=>false, 'datos'=>array(), 'mensaje'=>'');
@@ -140,7 +155,7 @@ class Informacion_general extends MY_Controller
                         if($datos_busqueda['tipos_busqueda']=='umae'){
                             //$datos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND region=')));
                             //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>'ins.umae=true '.$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion", 'conditions'=>"ins.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
                             $resultado['form']['label'] = $lenguaje['umae'];
                             $resultado['form']['path'] = 'unidad';
                             $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
@@ -155,7 +170,13 @@ class Informacion_general extends MY_Controller
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['tipo_unidad_capa', 'umae_capa', 'unidad_capa'], ['nivel_atencion']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                             //$resultado['form']['destino'] = '#tipo_unidad_capa';
                             $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : ''; ///Validación generada específicamente para la consulta
-                            $datos = $cat_list->obtener_catalogos(array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region)));
+                            if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                                $extra = array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region));
+                            } else {
+                                $extra = array(Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1 '.$c_region, 'llave'=>'grupo_delegacion', 'valor'=>'nombre_grupo_delegacion',
+                                    'group'=>'grupo_delegacion, nombre_grupo_delegacion', 'orden'=>'nombre_grupo_delegacion'));
+                            }
+                            $datos = $cat_list->obtener_catalogos($extra);
                             $resultado['datos'] = $datos['delegaciones'];
                             $resultado['resultado'] = true;
                             $tipo = 'delegacion';
@@ -167,21 +188,21 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['tipo_unidad']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/".$resultado['form']['path']."', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                         //$resultado['form']['destino'] = '#unidad_capa';
                         //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>"DISTINCT(ins.nivel_atencion) as id_nivel_atencion, case when ins.nivel_atencion=1 then 'Primer nivel' when ins.nivel_atencion=2 then 'Segundo nivel' when ins.nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end as nivel_atencion_nombre", 'conditions'=>"ins.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_delegacion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'nivel_atencion_nombre'));
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_nivel_atencion', 'nivel_atencion_nombre');
                         $resultado['resultado'] = true;
                         break;
                     case 'tipo_unidad':
                         $resultado['form']['label'] = $lenguaje['tipo_unidad'];
                         $resultado['form']['path'] = 'unidad';
-                        if($datos_busqueda['tipos_busqueda']=='umae'){
-                            $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#umae_capa');");
+                        if($datos_busqueda['tipos_busqueda']=='umae'){ ///Desplegar el tipo de unidad para UMAEs
+                            $resultado['form']['evento'] = array('onchange'=>"javascript: $('#capa_agrupamiento_umae').show(); limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/ud', '#form_busqueda', '#umae_capa');");
                             //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=true '.$c_region.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>"ins.grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."') ".$c_region.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad')); //Solo agregamos la clave de las UMAEs
                         } else {
                             $resultado['form']['evento'] = array('onchange'=>"javascript: limpiar_capas(['umae_capa', 'unidad_capa'], ['unidad', 'umae']); data_ajax_listado(site_url+'/informacion_general/cargar_listado/unidad', '#form_busqueda', '#".$resultado['form']['path']."_capa');");
                             //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
-                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
+                            $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'DISTINCT(tipo_uni.id_tipo_unidad), tipo_uni.nombre as tipo_unidad', 'conditions'=>"ins.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_delegacion.$c_nivel_atencion.' AND ins.anio='.$datos_busqueda['anio'], 'order'=>'tipo_unidad'));
                         }
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_tipo_unidad', 'tipo_unidad');
                         $resultado['resultado'] = true;
@@ -191,7 +212,7 @@ class Informacion_general extends MY_Controller
                         $resultado['form']['path'] = 'unidad';
                         $resultado['form']['evento'] = array('onchange'=>"javascript: calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');");
                         //$dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND EXTRACT(YEAR FROM ins.fecha)='.$datos_busqueda['anio']));
-                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>'ins.umae=false '.$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
+                        $dato_mod = $this->inf_gen_model->obtener_listado_unidad_umae(array('fields'=>'ins.id_unidad_instituto, ins.clave_unidad, ins.nombre as institucion', 'conditions'=>"ins.grupo_tipo_unidad NOT IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."') ".$c_region.$c_delegacion.$c_nivel_atencion.$c_tipo_unidad.' AND ins.anio='.$datos_busqueda['anio']));
                         $resultado['resultado'] = true;
                         $resultado['datos'] = dropdown_options($dato_mod, 'id_unidad_instituto', 'institucion');
                         //$vista = 'listado_radio.tpl.php';
@@ -439,9 +460,26 @@ class Informacion_general extends MY_Controller
                             'group'=>'"reg"."id_region", "reg"."nombre"');
                         break;
                     case $tipos_busqueda['DELEGACION']['id']:
-                        $extra = array('fields'=>'"del"."id_delegacion", "del"."nombre" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
-                            SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
-                            'group'=>'"del"."id_delegacion", "del"."nombre"');
+                        if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                            $extra = array('fields'=>'"del"."id_delegacion", "del"."nombre" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
+                                SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                                'group'=>'"del"."id_delegacion", "del"."nombre"');
+                        } else {
+                            $extra = array('fields'=>'"del"."grupo_delegacion", "del"."nombre_grupo_delegacion" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
+                                SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
+                                'group'=>'"del"."grupo_delegacion", "del"."nombre_grupo_delegacion"');
+                        }
+                    break;
+                    case $tipos_busqueda['UMAE']['id']:
+                        if($datos_busqueda['agrupamiento_umae']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
+                            $extra = array('fields'=>'"uni"."id_unidad_instituto", "uni"."nombre" as "unidades_instituto", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
+                                SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados, uni.grupo_tipo_unidad',
+                                'group'=>'"uni"."id_unidad_instituto", "uni"."nombre", uni.grupo_tipo_unidad');
+                        } else {
+                            $extra = array('fields'=>'"uni"."unidad_principal", "uni"."nombre_unidad_principal" as "unidades_instituto", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
+                                SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados, uni.grupo_tipo_unidad',
+                                'group'=>'"uni"."unidad_principal", "uni"."nombre_unidad_principal", uni.grupo_tipo_unidad');
+                        }
                     break;
                 }
 
@@ -508,7 +546,7 @@ class Informacion_general extends MY_Controller
                         }
                         //ksort($resultado['delegacion']);
                         //UMAE
-                        if(isset($dato['umae']) AND $dato['umae']==true){
+                        if(isset($dato['grupo_tipo_unidad']) AND in_array($dato['grupo_tipo_unidad'], array($this->config->item('grupo_tipo_unidad')['UMAE']['id'], $this->config->item('grupo_tipo_unidad')['CUMAE']['id']))){
                             /*if(!isset($resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']])){
                                 $resultado['umae'][$dato['clave_unidad'].'-'.$dato['unidades_instituto']] = array();
                             }
@@ -670,11 +708,38 @@ class Informacion_general extends MY_Controller
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                $c_region = (isset($datos_busqueda['region']) AND !empty($datos_busqueda['region'])) ? " AND id_region=".$datos_busqueda['region'] : '';
+                $c_tipo_unidad = (isset($datos_busqueda['tipo_unidad']) AND !empty($datos_busqueda['tipo_unidad'])) ? ' AND id_tipo_unidad='.$datos_busqueda['tipo_unidad'] : '';
+                $c_grupo = "grupo_tipo_unidad IN ('".$this->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->config->item('grupo_tipo_unidad')['CUMAE']['id']."')";
+                $c_anio = " AND anio=".$datos_busqueda['anio'];
 
                 $cat_list = new Catalogo_listado(); //Obtener catálogos
-                $catalogos = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>'umae=true AND anio='.$datos_busqueda['anio'], 'valor'=>"nombre"))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+                if($datos_busqueda['agrupamiento_umae']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                    $agrupamiento = array(Catalogo_listado::UNIDADES_INSTITUTO=>array('valor'=>'nombre_unidad_principal', 'llave'=>'DISTINCT(unidad_principal)', 'orden'=>'nombre_unidad_principal','condicion'=>$c_grupo.$c_anio.$c_region.$c_tipo_unidad));
+                } else {
+                    $agrupamiento = array(Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>$c_grupo.$c_anio.$c_region." AND unidad_principal in (SELECT unidad_principal FROM catalogos.unidades_instituto WHERE ".$c_grupo.$c_anio.$c_region.$c_tipo_unidad.")", 'valor'=>"nombre"));
+                }
+                $catalogos = $cat_list->obtener_catalogos($agrupamiento); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
                 
                 echo json_encode($catalogos['unidades_instituto']);
+            }
+        }
+    }
+
+    public function obtener_delegacion(){
+        if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
+            if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
+                $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+
+                $cat_list = new Catalogo_listado(); //Obtener catálogos
+                if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['AGRUPAR']['id']){
+                    $agrupamiento = array(Catalogo_listado::DELEGACIONES=>array('valor'=>'nombre_grupo_delegacion', 'llave'=>'DISTINCT(grupo_delegacion)', 'orden'=>'nombre_grupo_delegacion'));
+                } else {
+                    $agrupamiento = array(Catalogo_listado::DELEGACIONES);
+                }
+                $catalogos = $cat_list->obtener_catalogos($agrupamiento); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+                
+                echo json_encode($catalogos['delegaciones']);
             }
         }
     }

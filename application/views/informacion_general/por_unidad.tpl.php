@@ -75,20 +75,75 @@
                                 ); ?>
                                 <span class="material-input"></span>
                             </div>
+                            <div id="capa_agrupamiento_delegacion" class="col-lg-4 col-md-6 col-sm-12 agrupamiento" style="display:none;">
+                                <?php if(isset($catalogos['agrupamiento']) AND !empty($catalogos['agrupamiento'])) { ?>
+                                    <div>
+                                        <div>
+                                            <label class="control-label"><?php echo $lenguaje['agrupar']; ?></label>
+                                            <?php echo $this->form_complete->create_element(
+                                                array(
+                                                    'id'=>'agrupamiento',
+                                                    'type'=>'dropdown',
+                                                    'options'=>$catalogos['agrupamiento'],
+                                                    'attributes'=>array(
+                                                        'class'=>'form-control',
+                                                        'onchange'=>"javascript:obtener_umae(site_url+'/informacion_general/obtener_delegacion', '#form_busqueda', '#delegacion'); limpiar_capas(['nivel_atencion_capa', 'tipo_unidad_capa', 'umae_capa', 'unidad_capa'], []); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
+                                                        )
+                                                    )
+                                                );
+                                            ?>
+                                            <span class="material-input"></span>
+                                        </div>
+                                        <span class="material-input"></span>
+                                    </div>
+                                <?php } ?>
+                            </div>
                             <div id="delegacion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="nivel_atencion_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="tipo_unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <div id="unidad_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
+                            <div id="capa_agrupamiento_umae" class="col-lg-4 col-md-6 col-sm-12 agrupamiento" style="display:none;">
+                                <?php if(isset($catalogos['agrupamiento_umae']) AND !empty($catalogos['agrupamiento_umae'])) { ?>
+                                    <div>
+                                        <div>
+                                            <label class="control-label"><?php echo $lenguaje['agrupar']; ?></label>
+                                            <?php echo $this->form_complete->create_element(
+                                                array(
+                                                    'id'=>'agrupamiento_umae',
+                                                    'type'=>'dropdown',
+                                                    'options'=>$catalogos['agrupamiento_umae'],
+                                                    'attributes'=>array(
+                                                        'class'=>'form-control',
+                                                        'onchange'=>"javascript:obtener_umae(site_url+'/informacion_general/obtener_umae', '#form_busqueda', '#umae'); limpiar_capas([], []); calcular_totales_unidad(site_url+'/informacion_general/calcular_totales_unidad', '#form_busqueda');"
+                                                        )
+                                                    )
+                                                );
+                                            ?>
+                                            <span class="material-input"></span>
+                                        </div>
+                                        <span class="material-input"></span>
+                                    </div>
+                                <?php } ?>
+                            </div>
                             <div id="umae_capa" class="col-lg-4 col-md-6 col-sm-12"></div>
                             <script type="text/javascript">
                             function validar_tipos_busqueda(elemento){
                                 mostrar_loader();
+                                var valor = $(elemento).val();
                                 if($(elemento).val()==''){
                                     $('#region_capa').hide();
                                 } else {
                                     $('#region').val('');
                                     $('#region_capa').show();
                                 }
+                                $.each($('.agrupamiento'), function( key, value ) {
+                                    //if($(this).attr('id')=='capa_agrupamiento_'+valor) {
+                                    if('delegacion'==valor) {
+                                        $('#capa_agrupamiento_'+valor).show();
+                                    } else {
+                                        $('#'+$(this).attr('id')).hide();
+                                    }
+                                });
                                 $('#umae_capa').html('');
                                 $('#unidad_capa').html('');
                                 $('#delegacion_capa').html('');
