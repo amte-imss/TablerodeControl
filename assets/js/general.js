@@ -294,11 +294,12 @@ function imprimir_contenido(html_id){
     window.print();
     $('body').html(restaurar_pagina);*/
     w=window.open();
-    w.document.write('<link href="'+url+'assets/tablero_tpl/css/bootstrap.min.css" rel="stylesheet" />');
-    w.document.write('<link href="'+url+'assets/tablero_tpl/css/material-dashboard.css" rel="stylesheet"/>');
-    w.document.write('<link href="'+url+'assets/tablero_tpl/css/demo.css" rel="stylesheet" />');
-    w.document.write('<link href="'+url+'assets/third-party/font-awesome/css/font-awesome.min.css" rel="stylesheet">');
-    w.document.write('<link href="http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons" rel="stylesheet" type="text/css">');
+    //w.document.write('<link href="'+url+'assets/tablero_tpl/css/bootstrap.min.css" rel="stylesheet" />');
+    //w.document.write('<link href="'+url+'assets/tablero_tpl/css/material-dashboard.css" rel="stylesheet"/>');
+    //w.document.write('<link href="'+url+'assets/tablero_tpl/css/demo.css" rel="stylesheet" />');
+    //w.document.write('<link href="'+url+'assets/third-party/font-awesome/css/font-awesome.min.css" rel="stylesheet">');
+    //w.document.write('<link href="http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons" rel="stylesheet" type="text/css">');
+    //w.document.write('---');
     w.document.write($(html_id).html());
     w.print();
     w.close();
