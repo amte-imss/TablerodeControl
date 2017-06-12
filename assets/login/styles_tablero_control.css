@@ -714,9 +714,3 @@ input[type=range]:disabled::-webkit-slider-runnable-track {
 .container_unidades{
     max-height: 450px;
 }
-
-/* modificaciones por christian solicitades por Leylani */
-input::placeholder {
-  color: white;
-  opacity: 1 !important;
-}

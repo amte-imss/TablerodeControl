@@ -309,7 +309,7 @@ class Comparativa_model extends MY_Model
         {
             $select = array(
                 $grupo_principal[0] . ' id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                $grupo_principal[0] . ' nombre',
+                $grupo_principal[1] . ' nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso'
@@ -383,7 +383,7 @@ class Comparativa_model extends MY_Model
             );
         }
         //pr($filtros);
-        //pr($this->db->last_query());
+//        pr($this->db->last_query());
         return $datos;
     }
 

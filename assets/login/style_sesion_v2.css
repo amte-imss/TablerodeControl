@@ -282,3 +282,8 @@ a.cores-acceso{
     100%  {width: 5px; height: 5px;}    
 }
 
+/* modificaciones por christian solicitades por Leylani */
+input::placeholder {
+  /*color: white;*/
+  /*opacity: 1 !important;*/
+}
