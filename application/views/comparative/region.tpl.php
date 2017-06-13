@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-icon" data-background-color="green" >
-                            <h4 class="card-title"><i class="fa fa-filter" aria-hidden="true"></i> Filtros</h4>
+                            <h4 class="card-title"><i class="fa fa-filter" aria-hidden="true"></i> Filtros<i class="material-icons cores-helper" data-help="comparativa_region">help</i></h4>
                         </div>
                         <div class="card-content" id="div-filters">
                             <div class="row">

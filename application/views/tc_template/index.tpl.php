@@ -63,12 +63,14 @@
         <div class="modal fade" id="myModal" tabindex="1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <?php
-                    if (isset($cuerpo_modal))
-                    {
-                        echo $cuerpo_modal;
-                    }
-                    ?>
+                    <div id="cores-modal">
+                        <?php
+                        if (isset($cuerpo_modal))
+                        {
+                            echo $cuerpo_modal;
+                        }
+                        ?>
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -115,7 +117,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <h2>CORES</h2>
+                            <img class="cores-logo" src="<?php echo base_url(); ?>assets/login/cores.png">
                         </div>
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
@@ -209,11 +211,12 @@
 
     <!--  Notifications Plugin    -->
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/bootstrap-notify.js"></script>
-   
+
     <!-- Material Dashboard javascript methods -->
     <script src="<?php echo base_url(); ?>assets/tablero_tpl/js/material-dashboard.js"></script>
 
     <script src="<?php echo base_url(); ?>assets/js/general.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/help.js"></script>
     <?php echo js('menu.js'); ?>
 
 

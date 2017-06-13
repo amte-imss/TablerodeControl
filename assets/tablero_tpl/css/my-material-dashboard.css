@@ -153,3 +153,12 @@ a:hover, a:focus {
 .current_comparativa_region{
     background-color:  #e2e2e2;
 }
+
+.cores-logo{
+    height: 100px;
+    margin-left: 10px;
+}
+
+.main-panel > .content{
+    padding-top: 50px;
+}
