@@ -18,6 +18,7 @@ class Ranking extends MY_Controller
     {
         parent::__construct();
         $this->load->library('form_complete');
+        $this->load->library('Catalogo_listado');
         $this->load->model('Ranking_model', 'ranking');
         $this->lang->load('ranking', 'spanish');
     }
@@ -35,17 +36,6 @@ class Ranking extends MY_Controller
         $output['programas'] = dropdown_options($this->ranking->get_programas(), 'id_programa_proyecto', 'proyecto');
         $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
         $output['graficas'] = $this->ranking->get_tipos_reportes();
-        $this->template->setTitle($output['lenguaje']['title']);
-        $this->template->setSubTitle($output['lenguaje']['subtitle']);
-        $this->template->setDescripcion($this->mostrar_datos_generales());
-        $main_content = $this->load->view('ranking/index', $output, true);
-        $this->template->setMainContent($main_content);
-        $this->template->getTemplate();
-        //$this->output->enable_profiler(true);
-    }
-
-    public function get_data()
-    {
         if ($this->input->post())
         {
             $usuario = $this->session->userdata('usuario');
@@ -53,11 +43,17 @@ class Ranking extends MY_Controller
             {
                 $usuario['umae'] = true;
             }
-            $datos = $this->ranking->get_data($usuario, $this->input->post());
-//            pr($this->db->last_query());
-            echo json_encode($datos);
-            //$this->output->enable_profiler(true);
-        }
-    }
-
+            $output['datos'] = $this->ranking->get_data($usuario, $this->input->post());
+            $output['filtros'] = $this->input->post();
+            $output['tabla'] = $this->load->view('ranking/tabla', $output, true);
+            $output['grafica'] = $this->load->view('ranking/grafica', $output, true);
+        }        
+        $this->template->setTitle($output['lenguaje']['title']);
+        $this->template->setSubTitle($output['lenguaje']['subtitle']);
+        $this->template->setDescripcion($this->mostrar_datos_generales());        
+        $main_content = $this->load->view('ranking/index', $output, true);
+        $this->template->setMainContent($main_content);
+        $this->template->getTemplate();
+        //$this->output->enable_profiler(true);
+    }    
 }

@@ -10,7 +10,7 @@
             <?php
             echo js('chart_options.js');
             echo js('ranking/index.js');
-            echo form_open('ranking/get_data/', array('id' => 'form_ranking'));
+            echo form_open('ranking/', array('id' => 'form_ranking'));
             ?>
             <div id="filtros_capa" class="card-content collapse">
                 <?php
@@ -32,8 +32,7 @@
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
                                                 'data-placement' => 'top',
-                                                'title' => 'UMAE',
-                                                'onchange' => 'render_graph()')
+                                                'title' => 'UMAE')
                                         )
                                 );
                                 ?>
@@ -47,13 +46,12 @@
                                 echo $this->form_complete->create_element(
                                         array('id' => 'agrupamiento',
                                             'type' => 'dropdown',
-                                            'options' => array(0 => 'Si', 1 => 'No'),
+                                            'options' => array(1 => 'Si', 0 => 'No'),
                                             'attributes' => array(
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
                                                 'data-placement' => 'top',
                                                 'title' => 'Agrupamiento',
-                                                'onchange' => 'render_graph()'
                                             )
                                         )
                                 );
@@ -78,8 +76,7 @@
                                             'class' => 'form-control  form-control input-sm',
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'top',
-                                            'title' => 'Programa',
-                                            'onchange' => 'render_graph()')
+                                            'title' => 'Programa')
                                     )
                             );
                             ?>
@@ -99,8 +96,7 @@
                                             'class' => 'form-control  form-control input-sm',
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'top',
-                                            'title' => 'Tipo',
-                                            'onchange' => 'render_graph()')
+                                            'title' => 'Tipo')
                                     )
                             );
                             ?>
@@ -120,14 +116,17 @@
                                             'class' => 'form-control  form-control input-sm',
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'top',
-                                            'title' => 'Region',
-                                            'onchange' => 'render_graph()')
+                                            'title' => 'Region')
                                     )
                             );
                             ?>
                         </div>
                         <?php echo form_error_format('periodo'); ?>
                     </div>
+                </div>
+                <br>
+                <div class="row">
+                    <input type="submit" value="Buscar" class="btn btn-primary">
                 </div>
             </div>
         </div>
@@ -137,7 +136,21 @@
 <?php echo form_close(); ?>
 
 <div class="row">
-    <div id="area_graph"></div>
+
+    <?php
+    if (isset($grafica))
+    {
+        echo $grafica;
+    }
+    ?>    
+    <div id="area_table">
+        <?php
+        if (isset($tabla))
+        {
+            echo $tabla;
+        }
+        ?>
+    </div>
 </div>
 
 <div id="alert-ranking" class="alert alert-warning alert-comparativa" style="display: none">
