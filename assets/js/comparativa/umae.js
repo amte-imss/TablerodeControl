@@ -3,11 +3,8 @@ function cmbox_comparativa() {
     if (id_destino == "") {
         $('#area_comparativa').html('');
         $('#area_reportes').css('display', 'none');
-    } else {
-        var destino = site_url + '/comparativa/umae_tipo_curso';
-        if (id_destino == 2) {
-            destino = site_url + '/comparativa/umae_perfil';
-        }
+    } else {        
+        var destino = site_url + '/comparativa/umae/';
         var agrupamiento = 0;
         if (document.getElementById('agrupamiento') != null) {
             agrupamiento = document.getElementById('agrupamiento').value;
@@ -15,7 +12,7 @@ function cmbox_comparativa() {
         $.ajax({
             url: destino
             , method: "post"
-            , data: {vista: 1, agrupamiento: agrupamiento}
+            , data: {vista: id_destino, agrupamiento: agrupamiento}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }

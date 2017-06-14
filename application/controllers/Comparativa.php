@@ -156,18 +156,64 @@ class Comparativa extends MY_Controller
 
     public function umae()
     {
+        $this->load->model('Ranking_model', 'ranking');
         $output['usuario'] = $this->session->userdata('usuario');
-        $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
-        $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $output += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::REGIONES,
-            Catalogo_listado::DELEGACIONES => array('condicion' => array('id_region' => $output['usuario']['id_region'])),)
-        );
+        $output['comparativas'] = $this->comparativa->get_tipos_comparativas();        
+        
+        $output['usuario'] = $this->session->userdata('usuario');        
+        if ($this->input->post('vista'))
+        {
+            $filtros_umae = array();
+            $filtros_umae['agrupamiento'] = 1; //activamos el agrupamiento            
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null &&$this->input->post('agrupamiento') == 0)
+            {                
+                $filtros_umae['agrupamiento'] = 0; // desactivamos el agrupamiento solo si somos nivel central
+            }
+                                   
+            $cat_list = new Catalogo_listado(); //Obtener catálogos
+            $output += $cat_list->obtener_catalogos(array(
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
+            );
+            $output['agrupamiento'] = $filtros_umae['agrupamiento'];
+            $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
+            $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
+            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false), 'id_tipo_unidad', 'nombre');
+            $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
+            $output['reportes'] = $this->comparativa->get_tipos_reportes();
+            switch ($this->input->post('vista', true))
+            {
+                case 1:
+                    $vista = 'umae_tipo_curso';
+                    break;
+                case 2:
+                    $vista = 'umae_perfil';
+                    break;
+            }
+            $output['vista'] = $this->load->view('comparative/' . $vista, $output, true);
+        }
+        if ($this->input->post('tipo_comparativa'))
+        {
+            $filtros = $this->input->post();         
+            $filtros['agrupamiento'] = 1;
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento', true) == 0)
+            {
+                $filtros['agrupamiento'] = 0;
+            }
+            $output['datos'] = $datos = $this->comparativa->get_comparar_delegacion($filtros);            
+            $output['tabla'] = $this->load->view('comparative/tabla.tpl.php', $output, true);
+            $output['grafica'] = $this->load->view('comparative/grafica.tpl.php', $output, true);
+        } 
+        
+        if($this->input->is_ajax_request()){
+            echo $output['vista'];
+        }else{
+        
         $view = $this->load->view('comparative/umae', $output, true);
         $this->template->setDescripcion($this->mostrar_datos_generales());
         $this->template->setMainContent($view);
         $this->template->setSubTitle('Comparativa por UMAE');
         $this->template->getTemplate();
+        }
     }
 
     public function umae_perfil()
@@ -356,23 +402,39 @@ class Comparativa extends MY_Controller
         if ($this->input->post('view'))
         {
             $filtros_delegacion = array();
-            $filtros_delegacion['agrupamiento'] = 0; //activamos el agrupamiento
+            $filtros_delegacion['agrupamiento'] = 1; //activamos el agrupamiento
             if (is_nivel_tactico($output['usuario']['grupos']) || is_nivel_estrategico($output['usuario']['grupos']))
             {
                 $filtros_delegacion['id_region'] = $output['usuario']['id_region'];
             }
-
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') && $this->input->post('agrupamiento') == 1)
-            {
-                $filtros_delegacion['agrupamiento'] = 1; // desactivamos el agrupamiento solo si somos nivel central
+//            pr($this->input->post('agrupamiento'));
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null &&$this->input->post('agrupamiento') == 0)
+            {                
+                $filtros_delegacion['agrupamiento'] = 0; // desactivamos el agrupamiento solo si somos nivel central
             }
-
-            $output['delegaciones'] = dropdown_options($this->comparativa->get_delegaciones($filtros_delegacion), 'id', 'nombre');
-
+            
+            if($filtros_delegacion['agrupamiento'] == 1){
+                $opciones_delegaciones = array(
+                    'llave' => 'grupo_delegacion', 
+                    'valor' => 'nombre_grupo_delegacion', 
+                    'group' => array('grupo_delegacion', 'nombre_grupo_delegacion'), 
+                    'orden' => 'nombre_grupo_delegacion'
+                );
+            }else{
+                $opciones_delegaciones = array(
+                    'llave' => 'id_delegacion', 
+                    'valor' => 'nombre',                     
+                    'orden' => 'nombre'
+                );
+            }
+//            pr($opciones_delegaciones);
+            
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
+                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS, 
+                Catalogo_listado::DELEGACIONES => $opciones_delegaciones)
             );
+            $output['agrupamiento'] = $filtros_delegacion['agrupamiento'];
             $output['niveles'] = dropdown_options($this->comparativa->get_niveles(), 'nivel_atencion', 'nivel_atencion');
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
             $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false), 'id_tipo_unidad', 'nombre');
@@ -387,28 +449,29 @@ class Comparativa extends MY_Controller
                     $vista = 'delegacion_perfil';
                     break;
             }
-            $this->load->view('comparative/' . $vista, $output);
-        } else if ($this->input->post('tipo_comparativa'))
+            $output['vista'] = $this->load->view('comparative/' . $vista, $output, true);
+        }
+        if ($this->input->post('tipo_comparativa'))
         {
             $filtros = $this->input->post();
             if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
             {
                 $filtros['region'] = $output['usuario']['id_region'];
                 $filtros['delegacion1'] = $output['usuario']['grupo_delegacion'];
-            }
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('umae'))
+            }            
+            $filtros['agrupamiento'] = 1;
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento', true) == 0)
             {
-                $filtros['umae'] = $this->input->post('umae', true) == 1;
+                $filtros['agrupamiento'] = 0;
             }
-            $filtros['agrupamiento'] = 0;
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') && $this->input->post('agrupamiento', true) == 1)
-            {
-                $filtros['agrupamiento'] = 1;
-            }
-            $datos = $this->comparativa->get_comparar_delegacion($filtros);
-            echo json_encode($datos);
-        } else
-        {
+            $output['datos'] = $datos = $this->comparativa->get_comparar_delegacion($filtros);            
+            $output['tabla'] = $this->load->view('comparative/tabla.tpl.php', $output, true);
+            $output['grafica'] = $this->load->view('comparative/grafica.tpl.php', $output, true);
+        } 
+        
+        if($this->input->is_ajax_request()){
+            echo $output['vista'];
+        }else{
             $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
             $this->template->setTitle($output["texts"]["title"]);
             $this->template->setSubTitle($output["texts"]["subtitle"]);
@@ -418,92 +481,4 @@ class Comparativa extends MY_Controller
             $this->template->getTemplate();
         }
     }
-
-    public function delegacion($num = null, $year = 2016, $type = null, $region = 0)
-    {
-        //1. modificar plantilla con campos y gráfica estática
-        //2. generar querys para reporte
-        //3. generar json dinamico
-        //4. obtener datos para campos y campos relacionados
-        //5. aplicar filtros
-        // $user_data = $this->session->userdata('usuario');
-        // pr($user_data);
-
-        $data["texts"] = $this->lang->line('delegacion'); //Mensajes
-        $this->template->setTitle($data["texts"]["title"]);
-
-        $this->template->setSubTitle($data["texts"]["subtitle"]);
-        $this->template->setDescripcion($data["texts"]["descripcion"]);
-
-        $data["catalogos"]["perfil"] = $this->nom->get_perfil();
-        $cat_list = new Catalogo_listado(); //Obtener catálogos
-
-
-        $data['catalogos'] += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::TIPOS_CURSOS,
-            Catalogo_listado::IMPLEMENTACIONES => array(
-                'valor' => 'EXTRACT(year FROM fecha_fin)',
-                'llave' => 'DISTINCT(EXTRACT(year FROM fecha_fin))',
-                'orden' => '1 DESC'),
-            Catalogo_listado::SUBCATEGORIAS,
-            Catalogo_listado::REGIONES,
-        ));
-        $data["catalogos"]["reporte"] = array(
-            "tc" => "Tipo de curso",
-            "p" => "Perfil"
-        );
-        //solo NC
-        $data["catalogos"]["regiones"][0] = "Todas las regiones";
-        $data["catalogos"]["regiones"]['promedio'] = "Promedio";
-
-
-
-        if (!is_null($num) && !is_null($type))
-        {
-            $usuario = $this->session->userdata('usuario');
-            $umae = null;
-            if (!empty($usuario['umae']))
-            {
-                $umae = $usuario['umae'];
-            }
-            $this->load->model("Comparativa_model", "comp");
-            $data["filters"]["type"] = $data["catalogos"]["reporte"][$type];
-            $data["filters"]["year"] = $year;
-            $data["filters"]["region"] = $data["catalogos"]["regiones"][$region];
-            if ($type == 'p')
-            {
-                $cat = $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS => array(
-                        'valor' => 'id_grupo_categoria,descripcion',
-                        'condicion' => "id_grupo_categoria = $num"
-                    )
-                        )
-                );
-                $data["filters"]["num"] = $cat["grupos_categorias"][$num];
-            } elseif ($type == 'tc')
-            {
-                $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
-                $data["filters"]["num"] = $data['catalogos']["tipos_cursos"][$num];
-            }
-
-
-            //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
-            $data["comparativa"] = $this->comp->get_comparativa_delegacion($num, $year, $type, $region, $umae);
-            //pr($usuario);
-            foreach ($data['comparativa'] as $key => $value)
-            {
-                if ($value['delegacion'] == $usuario['name_delegacion'])
-                {
-                    $data['comparativa'][$key]['delegacion'] = format_label_icon($data['comparativa'][$key]['delegacion']);
-                }
-            }
-            //pr($data['comparativa']);
-        }
-
-        $this->template->setBlank("comparative/delegacion.tpl.php", $data, FALSE);
-        //$this->template->setBlank("tc_template/index.tpl.php");
-
-        $this->template->getTemplate(null, "tc_template/index.tpl.php");
-//        $this->output->enable_profiler(true);
-    }
-
 }

@@ -27,13 +27,7 @@ function chart(id_chart, tabla, titulo, ytext, color) {
             title: {
                 text: ytext
             }
-        }        ,
-        tooltip: {
-                                formatter: function () {
-                                    return '<b>Región:</b> ' + this.point.name + '<br/>' +
-                                            this.series.name + ': ' + this.point.y;
-                                }
-                            }
+        }                
     });
 }
 

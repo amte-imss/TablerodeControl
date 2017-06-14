@@ -3,6 +3,8 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
 ?>
 <hr>
 <input type="hidden" id="tipo_comparativa" name="tipo_comparativa" value="1">
+<input type="hidden" name="view" value="1">
+<input type="hidden" name="agrupamiento" value="<?php echo $agrupamiento?>">
 <div class="row form-group">
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -154,9 +156,5 @@ echo form_open('comparativa/delegacion_v2', array('id' => 'form_delegacion'));
 </div>
 <?php echo form_close(); ?>
 
-<script>
-    $('#form_delegacion').submit(function (event) {
-        event.preventDefault();
-        submit_delegacion($(this));
-    });
+<script>    
 </script>

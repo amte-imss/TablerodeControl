@@ -1,5 +1,3 @@
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php
 echo js('comparativa/delegacion.js');
 ?>
@@ -20,46 +18,27 @@ echo js('comparativa/delegacion.js');
                     if (is_nivel_central($usuario['grupos']))
                     {
                         ?>
-                        <!--<div class="col-md-4">-->
-                            <!--<div class="input-group input-group-sm">-->
-                                <!--<span class="input-group-addon">Agrupamiento:</span>-->
-                                <?php
-//                                echo $this->form_complete->create_element(
-//                                        array('id' => 'agrupamiento',
-//                                            'type' => 'dropdown',
-//                                            'options' => array(0 => 'Si', 1 => 'No'),
-//                                            'attributes' => array(
-//                                                'class' => 'form-control  form-control input-sm',
-//                                                'data-toggle' => 'tooltip',
-//                                                'data-placement' => 'top',
-//                                                'title' => 'Agrupamiento',
-//                                                'onchange' => 'cmbox_comparativa()'
-//                                            )
-//                                        )
-//                                );
-                                ?>
-                            <!--</div>-->
-                        <!--</div>-->
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
-                                <span class="input-group-addon">Nivel:</span>
+                                <span class="input-group-addon">Agrupamiento:</span>
                                 <?php
                                 echo $this->form_complete->create_element(
-                                        array('id' => 'umae',
+                                        array('id' => 'agrupamiento',
                                             'type' => 'dropdown',
-                                            'first' => array('' => 'Seleccione...'),
-                                            'options' => array(0 => 'Delegacional', 1 => 'UMAE'),
+                                            'options' => array(1 => 'Si', 0 => 'No'),
                                             'attributes' => array(
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
                                                 'data-placement' => 'top',
-                                                'title' => 'UMAE', 
-                                                'onchange' => 'cmbox_comparativa()')
+                                                'title' => 'Agrupamiento',
+                                                'onchange' => 'cmbox_comparativa()'
+                                            )
                                         )
                                 );
                                 ?>
                             </div>
                         </div>
+                        
                     <?php } ?>
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
@@ -86,7 +65,11 @@ echo js('comparativa/delegacion.js');
                 echo form_close();
                 ?>
                 <div id="area_comparativa">
-
+                    <?php 
+                    if(isset($vista)){
+                        echo $vista;
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -94,6 +77,12 @@ echo js('comparativa/delegacion.js');
 </div>
 
 <div class="row">
+    <?php 
+    if(isset($tabla)){ echo $tabla; } 
+    ?>
+    <?php 
+    if(isset($grafica)){ echo $grafica; } 
+    ?>
     <div id="area_graph"></div>
 </div>     
 

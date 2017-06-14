@@ -1,3 +1,34 @@
+$(function () {
+    $('#form_delegacion').submit(function (event) {        
+        submit_delegacion($(this));
+    });
+});
+
+
+function chart(id_chart, tabla, titulo, ytext, color) {    
+    Highcharts.chart(id_chart, {
+        data: {
+            table: tabla
+        },
+        chart: {
+            type: 'column'
+        },
+        colors: color,
+        title: {
+            text: titulo
+        },
+        legend: {
+            enabled: false
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: ytext
+            }
+        }                
+    });
+}
+
 function cmbox_comparativa() {
     var id_destino = document.getElementById('comparativa').value;
     if (id_destino == "") {
@@ -7,13 +38,13 @@ function cmbox_comparativa() {
     } else {
         var destino = site_url + '/comparativa/delegacion_v2/';
         var agrupamiento = 0;
-        if(document.getElementById('agrupamiento') != null){
+        if (document.getElementById('agrupamiento') != null) {
             agrupamiento = document.getElementById('agrupamiento').value;
         }
         $.ajax({
             url: destino
             , method: "post"
-            , data: {view: id_destino, agrupamiento:agrupamiento}
+            , data: {view: id_destino, agrupamiento: agrupamiento}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -116,72 +147,8 @@ function cmbox_perfil() {
 }
 
 function submit_delegacion(elemento) {
-    if (valida_filtros(document.getElementById('tipo_comparativa').value)) {
-        var datos = elemento.serialize();
-        if (document.getElementById('umae') != null && document.getElementById('umae').value != "") {
-            datos += '&umae=' + document.getElementById('umae').value;
-        }        
-        if(document.getElementById('agrupamiento') != null){
-            datos += '&agrupamiento=' + document.getElementById('agrupamiento').value;
-        }
-        $('.alert-comparativa').css('display', 'none');
-        $.ajax({
-            url: elemento.attr('action')
-            , method: "post"
-            , data: datos
-            , error: function () {
-                console.warn("No se pudo realizar la conexión");
-                ocultar_loader();
-            }
-            , beforeSend: function (xhr) {
-                $('#area_graph').html('');
-                mostrar_loader();
-                $('#area_reportes').css('display', 'none');
-            }
-        }).done(function (response) {
-            var reportes = [1, 2, 3, 5];
-            var datos = JSON.parse(response);
-            for (i = 0; i < reportes.length; i++) {
-                var datos_g = procesa_datos(datos[i], i);
-                var periodo = $("#periodo option:selected").text();
-                var texto = "";
-                var texto_t = "";
-                var id_reporte = reportes[i];
-                var colores = ['#0095bc'];
-                switch (id_reporte) {
-                    case 1:
-                    case "1":
-                        texto = "Número de alumnos inscritos ";
-                        texto_t = "inscritos";
-                        break;
-                    case 2:
-                    case "2":
-                        colores = ['#98c56e'];
-                        texto = "Número de alumnos aprobados ";
-                        texto_t = "aprobados";
-                        break;
-                    case 3:
-                    case "3":
-                        colores = ['#f3b510'];
-                        texto = "Porcentaje de eficiencia terminal modificada ";
-                        texto_t = "por eficiencia terminal modificada";
-                        break;
-                    case 5:
-                    case "5":
-                        colores = ['#f05f50'];
-                        texto = "Número de alumnos no aprobados ";
-                        texto_t = "no aprobados";
-                        break;
-                }
-                var titulo_grafica = "Comparativa de alumnos " + texto_t + " en " + periodo;
-                var extra = '';
-                graficar(i, datos_g, titulo_grafica, texto, periodo, extra, colores);
-            }
-            ocultar_loader();
-            $('#area_reportes').css('display', 'block');
-
-        });
-    } else {
+    if (!valida_filtros(document.getElementById('tipo_comparativa').value)) {        
+        event.preventDefault();
         alert('Debe seleccionar los filtros, antes de realizar una comparación');
     }
 }
@@ -197,10 +164,10 @@ function procesa_datos(datos, index) {
     salida[0] = [datos.delegacion1.delegacion, datos.delegacion1.cantidad];
     salida[1] = [datos.delegacion2.delegacion, datos.delegacion2.cantidad];
     if (salida[0][1] == 0 && salida[1][1] == 0) {
-        $('#area_graph'+index).css('display', 'none');
+        $('#area_graph' + index).css('display', 'none');
         $('#alert-comparativa' + index).css('display', 'block');
-    }else{
-        $('#area_graph'+index).css('display', 'block');
+    } else {
+        $('#area_graph' + index).css('display', 'block');
     }
     return salida;
 }
