@@ -1,6 +1,7 @@
 <?php
 echo js('chart_options.js');
 echo js('comparativa/unidad_tipo_curso.js');
+echo js('help.js');
 echo form_open('comparativa/unidades', array('id' => 'form_comparativa_unidad'));
 ?>
 <input type="hidden" name="vista" value="1">
@@ -113,7 +114,7 @@ echo form_open('comparativa/unidades', array('id' => 'form_comparativa_unidad'))
     
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">* Unidad:</span>
+            <span class="input-group-addon"><i class="material-icons cores-helper" data-help="unidad_buscador">help</i> * Unidad: </span> 
             <input type="hidden" value="<?php echo $usuario['id_unidad_instituto']; ?>" name="unidad1" id="unidad1">
             <?php
             $atributos_unidad1 = array(
@@ -135,14 +136,14 @@ echo form_open('comparativa/unidades', array('id' => 'form_comparativa_unidad'))
                         'attributes' => $atributos_unidad1
                     )
             );
-            ?>
+            ?>            
             <ul class="ul-autocomplete" data-autocomplete-id="1" id="unidad1_autocomplete" style="display:none;"></ul>
         </div>
 <?php echo form_error_format('unidad1'); ?>
     </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">* comparar con :</span>
+            <span class="input-group-addon"><i class="material-icons cores-helper" data-help="unidad_buscador">help</i> * comparar con :</span>
             <input type="hidden" value="" name="unidad2" id="unidad2">
             <?php
             echo $this->form_complete->create_element(

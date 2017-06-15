@@ -531,3 +531,9 @@ if(!function_exists('format_label_icon')){
         return '<span style="text-decoration:underline;">'.$label.'</span>';
     }
 }
+
+if(!function_exists('render_subtitle')){
+    function render_subtitle($subtitle = '', $help = 'help'){
+        return $subtitle.' <i class="material-icons cores-helper" data-help="'.$help.'">help</i>';
+    }
+}

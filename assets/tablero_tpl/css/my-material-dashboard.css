@@ -162,3 +162,8 @@ a:hover, a:focus {
 .main-panel > .content{
     padding-top: 50px;
 }
+
+.cores-helper:hover{
+    cursor: pointer;
+    color: grey;
+}

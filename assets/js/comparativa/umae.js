@@ -17,7 +17,8 @@ function chart(id_chart, tabla, titulo, ytext, color) {
             allowDecimals: false,
             title: {
                 text: ytext
-            }
+            }, 
+            visible: false
         }                
     });
 }

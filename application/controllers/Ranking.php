@@ -49,7 +49,7 @@ class Ranking extends MY_Controller
             $output['grafica'] = $this->load->view('ranking/grafica', $output, true);
         }        
         $this->template->setTitle($output['lenguaje']['title']);
-        $this->template->setSubTitle($output['lenguaje']['subtitle']);
+        $this->template->setSubTitle(render_subtitle($output['lenguaje']['subtitle'], 'ranking'));
         $this->template->setDescripcion($this->mostrar_datos_generales());        
         $main_content = $this->load->view('ranking/index', $output, true);
         $this->template->setMainContent($main_content);

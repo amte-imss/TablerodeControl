@@ -2,6 +2,7 @@
 <?php
 echo js('chart_options.js');
 echo js('comparativa/umae_perfil.js');
+echo js('help.js');
 echo form_open('comparativa/umae', array('id' => 'form_comparativa_umae'));
 ?>
 <input type="hidden" name="vista" value="2">

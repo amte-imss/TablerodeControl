@@ -1,3 +1,6 @@
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/data.js"></script>
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php
 echo js('comparativa/delegacion.js');
 ?>
@@ -20,7 +23,7 @@ echo js('comparativa/delegacion.js');
                         ?>
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
-                                <span class="input-group-addon">Agrupamiento:</span>
+                                <span class="input-group-addon"><i class="material-icons cores-helper" data-help="agrupamiento">help</i> Agrupamiento:</span>
                                 <?php
                                 echo $this->form_complete->create_element(
                                         array('id' => 'agrupamiento',

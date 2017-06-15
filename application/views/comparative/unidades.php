@@ -1,3 +1,6 @@
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/data.js"></script>
+<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php
 echo js('comparativa/comparativa.js');
 echo js('comparativa/unidades.js');

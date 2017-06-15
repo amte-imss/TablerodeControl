@@ -1,6 +1,7 @@
 <?php
 echo js('chart_options.js');
 echo js('comparativa/umae_tipo_curso.js');
+echo js('help.js');
 echo form_open('comparativa/umae', array('id' => 'form_comparativa_umae'));
 ?>
 <input type="hidden" name="vista" value="1">

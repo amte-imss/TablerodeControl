@@ -10,9 +10,6 @@ $titulo2 =     'Número de alumnos aprobados ';
 $titulo3 =     'Porcentaje de eficiencia terminal modificada ';
 $titulo4 =     'Número de alumnos no aprobados ';
 ?>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/data.js"></script>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 
 <?php echo js("chart_options.js"); ?>
 <script type="text/javascript">

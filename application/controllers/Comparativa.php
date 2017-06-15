@@ -76,7 +76,7 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS)
+                Catalogo_listado::SUBCATEGORIAS => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS)
             );
             $output['agrupamiento'] = $filtros['agrupamiento'];
             $output['niveles'] = $this->comparativa->get_niveles();
@@ -111,7 +111,7 @@ class Comparativa extends MY_Controller
             $view = $this->load->view('comparative/unidades', $output, true);
             $this->template->setDescripcion($this->mostrar_datos_generales());
             $this->template->setMainContent($view);
-            $this->template->setSubTitle('Comparativa por Unidades Instituto');
+            $this->template->setSubTitle(render_subtitle('Comparativa por Unidades Instituto', 'comparativa_unidades'));
             $this->template->getTemplate();
         }
     }
@@ -157,7 +157,7 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
+                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::UNIDADES_INSTITUTO => $opciones_umae)
             );
             $output['agrupamiento'] = $filtros['agrupamiento'];
@@ -193,7 +193,7 @@ class Comparativa extends MY_Controller
             $view = $this->load->view('comparative/umae', $output, true);
             $this->template->setDescripcion($this->mostrar_datos_generales());
             $this->template->setMainContent($view);
-            $this->template->setSubTitle('Comparativa por UMAE');
+            $this->template->setSubTitle(render_subtitle('Comparativa por UMAE', 'comparativa_umae'));
             $this->template->getTemplate();
         }
     }
@@ -209,7 +209,7 @@ class Comparativa extends MY_Controller
         $data["texts"] = $this->lang->line('region'); //Mensajes
         $this->template->setTitle($data["texts"]["title"]);
 
-        $this->template->setSubTitle($data["texts"]["subtitle"]);
+        $this->template->setSubTitle(render_subtitle($data["texts"]["subtitle"], 'comparativa_regiones'));
         $this->template->setDescripcion($data["texts"]["descripcion"]);
 
         $data["catalogos"]["perfil"] = $this->nom->get_perfil();
@@ -220,7 +220,7 @@ class Comparativa extends MY_Controller
                 'valor' => 'EXTRACT(year FROM fecha_fin)',
                 'llave' => 'DISTINCT(EXTRACT(year FROM fecha_fin))',
                 'orden' => '1 DESC'),
-            Catalogo_listado::SUBCATEGORIAS
+            Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1')
         ));
         $data["catalogos"]["reporte"] = array(
             "tc" => "Tipo de curso",
@@ -303,7 +303,7 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS, Catalogo_listado::TIPOS_CURSOS,
+                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS,
                 Catalogo_listado::DELEGACIONES => $opciones_delegaciones)
             );
             $output['agrupamiento'] = $filtros_delegacion['agrupamiento'];
@@ -348,7 +348,7 @@ class Comparativa extends MY_Controller
         {
             $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
             $this->template->setTitle($output["texts"]["title"]);
-            $this->template->setSubTitle($output["texts"]["subtitle"]);
+            $this->template->setSubTitle(render_subtitle($output["texts"]["subtitle"], 'comparativa_delegaciones'));
             $this->template->setDescripcion($output["texts"]["descripcion"]);
             $view = $this->load->view('comparative/delegacion_v2', $output, true);
             $this->template->setMainContent($view);

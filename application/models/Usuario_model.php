@@ -50,7 +50,7 @@ class Usuario_model extends CI_Model
         {
             $this->db->like('lower(concat(clave_categoria,$$ $$, nombre))', $keyword);
             $this->db->limit(10);
-        }
+        }        
         $categoria = $this->db->get('catalogos.categorias')->result_array();
         return $categoria;
     }
