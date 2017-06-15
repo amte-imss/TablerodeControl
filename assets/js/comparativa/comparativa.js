@@ -89,3 +89,28 @@ function cmbox_perfil() {
         ocultar_loader();
     });
 }
+
+function get_descripcion_filtros(){
+    var salida = '';
+    
+    if(document.getElementById('tipo_curso') != null){
+        salida += ' de ' + $('#tipo_curso option:selected').text();
+    }
+    if(document.getElementById('perfil') != null){
+        salida += ' de ' + $('#perfil option:selected').text();
+    }
+    if(document.getElementById('subperfil') != null){
+        salida += ' ' + $('#subperfil option:selected').text();
+    }
+    if(document.getElementById('nivel') != null){
+        salida += ' para el ' + $('#nivel option:selected').text();
+    }
+    if(document.getElementById('tipo_unidad') != null){
+        salida += ' por el tipo ' + $('#tipo_unidad option:selected').text();
+    }
+    if(document.getElementById('periodo') != null){
+        salida += ' en el año ' + $('#periodo option:selected').text();
+    }
+    
+    return salida;
+}
