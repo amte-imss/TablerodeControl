@@ -33,13 +33,20 @@ class Comparativa_model extends MY_Model
 
     public function get_niveles()
     {
+        /*
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->distinct();
         $this->db->select('nivel_atencion');
         $this->db->where('nivel_atencion is not null');
         $this->db->order_by('nivel_atencion');
-        $niveles = $this->db->get('catalogos.unidades_instituto')->result_array();
+        $niveles = $this->db->get('catalogos.unidades_instituto')->result_array();         
+        */
+        $niveles = array(
+            1 => 'Primer nivel', 
+            2 => 'Segundo nivel', 
+            3 => 'Tercer nivel', 
+        );
         return $niveles;
     }
 
@@ -64,12 +71,12 @@ class Comparativa_model extends MY_Model
         //pr($this->db->last_query());
         return $tipos;
     }
-    
+
     public function get_comparar_delegacion($filtros = [])
-    {       
+    {
         $datos = [];
         $datos['dato1'] = $this->get_data_delegacion($filtros['delegacion1'], $filtros);
-        $datos['dato2'] = $this->get_data_delegacion($filtros['delegacion2'], $filtros);        
+        $datos['dato2'] = $this->get_data_delegacion($filtros['delegacion2'], $filtros);
         return $datos;
     }
 
@@ -82,19 +89,19 @@ class Comparativa_model extends MY_Model
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
         $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');
         $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'inner');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'inner');        
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'inner');
         $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'inner');
         $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'inner');
         $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
-        $this->db->where('CI.activa', true);        
+        $this->db->where('CI.activa', true);
         if (isset($filtros['periodo']) && !empty($filtros['periodo']))
         {
             $inicio = $filtros['periodo'] . '/01/01';
-            $fin = $filtros['periodo'] . '/12/31';            
+            $fin = $filtros['periodo'] . '/12/31';
             $this->db->where('E.anio', $filtros['periodo']);
         }
-        
+
         if (isset($filtros['subperfil']) && !empty($filtros['subperfil']))
         {
             $this->db->where('H.id_grupo_categoria', $filtros['subperfil']);
@@ -111,7 +118,7 @@ class Comparativa_model extends MY_Model
         {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        
+
         $this->db->order_by(1);
         $this->db->stop_cache();
         $datos = [];
@@ -124,7 +131,7 @@ class Comparativa_model extends MY_Model
                 'sum("C".cantidad_no_accesos) no_acceso');
             $this->db->where('A.id_delegacion', $delegacion);
             $this->db->group_by('A.nombre');
-        } else            
+        } else
         {
             $select = array('A.nombre_grupo_delegacion nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
@@ -133,30 +140,32 @@ class Comparativa_model extends MY_Model
 
             $this->db->where('A.grupo_delegacion', $delegacion);
             $this->db->group_by('A.nombre_grupo_delegacion');
-        }        
+        }
         $this->db->select($select);
-        $datos = $this->db->get('catalogos.delegaciones A')->result_array();       
+        $datos = $this->db->get('catalogos.delegaciones A')->result_array();
 //                pr($this->db->last_query());
         $this->db->reset_query();
         $this->db->flush_cache();
         if (count($datos) == 0)
         {
-            if(is_int($delegacion)){
+            if (is_int($delegacion))
+            {
                 $opciones = array(
-                    'llave' => 'id_delegacion', 
-                    'valor' => 'nombre', 
+                    'llave' => 'id_delegacion',
+                    'valor' => 'nombre',
                     'condicion' => array('id_delegacion' => $delegacion)
                 );
-            }else{
+            } else
+            {
                 $opciones = array(
-                    'llave' => 'grupo_delegacion', 
-                    'valor' => 'nombre_grupo_delegacion', 
+                    'llave' => 'grupo_delegacion',
+                    'valor' => 'nombre_grupo_delegacion',
                     'condicion' => array('grupo_delegacion' => $delegacion)
                 );
-            }            
+            }
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $catalogo = $cat_list->obtener_catalogos(array(
-            Catalogo_listado::DELEGACIONES=>$opciones                
+                Catalogo_listado::DELEGACIONES => $opciones
             ));
 //            pr($this->db->last_query());
 //            pr($catalogo);
@@ -164,7 +173,8 @@ class Comparativa_model extends MY_Model
             $datos['aprobados'] = 0;
             $datos['inscritos'] = 0;
             $datos['no_acceso'] = 0;
-        }else{
+        } else
+        {
             $datos = $datos[0];
         }
 
@@ -174,281 +184,217 @@ class Comparativa_model extends MY_Model
         return $datos;
     }
 
-    
-    public function get_comparar_perfil($filtros = [])
-    {
-        $datos_arreglo = [];
-        $index = 0;
-        foreach ($this->get_tipos_reportes() as $key => $value)
-        {
-            $filtros['reporte'] = $key;
-            $datos = [];
-            $datos['unidad1'] = $this->get_data_perfil($filtros['unidad1'], $filtros);
-            $datos['unidad2'] = $this->get_data_perfil($filtros['unidad2'], $filtros);
-            $datos_arreglo[$index++] = $datos;
-        }
-        return $datos_arreglo;
-    }
-
-    public function get_comparar_tipo_curso($filtros = [])
-    {
-        $datos_arreglo = [];
-        $index = 0;
-        foreach ($this->get_tipos_reportes() as $key => $value)
-        {
-            $filtros['reporte'] = $key;
-            $datos = [];
-            $datos['unidad1'] = $this->get_data_tipo_curso($filtros['unidad1'], $filtros);
-            $datos['unidad2'] = $this->get_data_tipo_curso($filtros['unidad2'], $filtros);
-            $datos_arreglo[$index++] = $datos;
-        }
-        return $datos_arreglo;
-    }
-
-    private function get_data_tipo_curso($unidad = 0, &$filtros = array())
+    public function get_comparar_unidad($filtros = [])
     {
         $datos = [];
-
-        $pre_datos = $this->get_data_tipo_curso_aux($unidad, $filtros);
-        $datos['unidad'] = $pre_datos[0]['nombre'];
-        $datos['cantidad'] = 0;
-        switch ($filtros['reporte'])
-        {
-            case 1 : $datos['cantidad'] = $pre_datos[0]['inscritos'];
-                break;
-            case 2 : $datos['cantidad'] = $pre_datos[0]['aprobados'];
-                break;
-            case 3: if ($pre_datos[0]['inscritos'] != $pre_datos[0]['no_acceso'])
-                {
-                    $datos['cantidad'] = (($pre_datos[0]['aprobados'] / ($pre_datos[0]['inscritos'] - $pre_datos[0]['no_acceso'])) * 100);
-                }
-                break;
-            case 4: $datos['cantidad'] = $pre_datos[0]['no_acceso'];
-                break;
-            case 5 : $datos['cantidad'] = $pre_datos[0]['inscritos'] - $pre_datos[0]['aprobados'];
-                break;
-        }
-        $datos['cantidad'] = intval($datos['cantidad']);
+        $datos['dato1'] = $this->get_data_unidad($filtros['unidad1'], $filtros);
+        $datos['dato2'] = $this->get_data_unidad($filtros['unidad2'], $filtros);
         return $datos;
     }
 
-    private function get_data_tipo_curso_aux($unidad = '0', &$filtros = array())
+    public function get_data_unidad($unidad = 0, $filtros = [])
     {
         $this->db->flush_cache();
         $this->db->reset_query();
-
-        $grupo_principal[0] = '"B".id_unidad_instituto';
-        $grupo_principal[1] = '"B".nombre';
-        $grupo_principal[2] = '"B".grupo_delegacion';
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
-        {
-            $grupo_principal[0] = '"B".unidad_principal';
-            $grupo_principal[1] = '"B".nombre_unidad_principal';
-        }
-
-        if ($unidad != '0')
-        {
-            $select = array(
-                $grupo_principal[0] . ' id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                $grupo_principal[1] . ' nombre',
-                'sum("C".cantidad_alumnos_certificados) aprobados',
-                'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("C".cantidad_no_accesos) no_acceso'
-            );
-        } else
-        {
-            $select = array(
-                '0', "'PROMEDIO' nombre",
-                'sum("C".cantidad_alumnos_certificados)/count(distinct ' . $grupo_principal[0] . ') aprobados',
-                'sum("C".cantidad_alumnos_inscritos)/count(distinct ' . $grupo_principal[0] . ') inscritos',
-                'sum("C".cantidad_no_accesos)/count(distinct ' . $grupo_principal[0] . ') no_acceso'
-            );
-        }
-
-        $this->db->select($select);
+        $this->db->start_cache();
         $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'left');
-        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'inner');
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'inner');
+        $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
+        $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'inner');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'inner');
+        $this->db->where("(t.grupo_tipo != 'UMAE' AND t.grupo_tipo != 'CUMAE')");
+        $this->db->where('CI.activa', true);
         if (isset($filtros['periodo']) && !empty($filtros['periodo']))
         {
             $inicio = $filtros['periodo'] . '/01/01';
             $fin = $filtros['periodo'] . '/12/31';
-            $this->db->where('D.fecha_inicio >=', $inicio);
-            $this->db->where('D.fecha_fin <=', $fin);
             $this->db->where('E.anio', $filtros['periodo']);
         }
-        if (isset($filtros['umae']) && $filtros['umae'])
-        {
-            $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
-        } else
-        {
-            $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
-        }
-        if (isset($filtros['tipo_curso']))
-        {
-            $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
-        }
-        if (isset($filtros['tipo_unidad']))
-        {
-            $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
-        }
-        if (isset($filtros['delegacion']) && $filtros['delegacion'] != '0')
-        {
-            $this->db->where('B.grupo_delegacion', $filtros['delegacion']);
-        }
-        if ($unidad != '0')
-        {
-            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
-            {
-                $this->db->having($grupo_principal[0], $unidad);
-            } else
-            {
-                $this->db->where('B.id_unidad_instituto', $unidad);
-            }
 
-            $group_by = $grupo_principal;
-            $this->db->group_by($group_by);
-        }
-        $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
-        //pr($this->db->last_query());
-        //pr($filtros);
-        if (count($datos) == 0)
-        {
-            $datos[0] = array(
-                'id_unidad_instituto' => $unidad,
-                'nombre' => '',
-                'aprobados' => 0,
-                'inscritos' => 0,
-                'no_acceso' => 0
-            );
-        }
-        //pr($filtros);
-//        pr($this->db->last_query());
-        return $datos;
-    }
-
-    private function get_data_perfil($unidad = 0, &$filtros = array())
-    {
-        $datos = [];
-
-        $pre_datos = $this->get_data_perfil_aux($unidad, $filtros);
-        $datos['unidad'] = $pre_datos[0]['nombre'];
-        $datos['cantidad'] = 0;
-        switch ($filtros['reporte'])
-        {
-            case 1 : $datos['cantidad'] = $pre_datos[0]['inscritos'];
-                break;
-            case 2 : $datos['cantidad'] = $pre_datos[0]['aprobados'];
-                break;
-            case 3: if ($pre_datos[0]['inscritos'] != $pre_datos[0]['no_acceso'])
-                {
-                    $datos['cantidad'] = (($pre_datos[0]['aprobados'] / ($pre_datos[0]['inscritos'] - $pre_datos[0]['no_acceso'])) * 100);
-                }
-                break;
-            case 4: $datos['cantidad'] = $pre_datos[0]['no_acceso'];
-                break;
-            case 5 : $datos['cantidad'] = $pre_datos[0]['inscritos'] - $pre_datos[0]['aprobados'];
-                break;
-        }
-        $datos['cantidad'] = intval($datos['cantidad']);
-        return $datos;
-    }
-
-    private function get_data_perfil_aux($unidad = '0', &$filtros = array())
-    {
-        $this->db->flush_cache();
-        $this->db->reset_query();
-
-        $grupo_principal[0] = '"B".id_unidad_instituto';
-        $grupo_principal[1] = '"B".nombre';
-        $grupo_principal[2] = '"B".grupo_delegacion';
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
-        {
-            $grupo_principal[0] = '"B".unidad_principal';
-            $grupo_principal[1] = '"B".nombre_unidad_principal';
-        }
-
-        if ($unidad != '0')
-        {
-            $select = array(
-                $grupo_principal[0] . ' id_unidad_instituto', /* 'concat("B".nombre, $$[$$, "B".clave_unidad, $$]$$) nombre', */
-                $grupo_principal[0] . ' nombre',
-                'sum("C".cantidad_alumnos_certificados) aprobados',
-                'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("C".cantidad_no_accesos) no_acceso'
-            );
-        } else
-        {
-            $select = array(
-                '0', "'PROMEDIO' nombre",
-                'sum("C".cantidad_alumnos_certificados)/count(distinct ' . $grupo_principal[0] . ') aprobados',
-                'sum("C".cantidad_alumnos_inscritos)/count(distinct ' . $grupo_principal[0] . ') inscritos',
-                'sum("C".cantidad_no_accesos)/count(distinct ' . $grupo_principal[0] . ') no_acceso'
-            );
-        }
-
-        $this->db->select($select);
-        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
-        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'left');
-        $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
-        $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'left');
-        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'left');
-        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
-        {
-            $inicio = $filtros['periodo'] . '/01/01';
-            $fin = $filtros['periodo'] . '/12/31';
-            $this->db->where('D.fecha_inicio >=', $inicio);
-            $this->db->where('D.fecha_fin <=', $fin);
-        }
-        if (isset($filtros['umae']) && $filtros['umae'])
-        {
-            $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
-        } else
-        {
-            $this->db->where("(t.grupo_tipo != 'UMAE' OR t.grupo_tipo != 'CUMAE')");
-        }
-        if (isset($filtros['subperfil']))
+        if (isset($filtros['subperfil']) && !empty($filtros['subperfil']))
         {
             $this->db->where('H.id_grupo_categoria', $filtros['subperfil']);
         }
-        if (isset($filtros['tipo_unidad']))
+        if (isset($filtros['nivel']) && !empty($filtros['nivel']))
+        {
+            $this->db->where('B.nivel_atencion', $filtros['nivel']);
+        }
+        if (isset($filtros['tipo_curso']) && !empty($filtros['tipo_curso']))
+        {
+            $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
+        }
+        if (isset($filtros['tipo_unidad']) && !empty($filtros['tipo_unidad']))
         {
             $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
         }
-        if (isset($filtros['delegacion']))
+
+        $this->db->order_by(1);
+        $this->db->stop_cache();
+        $datos = [];
+
+        if ($unidad != 0)
         {
-            $this->db->where('B.grupo_delegacion', $filtros['delegacion']);
+            $select = array('B.nombre  nombre',
+                'sum("C".cantidad_alumnos_certificados) aprobados',
+                'sum("C".cantidad_alumnos_inscritos) inscritos',
+                'sum("C".cantidad_no_accesos) no_acceso');
+            $this->db->where('B.id_unidad_instituto', $unidad);
+            $this->db->group_by('B.nombre');
+        }else{
+            $select = array('$$Promedio$$  nombre',
+                'sum("C".cantidad_alumnos_certificados) aprobados',
+                'sum("C".cantidad_alumnos_inscritos) inscritos',
+                'sum("C".cantidad_no_accesos) no_acceso');
         }
 
-        if ($unidad != '0')
-        {
-            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
-            {
-                $this->db->having($grupo_principal[0], $unidad);
-            } else
-            {
-                $this->db->where('B.id_unidad_instituto', $unidad);
-            }
-
-            $group_by = $group_by = $grupo_principal;
-            $this->db->group_by($group_by);
-        }
-
-
+        $this->db->select($select);
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
+//        pr($this->db->last_query());
+        $this->db->reset_query();
+        $this->db->flush_cache();
         if (count($datos) == 0)
         {
-            $datos[0] = array(
-                'id_unidad_instituto' => $unidad,
-                'nombre' => '',
-                'aprobados' => 0,
-                'inscritos' => 0,
-                'no_acceso' => 0
+
+            $opciones = array(
+                'llave' => 'id_unidad_instituto',
+                'valor' => 'nombre',
+                'condicion' => "(grupo_tipo_unidad != 'UMAE' and grupo_tipo_unidad != 'CUMAE') and anio = {$filtros['periodo']} and id_unidad_instituto = {$unidad}",
+                'group' => array('id_unidad_instituto', 'nombre')
             );
+
+            $cat_list = new Catalogo_listado(); //Obtener catálogos
+            $catalogo = $cat_list->obtener_catalogos(array(
+                Catalogo_listado::UNIDADES_INSTITUTO => $opciones
+            ));
+//            pr($this->db->last_query());
+//            pr($catalogo);
+            $datos['nombre'] = $catalogo['unidades_instituto'][$unidad];
+            $datos['aprobados'] = 0;
+            $datos['inscritos'] = 0;
+            $datos['no_acceso'] = 0;
+        } else
+        {
+            $datos = $datos[0];
         }
-        //pr($this->db->last_query());
-        //pr($filtros);
+
+        $this->db->reset_query();
+        $this->db->flush_cache();
+//        pr($datos);
+        return $datos;
+    }
+
+    public function get_comparar_umae($filtros = [])
+    {
+        $datos = [];
+        $datos['dato1'] = $this->get_data_umae($filtros['unidad1'], $filtros);
+        $datos['dato2'] = $this->get_data_umae($filtros['unidad2'], $filtros);
+        return $datos;
+    }
+
+    public function get_data_umae($umae = 0, $filtros = [])
+    {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $this->db->start_cache();
+        $this->db->join('hechos.hechos_implementaciones_alumnos C ', ' C.id_unidad_instituto = B.id_unidad_instituto', 'inner');
+        $this->db->join('sistema.cargas_informacion CI', 'CI.id_carga_informacion = C.id_carga_informacion', 'inner');
+        $this->db->join('catalogos.implementaciones D', 'D.id_implementacion = C.id_implementacion', 'inner');
+        $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'inner');
+        $this->db->join('catalogos.categorias I', 'I.id_categoria = C.id_categoria', 'inner');
+        $this->db->join('catalogos.grupos_categorias H', 'H.id_grupo_categoria = I.id_grupo_categoria', 'inner');
+        $this->db->join('catalogos.tipos_unidades t', 'B.id_tipo_unidad = t.id_tipo_unidad', 'inner');
+        $this->db->where("(t.grupo_tipo = 'UMAE' OR t.grupo_tipo = 'CUMAE')");
+        $this->db->where('CI.activa', true);
+        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+        {
+            $inicio = $filtros['periodo'] . '/01/01';
+            $fin = $filtros['periodo'] . '/12/31';
+            $this->db->where('E.anio', $filtros['periodo']);
+        }
+
+        if (isset($filtros['subperfil']) && !empty($filtros['subperfil']))
+        {
+            $this->db->where('H.id_grupo_categoria', $filtros['subperfil']);
+        }
+        if (isset($filtros['nivel']) && !empty($filtros['nivel']))
+        {
+            $this->db->where('B.nivel_atencion', $filtros['nivel']);
+        }
+        if (isset($filtros['tipo_curso']) && !empty($filtros['tipo_curso']))
+        {
+            $this->db->where('E.id_tipo_curso', $filtros['tipo_curso']);
+        }
+        if (isset($filtros['tipo_unidad']) && !empty($filtros['tipo_unidad']))
+        {
+            $this->db->where('B.id_tipo_unidad', $filtros['tipo_unidad']);
+        }
+
+        $this->db->order_by(1);
+        $this->db->stop_cache();
+        $datos = [];
+
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+        {
+            $select = array('B.nombre  nombre',
+                'sum("C".cantidad_alumnos_certificados) aprobados',
+                'sum("C".cantidad_alumnos_inscritos) inscritos',
+                'sum("C".cantidad_no_accesos) no_acceso');
+            $this->db->where('B.id_unidad_instituto', $umae);
+            $this->db->group_by('B.nombre');
+        } else
+        {
+            $select = array('B.nombre_unidad_principal nombre',
+                'sum("C".cantidad_alumnos_certificados) aprobados',
+                'sum("C".cantidad_alumnos_inscritos) inscritos',
+                'sum("C".cantidad_no_accesos) no_acceso');
+
+            $this->db->where('B.nombre_unidad_principal', $umae);
+            $this->db->group_by('B.nombre_unidad_principal');
+        }
+        $this->db->select($select);
+        $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();
+//                pr($this->db->last_query());
+        $this->db->reset_query();
+        $this->db->flush_cache();
+        if (count($datos) == 0)
+        {
+            if ($filtros['agrupamiento'] == 0)
+            {
+                $opciones = array(
+                    'llave' => 'id_unidad_instituto',
+                    'valor' => 'nombre',
+                    'condicion' => "(grupo_tipo_unidad = 'UMAE' or grupo_tipo_unidad = 'CUMAE') and anio = {$filtros['periodo']} and id_unidad_instituto = {$umae}",
+                    'group' => array('id_unidad_instituto', 'nombre')
+                );
+            } else
+            {
+                $opciones = array(
+                    'llave' => 'nombre_unidad_principal',
+                    'valor' => 'nombre_unidad_principal',
+                    'condicion' => "grupo_tipo_unidad = 'UMAE' and anio = {$filtros['periodo']} and nombre_unidad_principal = {$umae}",
+                    'group' => array('nombre_unidad_principal'),
+                );
+            }
+            $cat_list = new Catalogo_listado(); //Obtener catálogos
+            $catalogo = $cat_list->obtener_catalogos(array(
+                Catalogo_listado::UNIDADES_INSTITUTO => $opciones
+            ));
+//            pr($this->db->last_query());
+//            pr($catalogo);
+            $datos['nombre'] = $catalogo['unidades_instituto'][$umae];
+            $datos['aprobados'] = 0;
+            $datos['inscritos'] = 0;
+            $datos['no_acceso'] = 0;
+        } else
+        {
+            $datos = $datos[0];
+        }
+
+        $this->db->reset_query();
+        $this->db->flush_cache();
+//        pr($datos);
         return $datos;
     }
 

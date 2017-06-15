@@ -1,5 +1,3 @@
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <?php
 echo js('comparativa/comparativa.js');
 echo js('comparativa/unidades.js');
@@ -40,13 +38,25 @@ echo js('comparativa/unidades.js');
                 <?php
                 echo form_close();
                 ?>
-                <div id="area_comparativa"></div>
+                <div id="area_comparativa">
+                    <?php 
+                    if(isset($vista)){
+                        echo $vista;
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
+    <?php 
+    if(isset($tabla)){ echo $tabla; } 
+    ?>
+    <?php 
+    if(isset($grafica)){ echo $grafica; } 
+    ?>
     <div id="area_graph"></div>
 </div>     
 

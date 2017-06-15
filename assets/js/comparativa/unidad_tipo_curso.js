@@ -3,67 +3,9 @@ $(function () {
         search_unidad($(this));
     });
 
-    $('#form_comparativa_unidad').submit(function (event) {
-        event.preventDefault();
-        $('.alert-comparativa').css('display', 'none');
-        if (valida_filtros('tipo_curso')) {            
-            $.ajax({
-                url: $(this).attr('action')
-                , method: "post"
-                , data: $(this).serialize()
-                , error: function () {
-                    console.warn("No se pudo realizar la conexión");
-                    ocultar_loader();
-                }
-                , beforeSend: function (xhr) {
-                    $('#area_graph').html('');
-                    mostrar_loader();
-                    $('#area_reportes').css('display', 'none');
-                }
-            }).done(function (response) {
-                var reportes = [1, 2, 3, 5];
-                var datos = JSON.parse(response);
-                for (i = 0; i < reportes.length; i++) {
-                    var datos_g = procesa_datos(datos[i],i);
-                    var periodo = $("#periodo option:selected").text();                    
-                    var texto = "";
-                    var texto_t = "";
-                    var id_reporte = reportes[i];
-                    var colores = ['#0095bc'];
-                    
-                    switch (id_reporte) {
-                        case 1:
-                        case "1":
-                            texto = "Número de alumnos inscritos ";
-                            texto_t = "inscritos";
-                            break;
-                        case 2:
-                        case "2":
-                            colores = ['#98c56e'];
-                            texto = "Número de alumnos aprobados ";
-                            texto_t = "aprobados";
-                            break;
-                        case 3:
-                        case "3":
-                            colores = ['#f3b510'];
-                            texto = "Porcentaje de eficiencia terminal modificada ";
-                            texto_t = "por eficiencia terminal modificada";
-                            break;
-                        case 5:
-                        case "5":
-                            colores = ['#f05f50'];
-                            texto = "Número de alumnos no aprobados ";
-                            texto_t = "no aprobados";
-                            break;
-                    }
-                    var titulo_grafica = "Comparativa de alumnos " + texto_t + " en " + periodo;
-                    var extra = '';
-                    graficar(i, datos_g, titulo_grafica, texto, periodo, extra, colores);
-                }
-                ocultar_loader();
-                $('#area_reportes').css('display', 'block');
-            });
-        } else {
+    $('#form_comparativa_unidad').submit(function (event) {               
+        if (!valida_filtros('tipo_curso')) {            
+            event.preventDefault();            
             alert('Debe seleccionar los filtros, antes de realizar una comparación');
         }
     });

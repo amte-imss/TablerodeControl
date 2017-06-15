@@ -103,7 +103,7 @@ class Catalogo_model extends CI_Model
         $this->db->stop_cache();
         $departamentos['data'] = $this->db->get('catalogos.departamentos_instituto A')->result_array();
         $this->db->reset_query();
-        $this->db->select('count(*) total');        
+        $this->db->select('count(*) total');
         $departamentos['total'] = $this->db->get('catalogos.departamentos_instituto A')->result_array()[0]['total'];
         $departamentos['per_page'] = $filtros['per_page'];
         $departamentos['current_row'] = $filtros['current_row'];
@@ -141,7 +141,7 @@ class Catalogo_model extends CI_Model
         $this->db->select($select);
         $this->db->start_cache();
         $this->db->join('catalogos.delegaciones B', 'B.id_delegacion = A.id_delegacion', 'inner');
-        $this->db->join('catalogos.tipos_unidades C', 'C.id_tipo_unidad = A.id_tipo_unidad', 'left');       
+        $this->db->join('catalogos.tipos_unidades C', 'C.id_tipo_unidad = A.id_tipo_unidad', 'left');
         $this->db->where('A.activa', true);
         if (isset($filtros['type']) && isset($filtros['keyword']) &&
                 !empty($filtros['keyword']) && in_array($filtros['type'], array('clave_unidad', 'unidad', 'clave_presupuestal', 'delegacion', 'tipo')))

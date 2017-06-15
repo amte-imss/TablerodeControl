@@ -1,10 +1,34 @@
 <?php
 echo js('chart_options.js');
 echo js('comparativa/umae_tipo_curso.js');
-echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_umae'));
+echo form_open('comparativa/umae', array('id' => 'form_comparativa_umae'));
 ?>
+<input type="hidden" name="vista" value="1">
+<input type="hidden" name="agrupamiento" value="<?php echo $agrupamiento?>">
+<input type="hidden" name="tipo_comparativa" value="1">
 <hr>
 <div class="row form-group">
+        <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">* Año:</span>
+            <?php
+            echo $this->form_complete->create_element(
+                    array('id' => 'periodo',
+                        'type' => 'dropdown',
+                        'first' => array('' => 'Seleccione...'),
+                        'options' => $periodos,
+                        'attributes' => array(
+                            'class' => 'form-control  form-control input-sm',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'title' => 'Region',
+                            'onchange' => '')
+                    )
+            );
+            ?>
+        </div>
+        <?php echo form_error_format('periodo'); ?>
+    </div>
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Tipo de curso:</span>
@@ -36,7 +60,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
                 'data-placement' => 'top',
                 'title' => 'Nivel de atención',
                 'onchange' => 'cmbox_nivel()');
-            if (is_nivel_operacional($usuario['grupos']))
+            if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
                 $atributos_niveles += array('disabled' => true);
             }
@@ -53,6 +77,12 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('nivel'); ?>
     </div>    
+    
+
+</div>            
+<hr>
+<div class="row form-group">
+    
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Tipo de unidad:</span>
@@ -63,7 +93,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
                 'data-placement' => 'top',
                 'title' => 'TIpo de unidad',
                 'onchange' => 'cmbox_tipo_unidad()');
-            if ($no_edit_tipo_unidad)
+            if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
                 $tu += array('disabled' => true);
             }
@@ -77,10 +107,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('tipo_unidad'); ?>
     </div>
-
-</div>            
-<hr>
-<div class="row form-group">
+    
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* UMAE:</span>
@@ -124,27 +151,7 @@ echo form_open('comparativa/umae_tipo_curso', array('id' => 'form_comparativa_um
         </div>
         <?php echo form_error_format('unidad2'); ?>
     </div>
-    <div class="col-md-4">
-        <div class="input-group input-group-sm">
-            <span class="input-group-addon">* Año:</span>
-            <?php
-            echo $this->form_complete->create_element(
-                    array('id' => 'periodo',
-                        'type' => 'dropdown',
-                        'first' => array('' => 'Seleccione...'),
-                        'options' => $periodos,
-                        'attributes' => array(
-                            'class' => 'form-control  form-control input-sm',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                            'title' => 'Region',
-                            'onchange' => '')
-                    )
-            );
-            ?>
-        </div>
-        <?php echo form_error_format('periodo'); ?>
-    </div>
+
 </div>         
 <hr>
 <div class="row form-group">

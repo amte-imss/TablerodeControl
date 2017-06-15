@@ -64,15 +64,15 @@ class Buscador_model extends CI_Model
         }
         $grupo_principal[0] = 'A.id_unidad_instituto';
         $grupo_principal[1] = 'A.nombre';
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0 && $filtros['umae'])
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1 && $filtros['umae'])
         {
-            $grupo_principal[0] = 'A.unidad_principal';
+            $grupo_principal[0] = 'A.nombre_unidad_principal';
             $grupo_principal[1] = 'A.nombre_unidad_principal';
         }
         $select = array($grupo_principal[0] . ' id_unidad_instituto', $grupo_principal[1] . ' nombre');
         $this->db->select($select);
         $this->db->join('catalogos.tipos_unidades t', 'A.id_tipo_unidad = t.id_tipo_unidad', 'left');
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
         {
             $this->db->join('catalogos.delegaciones d', 'd.grupo_delegacion = A.grupo_delegacion', 'left');
         }
@@ -86,10 +86,9 @@ class Buscador_model extends CI_Model
         $this->db->where('A.anio', $periodo);
         if (isset($filtros['id_delegacion']))
         {
-            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
-            {
-                $grupo_principal[2] = 'd.grupo_delegacion';
-                $this->db->having('d.grupo_delegacion', $filtros['id_delegacion']);
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 1)
+            {                
+                $this->db->where('d.grupo_delegacion', $filtros['id_delegacion']);
             } else
             {
                 $this->db->where('id_delegacion', $filtros['id_delegacion']);

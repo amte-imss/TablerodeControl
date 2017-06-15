@@ -1,17 +1,38 @@
+function chart(id_chart, tabla, titulo, ytext, color) {    
+    Highcharts.chart(id_chart, {
+        data: {
+            table: tabla
+        },
+        chart: {
+            type: 'column'
+        },
+        colors: color,
+        title: {
+            text: titulo
+        },
+        legend: {
+            enabled: false
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: ytext
+            }
+        }                
+    });
+}
+
 function cmbox_comparativa() {
     var id_destino = document.getElementById('comparativa').value;
     if (id_destino == "") {
         $('#area_comparativa').html('');
         $('#area_reportes').css('display', 'none');
     } else {
-        var destino = site_url + '/comparativa/unidades_tipo_curso';
-        if (id_destino == 2) {
-            destino = site_url + '/comparativa/unidades_perfil';
-        }
+        var destino = site_url + '/comparativa/unidades';        
         $.ajax({
             url: destino
             , method: "post"
-            , data: {vista: 1}
+            , data: {vista: id_destino}
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }

@@ -1,3 +1,27 @@
+function chart(id_chart, tabla, titulo, ytext, color) {    
+    Highcharts.chart(id_chart, {
+        data: {
+            table: tabla
+        },
+        chart: {
+            type: 'column'
+        },
+        colors: color,
+        title: {
+            text: titulo
+        },
+        legend: {
+            enabled: false
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: ytext
+            }
+        }                
+    });
+}
+
 function cmbox_comparativa() {
     var id_destino = document.getElementById('comparativa').value;
     if (id_destino == "") {

@@ -26,7 +26,7 @@ echo js('comparativa/umae.js');
                                 echo $this->form_complete->create_element(
                                         array('id' => 'agrupamiento',
                                             'type' => 'dropdown',
-                                            'options' => array(0 => 'Si', 1 => 'No'),
+                                            'options' => array(1 => 'Si', 0 => 'No'),
                                             'attributes' => array(
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
@@ -66,13 +66,25 @@ echo js('comparativa/umae.js');
                 <?php
                 echo form_close();
                 ?>
-                <div id="area_comparativa"></div>
+                <div id="area_comparativa">
+                    <?php 
+                    if(isset($vista)){
+                        echo $vista;
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
+    <?php 
+    if(isset($tabla)){ echo $tabla; } 
+    ?>
+    <?php 
+    if(isset($grafica)){ echo $grafica; } 
+    ?>
     <div id="area_graph"></div>
 </div>     
 
