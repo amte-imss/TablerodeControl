@@ -56,7 +56,7 @@ class Nomina_model extends MY_Model{
       }
       $this->db->select("sc.id_subcategoria,sc.nombre as tipo_perfil, gc.id_grupo_categoria,gc.nombre as perfil, gc.descripcion");
       $this->db->join("catalogos.subcategorias sc","gc.id_subcategoria=sc.id_subcategoria");
-      $this->db->order_by("sc.id_subcategoria", "asc");
+      $this->db->order_by("sc.id_subcategoria asc, gc.order asc");
       $query = $this->db->get('catalogos.grupos_categorias gc');
       $resultado = $query->result_array();
       //pr($this->db->last_query());

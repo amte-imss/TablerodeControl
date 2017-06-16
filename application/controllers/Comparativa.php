@@ -226,7 +226,7 @@ class Comparativa extends MY_Controller
         $data["catalogos"]["perfil"] = $this->nom->get_perfil();
         $cat_list = new Catalogo_listado(); //Obtener catálogos
         $data['catalogos'] += $cat_list->obtener_catalogos(array(
-            Catalogo_listado::TIPOS_CURSOS,
+            Catalogo_listado::TIPOS_CURSOS => array('condicion' => 'id_tipo_curso<>1'),
             Catalogo_listado::IMPLEMENTACIONES => array(
                 'valor' => 'EXTRACT(year FROM fecha_fin)',
                 'llave' => 'DISTINCT(EXTRACT(year FROM fecha_fin))',
@@ -249,7 +249,8 @@ class Comparativa extends MY_Controller
             {
                 $cat = $cat_list->obtener_catalogos(array(Catalogo_listado::GRUPOS_CATEGORIAS => array(
                         'valor' => 'id_grupo_categoria,descripcion',
-                        'condicion' => "id_grupo_categoria = $num"
+                        'condicion' => "id_grupo_categoria = $num",
+                        'orden'=>'id_subcategoria, order'
                     )
                         )
                 );
