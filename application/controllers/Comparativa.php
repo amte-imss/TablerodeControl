@@ -76,7 +76,9 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS)
+                Catalogo_listado::SUBCATEGORIAS => array('condicion'=>'id_subcategoria > 1'), 
+                Catalogo_listado::TIPOS_CURSOS, 
+                Catalogo_listado::GRUPOS_CATEGORIAS)
             );
             $output['agrupamiento'] = $filtros['agrupamiento'];
             $output['niveles'] = $this->comparativa->get_niveles();
@@ -157,13 +159,20 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::UNIDADES_INSTITUTO => $opciones_umae)
+                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), 
+                Catalogo_listado::TIPOS_CURSOS,
+                Catalogo_listado::UNIDADES_INSTITUTO => $opciones_umae, 
+                Catalogo_listado::GRUPOS_CATEGORIAS, 
+                Catalogo_listado::TIPOS_UNIDADES => array(
+                    'llave' => 'id_tipo_unidad', 
+                    'nombre' => 'nombre', 
+                    'condicion' => 'nivel = 3'
+                ))
             );
             $output['agrupamiento'] = $filtros['agrupamiento'];
             $output['niveles'] = $this->comparativa->get_niveles();
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false), 'id_tipo_unidad', 'nombre');
+            //$output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false), 'id_tipo_unidad', 'nombre');
             $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
             switch ($this->input->post('vista', true))
@@ -304,7 +313,8 @@ class Comparativa extends MY_Controller
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
                 Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS,
-                Catalogo_listado::DELEGACIONES => $opciones_delegaciones)
+                Catalogo_listado::DELEGACIONES => $opciones_delegaciones, 
+                Catalogo_listado::GRUPOS_CATEGORIAS)
             );
             $output['agrupamiento'] = $filtros_delegacion['agrupamiento'];
             $output['niveles'] = $this->comparativa->get_niveles();

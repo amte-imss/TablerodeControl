@@ -1,5 +1,3 @@
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/highcharts.js"></script>
-<script src="<?php echo base_url(); ?>assets/third-party/highcharts/modules/exporting.js"></script>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">

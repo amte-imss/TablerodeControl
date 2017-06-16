@@ -34,18 +34,18 @@ class Comparativa_model extends MY_Model
     public function get_niveles()
     {
         /*
-        $this->db->flush_cache();
-        $this->db->reset_query();
-        $this->db->distinct();
-        $this->db->select('nivel_atencion');
-        $this->db->where('nivel_atencion is not null');
-        $this->db->order_by('nivel_atencion');
-        $niveles = $this->db->get('catalogos.unidades_instituto')->result_array();         
-        */
+          $this->db->flush_cache();
+          $this->db->reset_query();
+          $this->db->distinct();
+          $this->db->select('nivel_atencion');
+          $this->db->where('nivel_atencion is not null');
+          $this->db->order_by('nivel_atencion');
+          $niveles = $this->db->get('catalogos.unidades_instituto')->result_array();
+         */
         $niveles = array(
-            1 => 'Primer nivel', 
-            2 => 'Segundo nivel', 
-            3 => 'Tercer nivel', 
+            1 => 'Primer nivel',
+            2 => 'Segundo nivel',
+            3 => 'Tercer nivel',
         );
         return $niveles;
     }
@@ -123,23 +123,33 @@ class Comparativa_model extends MY_Model
         $this->db->stop_cache();
         $datos = [];
 
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+        if ($delegacion != '0')
         {
-            $select = array('A.nombre  nombre',
-                'sum("C".cantidad_alumnos_certificados) aprobados',
-                'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("C".cantidad_no_accesos) no_acceso');
-            $this->db->where('A.id_delegacion', $delegacion);
-            $this->db->group_by('A.nombre');
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+            {
+                $select = array('A.nombre  nombre',
+                    'sum("C".cantidad_alumnos_certificados) aprobados',
+                    'sum("C".cantidad_alumnos_inscritos) inscritos',
+                    'sum("C".cantidad_no_accesos) no_acceso');
+
+                $this->db->where('A.id_delegacion', $delegacion);
+                $this->db->group_by('A.nombre');
+            } else
+            {
+                $select = array('A.nombre_grupo_delegacion nombre',
+                    'sum("C".cantidad_alumnos_certificados) aprobados',
+                    'sum("C".cantidad_alumnos_inscritos) inscritos',
+                    'sum("C".cantidad_no_accesos) no_acceso');
+
+                $this->db->where('A.grupo_delegacion', $delegacion);
+                $this->db->group_by('A.nombre_grupo_delegacion');
+            }
         } else
         {
-            $select = array('A.nombre_grupo_delegacion nombre',
+            $select = array("'Promedio' nombre",
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso');
-
-            $this->db->where('A.grupo_delegacion', $delegacion);
-            $this->db->group_by('A.nombre_grupo_delegacion');
         }
         $this->db->select($select);
         $datos = $this->db->get('catalogos.delegaciones A')->result_array();
@@ -234,7 +244,7 @@ class Comparativa_model extends MY_Model
         $this->db->stop_cache();
         $datos = [];
 
-        if ($unidad != 0)
+        if ($unidad != '0')
         {
             $select = array('B.nombre  nombre',
                 'sum("C".cantidad_alumnos_certificados) aprobados',
@@ -242,8 +252,9 @@ class Comparativa_model extends MY_Model
                 'sum("C".cantidad_no_accesos) no_acceso');
             $this->db->where('B.id_unidad_instituto', $unidad);
             $this->db->group_by('B.nombre');
-        }else{
-            $select = array('$$Promedio$$  nombre',
+        } else
+        {
+            $select = array("'Promedio'  nombre",
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso');
@@ -335,23 +346,31 @@ class Comparativa_model extends MY_Model
         $this->db->stop_cache();
         $datos = [];
 
-        if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+        if ($umae != '0')
         {
-            $select = array('B.nombre  nombre',
-                'sum("C".cantidad_alumnos_certificados) aprobados',
-                'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("C".cantidad_no_accesos) no_acceso');
-            $this->db->where('B.id_unidad_instituto', $umae);
-            $this->db->group_by('B.nombre');
-        } else
-        {
-            $select = array('B.nombre_unidad_principal nombre',
-                'sum("C".cantidad_alumnos_certificados) aprobados',
-                'sum("C".cantidad_alumnos_inscritos) inscritos',
-                'sum("C".cantidad_no_accesos) no_acceso');
+            if (isset($filtros['agrupamiento']) && $filtros['agrupamiento'] == 0)
+            {
+                $select = array('B.nombre  nombre',
+                    'sum("C".cantidad_alumnos_certificados) aprobados',
+                    'sum("C".cantidad_alumnos_inscritos) inscritos',
+                    'sum("C".cantidad_no_accesos) no_acceso');
+                $this->db->where('B.id_unidad_instituto', $umae);
+                $this->db->group_by('B.nombre');
+            } else
+            {
+                $select = array('B.nombre_unidad_principal nombre',
+                    'sum("C".cantidad_alumnos_certificados) aprobados',
+                    'sum("C".cantidad_alumnos_inscritos) inscritos',
+                    'sum("C".cantidad_no_accesos) no_acceso');
 
-            $this->db->where('B.nombre_unidad_principal', $umae);
-            $this->db->group_by('B.nombre_unidad_principal');
+                $this->db->where('B.nombre_unidad_principal', $umae);
+                $this->db->group_by('B.nombre_unidad_principal');
+            }
+        }else{
+            $select = array("'Promedio' nombre",
+                    'sum("C".cantidad_alumnos_certificados) aprobados',
+                    'sum("C".cantidad_alumnos_inscritos) inscritos',
+                    'sum("C".cantidad_no_accesos) no_acceso');
         }
         $this->db->select($select);
         $datos = $this->db->get('catalogos.unidades_instituto B')->result_array();

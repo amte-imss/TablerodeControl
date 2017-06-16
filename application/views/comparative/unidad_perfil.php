@@ -59,7 +59,7 @@ echo form_open('comparativa/unidades', array('id' => 'form_comparativa_umae'));
                     array('id' => 'subperfil',
                         'type' => 'dropdown',
                         'first' => array('' => 'Seleccione...'),
-                        'options' => [],
+                        'options' => $grupos_categorias,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',

@@ -30,7 +30,7 @@
         ?>
         <tr>
             <th><?php echo $row['nombre']; ?></th>
-            <td><?php echo number_format($value, 0); ?></td>
+            <td><?php echo intval($value); ?></td>
         </tr>
         <?php
     }

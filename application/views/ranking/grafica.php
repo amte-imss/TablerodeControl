@@ -17,6 +17,7 @@ $color = ($filtros['tipo'] == 1 || $filtros['tipo'] == '' ? '#98c56e' : '#f3b510
 <script type="text/javascript">
     $(document).ready(function () {
         //chart
+        sortTable("table_ranking");
         chart("area_graph", "table_ranking", "", "<?php echo $titulo; ?>", ['<?php echo $color; ?>']);        
     });
 </script>
