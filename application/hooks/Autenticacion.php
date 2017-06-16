@@ -36,11 +36,11 @@ class Autenticacion
         if (!in_array($url, Autenticacion::$libre_acceso))
         {
             $usuario = $CI->session->userdata('usuario');
-            //pr($usuario);
+//            pr($usuario);
             if (isset($usuario['id_usuario']))
             {
                 if (!$this->verifica_permiso($CI, $usuario))
-                {
+                {                    
                     redirect(site_url());
                 }
             } else
@@ -56,13 +56,16 @@ class Autenticacion
         $accion = $CI->uri->rsegment(2);  //Función que se llama en el controlador
         $url = '/' . $controlador . '/' . $accion;
         $CI->load->model('Modulo_model', 'modulos');
-        $modulo = $CI->modulos->check_acceso($url, $usuario['id_usuario']);
-        $modulo_alt = $CI->modulos->check_acceso($url . '/', $usuario['id_usuario']);
-//        pr($url);s
+        $modulo = $CI->modulos->check_acceso($url, $usuario['id_usuario']);        
+        $is_index = null;
+        if($accion == 'index'){
+            $is_index = $CI->modulos->check_acceso('/'.$controlador, $usuario['id_usuario']);
+        }
+//        pr($url);
 //        pr($modulo);
-//        pr($modulo_alt);
-//        return $modulo != null || $modulo_alt != null || $url == '/welcome/dashboard';
-        return true;
+//        pr($is_index);
+        return $modulo != null || $is_index != null || $url == '/welcome/dashboard';
+//        return true;
     }
 
 }
