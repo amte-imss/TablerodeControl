@@ -169,8 +169,11 @@ function calcular_totales(path, form_recurso) {
     })
     .done(function (response) {
         if(typeof(response.error) != "undefined"){
-            $('#container_perfil').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
-            $('#container_perfil').show();
+            $('#container_error').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+            $('#container_error').show();
+            //$('#container_perfil').html("<div class='alert alert-info text-center'><h5>No existen datos relacionados con los filtros seleccionados. <br>Realice una nueva selección.</h5></div>");
+            //$('#container_perfil').show();
+            $('#container_perfil').html('');
             $('#container_tipo_curso').html('');
             $('#container_nivel_atencion').html('');
             $('#container_region').html('');
@@ -178,6 +181,8 @@ function calcular_totales(path, form_recurso) {
             $('#container_delegacion').html('');
             $('#container_umae').html('');
         } else {
+            $('#container_error').html(''); ///Ocultar capa en caso de que se haya activado para mostrar algún mensaje de error.
+            $('#container_error').hide();
             if(typeof(response.total) != "undefined"){
                 $('#total_alumnos_inscritos').html(response.total.cantidad_alumnos_inscritos);
                 $('#total_alumnos_aprobados').html(response.total.cantidad_alumnos_certificados);

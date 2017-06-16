@@ -165,7 +165,7 @@ if(isset($catalogos['agrupamiento']) AND !empty($catalogos['agrupamiento'])) {
                             }
                             </script>
                         <?php break;
-                        case En_grupos::N3_JSPM: 
+                        case En_grupos::N3_JSPM:
                             $tipos_busqueda = ($this->session->userdata('usuario')['umae']==true) ? 'umae' : 'delegacion';
                             echo $this->form_complete->create_element(
                                 array(

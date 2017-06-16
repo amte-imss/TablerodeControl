@@ -306,6 +306,9 @@
     <div class="clearfix"></div>
     <?php echo form_close(); ?>
     <div class="col-lg-12 col-md-12 col-sm-12">
+        <div id="container_error" style="min-width: 310px; margin: 0 auto; display:none;"></div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12">
         <div id="container_perfil" style="min-width: 310px; margin: 0 auto; display:none;"></div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12">

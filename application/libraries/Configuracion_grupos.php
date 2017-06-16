@@ -102,7 +102,7 @@ class Configuracion_grupos {
             $delegacion = '';
         } else {
             $unidad = 'de la unidad \''.$this->CI->sesion['name_unidad_ist'].'\'';
-            $delegacion = 'de la delegación '.$this->CI->sesion['name_delegacion'];
+            $delegacion = 'de la delegación '.$this->CI->sesion['nombre_grupo_delegacion'];
         }
         if(!in_array($this->CI->sesion['grupos'][0]['id_grupo'], array(En_grupos::N1_CEIS,En_grupos::N1_DH,En_grupos::N1_DUMF,En_grupos::N1_DEIS,En_grupos::N1_DM,En_grupos::N1_JDES,En_grupos::N2_DGU))) {
             $unidad = '';
