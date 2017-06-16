@@ -35,6 +35,7 @@ class Modulo_model extends CI_Model
         }
         $this->db->order_by('A.orden');
         $modulos = $this->db->get('sistema.modulos A')->result_array();
+//pr($this->db->last_query());
         if ($id_modulo <= 0 && $agrupadas)
         {
             $modulos = $this->get_tree($modulos);
@@ -188,7 +189,7 @@ class Modulo_model extends CI_Model
             'nombre' => $datos['nombre'],
             'url' => $datos['url'],
             'id_modulo_padre' => $datos['padre'],
-            'orden' => $datos['orden'],
+            'orden' => ($datos['orden']!=''?$datos['orden']:1),
             'id_configurador' => $datos['tipo'],
             'visible' => $datos['visible'], 
             'icon' => (isset($datos['icono'])?$datos['icono']:NULL)
@@ -251,8 +252,10 @@ class Modulo_model extends CI_Model
             $this->db->where('A.activo', true);
             $this->db->where('B.activo', true);
             $this->db->where('C.activo', true);
-            $this->db->where('A.url', $url);
+            $url_d = $url.'/';
+            $this->db->where("(A.url = '{$url}' or A.url = '{$url_d}')");            
             $result_set = $this->db->get('sistema.modulos A');
+//            pr($this->db->last_query());
             if($result_set){
                 $salida = $result_set->result_array();
             }
