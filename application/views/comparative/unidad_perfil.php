@@ -13,18 +13,23 @@ echo form_open('comparativa/unidades', array('id' => 'form_comparativa_umae'));
         <div class="input-group input-group-sm">
             <span class="input-group-addon">* Año:</span>
             <?php
-            echo $this->form_complete->create_element(
-                    array('id' => 'periodo',
+            $options_periodo = array('id' => 'periodo',
                         'type' => 'dropdown',
-                        'first' => array('' => 'Seleccione...'),
+                        'first' => array('' => 'Seleccione...'),                        
                         'options' => $periodos,
                         'attributes' => array(
                             'class' => 'form-control  form-control input-sm',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'top',
                             'title' => 'Region',
-                            'onchange' => '')
-                    )
+                            'onchange' => 'cmbox_comparativa()')
+                    );
+            if(isset($periodo)){
+                $options_periodo['value'] = $periodo;
+            }
+               
+            echo $this->form_complete->create_element(
+                    $options_periodo
             );
             ?>
         </div>
@@ -129,7 +134,7 @@ echo form_open('comparativa/unidades', array('id' => 'form_comparativa_umae'));
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <span class="input-group-addon"><i class="material-icons cores-helper" data-help="unidad_buscador">help</i> * Unidad:</span>
-            <input type="hidden" value="<?php echo $usuario['id_unidad_instituto']; ?>" name="unidad1" id="unidad1">
+            <input type="hidden" value="<?php echo $usuario['clave_unidad']; ?>" name="unidad1" id="unidad1">
             <?php
             $atributos_unidad1 = array(
                 'class' => 'form-control  form-control input-sm  unidad_texto',

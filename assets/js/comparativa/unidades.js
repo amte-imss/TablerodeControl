@@ -30,10 +30,14 @@ function cmbox_comparativa() {
         $('#area_reportes').css('display', 'none');
     } else {
         var destino = site_url + '/comparativa/unidades';        
+        var datos = {vista: id_destino};
+        if(document.getElementById('periodo') != null){
+            datos['periodo'] = document.getElementById('periodo').value;
+        }
         $.ajax({
             url: destino
             , method: "post"
-            , data: {vista: id_destino}
+            , data: datos
             , error: function () {
                 console.warn("No se pudo realizar la conexión");
             }
@@ -99,7 +103,7 @@ function search_unidad(elemento) {
 }
 
 function set_value_unidad(item) {
-    var id_unidad = item.getAttribute("data-unidad-id");
+    var id_unidad = item.getAttribute("data-unidad-clave");
     var unidad = item.getAttribute("data-unidad-nombre");
     var index = item.parentElement.getAttribute('data-autocomplete-id');
     console.log(index);

@@ -122,10 +122,14 @@ function cmbox_tipo_unidad() {
     if (document.getElementById('agrupamiento') != null) {
         agrupamiento = document.getElementById('agrupamiento').value;
     }
+    var datos = {tipo_unidad: tipo_unidad, agrupamiento: agrupamiento};
+    if(document.getElementById('periodo')!= null){
+        datos['periodo'] = document.getElementById('periodo').value;
+    }
     $.ajax({
         url: site_url + "/buscador/get_unidades/" + umae
         , method: "post"
-        , data: {tipo_unidad: tipo_unidad, agrupamiento: agrupamiento}
+        , data: datos
         , error: function () {
             console.warn("No se pudo realizar la conexión");
         }

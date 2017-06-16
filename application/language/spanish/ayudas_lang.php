@@ -14,3 +14,4 @@ $lang['ayudas']['unidad_buscador'] = 'Escriba el nombre de la unidad deseada par
 $lang['ayudas']['comparativa_delegaciones'] = 'Comparativa entre dos delegaciones';
 $lang['ayudas']['ranking'] = 'Ranking';
 $lang['ayudas']['agrupamiento'] = 'Para las delegaciones existen dos modelos de datos, el agrupamiento que considera delegaciones como DF SUR 3 y 4 como una sola; y sin agrupamiento que las considera independientes. En el caso de las UMAES el agrupamiento filtra la información de la UMAE y sus complementos; sin agrupamiento son independientes';
+$lang['ayudas']['comparativa_region'] = 'Comparatica entre regiones';

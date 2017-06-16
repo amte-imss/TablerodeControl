@@ -118,15 +118,20 @@ class Buscador extends CI_Controller
             $umae = $umae == 1 ? true : false;
             $delegacion = 0;
             $condiciones = array('umae' => $umae,
-                'id_tipo_unidad' => $id_tipo_unidad, 'agrupamiento' => 0);
+                'id_tipo_unidad' => $id_tipo_unidad, 'agrupamiento' => 1);
+            if($this->input->post('periodo') != null){
+                $condiciones['periodo'] = $this->input->post('periodo', true);
+            }
             if (is_nivel_operacional($usuario['grupos']) || is_nivel_tactico($usuario['grupos']))
             {
                 $delegacion = $usuario['grupo_delegacion'];
                 $condiciones += array('id_delegacion' => $delegacion);
             }            
-            if(is_nivel_central($usuario['grupos']) && $this->input->post('agrupamiento') &&  $this->input->post('agrupamiento', true) == 1){
-                $condiciones['agrupamiento'] = 1;
+            //pr($this->input->post('agrupamiento', true));
+            if(is_nivel_central($usuario['grupos']) && $this->input->post('agrupamiento') != null &&  $this->input->post('agrupamiento') == 0){
+                $condiciones['agrupamiento'] = 0;
             }
+            //pr($condiciones);
             $output = $this->buscador->get_unidades($condiciones);
             echo json_encode($output);
         }

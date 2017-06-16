@@ -6,7 +6,7 @@ echo js('help.js');
 echo form_open('comparativa/umae', array('id' => 'form_comparativa_umae'));
 ?>
 <input type="hidden" name="vista" value="2">
-<input type="hidden" name="agrupamiento" value="<?php echo $agrupamiento?>">
+<input type="hidden" id="agrupamiento" name="agrupamiento" value="<?php echo $agrupamiento?>">
 <input type="hidden" name="tipo_comparativa" value="2">
 
 <hr>

@@ -58,6 +58,7 @@ class Comparativa extends MY_Controller
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
 
         $output['usuario'] = $this->session->userdata('usuario');
+//        pr($output['usuario']);
         if ($this->input->post('vista'))
         {
             $filtros = $this->input->post();
@@ -68,6 +69,7 @@ class Comparativa extends MY_Controller
             {
                 $periodo = $filtros['periodo'];
             }
+            $output['periodo'] = $periodo;
             $filtros['agrupamiento'] = 1; //activamos el agrupamiento            
             if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0)
             {

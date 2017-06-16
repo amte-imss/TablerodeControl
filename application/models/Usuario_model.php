@@ -66,6 +66,7 @@ class Usuario_model extends CI_Model
         $this->db->select(array(
             'id_unidad_instituto'
             , 'nombre'
+            , 'clave_unidad'
                 //,'concat(nombre, $$ TIPO: $$, id_tipo_unidad, $$, ESPERADO: '.$tipo_unidad.'$$) nombre'
         ));
         if ($keyword != null)

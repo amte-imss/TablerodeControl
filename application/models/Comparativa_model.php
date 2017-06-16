@@ -250,7 +250,7 @@ class Comparativa_model extends MY_Model
                 'sum("C".cantidad_alumnos_certificados) aprobados',
                 'sum("C".cantidad_alumnos_inscritos) inscritos',
                 'sum("C".cantidad_no_accesos) no_acceso');
-            $this->db->where('B.id_unidad_instituto', $unidad);
+            $this->db->where('B.clave_unidad', $unidad);
             $this->db->group_by('B.nombre');
         } else
         {
@@ -269,9 +269,9 @@ class Comparativa_model extends MY_Model
         {
 
             $opciones = array(
-                'llave' => 'id_unidad_instituto',
+                'llave' => 'clave_unidad',
                 'valor' => 'nombre',
-                'condicion' => "(grupo_tipo_unidad != 'UMAE' and grupo_tipo_unidad != 'CUMAE') and anio = {$filtros['periodo']} and id_unidad_instituto = {$unidad}",
+                'condicion' => "(grupo_tipo_unidad != 'UMAE' and grupo_tipo_unidad != 'CUMAE') and anio = {$filtros['periodo']} and clave_unidad = '{$unidad}'",
                 'group' => array('id_unidad_instituto', 'nombre')
             );
 
