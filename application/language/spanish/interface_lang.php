@@ -27,6 +27,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //$lang['interface']['registro']['texto_bienvenida'] = 'Hola mundo';
 $lang['interface'] = array(
     'informacion_general' => array(
+        'titulo_sistema' => 'Consulta de Resultados de Educación en Salud',
+        'ver_datos_generales' => 'Ver datos generales',
+        'ultima_actualizacion' => 'Última actualización',
         'titulo_principal' => 'Información general',
         'texto_informativo' => 'Para ver más resultados selecciona el tipo de gráfica a mostrar',
         'titulo_por_perfil' => 'Por perfil',

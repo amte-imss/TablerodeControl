@@ -131,39 +131,29 @@
     </div>
 </div>
 <script type="text/javascript">
-    var SOURCE = [
-        <?php
-        $sub = array();
-        foreach ($catalogos['subcategorias'] as $key_sub => $subcategoria) {
-            echo '{"title":"'.$subcategoria['subcategoria'].'", "key":"'.$key_sub.'",
-                "expanded":"true", "selected": "true", "children":[';
-            if(isset($subcategoria['elementos'])){
-                foreach ($subcategoria['elementos'] as $key_ele => $elemento) {
-                    echo '{"title":"'.$elemento.'", "selected": "true", "key":'.$key_ele.'},';
-                }
+    <?php
+    $sub = array();
+    $html = 'var SOURCE = [';
+    foreach ($catalogos['subcategorias'] as $key_sub => $subcategoria) {
+        $html .= '{"title":"'.$subcategoria['subcategoria'].'", "key":"'.$key_sub.'","expanded":"true", "selected": "true", "children":[';
+        if(isset($subcategoria['elementos'])){
+            foreach ($subcategoria['elementos'] as $key_ele => $elemento) {
+                $html .= '{"title":"'.$elemento.'", "selected": "true", "key":'.$key_ele.'},';
             }
-            echo ']},';
+            $html = rtrim($html, ',');
         }
-        ?>
-    ];
-    var SOURCE2 = [
-        <?php
-        $sub = array();
-        foreach ($catalogos['tipos_cursos'] as $key_tip => $tipos) {
-            echo '{"title":"'.$tipos.'", "key":'.$key_tip.', selected: true, "children":[]},';
-        }
-        ?>
-    ];
-    /*function limpiar_filtros_listados(){
-        var perfil_tree = $('#perfil_tree').fancytree('getTree');
-        perfil_tree.reload(SOURCE);
-        var tipo_curso_tree = $('#tipo_curso_tree').fancytree('getTree');
-        tipo_curso_tree.reload(SOURCE2);
-        $("#temporal_tipo_busqueda").val('');
-        setTimeout(function() {   //calls click event after a certain time
-           buscar_perfil(site_url+'/informacion_general/buscar_perfil', '#form_busqueda');
-        }, 500);
-    }*/
+        $html .= ']},';
+    }
+    $html = rtrim($html, ',');
+    echo $html.'];';
+    $sub = array();
+    $html1 = 'var SOURCE2 = [';
+    foreach ($catalogos['tipos_cursos'] as $key_tip => $tipos) {
+        $html1 .= '{"title":"'.$tipos.'", "key":'.$key_tip.', selected: true, "children":[]},';
+    }
+    $html1 = rtrim($html1, ',');
+    echo $html1.'];';
+    ?>
     function buscar_filtros_listados(path, form_recurso, recurso, destino) {
         if($("#temporal_tipo_busqueda").val()==""){ //Validamos que este vacío el campo para poder realizar el guardado temporal. Nos indica el sentido de la búsqueda
             $("#temporal_tipo_busqueda").val(recurso);

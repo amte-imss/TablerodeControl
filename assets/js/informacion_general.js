@@ -139,19 +139,19 @@ function obtener_categoria_serie(datos){
     series_datos = [{
             name: 'Inscritos',
             data: inscritos,
-            stack: 'inscritos'
+            stack: 'Inscritos'
         }, {
             name: 'Aprobados',
             data: certificados,
-            stack: 'aprobados'
+            stack: 'Aprobados'
         }, {
             name: 'No aprobados',
             data: no_aprobado,
-            stack: 'no_aprobado'
+            stack: 'No aprobado'
         }, {
             name: 'Nunca entraron',
             data: no_acceso,
-            stack: 'no_aprobado'
+            stack: 'No aprobado'
         }];
     return resultado = {'categorias':categorias, 'series':series_datos};
 }
@@ -346,19 +346,19 @@ function obtener_categoria_serie_unidad(datos){
     series_datos = [{
             name: 'Inscritos',
             data: inscritos,
-            stack: 'inscritos'
+            stack: 'Inscritos'
         }, {
             name: 'Aprobados',
             data: certificados,
-            stack: 'aprobados'
+            stack: 'Aprobados'
         }, {
             name: 'No aprobados',
             data: no_aprobado,
-            stack: 'no_aprobado'
+            stack: 'No aprobado'
         }, {
             name: 'Nunca entraron',
             data: no_acceso,
-            stack: 'no_aprobado'
+            stack: 'No aprobado'
         }];
     return resultado = {'categorias':categorias, 'series':series_datos};
     /*var categorias = [];
@@ -578,6 +578,13 @@ function obtener_umae(path, form_recurso, elemento_resultado) {
 }
 
 function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_datos){
+    var rotar = {};
+    if(elemento=='container_umae' || elemento=='container_delegacion'){
+        rotar = {
+                rotation: -90,
+                y:40                
+            };
+    }
     Highcharts.chart(elemento, {
         chart: {
             type: 'column'
@@ -587,6 +594,7 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
         },
         colors: ['#0090b9','#43A886','#EF5350','#FC6220','#FCB220'],
         xAxis: {
+            labels: rotar,
             categories: categorias
         },
         yAxis: {
@@ -618,8 +626,17 @@ function crear_grafica_stacked(elemento, titulo, categorias, texto_y, series_dat
             shadow: false
         },
         tooltip: {
-            headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            //headerFormat: '<b>{point.x}</b><br/>',
+            /*pointFormat: function () {
+                return '{series.name}: {point.y}<br/>{series.stackKey}:: {point.stackTotal}';
+            }*/
+            //pointFormat: '{series.name}: {point.y}<br/>{series.stackKey}: {point.stackTotal}',
+            formatter: function () {
+                //console.log(this.point);
+                //console.log(series);
+                //var stackK = this.series.stackKey;
+                return '<b>'+this.point.category+'</b><br/>'+this.series.name+': '+this.point.y+'<br/>'+this.series.options.stack+': '+this.point.stackTotal+'';
+            }
         },
         plotOptions: {
             column: {
@@ -724,10 +741,13 @@ function crear_grafica_stacked_grouped(elemento, titulo, categorias, texto_y, se
         },
         tooltip: {
             formatter: function () {
+                return '<b>'+this.point.category+'</b><br/>'+this.series.name+': '+this.point.y+'<br/>'+this.series.options.stack+': '+this.point.stackTotal+'';
+            }
+            /*formatter: function () {
                 return '<b>' + this.x + '</b><br/>' +
                     this.series.name + ': ' + this.y + '<br/>' +
                     'Total: ' + this.point.stackTotal;
-            }
+            }*/
         },
         plotOptions: {
             column: {

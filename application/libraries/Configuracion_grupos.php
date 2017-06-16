@@ -52,32 +52,32 @@ class Configuracion_grupos {
     		case En_grupos::N1_CEIS: case En_grupos::N1_DH: case En_grupos::N1_DUMF: case En_grupos::N1_DEIS: case En_grupos::N1_DM: case En_grupos::N1_JDES:
     			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor'] /*, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']*/);
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
-		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
+		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')
 		        );
                 $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
     			break;
-    		case En_grupos::N2_CPEI: case En_grupos::N2_DGU: case En_grupos::N2_CAME:
-    			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor']/*, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']*/);
+    		/*case En_grupos::N2_CPEI: case En_grupos::N2_DGU: case En_grupos::N2_CAME:
+    			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor']); //, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
-		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
+		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')
 		        );
                 if(in_array($grupo_actual, array(En_grupos::N2_CPEI, En_grupos::N2_CAME))){ //Si es unidad tiene diferentes condionales a las de una UMAE
                     $resultado['condicion_calcular_totales'] = "del.clave_delegacional='".$this->obtener_delegacion_actual()."' AND uni.id_tipo_unidad=".$this->obtener_tipo_unidad_actual();
                 } else {
                     $resultado['condicion_calcular_totales'] = 'uni.id_unidad_instituto='.$this->obtener_unidad_actual();
                 }
-    		break;
-    		case En_grupos::N3_JSPM:
+    		break; */
+    		case En_grupos::N2_CPEI: case En_grupos::N2_DGU: case En_grupos::N2_CAME: case En_grupos::N3_JSPM: ///Se utlizó el mismo nivel
     			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor']/*, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']*/, $tb['NIVEL_ATENCION']['id']=>$tb['NIVEL_ATENCION']['valor']);
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
-		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC')
+		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC')
 		        );
                 $resultado['condicion_calcular_totales'] = "del.clave_delegacional='".$this->obtener_delegacion_actual()."'";
     			break;
     		case En_grupos::NIVEL_CENTRAL:
     			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor']/*, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']*/, $tb['NIVEL_ATENCION']['id']=>$tb['NIVEL_ATENCION']['valor'], $tb['REGION']['id']=>$tb['REGION']['valor'], $tb['DELEGACION']['id']=>$tb['DELEGACION']['valor'], $tb['UMAE']['id']=>$tb['UMAE']['valor']);
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
-		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'),
+		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC'),
 		            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>"grupo_tipo_unidad IN ('".$this->CI->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->CI->config->item('grupo_tipo_unidad')['CUMAE']['id']."') AND anio=".$this->get_periodo_actual(), 'valor'=>"nombre")
 		        );
                 $resultado['condicion_calcular_totales'] = '';
@@ -85,7 +85,7 @@ class Configuracion_grupos {
     		case En_grupos::ADMIN: case En_grupos::SUPERADMIN:
     			$resultado['tipos_busqueda'] = array($tb['PERFIL']['id']=>$tb['PERFIL']['valor'], $tb['TIPO_CURSO']['id']=>$tb['TIPO_CURSO']['valor']/*, $tb['PERIODO']['id']=>$tb['PERIODO']['valor']*/, $tb['NIVEL_ATENCION']['id']=>$tb['NIVEL_ATENCION']['valor'], $tb['REGION']['id']=>$tb['REGION']['valor'], $tb['DELEGACION']['id']=>$tb['DELEGACION']['valor'], $tb['UMAE']['id']=>$tb['UMAE']['valor']);
     			$resultado['catalogos'] = array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::REGIONES, Catalogo_listado::SUBCATEGORIAS=>array('orden'=>'order', 'condicion'=>'activa=CAST(1 as boolean)'),
-		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_inicio)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_inicio))', 'orden'=>'llave DESC'),
+		            Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'EXTRACT(year FROM fecha_fin)', 'llave'=>'DISTINCT(EXTRACT(year FROM fecha_fin))', 'orden'=>'llave DESC'),
 		            Catalogo_listado::DELEGACIONES=>array('condicion'=>'id_delegacion>1'), Catalogo_listado::UNIDADES_INSTITUTO=>array('condicion'=>"grupo_tipo_unidad IN ('".$this->CI->config->item('grupo_tipo_unidad')['UMAE']['id']."', '".$this->CI->config->item('grupo_tipo_unidad')['CUMAE']['id']."') AND anio=".$this->get_periodo_actual(), 'valor'=>"nombre")
 		        );
                 $resultado['condicion_calcular_totales'] = '';

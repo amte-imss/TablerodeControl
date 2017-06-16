@@ -133,36 +133,36 @@ class Informacion_general_model extends CI_Model
             //pr($per);
             //echo $params['periodo_seleccion']." - ".$per['SEMESTRAL']['id'];
             if($params['periodo_seleccion']==$per['SEMESTRAL']['id']){
-               $periodo = ", (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 'Enero-Junio' ELSE 'Julio-Diciembre' END) as periodo, (CASE WHEN date_part('month', fecha_inicio) <= 6 THEN 1 ELSE 2 END) as periodo_id";
+               $periodo = ", (CASE WHEN date_part('month', fecha_fin) <= 6 THEN 'Enero-Junio' ELSE 'Julio-Diciembre' END) as periodo, (CASE WHEN date_part('month', fecha_fin) <= 6 THEN 1 ELSE 2 END) as periodo_id";
             } elseif($params['periodo_seleccion']==$per['TRIMESTRAL']['id']){
                 //pr('entro');
-                $periodo = ", EXTRACT(quarter FROM fecha_inicio) as periodo_id, 
-                    (CASE WHEN EXTRACT(quarter FROM fecha_inicio) = 1 THEN 'Enero-Marzo'
-                    WHEN EXTRACT(quarter FROM fecha_inicio) = 2 THEN 'Abril-Junio'
-                    WHEN EXTRACT(quarter FROM fecha_inicio) = 3 THEN 'Julio-Septiembre' ELSE 'Octubre-Diciembre' END) as periodo";
+                $periodo = ", EXTRACT(quarter FROM fecha_fin) as periodo_id, 
+                    (CASE WHEN EXTRACT(quarter FROM fecha_fin) = 1 THEN 'Enero-Marzo'
+                    WHEN EXTRACT(quarter FROM fecha_fin) = 2 THEN 'Abril-Junio'
+                    WHEN EXTRACT(quarter FROM fecha_fin) = 3 THEN 'Julio-Septiembre' ELSE 'Octubre-Diciembre' END) as periodo";
             } elseif($params['periodo_seleccion']==$per['BIMESTRAL']['id']){
-                $periodo = ", (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer as periodo_id, 
-                    (CASE WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 1 THEN 'Enero-Febrero'
-                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 2 THEN 'Marzo-Abril'
-                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 3 THEN 'Mayo-Junio'
-                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 4 THEN 'Julio-Agosto'
-                    WHEN (EXTRACT(month FROM fecha_inicio)/2+.1):: Integer = 5 THEN 'Septiembre-Octubre' ELSE 'Noviembre-Diciembre' END) as periodo";
+                $periodo = ", (EXTRACT(month FROM fecha_fin)/2+.1):: Integer as periodo_id, 
+                    (CASE WHEN (EXTRACT(month FROM fecha_fin)/2+.1):: Integer = 1 THEN 'Enero-Febrero'
+                    WHEN (EXTRACT(month FROM fecha_fin)/2+.1):: Integer = 2 THEN 'Marzo-Abril'
+                    WHEN (EXTRACT(month FROM fecha_fin)/2+.1):: Integer = 3 THEN 'Mayo-Junio'
+                    WHEN (EXTRACT(month FROM fecha_fin)/2+.1):: Integer = 4 THEN 'Julio-Agosto'
+                    WHEN (EXTRACT(month FROM fecha_fin)/2+.1):: Integer = 5 THEN 'Septiembre-Octubre' ELSE 'Noviembre-Diciembre' END) as periodo";
             } elseif($params['periodo_seleccion']==$per['MENSUAL']['id']){
-                $periodo = ", EXTRACT(month FROM fecha_inicio) as periodo_id,
-                    (CASE WHEN EXTRACT(month FROM fecha_inicio) = 1 THEN 'Enero'
-                    WHEN EXTRACT(month FROM fecha_inicio) = 2 THEN 'Febrero'
-                    WHEN EXTRACT(month FROM fecha_inicio) = 3 THEN 'Marzo' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 4 THEN 'Abril' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 5 THEN 'Mayo' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 6 THEN 'Junio' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 7 THEN 'Julio' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 8 THEN 'Agosto' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 9 THEN 'Septiembre' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 10 THEN 'Octubre' 
-                    WHEN EXTRACT(month FROM fecha_inicio) = 11 THEN 'Noviembre' 
+                $periodo = ", EXTRACT(month FROM fecha_fin) as periodo_id,
+                    (CASE WHEN EXTRACT(month FROM fecha_fin) = 1 THEN 'Enero'
+                    WHEN EXTRACT(month FROM fecha_fin) = 2 THEN 'Febrero'
+                    WHEN EXTRACT(month FROM fecha_fin) = 3 THEN 'Marzo' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 4 THEN 'Abril' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 5 THEN 'Mayo' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 6 THEN 'Junio' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 7 THEN 'Julio' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 8 THEN 'Agosto' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 9 THEN 'Septiembre' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 10 THEN 'Octubre' 
+                    WHEN EXTRACT(month FROM fecha_fin) = 11 THEN 'Noviembre' 
                     ELSE 'Diciembre' END) as periodo";
             } /* else {
-                $this->db->where('EXTRACT(YEAR FROM imp.fecha_inicio)='.$params['periodo_seleccion'].' as periodo');
+                $this->db->where('EXTRACT(YEAR FROM imp.fecha_fin)='.$params['periodo_seleccion'].' as periodo');
             }*/
             $this->db->order_by('periodo_id');
         }
@@ -187,13 +187,13 @@ class Informacion_general_model extends CI_Model
                 } else {
                     $this->db->order_by($params['destino']);
                 }
-                $this->db->select('gc.id_grupo_categoria, gc.nombre as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso, sub.order as subcategoria_orden, gc.order as grupo_categoria_orden');
-                $this->db->group_by('gc.id_grupo_categoria, gc.nombre, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
+                $this->db->select('gc.id_grupo_categoria, gc.descripcion as grupo_categoria, sub.id_subcategoria, sub.nombre as perfil, cur.id_tipo_curso, tc.nombre as tipo_curso, sub.order as subcategoria_orden, gc.order as grupo_categoria_orden');
+                $this->db->group_by('gc.id_grupo_categoria, gc.descripcion, sub.id_subcategoria, sub.nombre, cur.id_tipo_curso, tc.nombre');
             } else {
-                $this->db->select('imp.id_curso, imp.fecha_inicio,EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
+                $this->db->select('imp.id_curso, imp.fecha_fin,EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, 
                     imp.anio anio_fin, reg.id_region, reg.nombre as region, cur.id_tipo_curso, tc.nombre as tipo_curso,
                     del.id_delegacion, del.nombre as delegacion, uni.id_unidad_instituto, uni.clave_unidad, uni.nombre as unidades_instituto, uni.umae, uni.grupo_tipo_unidad,
-                    hia.id_categoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
+                    hia.id_categoria, gc.id_grupo_categoria, gc.descripcion as grupo_categoria, gc.order as grupo_categoria_orden, sub.id_subcategoria, sub.nombre as perfil, sub.order as perfil_orden,
                     hia.id_unidad_instituto, hia.id_implementacion, hia.cantidad_alumnos_inscritos, hia.cantidad_alumnos_certificados, 
                     case when uni.nivel_atencion=1 then \'Primer nivel\' when uni.nivel_atencion=2 then \'Segundo nivel\' when uni.nivel_atencion=3 then \'Tercer nivel\' else \'Nivel no disponible\' end as nivel_atencion,
                     sub.order as subcategoria_orden, gc.order as grupo_categoria_orden,
@@ -213,7 +213,7 @@ class Informacion_general_model extends CI_Model
 
         //$this->db->join('hechos.accesos_implemetaciones no_acc', 'no_acc.id_unidad_instituto=hia.id_unidad_instituto AND no_acc.id_implementacion=hia.id_implementacion AND no_acc.id_categoria=hia.id_categoria AND no_acc.id_sexo=hia.id_sexo', 'left');
         $this->db->join('catalogos.implementaciones imp', 'imp.id_implementacion=hia.id_implementacion');
-        //$this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_inicio)');
+        //$this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_fin)');
         $this->db->join('catalogos.cursos cur', 'cur.id_curso=imp.id_curso');
         $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso AND tc.activo=CAST(1 as boolean)');
         $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto AND uni.anio='.$params['anio'], 'left');
@@ -270,6 +270,53 @@ class Informacion_general_model extends CI_Model
         $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=ins.id_delegacion');
         $this->db->join('catalogos.tipos_unidades tipo_uni', 'tipo_uni.id_tipo_unidad=ins.id_tipo_unidad');
         $query = $this->db->get('catalogos.unidades_instituto ins'); //Obtener conjunto de registros
+        $resultado = $query->result_array();
+        //pr($this->db->last_query());
+        $query->free_result(); //Libera la memoria
+
+        return $resultado;
+    }
+
+    public function obtener_listado_cursos($params = array()){
+        $resultado = array();
+        if (array_key_exists('fields', $params)) {
+            $this->db->select($params['fields']);
+        }
+        if (array_key_exists('conditions', $params)) {
+            $this->db->where($params['conditions']);
+        }
+        if (array_key_exists('group', $params)) {
+            $this->db->group_by($params['group']);
+        }
+        if (array_key_exists('order', $params)) {
+            $this->db->order_by($params['order']);
+        }
+        $this->db->join('catalogos.implementaciones imp', 'imp.id_curso=cur.id_curso');
+        
+        $query = $this->db->get('catalogos.cursos cur'); //Obtener conjunto de registros
+        $resultado = $query->result_array();
+        //pr($this->db->last_query());
+        $query->free_result(); //Libera la memoria
+
+        return $resultado;
+    }
+
+    public function obtener_cargas_informacion($params = array()){
+        $resultado = array();
+        if (array_key_exists('fields', $params)) {
+            $this->db->select($params['fields']);
+        }
+        if (array_key_exists('conditions', $params)) {
+            $this->db->where($params['conditions']);
+        }
+        if (array_key_exists('group', $params)) {
+            $this->db->group_by($params['group']);
+        }
+        if (array_key_exists('order', $params)) {
+            $this->db->order_by($params['order']);
+        }
+        
+        $query = $this->db->get('sistema.cargas_informacion ci'); //Obtener conjunto de registros
         $resultado = $query->result_array();
         //pr($this->db->last_query());
         $query->free_result(); //Libera la memoria

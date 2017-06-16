@@ -49,6 +49,24 @@ class Informacion_general extends MY_Controller
         $this->template->getTemplate(null,"tc_template/index.tpl.php");
     }
 
+    public function inicio(){
+        $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
+        $cat_list = new Catalogo_listado(); //Obtener catálogos
+        $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC'),Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
+        $datos['cargas'] = $this->inf_gen_model->obtener_cargas_informacion(array('fields'=>"to_char(MAX(fecha_carga), 'DD-MM-YYYY') as ultima_actualizacion",'conditions'=>'ci.activa=true'));
+        $cursos = $this->inf_gen_model->obtener_listado_cursos(array('fields'=>'DISTINCT(cur.*)', 'conditions'=>'cur.activo=true', 'order'=>'cur.anio, cur.id_tipo_curso, cur.nombre'));
+        foreach ($cursos as $key_c => $curso) {
+            $datos['cursos'][$curso['anio']][$curso['id_tipo_curso']][] = $curso;
+        }
+
+        $this->template->setTitle($datos['lenguaje']['titulo_principal']);
+        $this->template->setSubTitle($datos['lenguaje']['titulo_sistema']);
+        //$this->template->setDescripcion($this->mostrar_datos_generales());
+        $this->template->setMainContent($this->load->view('informacion_general/inicio.tpl.php', $datos, true));
+        //$this->template->setBlank("tc_template/iiindex.tpl.php");    
+        $this->template->getTemplate(null,"tc_template/index.tpl.php");
+    }
+
     public function por_perfil(){
         $datos = array('catalogos'=>array('implementaciones'=>array(),'periodo'=>array()));
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];        
@@ -58,7 +76,7 @@ class Informacion_general extends MY_Controller
             $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC')));
             //pr($datos['catalogos']);
             $datos['catalogos']['periodo'] = dropdown_options($this->config->item('periodo'), 'id', 'valor');
-            $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
+            $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.descripcion as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
             //pr($listado_subcategorias);
             foreach ($listado_subcategorias as $key_ls => $listado) {
                 $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
@@ -84,7 +102,7 @@ class Informacion_general extends MY_Controller
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $datos['catalogos'] = $cat_list->obtener_catalogos(array(Catalogo_listado::TIPOS_CURSOS=>array('condicion'=>'activo=CAST(1 as boolean)'), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC')));
             $datos['catalogos']['periodo'] = dropdown_options($this->config->item('periodo'), 'id', 'valor');
-            $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.nombre as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
+            $listado_subcategorias = $this->inf_gen_model->obtener_listado_subcategorias(array('fields'=>'sub.id_subcategoria, sub.nombre as subcategoria, gc.id_grupo_categoria, gc.descripcion as grupo_categoria', 'conditions'=>'sub.activa=true', 'order'=>'sub.order ASC, gc.order ASC'));
             foreach ($listado_subcategorias as $key_ls => $listado) {
                 $datos['catalogos']['subcategorias']['S_'.$listado['id_subcategoria']]['subcategoria'] = $listado['subcategoria'];
                 if(!empty($listado['grupo_categoria'])){
@@ -472,7 +490,7 @@ class Informacion_general extends MY_Controller
                         $extra = array('fields'=>'imp.anio anio_fin,
                             SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
                             SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
-                            'group'=>'imp.fecha_inicio');
+                            'group'=>'imp.fecha_fin');
                         break;*/
                     case $tipos_busqueda['REGION']['id']:
                         $extra = array('fields'=>'"reg"."id_region", "reg"."nombre" as "region",
@@ -484,11 +502,11 @@ class Informacion_general extends MY_Controller
                         if($datos_busqueda['agrupamiento']==$this->config->item('agrupamiento')['DESAGRUPAR']['id']){
                             $extra = array('fields'=>'"del"."id_delegacion", "del"."nombre" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
                                 SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
-                                'group'=>'"del"."id_delegacion", "del"."nombre"');
+                                'group'=>'"del"."id_delegacion", "del"."nombre"', 'order'=>'delegacion');
                         } else {
                             $extra = array('fields'=>'"del"."grupo_delegacion", "del"."nombre_grupo_delegacion" as "delegacion", SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados,
                                 SUM(COALESCE(hia.cantidad_no_accesos, 0)) as cantidad_no_accesos, (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-SUM(COALESCE(hia.cantidad_no_accesos, 0))) as cantidad_no_aprobados',
-                                'group'=>'"del"."grupo_delegacion", "del"."nombre_grupo_delegacion"');
+                                'group'=>'"del"."grupo_delegacion", "del"."nombre_grupo_delegacion"', 'order'=>'delegacion');
                         }
                     break;
                     case $tipos_busqueda['UMAE']['id']:
@@ -602,25 +620,25 @@ class Informacion_general extends MY_Controller
 
                 $conditions = $this->obtener_condicionales();
                 //pr($datos_busqueda);
-                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+$conditions);/*+array('fields'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio) mes_fin, 
+                $datos['datos'] = $this->inf_gen_model->calcular_totales($datos_busqueda+$conditions);/*+array('fields'=>'"imp"."fecha_fin", EXTRACT(MONTH FROM imp.fecha_fin) mes_fin, 
                     imp.anio anio_fin, "cur"."id_tipo_curso", 
                     "tc"."nombre" as "tipo_curso", "gc"."id_grupo_categoria", "gc"."nombre" as "grupo_categoria", 
                     "gc"."order" as "grupo_categoria_orden", "sub"."id_subcategoria", "sub"."nombre" as "perfil", "sub"."order" as "perfil_orden", 
                     SUM("hia"."cantidad_alumnos_inscritos") as cantidad_alumnos_inscritos, SUM("hia"."cantidad_alumnos_certificados") as cantidad_alumnos_certificados, 
                     "gc"."order" as "grupo_categoria_orden", COALESCE(SUM(hia.cantidad_no_accesos), 0) as cantidad_no_accesos, 
                     (SUM(hia.cantidad_alumnos_inscritos)-SUM(hia.cantidad_alumnos_certificados)-COALESCE(SUM(hia.cantidad_no_accesos), 0)) as cantidad_no_aprobados, 
-                    EXTRACT(month FROM fecha_inicio) as periodo_id, (CASE WHEN EXTRACT(month FROM fecha_inicio) = 1 THEN \'Enero\'
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 2 THEN \'Febrero\'
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 3 THEN \'Marzo\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 4 THEN \'Abril\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 5 THEN \'Mayo\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 6 THEN \'Junio\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 7 THEN \'Julio\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 8 THEN \'Agosto\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 9 THEN \'Septiembre\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 10 THEN \'Octubre\' 
-                                    WHEN EXTRACT(month FROM fecha_inicio) = 11 THEN \'Noviembre\' 
-                                    ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_inicio", EXTRACT(MONTH FROM imp.fecha_inicio), 
+                    EXTRACT(month FROM fecha_fin) as periodo_id, (CASE WHEN EXTRACT(month FROM fecha_fin) = 1 THEN \'Enero\'
+                                    WHEN EXTRACT(month FROM fecha_fin) = 2 THEN \'Febrero\'
+                                    WHEN EXTRACT(month FROM fecha_fin) = 3 THEN \'Marzo\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 4 THEN \'Abril\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 5 THEN \'Mayo\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 6 THEN \'Junio\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 7 THEN \'Julio\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 8 THEN \'Agosto\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 9 THEN \'Septiembre\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 10 THEN \'Octubre\' 
+                                    WHEN EXTRACT(month FROM fecha_fin) = 11 THEN \'Noviembre\' 
+                                    ELSE \'Diciembre\' END) as periodo', 'group'=>'"imp"."fecha_fin", EXTRACT(MONTH FROM imp.fecha_fin), 
                     imp.anio, "cur"."id_tipo_curso", "tc"."nombre", 
                     "gc"."id_grupo_categoria", "gc"."nombre", "gc"."order", 
                     "sub"."id_subcategoria", "sub"."nombre", "sub"."order"')*/ ////Obtener listado de evaluaciones de acuerdo al año seleccionado --"mes"."nombre" as "mes", "mes"."nombre", 

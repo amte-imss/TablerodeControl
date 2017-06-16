@@ -39,8 +39,8 @@ $config['tipos_busqueda'] = array(
 );
 
 $config['agrupamiento'] = array(
-	'AGRUPAR' => array('id'=>'agrupar', 'valor'=>'Agrupar'),
-	'DESAGRUPAR' => array('id'=>'desagrupar', 'valor'=>'Desagrupar'),
+	'AGRUPAR' => array('id'=>'agrupar', 'valor'=>'Nivel 25'),
+	'DESAGRUPAR' => array('id'=>'desagrupar', 'valor'=>'Nivel 32'),
 );
 
 $config['grupo_tipo_unidad'] = array(
