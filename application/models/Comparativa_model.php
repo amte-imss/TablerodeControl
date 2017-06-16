@@ -281,7 +281,7 @@ class Comparativa_model extends MY_Model
             ));
 //            pr($this->db->last_query());
 //            pr($catalogo);
-            $datos['nombre'] = $catalogo['unidades_instituto'][$unidad];
+            $datos['nombre'] = isset($catalogo['unidades_instituto'][$unidad])?$catalogo['unidades_instituto'][$unidad]:'' ;
             $datos['aprobados'] = 0;
             $datos['inscritos'] = 0;
             $datos['no_acceso'] = 0;
@@ -392,8 +392,9 @@ class Comparativa_model extends MY_Model
                 $opciones = array(
                     'llave' => 'nombre_unidad_principal',
                     'valor' => 'nombre_unidad_principal',
-                    'condicion' => "grupo_tipo_unidad = 'UMAE' and anio = {$filtros['periodo']} and nombre_unidad_principal = {$umae}",
+                    'condicion' => "grupo_tipo_unidad = 'UMAE' and anio = {$filtros['periodo']} and nombre_unidad_principal = '{$umae}'",
                     'group' => array('nombre_unidad_principal'),
+                    'orden' => 1
                 );
             }
             $cat_list = new Catalogo_listado(); //Obtener catálogos

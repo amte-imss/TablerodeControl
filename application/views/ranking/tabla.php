@@ -3,7 +3,7 @@
 ?>
 <table id="table_ranking" class="table">
     <thead class="text-primary">
-    <th><?php echo ($filtros['umae'] ? 'UMAE' : 'Delegación'); ?></th>
+    <th><?php echo (isset($filtros['umae']) &&  $filtros['umae'] ? 'UMAE' : 'Delegación'); ?></th>
     <th><?php echo ($filtros['tipo'] == 1 || $filtros['tipo'] == '' ? 'Número de Alumnos Aprobados' : 'Eficiencia terminal modificada'); ?></th>
 </thead>
 <tbody>
@@ -11,7 +11,7 @@
     foreach ($datos as $row)
     {
         
-        if($filtros['umae'] && $usuario['name_unidad_ist'] == $row['nombre']){
+        if(isset($filtros['umae']) && $filtros['umae'] && $usuario['name_unidad_ist'] == $row['nombre']){
             $row['nombre'] = '* '.$row['nombre'];
         }else if($usuario['nombre_grupo_delegacion'] == $row['nombre']){
             $row['nombre'] = '* '.$row['nombre'];

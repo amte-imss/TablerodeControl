@@ -100,7 +100,7 @@ class Welcome extends CI_Controller
             $this->template->getTemplate();
         }
      */
-        redirect(site_url('/informacion_general'));
+        redirect(site_url('/informacion_general/inicio'));
     }
 
     function cerrar_sesion()
