@@ -23,14 +23,15 @@ class Buscador_model extends CI_Model
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'id_grupo_categoria', 'nombre'
+            'id_grupo_categoria', 'descripcion as nombre'
         );
         $this->db->select($select);
         if (isset($filtros['subcategoria']))
         {
             $this->db->where('id_subcategoria', $filtros['subcategoria']);
+            $this->db->where('activa', 'true');
         }        
-        $this->db->order_by('order', 'asd');
+        $this->db->order_by('order', 'asc');
         $subcategorias = $this->db->get('catalogos.grupos_categorias')->result_array();
         return $subcategorias;
     }

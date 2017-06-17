@@ -315,7 +315,8 @@ class Comparativa extends MY_Controller
 
             $cat_list = new Catalogo_listado(); //Obtener catálogos
             $output += $cat_list->obtener_catalogos(array(
-                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), Catalogo_listado::TIPOS_CURSOS,
+                Catalogo_listado::SUBCATEGORIAS  => array('condicion'=>'id_subcategoria > 1'), 
+                Catalogo_listado::TIPOS_CURSOS  => array('condicion'=>'activo = true'),
                 Catalogo_listado::DELEGACIONES => $opciones_delegaciones, 
                 Catalogo_listado::GRUPOS_CATEGORIAS)
             );

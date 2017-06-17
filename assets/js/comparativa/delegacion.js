@@ -226,7 +226,7 @@ function graficar(id, datos, titulo, texto, year, extra, colores) {
 function get_descripcion_filtros(){
     var salida = '';
     
-    if(document.getElementById('tipo_curso') != null){
+    /*if(document.getElementById('tipo_curso') != null){
         salida += ' de ' + $('#tipo_curso option:selected').text();
     }
     if(document.getElementById('perfil') != null){
@@ -242,6 +242,25 @@ function get_descripcion_filtros(){
         salida += ' por el tipo ' + $('#tipo_unidad option:selected').text();
     }
     if(document.getElementById('periodo') != null){
+        salida += ' en el año ' + $('#periodo option:selected').text();
+    }*/
+    
+    if(document.getElementById('tipo_curso') != null && $('#tipo_curso').val()!=''){
+        salida += ' al tipo de curso ' + $('#tipo_curso option:selected').text();
+    }
+    if(document.getElementById('perfil') != null && $('#perfil').val()!=''){
+        salida += ' con tipo perfil ' + $('#perfil option:selected').text();
+    }
+    if(document.getElementById('subperfil') != null && $('#subperfil').val()!=''){
+        salida += ' con perfil ' + $('#subperfil option:selected').text();
+    }
+    if(document.getElementById('nivel') != null && $('#nivel').val()!=''){
+        salida += ' para el ' + $('#nivel option:selected').text()+' de atención';
+    }
+    if(document.getElementById('tipo_unidad') != null && $('#tipo_unidad').val()!=''){
+        salida += ' por el tipo de unidad ' + $('#tipo_unidad option:selected').text();
+    }
+    if(document.getElementById('periodo') != null && $('#periodo').val()!=''){
         salida += ' en el año ' + $('#periodo option:selected').text();
     }
     
