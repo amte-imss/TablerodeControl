@@ -47,9 +47,11 @@ class Welcome extends CI_Controller
                         break;
                     case 2:
                         $this->session->set_flashdata('flash_password', $mensajes[$valido]);
+                        $data['errores'] = 'password';
                         break;
                     case 3:
                         $this->session->set_flashdata('flash_usuario', $mensajes[$valido]);
+                        $data['errores'] = 'usuario';
                         break;
                 }
             }else{
